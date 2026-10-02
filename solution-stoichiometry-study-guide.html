@@ -1,0 +1,1486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solutions and Titrations Study Guide</title>
+<style>
+:root{
+  --ink:#1b2430; --muted:#566070; --line:#d6dbe3; --soft:#f3f5f8;
+  --a-bg:#fff1dc; --a-line:#dd962a; --a-ink:#7a4300;
+  --b-bg:#ddf2ee; --b-line:#2c9383; --b-ink:#0a564c;
+  --r-bg:#ebe7f8; --r-line:#7560c4; --r-ink:#3e2c85;
+  --navy:#1f3a5f; --navy-d:#152b49;
+  --ok:#17693f; --ok-bg:#e4f4ea;
+  --bad:#a3241d; --bad-bg:#fcebe9;
+  --warn:#6f4b00; --warn-bg:#fff5d9;
+  --info:#274b7a; --info-bg:#e9f0fa;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:#fff;color:var(--ink);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
+.app{max-width:880px;margin:0 auto;padding:20px 16px 48px}
+sub{font-size:.72em;line-height:0}
+sup{font-size:.72em;line-height:0}
+:focus-visible{outline:3px solid #4c7fd6;outline-offset:2px}
+
+/* Header */
+.top h1{font-family:var(--serif);font-weight:600;font-size:2rem;line-height:1.15;letter-spacing:-.01em;margin:0 0 .4rem}
+.top p{margin:0;color:var(--muted);max-width:64ch}
+
+/* Tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:20px 0 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.tabs button{appearance:none;font:inherit;font-size:.92rem;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px 7px 8px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.tabs button:not([data-n]){padding-left:14px}
+.tabs .tn{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--soft);font-size:.82rem}
+.tabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.tabs button[aria-selected="true"] .tn{background:#fff;color:var(--navy)}
+.tabs button:not([aria-selected="true"]):hover{border-color:var(--navy)}
+
+/* Section heading */
+h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;line-height:1.2;margin:0 0 .35rem}
+.lede{margin:0 0 18px;max-width:66ch}
+h3{font-size:1rem;margin:0 0 .4rem}
+
+/* Substance colors: given (A) and wanted (B) */
+.sa{color:var(--a-ink);font-weight:600}
+.sb{color:var(--b-ink);font-weight:600}
+
+/* Buttons */
+.btn{appearance:none;font:inherit;font-weight:600;font-size:.95rem;border-radius:8px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);padding:8px 14px;cursor:pointer}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy-d)}
+.btn.inline{padding:4px 10px;font-size:.9rem;margin-top:8px}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* Help level */
+.modebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 14px}
+.modebar-label{font-size:.9rem;font-weight:600}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{appearance:none;font:inherit;font-size:.9rem;border:0;background:#fff;color:var(--ink);padding:7px 12px;cursor:pointer;border-left:1.5px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff;font-weight:600}
+.seg button:focus-visible{outline-offset:-3px}
+
+/* Problem */
+.problem{border:1.5px solid var(--line);border-radius:14px;padding:20px 20px 18px}
+.ctx{margin:0 0 10px;color:var(--muted)}
+.eqwrap{background:var(--soft);border-radius:10px;padding:14px 16px 10px;margin:0 0 12px}
+.eq{font-family:var(--serif);font-size:1.4rem;line-height:1.35;display:flex;flex-wrap:wrap;align-items:baseline;gap:.15em .45em}
+.eq .coef{margin-right:.2em}
+.eq .plus,.eq .arrow{color:var(--muted)}
+.eq .sp{font-weight:400;color:var(--ink);padding:0 .15em;border-radius:5px;white-space:nowrap}
+.eq .sp.sa{background:var(--a-bg);color:var(--a-ink);box-shadow:0 2px 0 var(--a-line)}
+.eq .sp.sb{background:var(--b-bg);color:var(--b-ink);box-shadow:0 2px 0 var(--b-line)}
+.eq .st{font-size:.6em;font-family:var(--sans);margin-left:.1em;opacity:.8}
+.keys{display:flex;gap:14px;margin-top:8px;font-size:.8rem}
+.key{display:inline-flex;align-items:center;gap:6px}
+.key::before{content:"";width:.9em;height:.9em;border-radius:3px;border:1.5px solid}
+.key.a{color:var(--a-ink)} .key.a::before{background:var(--a-bg);border-color:var(--a-line)}
+.key.b{color:var(--b-ink)} .key.b::before{background:var(--b-bg);border-color:var(--b-line)}
+.am{margin:0 0 10px;font-size:.9rem;color:var(--muted)}
+.q{font-size:1.1rem;margin:0 0 14px;max-width:62ch}
+
+/* Route strip and per-reactant trails */
+.helplab{font-size:.88rem;font-weight:600;margin:14px 0 6px}
+.helptext{font-size:.95rem;margin:4px 0 6px;max-width:64ch}
+.rn{border:1.5px solid;border-radius:8px;padding:3px 10px;font-weight:600;font-size:.95rem;white-space:nowrap}
+.rn.a{background:var(--a-bg);border-color:var(--a-line);color:var(--a-ink)}
+.rn.b{background:var(--b-bg);border-color:var(--b-line);color:var(--b-ink)}
+.rn .sa,.rn .sb{color:inherit}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 4px;padding:0;list-style:none}
+.route .rs{font-size:.82rem;color:var(--muted);display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.route .rs::after{content:"\2192";font-size:1.1rem;color:var(--ink)}
+.route .rs.ratio{color:var(--r-ink);font-weight:600}
+.trail{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}
+.trail .arw{font-size:1.1rem;margin-right:2px}
+.trail .tq{white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+
+/* Dimensional analysis chain */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:10px 10px;font-size:1.02rem;margin:4px 0 6px}
+.chain .op{color:var(--muted);font-size:1.15rem}
+.chain .qty{white-space:nowrap}
+.chain .grp{display:inline-flex;align-items:center;gap:10px}
+.chain.cells{gap:10px 22px}
+.frac{display:inline-flex;flex-direction:column;text-align:center}
+.frac>span{padding:3px 8px;white-space:nowrap}
+.frac>.t{border-bottom:2px solid var(--ink)}
+.cx{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:var(--bad)}
+.blank{font:inherit;width:2.8em;text-align:center;border:1.5px solid #8b95a3;border-radius:6px;padding:2px 4px;background:#fff;color:var(--ink)}
+.blank.wide{width:5.2em}
+.blank.ok,.pin.ok{border:2px solid var(--ok);background:var(--ok-bg)}
+.blank.no,.pin.no{border:2px dashed var(--bad);background:var(--bad-bg)}
+.ph{display:inline-grid;place-items:center;min-width:2.2em;height:1.7em;border:1.5px dashed #8b95a3;border-radius:6px;color:var(--muted)}
+.ans-final{font-weight:700}
+
+/* Answers */
+.ansrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.ansrow label{font-weight:600}
+.pin{font:inherit;font-size:1.05rem;width:8.5em;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;color:var(--ink);background:#fff}
+.pin:disabled,.blank:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
+.unit{font-size:1.05rem}
+.parts{list-style:none;margin:16px 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;gap:14px}
+.part{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.part .plab{font-weight:600;flex:1 1 15em}
+.part .pctl{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.pmark{font-weight:700;min-width:1em}
+.pmark.ok{color:var(--ok)} .pmark.no{color:var(--bad)}
+.checkrow{margin-top:14px}
+.choice{display:inline-flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative;cursor:pointer}
+.opt input{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer}
+.opt span{display:inline-block;border:1.5px solid #8b95a3;border-radius:8px;padding:6px 14px;font-size:1.05rem;background:#fff}
+.opt input:checked+span{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+.opt input:focus-visible+span{outline:3px solid #4c7fd6;outline-offset:2px}
+.choice.ok .opt input:checked+span{background:var(--ok);border-color:var(--ok)}
+.choice.no .opt input:checked+span{background:var(--bad-bg);color:var(--bad);border:2px dashed var(--bad)}
+
+/* Feedback */
+.fb{display:none;margin-top:14px;padding:11px 14px;border-radius:10px;border-left:5px solid;gap:10px;align-items:flex-start}
+.fb.show{display:flex}
+.fb .ic{font-weight:700;font-size:1.05rem;line-height:1.5}
+.fb p{margin:0}
+.fb p+p{margin-top:6px}
+.fb.ok{background:var(--ok-bg);border-color:var(--ok);color:#0f4a2c}
+.fb.bad{background:var(--bad-bg);border-color:var(--bad);color:#6f1712}
+.fb.warn{background:var(--warn-bg);border-color:#c98f12;color:var(--warn)}
+.fb.info{background:var(--info-bg);border-color:#5a86c4;color:var(--info)}
+.fb .sa,.fb .sb{color:inherit}
+
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tally{font-size:.9rem;color:var(--muted);margin:12px 2px 0}
+
+/* Worked solution */
+.solution{margin-top:16px;padding:14px 16px 6px;border-radius:10px;background:var(--soft)}
+.solution ol{margin:0;padding-left:1.3em}
+.solution li{margin-bottom:10px}
+.solution .note{font-size:.9rem;color:var(--muted);margin:0 0 10px}
+details.soldet{margin-top:14px}
+details.soldet summary{cursor:pointer;font-weight:600;color:var(--navy)}
+
+/* Roadmap */
+.paths{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 6px}
+.paths .lab{font-size:.9rem;font-weight:600;margin-right:2px}
+.map{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:10px 6px;margin:14px 0 18px}
+.rowlab{font-size:.9rem;font-weight:700}
+.rowlab.a{grid-column:1/-1;color:var(--a-ink)}
+.rowlab.b{grid-column:1/3;align-self:end;color:var(--b-ink)}
+.map .fill{grid-column:4/6}
+.node{border:2px solid;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:68px;transition:opacity .15s}
+.node b{font-size:.98rem;line-height:1.25}
+.node small{font-size:.8rem}
+.node.a{background:var(--a-bg);border-color:var(--a-line);color:var(--a-ink)}
+.node.b{background:var(--b-bg);border-color:var(--b-line);color:var(--b-ink)}
+.conn{appearance:none;font:inherit;font-size:.8rem;font-weight:600;line-height:1.2;color:var(--ink);background:#fff;border:1.5px solid #8b95a3;border-radius:10px;padding:6px 8px;cursor:pointer;align-self:center;display:flex;flex-direction:column;align-items:center;gap:1px;transition:opacity .15s}
+.conn .arr{font-size:1.15rem;line-height:1}
+.conn:hover{border-color:var(--navy)}
+.conn.ratio{grid-column:3;justify-self:center;flex-direction:row;gap:8px;padding:8px 14px;background:var(--r-bg);border-color:var(--r-line);color:var(--r-ink)}
+.conn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.map .dim{opacity:.28}
+.detail{border-left:5px solid var(--navy);background:var(--soft);border-radius:10px;padding:14px 16px;min-height:120px}
+.detail p{margin:0 0 8px}
+.detail ul{margin:0 0 8px;padding-left:1.2em}
+.detail .ex{font-family:var(--serif);font-size:1.08rem;margin-bottom:0}
+.builds{margin-top:22px}
+.builds ul{margin:0;padding-left:1.2em;max-width:66ch}
+.builds li{margin-bottom:6px}
+
+/* Virtual titration */
+.bench{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:flex-start;margin:6px 0 4px}
+.bench svg{flex:0 0 auto;width:230px;max-width:100%;height:auto;background:var(--soft);border-radius:10px}
+.panel{flex:1 1 260px;min-width:0}
+.readouts{display:grid;gap:6px;margin:0 0 12px}
+.readouts div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:4px 0}
+.readouts b{font-variant-numeric:tabular-nums;font-size:1.1rem}
+.labstatus{border-left:5px solid var(--navy);background:var(--soft);border-radius:8px;padding:10px 12px;margin:0 0 12px;min-height:4.6em}
+.addbtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.addbtns .lab{font-size:.9rem;font-weight:600;flex:1 0 100%}
+details.how{margin-top:12px}
+details.how summary{cursor:pointer;font-weight:600;color:var(--navy)}
+details.how ol{margin:8px 0 0;padding-left:1.3em;max-width:62ch}
+
+@media (max-width:560px){
+  .top h1{font-size:1.6rem}
+  .problem{padding:16px 14px}
+  .eq{font-size:1.15rem}
+  .node b{font-size:.82rem} .node small{font-size:.7rem}
+  .conn{font-size:.7rem;padding:5px 4px}
+  .map{gap:8px 3px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>Solutions and Titrations Study Guide</h1>
+    <p>Molarity, dilution, reactions in solution, and acid-base titrations. Start with the roadmap, then work through the sections in order. The numbers change every time, so practice as much as you like. Nothing here is graded.</p>
+  </header>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
+  <main id="view" role="tabpanel"></main>
+  <noscript><p>This study guide needs JavaScript turned on.</p></noscript>
+</div>
+
+<script>
+'use strict';
+/* ============================================================
+   Chemistry data and problem logic (no page elements used here)
+   ============================================================ */
+
+// Atomic masses, kept as text so they display exactly as written.
+const AM = {H:'1.008', C:'12.011', N:'14.007', O:'15.999', Na:'22.990', Mg:'24.305', Al:'26.982',
+            P:'30.974', S:'32.06', Cl:'35.45', K:'39.098', Ca:'40.078', Cr:'51.996', Fe:'55.845',
+            Cu:'63.546', Zn:'65.38', Br:'79.904', Ag:'107.87', I:'126.90', Ba:'137.33', Pb:'207.2'};
+
+// Solutes for the molarity section.
+const SOLUTES = {NaCl:'sodium chloride', KCl:'potassium chloride', NaOH:'sodium hydroxide', KNO3:'potassium nitrate',
+                 CaCl2:'calcium chloride', Na2SO4:'sodium sulfate', C6H12O6:'glucose', AgNO3:'silver nitrate',
+                 KBr:'potassium bromide', MgCl2:'magnesium chloride', NaHCO3:'sodium bicarbonate', CuSO4:'copper(II) sulfate',
+                 KOH:'potassium hydroxide', NH4Cl:'ammonium chloride', Na2CO3:'sodium carbonate', KI:'potassium iodide'};
+// Solutes for the dilution section.
+const DILUTES = ['HCl','HNO3','H2SO4','NaOH','NH3','NaCl','CuSO4','KCl','KNO3'];
+const FLASKS = ['100.0','250.0','500.0'];
+
+// Reaction banks. r = reactants, p = products, each as [coefficient, formula, state].
+const SRX = [
+  {ctx:'Mixing lead(II) nitrate and potassium iodide solutions gives a bright yellow precipitate of lead(II) iodide.',
+   r:[[1,'Pb(NO3)2','aq'],[2,'KI','aq']], p:[[1,'PbI2','s'],[2,'KNO3','aq']]},
+  {ctx:'Silver nitrate and sodium chloride solutions react to form a white precipitate of silver chloride.',
+   r:[[1,'AgNO3','aq'],[1,'NaCl','aq']], p:[[1,'AgCl','s'],[1,'NaNO3','aq']]},
+  {ctx:'Silver nitrate and calcium chloride solutions react to form a white precipitate of silver chloride.',
+   r:[[2,'AgNO3','aq'],[1,'CaCl2','aq']], p:[[2,'AgCl','s'],[1,'Ca(NO3)2','aq']]},
+  {ctx:'Barium chloride and sodium sulfate solutions react to form a white precipitate of barium sulfate.',
+   r:[[1,'BaCl2','aq'],[1,'Na2SO4','aq']], p:[[1,'BaSO4','s'],[2,'NaCl','aq']]},
+  {ctx:'Calcium chloride and sodium phosphate solutions react to form a white precipitate of calcium phosphate.',
+   r:[[3,'CaCl2','aq'],[2,'Na3PO4','aq']], p:[[1,'Ca3(PO4)2','s'],[6,'NaCl','aq']]},
+  {ctx:'Silver nitrate and potassium chromate solutions react to form a red precipitate of silver chromate.',
+   r:[[2,'AgNO3','aq'],[1,'K2CrO4','aq']], p:[[1,'Ag2CrO4','s'],[2,'KNO3','aq']]},
+  {ctx:'Sodium carbonate and calcium chloride solutions react to form a white precipitate of calcium carbonate.',
+   r:[[1,'Na2CO3','aq'],[1,'CaCl2','aq']], p:[[1,'CaCO3','s'],[2,'NaCl','aq']]},
+  {ctx:'Iron(III) chloride and sodium hydroxide solutions react to form a rust-colored precipitate of iron(III) hydroxide.',
+   r:[[1,'FeCl3','aq'],[3,'NaOH','aq']], p:[[1,'Fe(OH)3','s'],[3,'NaCl','aq']]},
+  {ctx:'Copper(II) sulfate and sodium hydroxide solutions react to form a blue precipitate of copper(II) hydroxide.',
+   r:[[1,'CuSO4','aq'],[2,'NaOH','aq']], p:[[1,'Cu(OH)2','s'],[1,'Na2SO4','aq']]},
+  {ctx:'Lead(II) nitrate and sodium sulfate solutions react to form a white precipitate of lead(II) sulfate.',
+   r:[[1,'Pb(NO3)2','aq'],[1,'Na2SO4','aq']], p:[[1,'PbSO4','s'],[2,'NaNO3','aq']]},
+  {ctx:'Zinc metal dissolves in hydrochloric acid, releasing hydrogen gas.',
+   r:[[1,'Zn','s'],[2,'HCl','aq']], p:[[1,'ZnCl2','aq'],[1,'H2','g']]},
+  {ctx:'Magnesium metal dissolves in hydrochloric acid, releasing hydrogen gas.',
+   r:[[1,'Mg','s'],[2,'HCl','aq']], p:[[1,'MgCl2','aq'],[1,'H2','g']]},
+  {ctx:'Calcium carbonate (limestone) reacts with hydrochloric acid, releasing carbon dioxide gas.',
+   r:[[1,'CaCO3','s'],[2,'HCl','aq']], p:[[1,'CaCl2','aq'],[1,'H2O','l'],[1,'CO2','g']]},
+  {ctx:'Aluminum metal dissolves in hydrochloric acid, releasing hydrogen gas.',
+   r:[[2,'Al','s'],[6,'HCl','aq']], p:[[2,'AlCl3','aq'],[3,'H2','g']]},
+  {ctx:'Magnesium hydroxide, the active ingredient in milk of magnesia, neutralizes hydrochloric acid (stomach acid).',
+   r:[[1,'Mg(OH)2','s'],[2,'HCl','aq']], p:[[1,'MgCl2','aq'],[2,'H2O','l']]},
+  {ctx:'Baking soda (sodium bicarbonate) reacts with hydrochloric acid, releasing carbon dioxide gas.',
+   r:[[1,'NaHCO3','s'],[1,'HCl','aq']], p:[[1,'NaCl','aq'],[1,'H2O','l'],[1,'CO2','g']]}
+];
+// Precipitation reactions: two dissolved reactants and a solid product.
+const PRX = SRX.filter(x => x.r.every(e=>e[2]==='aq') && x.p.some(e=>e[2]==='s'));
+// Acid-base neutralizations. The acid is listed first, the base second.
+const TRX = [
+  {ctx:'Hydrochloric acid is neutralized by sodium hydroxide.',
+   r:[[1,'HCl','aq'],[1,'NaOH','aq']], p:[[1,'NaCl','aq'],[1,'H2O','l']]},
+  {ctx:'Nitric acid is neutralized by potassium hydroxide.',
+   r:[[1,'HNO3','aq'],[1,'KOH','aq']], p:[[1,'KNO3','aq'],[1,'H2O','l']]},
+  {ctx:'Nitric acid is neutralized by sodium hydroxide.',
+   r:[[1,'HNO3','aq'],[1,'NaOH','aq']], p:[[1,'NaNO3','aq'],[1,'H2O','l']]},
+  {ctx:'Sulfuric acid, a diprotic acid, is neutralized by sodium hydroxide.',
+   r:[[1,'H2SO4','aq'],[2,'NaOH','aq']], p:[[1,'Na2SO4','aq'],[2,'H2O','l']]},
+  {ctx:'Sulfuric acid, a diprotic acid, is neutralized by potassium hydroxide.',
+   r:[[1,'H2SO4','aq'],[2,'KOH','aq']], p:[[1,'K2SO4','aq'],[2,'H2O','l']]},
+  {ctx:'Hydrochloric acid is neutralized by barium hydroxide.',
+   r:[[2,'HCl','aq'],[1,'Ba(OH)2','aq']], p:[[1,'BaCl2','aq'],[2,'H2O','l']]},
+  {ctx:'Nitric acid is neutralized by barium hydroxide.',
+   r:[[2,'HNO3','aq'],[1,'Ba(OH)2','aq']], p:[[1,'Ba(NO3)2','aq'],[2,'H2O','l']]},
+  {ctx:'Acetic acid, the acid in vinegar, is neutralized by sodium hydroxide.',
+   r:[[1,'CH3COOH','aq'],[1,'NaOH','aq']], p:[[1,'NaCH3COO','aq'],[1,'H2O','l']], sample:'acetic acid', source:'vinegar'},
+  {ctx:'Oxalic acid, a diprotic acid, is neutralized by sodium hydroxide.',
+   r:[[1,'H2C2O4','aq'],[2,'NaOH','aq']], p:[[1,'Na2C2O4','aq'],[2,'H2O','l']], sample:'oxalic acid', source:'an impure solid'},
+  {ctx:'Citric acid, a triprotic acid found in citrus fruit, is neutralized by sodium hydroxide.',
+   r:[[1,'H3C6H5O7','aq'],[3,'NaOH','aq']], p:[[1,'Na3C6H5O7','aq'],[3,'H2O','l']], sample:'citric acid', source:'a soft drink'},
+  {ctx:'Potassium hydrogen phthalate (KHP) is a solid acid with one acidic hydrogen. It is used to find the exact concentration of sodium hydroxide solutions.',
+   r:[[1,'KHC8H4O4','aq'],[1,'NaOH','aq']], p:[[1,'KNaC8H4O4','aq'],[1,'H2O','l']], khp:true}
+];
+
+/* ---------- Formulas and numbers ---------- */
+// Handles parentheses: Ca3(PO4)2 -> Ca3 P2 O8.
+function parseFormula(f){
+  const out=[]; const re=/\(([^()]+)\)(\d*)|([A-Z][a-z]?)(\d*)/g; let m;
+  while((m=re.exec(f))){
+    if(m[1]){ const k=m[2] ? +m[2] : 1; for(const [e,n] of parseFormula(m[1])) out.push([e,n*k]); }
+    else out.push([m[3], m[4] ? +m[4] : 1]);
+  }
+  return out;
+}
+function composition(f){
+  const out=[];
+  for(const [e,n] of parseFormula(f)){
+    const hit=out.find(x=>x[0]===e);
+    if(hit) hit[1]+=n; else out.push([e,n]);
+  }
+  return out;
+}
+// Molar mass rounded to two decimals, the way students will use it.
+function molarMass(f){
+  let s=0; for(const [e,n] of parseFormula(f)) s += Number(AM[e])*n;
+  return Math.round(s*100+1e-7)/100;
+}
+function breakdown(f){
+  const parts=composition(f), M=molarMass(f).toFixed(2);
+  if(parts.length===1 && parts[0][1]===1) return M+' g/mol';
+  return parts.map(([e,n])=> n>1 ? n+'('+AM[e]+')' : AM[e]).join(' + ')+' = '+M+' g/mol';
+}
+const F = f => f.replace(/(\d+)/g,'<sub>$1</sub>');          // formula with subscripts
+const tag = (f,c) => '<span class="'+c+'">'+F(f)+'</span>';  // colored formula
+
+// Number with n significant figures, as display HTML.
+function sig(x,n){
+  const s=Number(x).toPrecision(n);
+  if(s.indexOf('e')<0) return s;
+  const parts=s.split('e'); const ex=Number(parts[1]);
+  return parts[0]+' × 10<sup>'+(ex<0?'−'+(-ex):ex)+'</sup>';
+}
+// A value written with exactly 3 unambiguous significant figures, or null if that is not possible.
+function fmt3(v){
+  if(!(v>0) || !isFinite(v)) return null;
+  const s=Number(v).toPrecision(3);
+  if(s.indexOf('e')>=0) return null;
+  if(s.indexOf('.')<0 && /0$/.test(s)) return null;
+  return s;
+}
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const rint = (a,b) => a+Math.floor(Math.random()*(b-a+1));
+// Random value with 3 significant figures between lo and hi.
+function g3(lo,hi){
+  for(;;){ const s=fmt3(lo*Math.pow(hi/lo, Math.random())); if(s) return s; }
+}
+// Buret-style volume (two decimals) and a 4-significant-figure molarity.
+const vol2 = (lo,hi) => (rint(Math.round(lo*100),Math.round(hi*100))/100).toFixed(2);
+const mol4 = (lo,hi) => (rint(Math.round(lo*1e4),Math.round(hi*1e4))/1e4).toFixed(4);
+// Milliliters (text) to liters (text), keeping the same significant figures.
+function toL(v){ return (Number(v)/1000).toPrecision(parseInput(v).sfMax); }
+
+function spc(arr, role){
+  return arr.map(e=>({c:e[0], f:e[1], st:e[2], role, M:molarMass(e[1])}));
+}
+
+/* ---------- Small HTML builders ---------- */
+const frac = (t,b) => '<span class="frac"><span class="t">'+t+'</span><span class="b">'+b+'</span></span>';
+const XOP = '<span class="op" aria-hidden="true">×</span>';
+const EQOP = '<span class="op">=</span>';
+const ARW = '<span class="arw" aria-hidden="true">→</span>';
+const PH = '<span class="ph" aria-label="blank">?</span>';
+const cxs = t => '<span class="cx">'+t+'</span>';
+const lab = t => '<p class="helplab">'+t+'</p>';
+const txt = t => '<p class="helptext">'+t+'</p>';
+const blankIn = (k,label,wide) => '<input class="blank'+(wide?' wide':'')+'" data-k="'+k+'" type="text" inputmode="decimal" autocomplete="off" aria-label="'+label+'">';
+const bl = (mode,k,label,wide) => mode==='live' ? blankIn(k,label,wide) : PH;
+const row = inner => '<div class="chain">'+inner+'</div>';
+const q = s => '<span class="qty">'+s+'</span>';
+const clean = (errors, ans) => errors.filter(e => isFinite(e.value) && e.value>0 && Math.abs(e.value-ans)/Math.abs(ans) > 0.02);
+const M1='M<sub>1</sub>', V1='V<sub>1</sub>', M2='M<sub>2</sub>', V2='V<sub>2</sub>';
+const roundNote = sf => '<p class="note">Keep extra digits through the middle steps and round only at the end. The answer gets '+sf+' significant figures, the fewest in the given data.</p>';
+const solWrap = (items, note) => '<div class="solution"><h3>Worked solution</h3><ol>'+items.map(t=>'<li>'+t+'</li>').join('')+'</ol>'+(note||'')+'</div>';
+const mmLines = list => '<b>Molar mass'+(list.length>1?'es':'')+'.</b> '+list.map(([f,cls])=>tag(f,cls)+': '+breakdown(f)).join('<br>');
+const F_M = row(q('molarity (M)')+EQOP+frac('moles of solute','liters of solution'));
+
+/* ---------- 1. Molarity ---------- */
+function makeMolarity(prev){
+  for(let t=0;;t++){
+    const f=pick(Object.keys(SOLUTES)); if(t<50 && prev && prev.solute===f) continue;
+    const MM=molarMass(f), MMs=MM.toFixed(2), name=SOLUTES[f], fs=tag(f,'sa');
+    const type=pick(['Mmol','Mg','Mg','mol','g','g','mL']);
+    const Mt=g3(0.1,2.5), Mn=Number(Mt);
+    const V=Math.random()<0.5 ? pick(FLASKS) : g3(25,950), Vn=Number(V), VL=Vn/1000, VLs=toL(V);
+    const stepL = m => row(q(V+' mL')+EQOP+q(bl(m,'L','volume in liters',true)+' L'));
+    const LMSG='Check the volume in liters. Divide the milliliters by 1000.';
+    const MMMSG='Check the molar mass of '+F(f)+'. Add the atomic masses for every atom in the formula.';
+    const bad=(got,k)=>got[k] && !got[k].empty && !got[k].good;
+    let question, part, steps, blanks, blankMsg, sol, am=null, hint1;
+
+    if(type==='Mmol'){
+      const n=fmt3(Mn*VL); if(!n) continue;
+      const nn=Number(n), ans=nn/VL;
+      question='A solution contains '+n+' mol of '+fs+' in '+V+' mL of solution. What is the molarity of the solution?';
+      part={label:'Molarity', unit:'M '+fs, answer:ans, show:sig(ans,3)+' M '+fs,
+        errors:[{value:nn/Vn, msg:'Molarity is moles per liter, not per milliliter. Convert '+V+' mL to liters first.'},
+                {value:VL/nn, msg:'The fraction is upside down. Molarity is moles on top, liters on the bottom.'},
+                {value:nn*VL, msg:'Molarity = moles ÷ liters. It looks like you multiplied.'}],
+        generic:'Not yet. Convert the volume to liters, then divide the moles by the liters.'};
+      steps=m=>lab('Step 1: volume in liters')+stepL(m)+lab('Step 2: divide moles by liters')+F_M;
+      blanks={L:{want:VL,tol:0.002}};
+      blankMsg=got=>bad(got,'L') ? LMSG : '';
+      hint1=txt('Molarity is moles of solute divided by liters of solution. The volume here is in milliliters.')+F_M;
+      sol=['<b>Volume in liters.</b> '+V+' mL ÷ 1000 = '+VLs+' L',
+           '<b>Molarity.</b> '+n+' mol ÷ '+VLs+' L = <b>'+sig(ans,3)+' M '+fs+'</b>'];
+    } else if(type==='Mg'){
+      const m0=fmt3(Mn*VL*MM); if(!m0) continue;
+      const mn=Number(m0), nn=mn/MM, ans=nn/VL;
+      am=[f];
+      question='A solution is made by dissolving '+m0+' g of '+name+' ('+fs+') in enough water to make '+V+' mL of solution. What is the molarity of the solution?';
+      part={label:'Molarity', unit:'M '+fs, answer:ans, show:sig(ans,3)+' M '+fs,
+        errors:[{value:mn/VL, msg:'It looks like grams were used in place of moles. Convert '+m0+' g to moles with the molar mass first.'},
+                {value:nn/Vn, msg:'Molarity is moles per liter, not per milliliter. Convert '+V+' mL to liters first.'},
+                {value:VL/nn, msg:'The fraction is upside down. Molarity is moles on top, liters on the bottom.'},
+                {value:nn,    msg:'That is the moles of '+fs+'. Divide by the liters of solution to get the molarity.'}],
+        generic:'Not yet. Convert grams to moles, convert milliliters to liters, then divide moles by liters.'};
+      steps=m=>lab('Step 1: grams to moles')+row(q(m0+' g')+'<span class="op">÷</span>'+q(bl(m,'MM','molar mass of '+f,true)+' g/mol')+EQOP+q(bl(m,'n','moles of '+f,true)+' mol '+fs))+
+               lab('Step 2: volume in liters')+stepL(m)+lab('Step 3: divide moles by liters')+F_M;
+      blanks={MM:{want:MM,tol:0.005}, n:{want:nn,tol:0.01}, L:{want:VL,tol:0.002}};
+      blankMsg=got=>bad(got,'MM') ? MMMSG : bad(got,'n') ? 'Check the moles of '+F(f)+'. Divide the grams by the molar mass.' : bad(got,'L') ? LMSG : '';
+      hint1=txt('Molarity needs moles, and you are given grams. Convert grams to moles first, then divide by the liters of solution.')+F_M;
+      sol=[mmLines([[f,'sa']]),
+           '<b>Grams to moles.</b> '+m0+' g ÷ '+MMs+' g/mol = '+sig(nn,4)+' mol '+fs,
+           '<b>Volume in liters.</b> '+V+' mL ÷ 1000 = '+VLs+' L',
+           '<b>Molarity.</b> '+sig(nn,4)+' mol ÷ '+VLs+' L = <b>'+sig(ans,3)+' M '+fs+'</b>'];
+    } else if(type==='mol'){
+      const ans=Mn*VL;
+      question='How many moles of '+fs+' are in '+V+' mL of '+Mt+' M '+fs+' solution?';
+      part={label:'Moles', unit:'mol '+fs, answer:ans, show:sig(ans,3)+' mol '+fs,
+        errors:[{value:Mn*Vn, msg:'Molarity is moles per liter. Convert '+V+' mL to liters before multiplying.'},
+                {value:Mn/VL, msg:'Moles = molarity × liters. It looks like you divided.'},
+                {value:VL/Mn, msg:'Moles = molarity × liters. It looks like you divided.'}],
+        generic:'Not yet. Convert the volume to liters, then multiply by the molarity.'};
+      steps=m=>lab('Step 1: volume in liters')+stepL(m)+lab('Step 2: multiply molarity by liters')+row(q('moles')+EQOP+q('molarity')+XOP+q('liters'));
+      blanks={L:{want:VL,tol:0.002}};
+      blankMsg=got=>bad(got,'L') ? LMSG : '';
+      hint1=txt('Molarity is a conversion factor: '+Mt+' M means '+Mt+' mol in every liter. Multiply the liters of solution by the molarity.');
+      sol=['<b>Volume in liters.</b> '+V+' mL ÷ 1000 = '+VLs+' L',
+           '<b>Moles.</b> '+VLs+' L × '+Mt+' mol/L = <b>'+sig(ans,3)+' mol '+fs+'</b>'];
+    } else if(type==='g'){
+      const nn=Mn*VL, ans=nn*MM;
+      am=[f];
+      question='How many grams of '+name+' ('+fs+') are needed to prepare '+V+' mL of '+Mt+' M '+fs+' solution?';
+      part={label:'Mass needed', unit:'g '+fs, answer:ans, show:sig(ans,3)+' g '+fs,
+        errors:[{value:nn,       msg:'That is the moles of '+fs+' needed. The question asks for grams, so multiply by the molar mass.'},
+                {value:Mn*Vn*MM, msg:'Molarity is moles per liter. Convert '+V+' mL to liters before multiplying.'},
+                {value:nn/MM,    msg:'To go from moles to grams, multiply by the molar mass. It looks like you divided.'},
+                {value:Mn*MM,    msg:'That is the mass in one full liter. You are making only '+V+' mL, so multiply the molarity by the liters first.'}],
+        generic:'Not yet. Find the moles needed (molarity × liters), then convert moles to grams with the molar mass.'};
+      steps=m=>lab('Step 1: volume in liters')+stepL(m)+
+               lab('Step 2: moles needed = molarity × liters')+row(q(Mt+' mol/L')+XOP+q('liters')+EQOP+q(bl(m,'n','moles of '+f,true)+' mol '+fs))+
+               lab('Step 3: moles to grams')+row(q('moles')+XOP+q(bl(m,'MM','molar mass of '+f,true)+' g/mol')+EQOP+q('? g '+fs));
+      blanks={L:{want:VL,tol:0.002}, n:{want:nn,tol:0.01}, MM:{want:MM,tol:0.005}};
+      blankMsg=got=>bad(got,'L') ? LMSG : bad(got,'n') ? 'Check the moles of '+F(f)+'. Multiply the molarity by the liters of solution.' : bad(got,'MM') ? MMMSG : '';
+      hint1=txt('Work out how many moles the finished solution must contain (molarity × liters). Then convert those moles to grams.');
+      sol=[mmLines([[f,'sa']]),
+           '<b>Volume in liters.</b> '+V+' mL ÷ 1000 = '+VLs+' L',
+           '<b>Moles needed.</b> '+VLs+' L × '+Mt+' mol/L = '+sig(nn,4)+' mol '+fs,
+           '<b>Moles to grams.</b> '+sig(nn,4)+' mol × '+MMs+' g/mol = <b>'+sig(ans,3)+' g '+fs+'</b>'];
+    } else {
+      const m0=fmt3(Mn*Number(g3(25,950))/1000*MM); if(!m0) continue;
+      const mn=Number(m0), nn=mn/MM, ans=nn/Mn*1000;
+      if(ans<5 || ans>999) continue;
+      am=[f];
+      question='What volume, in milliliters, of '+Mt+' M '+fs+' solution contains '+m0+' g of '+fs+'?';
+      part={label:'Volume', unit:'mL', answer:ans, show:sig(ans,3)+' mL',
+        errors:[{value:nn/Mn,      msg:'That is the volume in liters. The question asks for milliliters, so multiply by 1000.'},
+                {value:nn*Mn*1000, msg:'Liters = moles ÷ molarity. It looks like you multiplied.'},
+                {value:mn/Mn*1000, msg:'It looks like grams were used in place of moles. Convert '+m0+' g to moles with the molar mass first.'},
+                {value:nn,         msg:'That is the moles of '+fs+'. Divide by the molarity to get liters, then convert to milliliters.'}],
+        generic:'Not yet. Convert grams to moles, divide by the molarity to get liters, then convert liters to milliliters.'};
+      steps=m=>lab('Step 1: grams to moles')+row(q(m0+' g')+'<span class="op">÷</span>'+q(bl(m,'MM','molar mass of '+f,true)+' g/mol')+EQOP+q(bl(m,'n','moles of '+f,true)+' mol '+fs))+
+               lab('Step 2: liters = moles ÷ molarity, then convert to milliliters')+row(q('liters')+EQOP+frac('moles','molarity'));
+      blanks={MM:{want:MM,tol:0.005}, n:{want:nn,tol:0.01}};
+      blankMsg=got=>bad(got,'MM') ? MMMSG : bad(got,'n') ? 'Check the moles of '+F(f)+'. Divide the grams by the molar mass.' : '';
+      hint1=txt('Convert the grams to moles. Then ask how many liters of a '+Mt+' mol/L solution hold that many moles: divide moles by molarity.');
+      sol=[mmLines([[f,'sa']]),
+           '<b>Grams to moles.</b> '+m0+' g ÷ '+MMs+' g/mol = '+sig(nn,4)+' mol '+fs,
+           '<b>Moles to liters.</b> '+sig(nn,4)+' mol ÷ '+Mt+' mol/L = '+sig(nn/Mn,4)+' L',
+           '<b>Liters to milliliters.</b> '+sig(nn/Mn,4)+' L × 1000 = <b>'+sig(ans,3)+' mL</b>'];
+    }
+    part.type='num'; part.sf=3; part.errors=clean(part.errors, part.answer);
+    return {kind:'molarity', type, solute:f, ctx:'A solution of '+name+' in water.', rxn:null, hl:{}, am, question, parts:[part],
+      guided:steps('live'), hints:[lab('Hint 1')+hint1, lab('Hint 2: the steps')+steps('ph')],
+      blanks, blankMsg, solution:solWrap(sol, roundNote(3))};
+  }
+}
+
+/* ---------- 2. Dilution ---------- */
+function makeDilution(prev){
+  for(let t=0;;t++){
+    const f=pick(DILUTES); if(t<50 && prev && prev.solute===f) continue;
+    const fs=tag(f,'sa');
+    const type=pick(['V1','V1','M2','V2','water']);
+    const m1=g3(1,12), m1n=Number(m1);
+    let v1,v2,m2, unk;
+    if(type==='V1'){
+      m2=fmt3(m1n/(2.5+Math.random()*30)); if(!m2 || Number(m2)<0.05) continue;
+      v2=Math.random()<0.6 ? pick(FLASKS) : g3(100,900);
+      unk='V1'; if(Number(m2)*Number(v2)/m1n<1) continue;
+    } else if(type==='M2'){
+      v1=g3(5,50); v2=Math.random()<0.6 ? pick(FLASKS) : g3(100,900);
+      if(Number(v2)<2.5*Number(v1)) continue;
+      unk='M2';
+    } else {
+      v1=g3(5,50);
+      m2=fmt3(m1n/(2.5+Math.random()*30)); if(!m2 || Number(m2)<0.05) continue;
+      unk='V2'; if(m1n*Number(v1)/Number(m2)>999) continue;
+    }
+    const val={M1:m1n, V1:v1?Number(v1):null, M2:m2?Number(m2):null, V2:v2?Number(v2):null};
+    if(unk==='V1') val.V1=val.M2*val.V2/val.M1;
+    if(unk==='M2') val.M2=val.M1*val.V1/val.V2;
+    if(unk==='V2') val.V2=val.M1*val.V1/val.M2;
+    const str={M1:m1, V1:v1, M2:m2, V2:v2};
+    const SYM={M1:M1, V1:V1, M2:M2, V2:V2}, UN={M1:'M', V1:'mL', M2:'M', V2:'mL'};
+    const NAME={M1:'M1, the molarity of the stock solution', V1:'V1, the volume of stock solution', M2:'M2, the molarity of the diluted solution', V2:'V2, the volume of the diluted solution'};
+    const cell=(k,m)=>q(SYM[k]+' = '+(k===unk ? '<b>?</b>' : m==='show' ? str[k] : bl(m,k,NAME[k],true))+' '+UN[k]);
+    const cells=m=>'<div class="chain cells">'+['M1','V1','M2','V2'].map(k=>cell(k,m)).join('')+'</div>';
+    const EQN=row(q(M1+' × '+V1+' = '+M2+' × '+V2));
+    const blanks={};
+    ['M1','V1','M2','V2'].forEach(k=>{ if(k!==unk) blanks[k]={want:val[k],tol:0.002}; });
+    const blankMsg=got=>{
+      const bad=Object.keys(blanks).filter(k=>got[k] && !got[k].empty && !got[k].good);
+      if(!bad.length) return '';
+      return 'Check '+bad.map(k=>SYM[k]).join(' and ')+'. The 1s describe the concentrated stock solution you start with. The 2s describe the diluted solution you end with.';
+    };
+    let question, part, solve, rearr;
+    if(type==='V1'){
+      question='What volume, in milliliters, of '+m1+' M '+fs+' stock solution is needed to prepare '+v2+' mL of '+m2+' M '+fs+'?';
+      rearr=V1+' = '+M2+' × '+V2+' ÷ '+M1;
+      part={label:'Volume of stock solution', unit:'mL', answer:val.V1, sf:3, show:sig(val.V1,3)+' mL',
+        errors:[{value:val.M1*val.V2/val.M2, msg:'That is more than the final volume, which cannot be right: only part of the diluted solution is stock. Multiply '+M2+' × '+V2+', then divide by '+M1+'.'}],
+        generic:'Not yet. Solve '+M1+V1+' = '+M2+V2+' for '+V1+'.'};
+      solve='<b>Solve for '+V1+'.</b> '+rearr+' = '+m2+' M × '+v2+' mL ÷ '+m1+' M = <b>'+sig(val.V1,3)+' mL</b>';
+    } else if(type==='M2'){
+      question=v1+' mL of '+m1+' M '+fs+' is diluted with water to a total volume of '+v2+' mL. What is the molarity of the diluted solution?';
+      rearr=M2+' = '+M1+' × '+V1+' ÷ '+V2;
+      part={label:'Molarity after dilution', unit:'M '+fs, answer:val.M2, sf:3, show:sig(val.M2,3)+' M '+fs,
+        errors:[{value:val.M1*val.V2/val.V1, msg:'A diluted solution is always less concentrated than the stock it came from. Multiply '+M1+' × '+V1+', then divide by '+V2+'.'}],
+        generic:'Not yet. Solve '+M1+V1+' = '+M2+V2+' for '+M2+'.'};
+      solve='<b>Solve for '+M2+'.</b> '+rearr+' = '+m1+' M × '+v1+' mL ÷ '+v2+' mL = <b>'+sig(val.M2,3)+' M</b>';
+    } else if(type==='V2'){
+      question='To what total volume, in milliliters, must '+v1+' mL of '+m1+' M '+fs+' be diluted to make a '+m2+' M solution?';
+      rearr=V2+' = '+M1+' × '+V1+' ÷ '+M2;
+      part={label:'Total volume after dilution', unit:'mL', answer:val.V2, sf:3, show:sig(val.V2,3)+' mL',
+        errors:[{value:val.M2*val.V1/val.M1, msg:'The final volume has to be larger than the '+v1+' mL you start with. Multiply '+M1+' × '+V1+', then divide by '+M2+'.'}],
+        generic:'Not yet. Solve '+M1+V1+' = '+M2+V2+' for '+V2+'.'};
+      solve='<b>Solve for '+V2+'.</b> '+rearr+' = '+m1+' M × '+v1+' mL ÷ '+m2+' M = <b>'+sig(val.V2,3)+' mL</b>';
+    } else {
+      const water=val.V2-val.V1;
+      question='How many milliliters of water must be added to '+v1+' mL of '+m1+' M '+fs+' to make a '+m2+' M solution? Assume the volumes add.';
+      rearr=V2+' = '+M1+' × '+V1+' ÷ '+M2+', then water added = '+V2+' − '+V1;
+      part={label:'Water to add', unit:'mL', answer:water, sf:null, show:sig(water,3)+' mL of water',
+        errors:[{value:val.V2, msg:'That is the total volume of the diluted solution. The question asks how much water is added, so subtract the '+v1+' mL you started with.'},
+                {value:val.M2*val.V1/val.M1, msg:'The final volume has to be larger than the '+v1+' mL you start with. Multiply '+M1+' × '+V1+', then divide by '+M2+'.'}],
+        generic:'Not yet. Find the total volume '+V2+' first, then subtract the starting volume.'};
+      solve='<b>Solve for '+V2+'.</b> '+V2+' = '+m1+' M × '+v1+' mL ÷ '+m2+' M = '+sig(val.V2,4)+' mL</li><li><b>Water added.</b> '+sig(val.V2,4)+' mL − '+v1+' mL = <b>'+sig(water,3)+' mL</b>';
+    }
+    part.type='num'; part.errors=clean(part.errors, part.answer);
+    return {kind:'dilution', type, solute:f, ctx:'A stock solution is diluted with water. The moles of solute stay the same.', rxn:null, hl:{}, am:null,
+      question, parts:[part],
+      guided:lab('Sort the numbers from the problem into the equation, then solve for the unknown.')+EQN+cells('live'),
+      hints:[lab('Hint 1')+txt('Adding water does not change the moles of solute, so '+M1+V1+' = '+M2+V2+'. The 1s are the concentrated stock. The 2s are the diluted solution.')+cells('ph'),
+             lab('Hint 2: rearranged')+row(q(rearr))],
+      blanks, blankMsg,
+      solution:solWrap(['<b>Sort the values.</b>'+cells('show'), solve], roundNote(3))};
+  }
+}
+
+/* ---------- Reactions in solution: one substance to another ----------
+   S = {A, B, from, to, sf}
+   from: {type:'sol', v, M}  (v mL of an M molar solution of A)  or  {type:'g', x}
+   to:   {type:'g'}  |  {type:'mL', M}  (volume of an M molar solution of B)  |  {type:'M', v}  (molarity of v mL of B solution) */
+function chainCalc(S){
+  const a=S.A.c, b=S.B.c, f=S.from, t=S.to;
+  const LA = f.type==='sol' ? Number(f.v)/1000 : null;
+  const nA = f.type==='sol' ? LA*Number(f.M) : Number(f.x)/S.A.M;
+  const nB = nA*b/a;
+  const LB = t.type==='M' ? Number(t.v)/1000 : t.type==='mL' ? nB/Number(t.M) : null;
+  const ans = t.type==='g' ? nB*S.B.M : t.type==='mL' ? LB*1000 : nB/LB;
+  return {a,b,LA,nA,nB,LB,ans};
+}
+function mkChain(A,B,from,to,sf){
+  const S={A,B,from,to,sf};
+  S.ans=chainCalc(S).ans;
+  return S;
+}
+const unitOf = S => (S.to.type==='g' ? 'g ' : S.to.type==='mL' ? 'mL ' : 'M ')+tag(S.B.f,'sb');
+// Wrong answers that come from specific, common mistakes.
+function chainErrors(S){
+  const c=chainCalc(S), fa=tag(S.A.f,'sa'), fb=tag(S.B.f,'sb');
+  const a=c.a, b=c.b, ans=c.ans, f=S.from, t=S.to, E=[];
+  const add=(value,msg)=>E.push({value,msg});
+  if(a!==b){
+    add(ans*a/b, 'It looks like a 1:1 mole ratio was assumed. The balanced equation pairs '+a+' mol '+fa+' with '+b+' mol '+fb+'.'+
+      (f.type==='sol' && t.type!=='g' ? ' The shortcut M<sub>1</sub>V<sub>1</sub> = M<sub>2</sub>V<sub>2</sub> does not work here. Go through moles and use the mole ratio.' : ' Multiply the moles of '+fa+' by '+b+' mol '+fb+' over '+a+' mol '+fa+'.'));
+    add(ans*a*a/(b*b), 'That is the result with the mole ratio upside down. Put mol '+fb+' on top so that mol '+fa+' cancels: '+b+' mol '+fb+' over '+a+' mol '+fa+'.');
+  }
+  if(t.type==='g') add(c.nB, 'That is the moles of '+fb+'. The question asks for grams, so multiply by the molar mass of '+fb+'.');
+  if(f.type==='sol'){
+    add(ans*1000, 'It looks like milliliters were used where liters are needed. Molarity is moles per liter, so convert '+f.v+' mL to liters (divide by 1000) before multiplying by the molarity.');
+    add(ans/(Number(f.M)*Number(f.M)), 'To get moles from a solution, multiply the liters by the molarity. It looks like the volume was divided by the molarity.');
+  } else {
+    add(ans*S.A.M, 'It looks like the grams of '+fa+' were used as moles. Divide by the molar mass of '+fa+' first.');
+  }
+  if(t.type==='mL'){
+    add(ans/1000, 'That is the volume in liters. The question asks for milliliters, so multiply by 1000.');
+    add(c.nB*Number(t.M)*1000, 'To get a volume from moles, divide by the molarity (mol/L). It looks like you multiplied.');
+    add(c.nB, 'That is the moles of '+fb+'. Divide by the molarity to get liters, then convert to milliliters.');
+  }
+  if(t.type==='M'){
+    add(ans/1000, 'Molarity is moles per liter. Convert '+t.v+' mL to liters before dividing.');
+    add(c.nB*c.LB, 'Molarity = moles ÷ liters. It looks like you multiplied.');
+    if(f.type==='sol') add(c.nB/c.LA, 'You divided by the volume of the '+fa+' solution. Divide the moles of '+fb+' by the volume of the '+fb+' solution.');
+    add(c.nB, 'That is the moles of '+fb+'. Divide by the liters of '+fb+' solution to get the molarity.');
+  }
+  add(c.nA, 'That is the moles of '+fa+'. Keep going: apply the mole ratio to get moles of '+fb+'.');
+  return clean(E, ans);
+}
+function routeHTML(S){
+  const a=F(S.A.f), b=F(S.B.f), f=S.from, t=S.to, items=[];
+  const n=(cls,s)=>items.push('<li class="rn '+cls+'">'+s+'</li>'), st=(s,c)=>items.push('<li class="rs '+(c||'')+'">'+s+'</li>');
+  if(f.type==='sol'){ n('a','mL '+a); st('÷ 1000'); n('a','L '+a); st('× molarity'); }
+  else { n('a','g '+a); st('÷ molar mass'); }
+  n('a','mol '+a); st('× mole ratio','ratio'); n('b','mol '+b);
+  if(t.type==='g'){ st('× molar mass'); n('b','g '+b); }
+  if(t.type==='mL'){ st('÷ molarity'); n('b','L '+b); st('× 1000'); n('b','mL '+b); }
+  if(t.type==='M'){ st('÷ liters of solution'); n('b','M '+b); }
+  return '<ol class="route" aria-label="Route">'+items.join('')+'</ol>';
+}
+// The dimensional-analysis setup. mode: 'live' = blanks to fill in, 'ph' = question marks, 'full' = worked out.
+function chainHTML(S, mode){
+  const full=mode==='full', f=S.from, t=S.to, c=chainCalc(S);
+  const a=tag(S.A.f,'sa'), b=tag(S.B.f,'sb');
+  const x = s => full ? cxs(s) : s;
+  const val=(k,label,v,wide)=> mode==='live' ? blankIn(k,label,wide) : mode==='ph' ? PH : v;
+  let out;
+  if(f.type==='sol'){
+    out=q(f.v+' '+x('mL'))+XOP+frac('1 '+x('L'),'1000 '+x('mL'))+
+        XOP+frac(val('mA','molarity of '+S.A.f,f.M,true)+' '+x('mol '+a),'1 '+x('L'));
+  } else {
+    out=q(f.x+' '+x('g '+a))+XOP+frac('1 '+x('mol '+a), val('MA','molar mass of '+S.A.f,S.A.M.toFixed(2),true)+' '+x('g '+a));
+  }
+  out+=XOP+frac(val('b','coefficient of '+S.B.f,S.B.c)+' '+(t.type==='M' ? 'mol '+b : x('mol '+b)),
+                val('a','coefficient of '+S.A.f,S.A.c)+' '+x('mol '+a));
+  if(t.type==='g')  out+=XOP+frac(val('MB','molar mass of '+S.B.f,S.B.M.toFixed(2),true)+' g '+b, '1 '+x('mol '+b));
+  if(t.type==='mL') out+=XOP+frac('1 '+x('L'), val('mB','molarity of '+S.B.f,t.M,true)+' '+x('mol '+b))+XOP+frac('1000 mL','1 '+x('L'));
+  if(t.type==='M')  out+=XOP+frac('1', val('LB','liters of '+S.B.f+' solution',toL(t.v),true)+' L');
+  out+='<span class="grp">'+EQOP+'<span class="qty'+(full?' ans-final':'')+'">'+(full ? sig(c.ans,S.sf) : '?')+' '+unitOf(S)+'</span></span>';
+  return row(out);
+}
+function chainBlanks(S){
+  const B={b:{want:S.B.c,tol:1e-9}, a:{want:S.A.c,tol:1e-9}}, f=S.from, t=S.to;
+  if(f.type==='sol') B.mA={want:Number(f.M),tol:0.002}; else B.MA={want:S.A.M,tol:0.005};
+  if(t.type==='g')  B.MB={want:S.B.M,tol:0.005};
+  if(t.type==='mL') B.mB={want:Number(t.M),tol:0.002};
+  if(t.type==='M')  B.LB={want:Number(t.v)/1000,tol:0.002};
+  return B;
+}
+// got[k] = {v, good} or {empty:true} for each blank. Returns the most useful message, or ''.
+function chainBlankMsg(S, got){
+  const a=S.A.c, b=S.B.c, fa=F(S.A.f), fb=F(S.B.f);
+  const bad=k=>got[k] && !got[k].empty && !got[k].good;
+  const near=(v,w)=>isFinite(v) && Math.abs(v-w)/w<=0.005;
+  if(bad('a')||bad('b')){
+    return (got.a && got.b && got.a.v===b && got.b.v===a)
+      ? 'The mole ratio is upside down. The substance you want ('+fb+') goes on top, so that mol '+fa+' cancels.'
+      : 'Check the mole ratio. Use the coefficients from the balanced equation: the coefficient of '+fb+' on top and the coefficient of '+fa+' on the bottom.';
+  }
+  if(bad('mA')) return 'Check the molarity of '+fa+'. Use the value given in the problem: '+S.from.M+' mol in every liter.';
+  if(bad('mB')) return 'Check the molarity of '+fb+'. Use the value given in the problem: '+S.to.M+' mol in every liter.';
+  if(bad('MA')||bad('MB')){
+    if((bad('MA') && a>1 && near(got.MA.v,a*S.A.M)) || (bad('MB') && b>1 && near(got.MB.v,b*S.B.M)))
+      return 'Leave the coefficient out of the molar mass. Molar mass is for one mole of the formula. Coefficients belong only in the mole ratio.';
+    return 'Check the molar mass of '+(bad('MA')?fa:fb)+'. Add the atomic masses for every atom in the formula.';
+  }
+  if(bad('LB')) return 'Check the liters of '+fb+' solution. Divide '+S.to.v+' mL by 1000.';
+  return '';
+}
+// The conversion written out one step per line.
+function stepLines(S){
+  const c=chainCalc(S), fa=tag(S.A.f,'sa'), fb=tag(S.B.f,'sb'), f=S.from, t=S.to, out=[], k=S.sf+1;
+  const done=(v,u)=>'<b>'+sig(v,S.sf)+' '+u+'</b>';
+  if(f.type==='sol'){
+    out.push('<b>Milliliters to liters.</b> '+f.v+' mL ÷ 1000 = '+toL(f.v)+' L');
+    out.push('<b>Liters to moles.</b> '+toL(f.v)+' L × '+f.M+' mol/L = '+sig(c.nA,k)+' mol '+fa);
+  } else {
+    out.push('<b>Grams to moles.</b> '+f.x+' g '+fa+' ÷ '+S.A.M.toFixed(2)+' g/mol = '+sig(c.nA,k)+' mol '+fa);
+  }
+  out.push('<b>Mole ratio.</b> '+sig(c.nA,k)+' mol '+fa+' × ('+S.B.c+' mol '+fb+' ÷ '+S.A.c+' mol '+fa+') = '+sig(c.nB,k)+' mol '+fb);
+  if(t.type==='g') out.push('<b>Moles to grams.</b> '+sig(c.nB,k)+' mol '+fb+' × '+S.B.M.toFixed(2)+' g/mol = '+done(c.ans,'g '+fb));
+  if(t.type==='mL'){
+    out.push('<b>Moles to liters.</b> '+sig(c.nB,k)+' mol '+fb+' ÷ '+t.M+' mol/L = '+sig(c.LB,k)+' L');
+    out.push('<b>Liters to milliliters.</b> '+sig(c.LB,k)+' L × 1000 = '+done(c.ans,'mL '+fb));
+  }
+  if(t.type==='M') out.push('<b>Molarity.</b> '+sig(c.nB,k)+' mol '+fb+' ÷ '+toL(t.v)+' L = '+done(c.ans,'M '+fb));
+  return out;
+}
+function chainSolution(S){
+  const mm=[]; if(S.from.type==='g') mm.push([S.A.f,'sa']); if(S.to.type==='g') mm.push([S.B.f,'sb']);
+  return solWrap((mm.length ? [mmLines(mm)] : []).concat(stepLines(S), ['<b>All in one line.</b>'+chainHTML(S,'full')]), roundNote(S.sf));
+}
+const fromText = (S,cls) => S.from.type==='sol' ? S.from.v+' mL of '+S.from.M+' M '+tag(S.A.f,cls) : S.from.x+' g of '+tag(S.A.f,cls);
+function chainProblem(kind, rxn, S, question, generic, extra){
+  const part={type:'num', label:'Your answer', unit:unitOf(S), answer:S.ans, sf:S.sf, tolRel:S.sf>3 ? 0.005 : 0.01,
+              errors:chainErrors(S), generic, show:sig(S.ans,S.sf)+' '+unitOf(S)};
+  const hl={}; hl[S.A.f]='sa'; hl[S.B.f]='sb';
+  const am=[]; if(S.from.type==='g') am.push(S.A.f); if(S.to.type==='g') am.push(S.B.f);
+  return Object.assign({kind, rxn, ctx:rxn.ctx, hl, am:am.length?am:null, question, parts:[part],
+    guided: lab('Your route')+routeHTML(S)+lab('Fill in the blanks to finish the setup, then calculate.')+chainHTML(S,'live'),
+    hints: [lab('Hint 1: your route')+routeHTML(S), lab('Hint 2: the setup')+chainHTML(S,'ph')],
+    blanks: chainBlanks(S), blankMsg: got=>chainBlankMsg(S,got), solution: chainSolution(S), S}, extra||{});
+}
+
+/* ---------- 3. Solution stoichiometry ---------- */
+function makeSolStoich(prev){
+  for(let t=0;;t++){
+    const rxn=pick(SRX); if(t<200 && prev && prev.rxn===rxn) continue;
+    const cand=spc(rxn.r,'r').concat(spc(rxn.p,'p').filter(s=>s.st==='s'||s.st==='g'));
+    const A=pick(cand), B=pick(cand.filter(s=>s!==A));
+    const solA=A.role==='r' && A.st==='aq', solB=B.role==='r' && B.st==='aq';
+    if(!solA && !solB) continue;
+    if(t<200 && A.c===B.c) continue;
+    const from = solA ? {type:'sol', v:g3(10,150), M:g3(0.1,1.5)} : {type:'g', x:g3(0.5,15)};
+    const to = solB ? {type:'mL', M:g3(0.1,1.5)} : {type:'g'};
+    const S=mkChain(A,B,from,to,3);
+    if(to.type==='mL' && (S.ans<2 || S.ans>900)) continue;
+    if(to.type==='g' && S.ans<0.02) continue;
+    const G=fromText(S,'sa'), fb=tag(B.f,'sb');
+    const Q = to.type==='mL' ? 'milliliters of '+to.M+' M '+fb : 'grams of '+fb;
+    let question;
+    if(A.role==='r' && B.role==='p')      question='How many '+Q+' can form from '+G+'? Assume the other reactant is in excess.';
+    else if(A.role==='r' && B.role==='r') question='How many '+Q+' are needed to react completely with '+G+'?';
+    else                                  question='How many '+Q+' must react to produce '+G+'?';
+    return chainProblem('solstoich', rxn, S, question,
+      'Not yet. Follow the route one step at a time: get to moles of the given substance, apply the mole ratio, then convert to what the question asks for.');
+  }
+}
+
+/* ---------- 4. Mixing two solutions ---------- */
+function makeMix(prev){
+  for(let t=0;;t++){
+    const rxn=pick(PRX); if(t<200 && prev && prev.rxn===rxn) continue;
+    const R=spc(rxn.r,'r'), Pd=spc(rxn.p,'p').find(s=>s.st==='s');
+    const i=Math.random()<0.5 ? 0 : 1, j=1-i;
+    R[i].v=g3(10,100); R[i].Mo=g3(0.1,1.0); R[j].Mo=g3(0.1,1.0);
+    const ni=Number(R[i].v)/1000*Number(R[i].Mo);
+    const fct=Math.random()<0.5 ? 0.45+Math.random()*0.40 : 1.2+Math.random()*1.0;
+    const vj=fmt3(ni*R[j].c/R[i].c/Number(R[j].Mo)*1000*fct);
+    if(!vj || Number(vj)<5 || Number(vj)>250) continue;
+    R[j].v=vj;
+    R.forEach(r=>{ r.n=Number(r.v)/1000*Number(r.Mo); r.y=r.n*Pd.c/r.c*Pd.M; });
+    const iL = R[0].y<=R[1].y ? 0 : 1, L=R[iL], E=R[1-iL];
+    if((E.y-L.y)/L.y < 0.08) continue;
+    const actual=fmt3(L.y*(55+Math.random()*40)/100); if(!actual) continue;
+    const act=Number(actual), pct=act/L.y*100;
+    if(pct<50 || pct>97) continue;
+    const fp=tag(Pd.f,'sb');
+    const tail=' Convert each solution to moles, then work out how much '+F(Pd.f)+' each could make. The one that makes less is limiting.';
+    const parts=[
+      {type:'choice', label:'Which reactant is limiting?', options:R.map(r=>r.f), answer:L.f, show:F(L.f)+' is limiting',
+       wrongMsg:function(){
+         if(Number(E.v)<Number(L.v)) return 'The solution with the smaller volume is not automatically limiting.'+tail;
+         if(Number(E.Mo)<Number(L.Mo)) return 'The solution with the lower molarity is not automatically limiting.'+tail;
+         if(E.n<L.n) return 'Having fewer moles is not enough to decide, because the reactants are not used 1:1.'+tail;
+         return 'Not that one.'+tail;
+       }},
+      {type:'num', label:'Theoretical yield of '+fp, unit:'g '+fp, answer:L.y, sf:3, show:sig(L.y,3)+' g '+fp,
+       errors:clean([
+         {value:E.y, msg:'That is the amount the other reactant could make, but it would run out of its partner first. The reactant that makes less product limits the reaction, so the smaller amount is the theoretical yield.'},
+         {value:L.y*1000, msg:'It looks like milliliters were used where liters are needed. Molarity is moles per liter, so convert each volume to liters first.'},
+         {value:L.n*Pd.c/L.c, msg:'That is the moles of '+fp+'. The question asks for grams, so multiply by the molar mass of '+fp+'.'},
+         {value:L.y+E.y, msg:'Do not add the two amounts. Only the limiting reactant decides how much product forms, so use the smaller amount.'},
+         {value:act, msg:'That is the actual yield, the amount that was collected. The theoretical yield comes from the limiting reactant.'}
+       ], L.y),
+       generic:'Not yet. For each solution: liters × molarity gives moles, the mole ratio gives moles of '+fp+', and the molar mass gives grams. Take the smaller result.'},
+      {type:'num', label:'Percent yield', unit:'%', answer:pct, sf:3, show:sig(pct,3)+'%',
+       errors:clean([
+         {value:L.y/act*100, msg:'A percent yield above 100% means the fraction is upside down. Put the actual yield on top: actual ÷ theoretical × 100.'},
+         {value:act/L.y,     msg:'That is the fraction of the theoretical yield. Multiply by 100 to make it a percent.'},
+         {value:act/E.y*100, msg:'That uses the amount of product the excess reactant could make. Percent yield compares the actual yield to the theoretical yield, which comes from the limiting reactant.'}
+       ], pct),
+       generic:'Not yet. Percent yield = actual yield ÷ theoretical yield × 100.'}
+    ];
+    const hl={}; R.forEach(r=>{ hl[r.f]='sa'; }); hl[Pd.f]='sb';
+    const trail=(r,idx,m)=>'<div class="trail"><span class="rn a">'+r.v+' mL of '+r.Mo+' M '+F(r.f)+'</span>'+
+      '<span class="tq">'+ARW+bl(m,'n'+idx,'moles of '+r.f,true)+' mol '+tag(r.f,'sa')+'</span>'+
+      '<span class="tq">'+ARW+bl(m,'y'+idx,'grams of '+Pd.f+' from '+r.f,true)+' g '+fp+'</span></div>';
+    const blanks={};
+    R.forEach((r,idx)=>{ blanks['n'+idx]={want:r.n,tol:0.01}; blanks['y'+idx]={want:r.y,tol:0.01}; });
+    const blankMsg=got=>{
+      const bad=k=>got[k] && !got[k].empty && !got[k].good;
+      for(let idx=0;idx<2;idx++){
+        const r=R[idx];
+        if(bad('n'+idx)) return 'Check the moles of '+F(r.f)+'. Convert '+r.v+' mL to liters, then multiply by the molarity.';
+        if(bad('y'+idx)) return 'Check the '+F(Pd.f)+' from '+F(r.f)+'. Multiply the moles of '+F(r.f)+' by the mole ratio ('+Pd.c+' mol '+F(Pd.f)+' over '+r.c+' mol '+F(r.f)+'), then by the molar mass of '+F(Pd.f)+'.';
+      }
+      return '';
+    };
+    const F_PCT=row(q('percent yield')+EQOP+'<span class="grp">'+frac('actual yield','theoretical yield')+XOP+q('100')+'</span>');
+    const rule=txt('The smaller amount of '+fp+' is the theoretical yield, and the reactant that gives it is limiting.');
+    const line=r=>toL(r.v)+' L × '+r.Mo+' mol/L = '+sig(r.n,4)+' mol '+tag(r.f,'sa');
+    const pline=r=>sig(r.n,4)+' mol '+tag(r.f,'sa')+' × ('+Pd.c+' mol '+fp+' ÷ '+r.c+' mol '+tag(r.f,'sa')+') × '+Pd.M.toFixed(2)+' g/mol = '+sig(r.y,4)+' g '+fp;
+    return {kind:'mix', rxn, ctx:rxn.ctx, hl, am:[Pd.f], parts, R, Pd, L, E, actual, pct,
+      question:'A student mixes '+R[0].v+' mL of '+R[0].Mo+' M '+tag(R[0].f,'sa')+' with '+R[1].v+' mL of '+R[1].Mo+' M '+tag(R[1].f,'sa')+'. After filtering and drying, '+actual+' g of '+fp+' is collected.',
+      guided: lab('Take each solution to moles, then to grams of product. Fill in the blanks.')+trail(R[0],0,'live')+trail(R[1],1,'live')+rule+F_PCT,
+      hints: [lab('Hint 1')+txt('For each solution, liters × molarity gives moles. Then work out how much '+fp+' each reactant could make on its own. The smaller amount is the theoretical yield.'),
+              lab('Hint 2: the setup')+trail(R[0],0,'ph')+trail(R[1],1,'ph')+F_PCT],
+      blanks, blankMsg,
+      solution:solWrap([
+        mmLines([[Pd.f,'sb']]),
+        '<b>Moles of each reactant.</b><br>'+line(R[0])+'<br>'+line(R[1]),
+        '<b>Product from each reactant.</b><br>'+pline(R[0])+'<br>'+pline(R[1]),
+        '<b>Limiting reactant.</b> '+F(L.f)+' makes less '+fp+', so <b>'+F(L.f)+' is limiting</b>. Theoretical yield: <b>'+sig(L.y,3)+' g '+fp+'</b>',
+        '<b>Percent yield.</b> '+actual+' g ÷ '+sig(L.y,4)+' g × 100 = <b>'+sig(pct,3)+'%</b>'
+      ], roundNote(3))};
+  }
+}
+
+/* ---------- 5. Titration calculations ---------- */
+function makeTitration(prev){
+  for(let t=0;;t++){
+    const r0=Math.random();
+    const type = r0<0.35 ? 'findM' : r0<0.60 ? 'findV' : r0<0.75 ? 'khp' : 'sample';
+    const pool = type==='khp' ? TRX.filter(x=>x.khp) : type==='sample' ? TRX.filter(x=>x.sample) : TRX.filter(x=>!x.khp);
+    const rxn=pick(pool); if(t<200 && prev && prev.rxn===rxn && pool.length>1) continue;
+    const sp=spc(rxn.r,'r'), acid=sp[0], base=sp[1];
+    const generic='Not yet. Find the moles of the solution you know, use the mole ratio from the balanced equation to get moles of the other substance, then convert to what the question asks for.';
+    let S, question;
+    if(type==='findM'){
+      const titrantIsBase=Math.random()<0.7, T=titrantIsBase?base:acid, An=titrantIsBase?acid:base;
+      const Va=pick(['10.00','20.00','25.00','50.00']), Mt=mol4(0.1,0.25), Vt=vol2(15,45);
+      S=mkChain(T,An,{type:'sol',v:Vt,M:Mt},{type:'M',v:Va},4);
+      if(S.ans<0.02 || S.ans>1.5) continue;
+      question='A '+Va+' mL sample of '+tag(An.f,'sb')+' solution is titrated with '+Mt+' M '+tag(T.f,'sa')+'. The equivalence point is reached after '+Vt+' mL of '+tag(T.f,'sa')+' has been added. What is the molarity of the '+tag(An.f,'sb')+' solution?';
+    } else if(type==='findV'){
+      const titrantIsBase=Math.random()<0.7, T=titrantIsBase?base:acid, An=titrantIsBase?acid:base;
+      const Va=pick(['10.00','20.00','25.00']), Ma=mol4(0.1,0.3), Mt=mol4(0.1,0.3);
+      S=mkChain(An,T,{type:'sol',v:Va,M:Ma},{type:'mL',M:Mt},4);
+      if(S.ans<10 || S.ans>48) continue;
+      question='What volume, in milliliters, of '+Mt+' M '+tag(T.f,'sb')+' is needed to reach the equivalence point in the titration of '+Va+' mL of '+Ma+' M '+tag(An.f,'sa')+'?';
+    } else if(type==='khp'){
+      const Vt=vol2(18,42), m0=(rint(4000,9000)/1e4).toFixed(4);
+      S=mkChain(acid,base,{type:'g',x:m0},{type:'M',v:Vt},4);
+      if(S.ans<0.05 || S.ans>0.25) continue;
+      question='A '+m0+' g sample of KHP ('+tag(acid.f,'sa')+') is dissolved in water and titrated with a '+tag(base.f,'sb')+' solution. The equivalence point is reached after '+Vt+' mL of '+tag(base.f,'sb')+' has been added. What is the molarity of the '+tag(base.f,'sb')+' solution?';
+    } else {
+      const Vt=vol2(15,45), Mt=mol4(0.1,0.25);
+      S=mkChain(base,acid,{type:'sol',v:Vt,M:Mt},{type:'g'},4);
+      question='A sample of '+rxn.source+' containing '+rxn.sample+' ('+tag(acid.f,'sb')+') is titrated with '+Mt+' M '+tag(base.f,'sa')+'. The equivalence point is reached after '+Vt+' mL of '+tag(base.f,'sa')+' has been added. How many grams of '+tag(acid.f,'sb')+' were in the sample?';
+    }
+    return chainProblem('titration', rxn, S, question, generic, {type});
+  }
+}
+
+/* ---------- 6. Virtual titration ----------
+   Volumes are tracked in hundredths of a milliliter so that buret readings stay exact. */
+function makeLab(prev){
+  for(let t=0;;t++){
+    const rxn=pick(TRX.filter(x=>!x.khp && x.r[1][1]==='NaOH')); if(t<50 && prev && prev.rxn===rxn) continue;
+    const sp=spc(rxn.r,'r'), acid=sp[0], base=sp[1], ratio=base.c/acid.c;
+    const Va=pick(['10.00','20.00','25.00']), Mt=mol4(0.1,0.2);
+    const Veq=14+Math.random()*24;                                  // mL of NaOH at the equivalence point
+    const Mtrue=Veq/1000*Number(Mt)/ratio/(Number(Va)/1000);
+    return {rxn, acid, base, ratio, Va, Mt, Veq, Mtrue, init:rint(50,400)};
+  }
+}
+// What the flask looks like after d hundredths of a mL have been delivered.
+function labLook(L, d){
+  const over=d/100-L.Veq;
+  if(over<-1.5) return {key:'clear', color:'#eef3f7', text:'The solution in the flask is colorless.'};
+  if(over<0)    return {key:'flash', color:'#eef3f7', text:'Pink flashes where the NaOH lands, then fades when the flask is swirled. You are getting close, so slow down.'};
+  if(over<0.10) return {key:'end',   color:'#fbd0e4', text:'A faint pink color stays after swirling. This is the endpoint.'};
+  if(over<0.50) return {key:'past',  color:'#f291c0', text:'The solution is clearly pink. You are a little past the endpoint.'};
+  return               {key:'over',  color:'#d4197a', text:'The solution is dark pink. You have overshot the endpoint.'};
+}
+function labParts(L, d){
+  const vDel=d/100, vFinal=(L.init+d)/100, fa=tag(L.acid.f,'sb'), r=L.ratio;
+  const M=vDel/1000*Number(L.Mt)/r/(Number(L.Va)/1000);
+  const sf=vDel>=10 ? 4 : 3;
+  const mErr=[];
+  if(r!==1){
+    mErr.push({value:M*r, msg:'It looks like a 1:1 mole ratio was assumed. The balanced equation uses '+r+' mol NaOH for every 1 mol '+fa+', so divide the moles of NaOH by '+r+'.'});
+    mErr.push({value:M*r*r, msg:'The mole ratio is upside down. There are fewer moles of '+fa+' than of NaOH: 1 mol '+fa+' for every '+r+' mol NaOH.'});
+  }
+  mErr.push({value:M*vFinal/vDel, msg:'It looks like the final buret reading was used as the volume. Use the volume delivered: final reading minus initial reading.'});
+  mErr.push({value:M*1000, msg:'Molarity is moles per liter. Convert the milliliters to liters.'});
+  mErr.push({value:M/1000, msg:'Molarity is moles per liter. Convert the milliliters to liters.'});
+  mErr.push({value:vDel/1000*Number(L.Mt)/r/(vDel/1000), msg:'You divided by the volume of NaOH. Divide the moles of '+fa+' by the volume of the '+fa+' sample ('+L.Va+' mL, in liters).'});
+  mErr.push({value:vDel/1000*Number(L.Mt)/r, msg:'That is the moles of '+fa+'. Divide by the liters of '+fa+' sample to get the molarity.'});
+  return [
+    {type:'num', label:'Volume of NaOH delivered', unit:'mL', answer:vDel, sf:null, tolRel:0, tolAbs:0.006, show:vDel.toFixed(2)+' mL',
+     errors:L.init>0 ? [{value:vFinal, msg:'That is the final buret reading. The volume delivered is the final reading minus the initial reading.'}] : [],
+     generic:'Not yet. Subtract the initial buret reading from the final buret reading.'},
+    {type:'num', label:'Molarity of the '+fa+' solution', unit:'M '+fa, answer:M, sf, tolRel:0.003, show:sig(M,sf)+' M '+fa,
+     errors:mErr.filter(e=>isFinite(e.value) && e.value>0 && Math.abs(e.value-M)/M>0.005),
+     generic:'Not yet. Volume delivered (in liters) × molarity of NaOH gives moles of NaOH. Use the mole ratio to get moles of '+fa+', then divide by the liters of the '+fa+' sample.'}
+  ];
+}
+function labSolution(L, d){
+  const vDel=d/100, r=L.ratio, fa=tag(L.acid.f,'sb'), fb=tag('NaOH','sa');
+  const nB=vDel/1000*Number(L.Mt), nA=nB/r, M=nA/(Number(L.Va)/1000), sf=vDel>=10 ? 4 : 3;
+  return solWrap([
+    '<b>Volume delivered.</b> '+((L.init+d)/100).toFixed(2)+' mL − '+(L.init/100).toFixed(2)+' mL = <b>'+vDel.toFixed(2)+' mL</b>',
+    '<b>Moles of NaOH.</b> '+(vDel/1000).toFixed(5)+' L × '+L.Mt+' mol/L = '+sig(nB,5)+' mol '+fb,
+    '<b>Mole ratio.</b> '+sig(nB,5)+' mol '+fb+' × (1 mol '+fa+' ÷ '+r+' mol '+fb+') = '+sig(nA,5)+' mol '+fa,
+    '<b>Molarity.</b> '+sig(nA,5)+' mol '+fa+' ÷ '+toL(L.Va)+' L = <b>'+sig(M,sf)+' M '+fa+'</b>'
+  ], roundNote(sf));
+}
+
+function makeProblem(kind, prev){
+  if(kind==='molarity')  return makeMolarity(prev);
+  if(kind==='dilution')  return makeDilution(prev);
+  if(kind==='solstoich') return makeSolStoich(prev);
+  if(kind==='mix')       return makeMix(prev);
+  return makeTitration(prev);
+}
+
+/* ---------- Reading and grading answers ---------- */
+// Reads what a student typed: 2.50, .25, 1.2e3, 1.2 x 10^3, with or without units after it.
+function parseInput(raw){
+  const s=String(raw).trim().replace(/,/g,'').replace(/−/g,'-');
+  const m=s.match(/^([+-]?(?:\d+\.?\d*|\.\d+))(?:\s*(?:[eE]|[x×*]\s*10\s*\^?\s*)([+-]?\d+))?/);
+  if(!m) return null;
+  const value=Number(m[1])*Math.pow(10, m[2] ? Number(m[2]) : 0);
+  if(!isFinite(value)) return null;
+  let d=m[1].replace(/^[+-]/,''), sfMin, sfMax;
+  if(d.indexOf('.')>=0){
+    d=d.replace('.','').replace(/^0+/,'');
+    sfMin=sfMax=Math.max(d.length,1);
+  } else {
+    d=d.replace(/^0+/,'');
+    sfMax=Math.max(d.length,1);
+    sfMin=Math.max(d.replace(/0+$/,'').length,1);   // trailing zeros without a decimal point are ambiguous
+  }
+  return {value, sfMin, sfMax};
+}
+
+// status: 'empty', 'invalid', 'correct', 'sig' (right value, wrong sig figs), 'close' or 'wrong'.
+function gradePart(part, raw){
+  if(part.type==='choice'){
+    if(raw==null || raw==='') return {status:'empty'};
+    return raw===part.answer ? {status:'correct'} : {status:'wrong', msg:part.wrongMsg(raw)};
+  }
+  if(String(raw).trim()==='') return {status:'empty'};
+  const inp=parseInput(raw);
+  if(!inp) return {status:'invalid', msg:'Enter your answer as a number, such as 2.50 or 1.25e-3.'};
+  const v=inp.value, ans=part.answer, diff=Math.abs(v-ans);
+  const tol=Math.max((part.tolRel===undefined ? 0.01 : part.tolRel)*Math.abs(ans), part.tolAbs||0);
+  if(diff<=tol){
+    if(!part.sf) return {status:'correct'};
+    return {status: (inp.sfMin<=part.sf && part.sf<=inp.sfMax) ? 'correct' : 'sig'};
+  }
+  for(const e of part.errors){
+    if(Math.abs(v-e.value)<=0.01*Math.abs(e.value)) return {status:'wrong', msg:e.msg};
+  }
+  if(diff<=3*tol){
+    return {status:'close', msg:'Close. This is usually a rounding issue: keep extra digits through the middle steps and round only at the end.'};
+  }
+  if(v>0){
+    const lg=Math.log10(v/ans);
+    if(Math.round(lg)!==0 && Math.abs(lg-Math.round(lg))<0.005){
+      return {status:'wrong', msg:'The digits are right but the decimal point is in the wrong place. Check the milliliter and liter conversions.'};
+    }
+  }
+  return {status:'wrong', msg:part.generic};
+}
+
+if(typeof module!=='undefined' && module.exports){
+  module.exports={AM,SOLUTES,SRX,PRX,TRX,parseFormula,composition,molarMass,breakdown,sig,fmt3,toL,
+                  makeProblem,makeLab,labLook,labParts,labSolution,parseInput,gradePart,chainCalc};
+}
+
+/* ============================================================
+   Page
+   ============================================================ */
+if(typeof document!=='undefined'){
+
+const $ = (s,r) => (r||document).querySelector(s);
+const view=$('#view'), nav=$('#tabs');
+const LET='abcdef';
+
+const TABS=[
+  {id:'map',       label:'Roadmap'},
+  {id:'molarity',  label:'Molarity', n:1},
+  {id:'dilution',  label:'Dilution', n:2},
+  {id:'solstoich', label:'Solution stoichiometry', n:3},
+  {id:'mix',       label:'Mixing two solutions', n:4},
+  {id:'titration', label:'Titration calculations', n:5},
+  {id:'lab',       label:'Run a titration', n:6}
+];
+const META={
+  molarity:{title:'Molarity',
+    lede:'Molarity (M) is the concentration of a solution: moles of solute per liter of solution. It is the conversion factor between the volume of a solution and the moles of solute in it. Always convert milliliters to liters first.'},
+  dilution:{title:'Dilution',
+    lede:'Adding water to a solution changes its volume but not the moles of solute in it. Since moles = M × V, the product M × V is the same before and after dilution: M<sub>1</sub>V<sub>1</sub> = M<sub>2</sub>V<sub>2</sub>. Any volume unit works as long as both volumes use the same one.'},
+  solstoich:{title:'Solution stoichiometry',
+    lede:'When a reactant is dissolved, you measure its volume instead of its mass. Molarity turns that volume into moles. From there the route is the one you already know: the mole ratio, then on to grams or to the volume of another solution.'},
+  mix:{title:'Mixing two solutions',
+    lede:'When two solutions are mixed, one reactant usually runs out first. Convert each solution to moles, find how much precipitate each could make, and take the smaller amount. Comparing that to what was actually collected gives the percent yield.'},
+  titration:{title:'Titration calculations',
+    lede:'In a titration, a solution of known concentration (the titrant) is added from a buret to a measured sample until the reaction is exactly complete. That point is the equivalence point. The volume of titrant used tells you the moles of the other substance. Watch the mole ratio: it is not always 1:1.'},
+  lab:{title:'Run a titration',
+    lede:'Now do one yourself. Add sodium hydroxide from the buret until the indicator just turns pink and stays pink, read the buret, and calculate the concentration of the acid.'}
+};
+const MODES=[
+  {id:'guided', label:'Guided setup'},
+  {id:'hint',   label:'Hints if I ask'},
+  {id:'solo',   label:'On my own'}
+];
+const fresh = () => ({mode:'guided', P:null, misses:0, hint:0, done:false, solved:0, streak:0, partDone:[]});
+const state={tab:'map', mapSel:null, mapPath:null,
+  molarity:fresh(), dilution:fresh(), solstoich:fresh(), mix:fresh(), titration:fresh(),
+  lab:{L:null, d:0, misses:0, done:false, solved:0, partDone:[]}};
+
+/* ---------- Tabs ---------- */
+function renderTabs(){
+  nav.innerHTML=TABS.map(t=>
+    '<button role="tab" data-tab="'+t.id+'"'+(t.n?' data-n="'+t.n+'"':'')+' aria-selected="'+(state.tab===t.id)+'">'+
+    (t.n?'<span class="tn">'+t.n+'</span>':'')+t.label+'</button>').join('');
+}
+nav.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-tab]'); if(!b) return;
+  state.tab=b.dataset.tab; render();
+});
+function render(){
+  renderTabs();
+  if(state.tab==='map') renderMap();
+  else if(state.tab==='lab') renderLab();
+  else renderPractice(state.tab);
+}
+
+/* ---------- Roadmap ---------- */
+const MAPINFO={
+  MA:{t:'Molar mass: grams to moles', h:'<p>Molar mass is the mass of one mole of a substance, in g/mol. Use it when a substance is weighed out as a solid.</p><ul><li>g to mol: divide by the molar mass.</li><li>mol to g: multiply by the molar mass.</li></ul><p class="ex">2.50 g Zn × (1 mol ÷ 65.38 g) = 0.0382 mol Zn</p>'},
+  cA:{t:'Molarity: solution volume to moles', h:'<p>Molarity (M) is moles of solute per liter of solution. Use it when a substance is dissolved and measured by volume. Convert milliliters to liters first.</p><ul><li>L to mol: multiply by the molarity.</li><li>mol to L: divide by the molarity.</li></ul><p class="ex">25.0 mL = 0.0250 L, and 0.0250 L × 0.150 mol/L = 0.00375 mol KI</p>'},
+  ratio:{t:'Mole ratio: substance A to substance B', h:'<p>This is the only step that switches from one substance to another, and it only works in moles. The ratio comes from the coefficients in the balanced equation. Put the substance you want on top.</p><p>For H<sub>2</sub>SO<sub>4</sub> + 2 NaOH → Na<sub>2</sub>SO<sub>4</sub> + 2 H<sub>2</sub>O:</p><p class="ex">0.00300 mol NaOH × (1 mol H<sub>2</sub>SO<sub>4</sub> ÷ 2 mol NaOH) = 0.00150 mol H<sub>2</sub>SO<sub>4</sub></p>'},
+  cB:{t:'Molarity: moles to solution volume, or to molarity', h:'<p>Once you have moles of the substance you want, molarity connects them to a volume of solution.</p><ul><li>To find a volume: divide the moles by the molarity, then convert liters to milliliters.</li><li>To find a molarity: divide the moles by the liters of that solution.</li></ul><p class="ex">0.00150 mol H<sub>2</sub>SO<sub>4</sub> ÷ 0.02500 L = 0.0600 M H<sub>2</sub>SO<sub>4</sub></p>'},
+  MB:{t:'Molar mass: moles to grams', h:'<p>If the substance you want is a solid, such as a precipitate, finish by converting moles to grams.</p><ul><li>mol to g: multiply by the molar mass.</li><li>g to mol: divide by the molar mass.</li></ul><p class="ex">0.00188 mol PbI<sub>2</sub> × 461.00 g/mol = 0.867 g PbI<sub>2</sub></p>'}
+};
+const PATHS={
+  s2g:{label:'Solution to mass', on:['vA','cA','nA','ratio','nB','MB','mB']},
+  g2s:{label:'Mass to solution', on:['mA','MA','nA','ratio','nB','cB','vB']},
+  tit:{label:'Titration', on:['vA','cA','nA','ratio','nB','cB','vB']}
+};
+function renderMap(){
+  const node=(id,cls,b,s)=>'<div class="node '+cls+'" data-id="'+id+'"><b>'+b+'</b><small>'+s+'</small></div>';
+  const conn=(id,label,extra)=>'<button type="button" class="conn '+(extra||'')+'" data-id="'+id+'" aria-pressed="false"><span class="arr" aria-hidden="true">'+(id==='ratio'?'⇅':'⇄')+'</span><span>'+label+'</span></button>';
+  view.innerHTML=
+    '<section>'+
+    '<h2>The roadmap</h2>'+
+    '<p class="lede">Every reaction problem is a trip through <b>moles</b>. A solid gets to moles through its molar mass. A solution gets to moles through its molarity. Select any conversion on the map to see how it works.</p>'+
+    '<div class="paths" role="group" aria-label="Highlight a route"><span class="lab">Show the route for</span>'+
+      Object.keys(PATHS).map(k=>'<button type="button" class="btn inline" style="margin-top:0" data-path="'+k+'" aria-pressed="false">'+PATHS[k].label+'</button>').join('')+
+      '<button type="button" class="btn inline" style="margin-top:0" data-path="">Whole map</button>'+
+    '</div>'+
+    '<div class="map">'+
+      '<div class="rowlab a">Substance A: what you are given</div>'+
+      node('mA','a','Mass of A','grams')+conn('MA','molar mass')+
+      node('nA','a','Moles of A','mol')+conn('cA','molarity')+
+      node('vA','a','Solution of A','volume in liters')+
+      '<div class="rowlab b">Substance B: what you want</div>'+
+      conn('ratio','mole ratio','ratio')+'<div class="fill"></div>'+
+      node('mB','b','Mass of B','grams')+conn('MB','molar mass')+
+      node('nB','b','Moles of B','mol')+conn('cB','molarity')+
+      node('vB','b','Solution of B','volume or molarity')+
+    '</div>'+
+    '<div class="detail" id="detail" aria-live="polite"></div>'+
+    '<div class="builds"><h3>Two ideas that go with the map</h3><ul>'+
+      '<li><b>Dilution.</b> Adding water changes the volume of a solution but not the moles of solute, so M<sub>1</sub>V<sub>1</sub> = M<sub>2</sub>V<sub>2</sub>. No reaction happens, so no mole ratio is needed.</li>'+
+      '<li><b>Titration.</b> One solution is added to another until the reaction is exactly complete (the equivalence point). The trip goes from the solution you know, through the mole ratio, to the solution you do not know.</li>'+
+    '</ul></div>'+
+    '</section>';
+  view.onclick=e=>{
+    const c=e.target.closest('.conn'); if(c){ state.mapSel=c.dataset.id; paintMap(); return; }
+    const p=e.target.closest('button[data-path]'); if(p){ state.mapPath=p.dataset.path||null; paintMap(); }
+  };
+  paintMap();
+}
+function paintMap(){
+  const on = state.mapPath ? PATHS[state.mapPath].on : null;
+  view.querySelectorAll('.map [data-id]').forEach(el=>{
+    el.classList.toggle('dim', !!on && on.indexOf(el.dataset.id)<0);
+    if(el.classList.contains('conn')) el.setAttribute('aria-pressed', String(state.mapSel===el.dataset.id));
+  });
+  view.querySelectorAll('button[data-path]').forEach(b=>{
+    if(b.dataset.path) b.setAttribute('aria-pressed', String(state.mapPath===b.dataset.path));
+    b.classList.toggle('primary', !!b.dataset.path && state.mapPath===b.dataset.path);
+  });
+  const d=$('#detail'), info=MAPINFO[state.mapSel];
+  d.innerHTML = info ? '<h3>'+info.t+'</h3>'+info.h
+    : '<h3>How to read the map</h3><p>The top row is the substance you are given. The bottom row is the substance you want. Start at the box that matches what the question gives you, travel through moles and the mole ratio, and finish at the box the question asks for.</p><p style="margin:0">Select molar mass, molarity, or mole ratio on the map for details and an example.</p>';
+}
+
+/* ---------- Shared pieces for practice sections ---------- */
+function eqBlock(rxn, hl){
+  const side=arr=>arr.map(e=>
+    '<span class="sp'+(hl[e[1]] ? ' '+hl[e[1]] : '')+'">'+(e[0]>1?'<span class="coef">'+e[0]+'</span>':'')+F(e[1])+'<span class="st">('+e[2]+')</span></span>'
+  ).join('<span class="plus">+</span>');
+  const text=arr=>arr.map(e=>(e[0]>1?e[0]+' ':'')+e[1]).join(' plus ');
+  return '<div class="eqwrap"><div class="eq" role="img" aria-label="Balanced equation: '+text(rxn.r)+' yields '+text(rxn.p)+'">'+
+    side(rxn.r)+'<span class="arrow">→</span>'+side(rxn.p)+'</div>'+
+    '<div class="keys" aria-hidden="true"><span class="key a">given</span><span class="key b">wanted</span></div></div>';
+}
+function amLine(list){
+  const seen=[]; list.forEach(f=>parseFormula(f).forEach(([e])=>{ if(seen.indexOf(e)<0) seen.push(e); }));
+  return seen.map(e=>e+' '+AM[e]).join(', ');
+}
+function partHTML(part, i, multi){
+  if(!multi){
+    return '<div class="ansrow"><label for="pin0">Your answer</label>'+
+      '<input id="pin0" class="pin" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">'+
+      '<span class="unit">'+part.unit+'</span><span class="pmark" id="pm0" aria-hidden="true"></span>'+
+      '<button class="btn primary" type="submit">Check answer</button></div>';
+  }
+  const letter='('+LET[i]+') ';
+  if(part.type==='choice'){
+    return '<li class="part"><span class="plab" id="pl'+i+'">'+letter+part.label+'</span>'+
+      '<span class="pctl"><span class="choice" id="pc'+i+'" role="radiogroup" aria-labelledby="pl'+i+'">'+
+      part.options.map(o=>'<label class="opt"><input type="radio" name="p'+i+'" value="'+o+'"><span>'+F(o)+'</span></label>').join('')+
+      '</span><span class="pmark" id="pm'+i+'" aria-hidden="true"></span></span></li>';
+  }
+  return '<li class="part"><label class="plab" for="pin'+i+'">'+letter+part.label+'</label>'+
+    '<span class="pctl"><input id="pin'+i+'" class="pin" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">'+
+    '<span class="unit">'+part.unit+'</span><span class="pmark" id="pm'+i+'" aria-hidden="true"></span></span></li>';
+}
+function setFb(type, html){
+  const fb=$('#fb'), ic={ok:'✓',bad:'✗',warn:'!',info:'i'}[type];
+  fb.className='fb show '+type;
+  fb.innerHTML='<span class="ic" aria-hidden="true">'+ic+'</span><div>'+html+'</div>';
+}
+function lock(){
+  document.querySelectorAll('#ans input, #ans button').forEach(el=>{ el.disabled=true; });
+}
+function readPart(parts, i){
+  if(parts[i].type==='choice'){ const c=$('#ans input[name="p'+i+'"]:checked'); return c ? c.value : ''; }
+  return $('#pin'+i).value;
+}
+function markPart(parts, i, good){
+  const el = parts[i].type==='choice' ? $('#pc'+i) : $('#pin'+i), pm=$('#pm'+i);
+  el.classList.remove('ok','no'); el.classList.add(good?'ok':'no');
+  pm.className='pmark '+(good?'ok':'no'); pm.textContent=good?'✓':'✗';
+  if(good){
+    if(parts[i].type==='choice') el.querySelectorAll('input').forEach(x=>{ x.disabled=true; });
+    else el.disabled=true;
+  }
+}
+const sigMsg = (part, lead) => '<p>'+lead+'The value is right. Report it with '+part.sf+' significant figures, the fewest in the given data: <b>'+part.show+'</b>.</p>';
+
+/* ---------- Practice sections 1 to 5 ---------- */
+function nextProblem(kind){
+  const S=state[kind];
+  S.P=makeProblem(kind, S.P); S.misses=0; S.hint=0; S.done=false; S.partDone=[];
+}
+function renderPractice(kind){
+  const S=state[kind], m=META[kind], n=TABS.find(t=>t.id===kind).n;
+  if(!S.P) nextProblem(kind);
+  view.onclick=null;
+  view.innerHTML=
+    '<section>'+
+    '<h2>'+n+'. '+m.title+'</h2>'+
+    '<p class="lede">'+m.lede+'</p>'+
+    '<div class="modebar"><span class="modebar-label" id="ml">How much help</span>'+
+      '<div class="seg" role="group" aria-labelledby="ml">'+
+      MODES.map(o=>'<button type="button" data-mode="'+o.id+'" aria-pressed="'+(S.mode===o.id)+'">'+o.label+'</button>').join('')+
+      '</div></div>'+
+    '<article class="problem" id="problem"></article>'+
+    '<p class="tally" id="tally"></p>'+
+    '</section>';
+  $('.seg',view).addEventListener('click',e=>{
+    const b=e.target.closest('button[data-mode]'); if(!b) return;
+    setMode(kind, b.dataset.mode);
+  });
+  $('#problem').addEventListener('click',e=>{
+    const b=e.target.closest('button[data-act]'); if(!b) return;
+    const act=b.dataset.act;
+    if(act==='hint'){ S.hint++; drawHelp(kind); drawActions(kind); }
+    else if(act==='solution'){ revealSolution(kind); }
+    else if(act==='next'){ nextProblem(kind); drawProblem(kind,true); }
+    else if(act==='levelup'){ setMode(kind, S.mode==='guided' ? 'hint' : 'solo'); const f=$('#problem .pin'); if(f) f.focus(); }
+  });
+  drawProblem(kind,false);
+}
+// Changing the help level keeps whatever the student has already typed.
+function setMode(kind, mode){
+  const S=state[kind];
+  S.mode=mode; S.hint=0;
+  view.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.mode===mode)));
+  if(S.done){ nextProblem(kind); drawProblem(kind,false); }
+  else { drawHelp(kind); drawActions(kind); }
+}
+function drawProblem(kind, focus){
+  const S=state[kind], P=S.P, multi=P.parts.length>1;
+  $('#problem').innerHTML=
+    '<p class="ctx">'+P.ctx+'</p>'+
+    (P.rxn ? eqBlock(P.rxn, P.hl) : '')+
+    (P.am ? '<p class="am">Atomic masses (g/mol): '+amLine(P.am)+'</p>' : '')+
+    '<p class="q">'+P.question+'</p>'+
+    '<form id="ans" novalidate autocomplete="off">'+
+      '<div id="help"></div>'+
+      (multi ? '<ol class="parts">'+P.parts.map((p,i)=>partHTML(p,i,true)).join('')+'</ol>'+
+               '<div class="checkrow"><button class="btn primary" type="submit">Check answers</button></div>'
+             : partHTML(P.parts[0],0,false))+
+    '</form>'+
+    '<div id="fb" class="fb" role="status" aria-live="polite"></div>'+
+    '<div id="sol"></div>'+
+    '<div class="actions" id="actions"></div>';
+  $('#ans').addEventListener('submit',e=>{ e.preventDefault(); check(kind); });
+  drawHelp(kind); drawActions(kind); drawTally(kind);
+  if(focus){ const f=$('#help input')||$('#problem .pin')||$('#problem .opt input'); if(f) f.focus(); }
+}
+function drawHelp(kind){
+  const S=state[kind], P=S.P; let out='';
+  if(S.mode==='guided') out=P.guided;
+  else if(S.mode==='hint') out=P.hints.slice(0,S.hint).join('');
+  $('#help').innerHTML=out;
+}
+function drawActions(kind){
+  const S=state[kind]; let out='';
+  if(S.mode==='hint' && !S.done && S.hint<2)
+    out+='<button type="button" class="btn" data-act="hint">'+(S.hint===0?'Show a hint':'Show another hint')+'</button>';
+  if(!S.done && S.misses>=2)
+    out+='<button type="button" class="btn" data-act="solution">Show worked solution</button>';
+  out+='<button type="button" class="btn'+(S.done?' primary':'')+'" data-act="next">'+(S.done?'Next problem':'Skip to a new problem')+'</button>';
+  $('#actions').innerHTML=out;
+}
+function drawTally(kind){
+  const S=state[kind];
+  $('#tally').textContent = S.solved===0 ? 'No problems solved yet this session.'
+    : 'Solved this session: '+S.solved+(S.streak>1 ? ' ('+S.streak+' in a row)' : '');
+}
+// Marks each filled blank right or wrong and returns the most useful message.
+function checkBlanks(P){
+  const res={any:false, allOK:true, msg:''}, got={};
+  Object.keys(P.blanks).forEach(k=>{
+    const i=$('#help input[data-k="'+k+'"]'); if(!i) return;
+    const raw=i.value.trim(), inp=parseInput(raw), v=inp ? inp.value : NaN;
+    i.classList.remove('ok','no'); i.removeAttribute('aria-invalid');
+    if(!raw){ res.allOK=false; got[k]={empty:true}; return; }
+    res.any=true;
+    const want=P.blanks[k].want;
+    const good=isFinite(v) && Math.abs(v-want)<=P.blanks[k].tol*Math.abs(want)+1e-12;
+    i.classList.add(good?'ok':'no'); if(!good){ i.setAttribute('aria-invalid','true'); res.allOK=false; }
+    got[k]={v, good};
+  });
+  res.msg=P.blankMsg(got)||'';
+  return res;
+}
+function check(kind){
+  const S=state[kind], P=S.P; if(S.done) return;
+  const multi=P.parts.length>1, tagOf=i=> multi ? '<b>('+LET[i]+')</b> ' : '';
+  const bl = S.mode==='guided' ? checkBlanks(P) : {any:false, allOK:true, msg:''};
+  const res=P.parts.map((part,i)=> S.partDone[i] ? {status:'done'} : gradePart(part, readPart(P.parts,i)));
+  const open=res.filter(r=>r.status!=='done');
+
+  if(open.every(r=>r.status==='empty')){
+    if(bl.any && bl.msg) setFb('bad','<p>'+bl.msg+'</p>');
+    else if(bl.any && bl.allOK) setFb('info','<p>The setup is right. Now run the numbers and enter your answer'+(multi?'s':'')+'.</p>');
+    else if(bl.any) setFb('info','<p>Good so far. Fill in the remaining blanks, then calculate.</p>');
+    else setFb('info','<p>Enter your answer'+(multi?'s':'')+', then select Check answer'+(multi?'s':'')+'.</p>');
+    return;
+  }
+  const inv=res.findIndex(r=>r.status==='invalid');
+  if(inv>=0){ setFb('info','<p>'+tagOf(inv)+res[inv].msg+'</p>'); return; }
+
+  const wrong=[], sigs=[], newlyRight=[];
+  res.forEach((r,i)=>{
+    if(r.status==='correct' || r.status==='sig'){ S.partDone[i]=true; markPart(P.parts,i,true); newlyRight.push(i); if(r.status==='sig') sigs.push(i); }
+    else if(r.status==='wrong' || r.status==='close'){ markPart(P.parts,i,false); wrong.push(i); }
+  });
+  const sigNote=sigs.map(i=>sigMsg(P.parts[i], tagOf(i))).join('');
+
+  if(P.parts.every((p,i)=>S.partDone[i])){
+    S.done=true; S.solved++; S.streak++;
+    let html = multi
+      ? '<p><b>All parts correct.</b> '+P.parts.map((p,i)=>'('+LET[i]+') '+p.show).join('; ')+'</p>'+sigNote
+      : (sigs.length ? sigMsg(P.parts[0], '<b>Correct value.</b> ') : '<p><b>Correct.</b> '+P.parts[0].show+'</p>');
+    if(S.streak>=2 && S.mode!=='solo'){
+      html+='<p>That is '+S.streak+' in a row. Ready for less help?</p>'+
+            '<button type="button" class="btn inline" data-act="levelup">Try one '+(S.mode==='guided'?'with hints only if you ask':'on your own')+'</button>';
+    }
+    setFb('ok', html); lock();
+    $('#sol').innerHTML='<details class="soldet"><summary>See the worked solution</summary>'+P.solution+'</details>';
+    drawActions(kind); drawTally(kind);
+    const nx=$('#actions [data-act="next"]'); if(nx) nx.focus();
+    return;
+  }
+  if(wrong.length){
+    S.misses++; S.streak=0;
+    let msg;
+    if(!multi) msg='<p>'+(bl.msg || res[0].msg)+'</p>';
+    else msg=(bl.msg ? '<p><b>Setup.</b> '+bl.msg+'</p>' : '')+wrong.map(i=>'<p>'+tagOf(i)+res[i].msg+'</p>').join('')+sigNote;
+    if(S.misses===2) msg+='<p>You can try again or open the worked solution below.</p>';
+    const onlyClose = !bl.msg && wrong.every(i=>res[i].status==='close');
+    setFb(onlyClose ? 'warn' : 'bad', msg);
+  } else {
+    const todo=P.parts.map((p,i)=>i).filter(i=>!S.partDone[i]);
+    const rest='part'+(todo.length>1?'s ':' ')+todo.map(i=>'('+LET[i]+')').join(' and ');
+    const msg=(bl.msg ? '<p><b>Setup.</b> '+bl.msg+'</p>' : '')+
+      '<p>'+(newlyRight.length ? 'Right so far. ' : '')+'Now answer '+rest+'.</p>'+sigNote;
+    setFb(bl.msg ? 'bad' : 'info', msg);
+  }
+  drawActions(kind); drawTally(kind);
+}
+function revealSolution(kind){
+  const S=state[kind];
+  S.done=true; S.streak=0; lock();
+  $('#sol').innerHTML=S.P.solution;
+  setFb('info','<p>Read through each step, then try a new problem with different numbers.</p>');
+  drawActions(kind); drawTally(kind);
+}
+
+/* ---------- 6. Virtual titration ---------- */
+const ADDS=[[500,'5 mL'],[100,'1 mL'],[10,'0.1 mL'],[5,'1 drop']];
+function newLab(){
+  const S=state.lab;
+  S.L=makeLab(S.L); S.d=0; S.misses=0; S.done=false; S.partDone=[];
+}
+function labSVG(L, d){
+  const reading=(L.init+d)/100, look=labLook(L,d);
+  const y=v=>24+v*4.6, lvl=y(Math.min(reading,50));
+  let ticks='';
+  for(let v=0;v<=50;v+=5){
+    const major=v%10===0;
+    ticks+='<line x1="'+(major?98:102)+'" y1="'+y(v)+'" x2="108" y2="'+y(v)+'" stroke="#566070" stroke-width="1"/>';
+    if(major) ticks+='<text x="94" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="#566070">'+v+'</text>';
+  }
+  return '<svg viewBox="0 0 240 400" role="img" aria-label="Buret reading '+reading.toFixed(2)+' milliliters. '+look.text+'">'+
+    '<rect x="108" y="'+lvl+'" width="18" height="'+(262-lvl)+'" fill="#bcd6ee"/>'+
+    '<rect x="108" y="12" width="18" height="250" fill="none" stroke="#1b2430" stroke-width="1.5"/>'+
+    ticks+
+    '<line x1="126" y1="'+lvl+'" x2="140" y2="'+lvl+'" stroke="#1f3a5f" stroke-width="1.5"/>'+
+    '<text x="144" y="'+(lvl+4)+'" font-size="12" font-weight="700" fill="#1f3a5f">'+reading.toFixed(2)+'</text>'+
+    '<text x="60" y="16" font-size="11" fill="#566070">mL</text>'+
+    '<rect x="103" y="262" width="28" height="9" rx="2" fill="#1f3a5f"/>'+
+    '<rect x="131" y="264" width="16" height="5" rx="2" fill="#1f3a5f"/>'+
+    '<path d="M113 271 L121 271 L119 294 L115 294 Z" fill="#bcd6ee" stroke="#1b2430" stroke-width="1.2"/>'+
+    '<path d="M82 350 L152 350 L184 380 Q187 387 180 387 L60 387 Q53 387 56 380 Z" fill="'+look.color+'"/>'+
+    '<path d="M104 302 L104 324 L54 379 Q50 389 60 389 L180 389 Q190 389 186 379 L130 324 L130 302" fill="none" stroke="#1b2430" stroke-width="1.8" stroke-linejoin="round"/>'+
+    '<line x1="100" y1="302" x2="134" y2="302" stroke="#1b2430" stroke-width="1.8"/>'+
+    '</svg>';
+}
+function renderLab(){
+  const S=state.lab, m=META.lab;
+  if(!S.L) newLab();
+  const L=S.L, fa=tag(L.acid.f,'sb'), fb=tag('NaOH','sa');
+  const hl={}; hl[L.acid.f]='sb'; hl['NaOH']='sa';
+  view.onclick=null;
+  view.innerHTML=
+    '<section>'+
+    '<h2>6. '+m.title+'</h2>'+
+    '<p class="lede">'+m.lede+'</p>'+
+    '<article class="problem" id="problem">'+
+      '<p class="ctx">'+L.rxn.ctx+'</p>'+eqBlock(L.rxn, hl)+
+      '<p class="q">The flask holds '+L.Va+' mL of '+fa+' solution of unknown concentration, plus a few drops of phenolphthalein indicator. The buret holds '+L.Mt+' M '+fb+'. Phenolphthalein is colorless in acid and turns pink once all of the acid has reacted.</p>'+
+      '<div class="bench"><div id="labsvg"></div>'+
+        '<div class="panel">'+
+          '<div class="readouts"><div><span>Initial buret reading</span><b>'+(L.init/100).toFixed(2)+' mL</b></div>'+
+            '<div><span>Current buret reading</span><b id="rd"></b></div></div>'+
+          '<p class="labstatus" id="labstatus" role="status" aria-live="polite"></p>'+
+          '<div class="addbtns"><span class="lab">Add NaOH from the buret</span>'+
+            ADDS.map(a=>'<button type="button" class="btn" data-add="'+a[0]+'">'+a[1]+'</button>').join('')+'</div>'+
+          '<button type="button" class="btn inline" data-act="restart" style="margin-top:0">Start over with a fresh sample</button>'+
+        '</div></div>'+
+      '<form id="ans" novalidate autocomplete="off">'+
+        '<ol class="parts">'+labParts(L,0).map((p,i)=>partHTML(p,i,true)).join('')+'</ol>'+
+        '<div class="checkrow"><button class="btn primary" type="submit">Check answers</button></div>'+
+      '</form>'+
+      '<details class="how"><summary>How to calculate the molarity</summary><ol>'+
+        '<li>Volume of NaOH delivered = final buret reading − initial buret reading. Convert it to liters.</li>'+
+        '<li>Moles of NaOH = liters delivered × molarity of NaOH.</li>'+
+        '<li>Use the mole ratio from the balanced equation to get moles of acid.</li>'+
+        '<li>Molarity of the acid = moles of acid ÷ liters of the acid sample.</li></ol></details>'+
+      '<div id="fb" class="fb" role="status" aria-live="polite"></div>'+
+      '<div id="sol"></div>'+
+      '<div class="actions" id="actions"></div>'+
+    '</article>'+
+    '<p class="tally" id="tally"></p>'+
+    '</section>';
+  $('#problem').addEventListener('click',e=>{
+    const a=e.target.closest('button[data-add]');
+    if(a){ addTitrant(Number(a.dataset.add)); return; }
+    const b=e.target.closest('button[data-act]'); if(!b) return;
+    if(b.dataset.act==='restart'){ S.d=0; S.done=false; S.partDone=[]; renderLab(); }
+    else if(b.dataset.act==='next'){ newLab(); renderLab(); }
+    else if(b.dataset.act==='solution'){
+      S.done=true; lock(); paintLab();
+      $('#sol').innerHTML=labSolution(L,S.d);
+      setFb('info','<p>These steps use the volume you delivered. Read through them, then try a new titration.</p>');
+      labActions();
+    }
+  });
+  $('#ans').addEventListener('submit',e=>{ e.preventDefault(); checkLab(); });
+  paintLab(); labActions();
+  $('#tally').textContent = S.solved===0 ? 'No titrations completed yet this session.' : 'Titrations completed this session: '+S.solved;
+}
+function paintLab(){
+  const S=state.lab, L=S.L, look=labLook(L,S.d), reading=L.init+S.d;
+  $('#labsvg').innerHTML=labSVG(L,S.d);
+  $('#rd').textContent=(reading/100).toFixed(2)+' mL';
+  $('#labstatus').textContent=look.text;
+  view.querySelectorAll('button[data-add]').forEach(b=>{ b.disabled = S.done || reading+Number(b.dataset.add)>5000; });
+}
+function labActions(){
+  const S=state.lab; let out='';
+  if(!S.done && S.misses>=2) out+='<button type="button" class="btn" data-act="solution">Show worked solution</button>';
+  out+='<button type="button" class="btn'+(S.done?' primary':'')+'" data-act="next">New titration</button>';
+  $('#actions').innerHTML=out;
+}
+function addTitrant(h){
+  const S=state.lab; if(S.done) return;
+  S.d+=h;
+  // The volume changed, so earlier answers are no longer locked in.
+  S.partDone=[];
+  view.querySelectorAll('#ans .pin').forEach(i=>{ i.disabled=false; i.classList.remove('ok','no'); });
+  view.querySelectorAll('#ans .pmark').forEach(p=>{ p.textContent=''; p.className='pmark'; });
+  $('#fb').className='fb';
+  paintLab();
+}
+function checkLab(){
+  const S=state.lab, L=S.L; if(S.done) return;
+  if(S.d/100<L.Veq){
+    setFb('info','<p>The solution in the flask is still colorless, so not all of the acid has reacted yet. Keep adding NaOH until a faint pink color stays.</p>');
+    return;
+  }
+  const parts=labParts(L,S.d), tagOf=i=>'<b>('+LET[i]+')</b> ';
+  const res=parts.map((part,i)=> S.partDone[i] ? {status:'done'} : gradePart(part, readPart(parts,i)));
+  if(res.filter(r=>r.status!=='done').every(r=>r.status==='empty')){
+    setFb('info','<p>Read the buret, then enter the volume delivered and the molarity you calculate.</p>'); return;
+  }
+  const inv=res.findIndex(r=>r.status==='invalid');
+  if(inv>=0){ setFb('info','<p>'+tagOf(inv)+res[inv].msg+'</p>'); return; }
+  const wrong=[], sigs=[];
+  res.forEach((r,i)=>{
+    if(r.status==='correct' || r.status==='sig'){ S.partDone[i]=true; markPart(parts,i,true); if(r.status==='sig') sigs.push(i); }
+    else if(r.status==='wrong' || r.status==='close'){ markPart(parts,i,false); wrong.push(i); }
+  });
+  const sigNote=sigs.map(i=>sigMsg(parts[i], tagOf(i))).join('');
+  if(parts.every((p,i)=>S.partDone[i])){
+    S.done=true; S.solved++;
+    const over=S.d/100-L.Veq, mine=parts[1].answer, pct=Math.abs(mine-L.Mtrue)/L.Mtrue*100;
+    let verdict;
+    if(over<0.10) verdict='You stopped right at the endpoint, within one drop. That is an excellent titration.';
+    else if(over<0.50) verdict='You went about '+over.toFixed(2)+' mL past the endpoint, so your result is '+pct.toFixed(1)+'% high. Adding single drops near the end gets closer.';
+    else verdict='You overshot the endpoint by about '+over.toFixed(1)+' mL, so your result is '+pct.toFixed(1)+'% high. Next time, switch to single drops as soon as the pink flashes start to linger.';
+    setFb('ok','<p><b>Your calculation is correct.</b> (a) '+parts[0].show+'; (b) '+parts[1].show+'</p>'+sigNote+
+      '<p>The acid in the flask was actually '+sig(L.Mtrue,4)+' M. '+verdict+'</p>');
+    lock(); paintLab();
+    $('#sol').innerHTML='<details class="soldet"><summary>See the worked solution</summary>'+labSolution(L,S.d)+'</details>';
+    labActions();
+    $('#tally').textContent='Titrations completed this session: '+S.solved;
+    const nx=$('#actions [data-act="next"]'); if(nx) nx.focus();
+    return;
+  }
+  if(wrong.length){
+    S.misses++;
+    let msg=wrong.map(i=>'<p>'+tagOf(i)+res[i].msg+'</p>').join('')+sigNote;
+    if(S.misses===2) msg+='<p>You can try again or open the worked solution below.</p>';
+    setFb(wrong.every(i=>res[i].status==='close') ? 'warn' : 'bad', msg);
+  } else {
+    const todo=parts.map((p,i)=>i).filter(i=>!S.partDone[i]);
+    setFb('info','<p>Right so far. Now answer part '+todo.map(i=>'('+LET[i]+')').join(' and ')+'.</p>'+sigNote);
+  }
+  labActions();
+}
+
+render();
+}
+</script>
+</body>
+</html>
