@@ -1,0 +1,2118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calorimetry and Hess’s Law Study Guide</title>
+<style>
+:root{
+  --ink:#1b2430; --muted:#566070; --line:#d6dbe3; --soft:#f3f5f8;
+  --a-bg:#fff1dc; --a-line:#dd962a; --a-ink:#7a4300;
+  --b-bg:#ddf2ee; --b-line:#2c9383; --b-ink:#0a564c;
+  --r-bg:#ebe7f8; --r-line:#7560c4; --r-ink:#3e2c85;
+  --navy:#1f3a5f; --navy-d:#152b49;
+  --ok:#17693f; --ok-bg:#e4f4ea;
+  --bad:#a3241d; --bad-bg:#fcebe9;
+  --warn:#6f4b00; --warn-bg:#fff5d9;
+  --info:#274b7a; --info-bg:#e9f0fa;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:#fff;color:var(--ink);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
+.app{max-width:880px;margin:0 auto;padding:20px 16px 48px}
+sub{font-size:.72em;line-height:0}
+sup{font-size:.72em;line-height:0}
+:focus-visible{outline:3px solid #4c7fd6;outline-offset:2px}
+
+/* Header */
+.top h1{font-family:var(--serif);font-weight:600;font-size:2rem;line-height:1.15;letter-spacing:-.01em;margin:0 0 .4rem}
+.top p{margin:0;color:var(--muted);max-width:64ch}
+
+/* Tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:20px 0 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.tabs button{appearance:none;font:inherit;font-size:.92rem;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px 7px 8px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.tabs button:not([data-n]){padding-left:14px}
+.tabs .tn{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--soft);font-size:.82rem}
+.tabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.tabs button[aria-selected="true"] .tn{background:#fff;color:var(--navy)}
+.tabs button:not([aria-selected="true"]):hover{border-color:var(--navy)}
+
+/* Section heading */
+h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;line-height:1.2;margin:0 0 .35rem}
+.lede{margin:0 0 18px;max-width:66ch}
+h3{font-size:1rem;margin:0 0 .4rem}
+
+/* Substance colors: given (A) and wanted (B) */
+.sa{color:var(--a-ink);font-weight:600}
+.sb{color:var(--b-ink);font-weight:600}
+
+/* Buttons */
+.btn{appearance:none;font:inherit;font-weight:600;font-size:.95rem;border-radius:8px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);padding:8px 14px;cursor:pointer}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy-d)}
+.btn.inline{padding:4px 10px;font-size:.9rem;margin-top:8px}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* Help level */
+.modebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 14px}
+.modebar-label{font-size:.9rem;font-weight:600}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{appearance:none;font:inherit;font-size:.9rem;border:0;background:#fff;color:var(--ink);padding:7px 12px;cursor:pointer;border-left:1.5px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff;font-weight:600}
+.seg button:focus-visible{outline-offset:-3px}
+
+/* Problem */
+.problem{border:1.5px solid var(--line);border-radius:14px;padding:20px 20px 18px}
+.ctx{margin:0 0 10px;color:var(--muted)}
+.eqwrap{background:var(--soft);border-radius:10px;padding:14px 16px 10px;margin:0 0 12px}
+.eq{font-family:var(--serif);font-size:1.4rem;line-height:1.35;display:flex;flex-wrap:wrap;align-items:baseline;gap:.15em .45em}
+.eq .coef{margin-right:.2em}
+.eq .plus,.eq .arrow{color:var(--muted)}
+.eq .sp{font-weight:400;color:var(--ink);padding:0 .15em;border-radius:5px;white-space:nowrap}
+.eq .sp.sa{background:var(--a-bg);color:var(--a-ink);box-shadow:0 2px 0 var(--a-line)}
+.eq .sp.sb{background:var(--b-bg);color:var(--b-ink);box-shadow:0 2px 0 var(--b-line)}
+.eq .st{font-size:.6em;font-family:var(--sans);margin-left:.1em;opacity:.8}
+.keys{display:flex;gap:14px;margin-top:8px;font-size:.8rem}
+.key{display:inline-flex;align-items:center;gap:6px}
+.key::before{content:"";width:.9em;height:.9em;border-radius:3px;border:1.5px solid}
+.key.a{color:var(--a-ink)} .key.a::before{background:var(--a-bg);border-color:var(--a-line)}
+.key.b{color:var(--b-ink)} .key.b::before{background:var(--b-bg);border-color:var(--b-line)}
+.am{margin:0 0 10px;font-size:.9rem;color:var(--muted)}
+.q{font-size:1.1rem;margin:0 0 14px;max-width:62ch}
+
+/* Route strip and per-reactant trails */
+.helplab{font-size:.88rem;font-weight:600;margin:14px 0 6px}
+.helptext{font-size:.95rem;margin:4px 0 6px;max-width:64ch}
+.rn{border:1.5px solid;border-radius:8px;padding:3px 10px;font-weight:600;font-size:.95rem;white-space:nowrap}
+.rn.a{background:var(--a-bg);border-color:var(--a-line);color:var(--a-ink)}
+.rn.b{background:var(--b-bg);border-color:var(--b-line);color:var(--b-ink)}
+.rn .sa,.rn .sb{color:inherit}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 4px;padding:0;list-style:none}
+.route .rs{font-size:.82rem;color:var(--muted);display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.route .rs::after{content:"\2192";font-size:1.1rem;color:var(--ink)}
+.route .rs.ratio{color:var(--r-ink);font-weight:600}
+.trail{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}
+.trail .arw{font-size:1.1rem;margin-right:2px}
+.trail .tq{white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+
+/* Dimensional analysis chain */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:10px 10px;font-size:1.02rem;margin:4px 0 6px}
+.chain .op{color:var(--muted);font-size:1.15rem}
+.chain .qty{white-space:nowrap}
+.chain .grp{display:inline-flex;align-items:center;gap:10px}
+.chain.cells{gap:10px 22px}
+.frac{display:inline-flex;flex-direction:column;text-align:center}
+.frac>span{padding:3px 8px;white-space:nowrap}
+.frac>.t{border-bottom:2px solid var(--ink)}
+.cx{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:var(--bad)}
+.blank{font:inherit;width:2.8em;text-align:center;border:1.5px solid #8b95a3;border-radius:6px;padding:2px 4px;background:#fff;color:var(--ink)}
+.blank.wide{width:5.2em}
+.blank.ok,.pin.ok{border:2px solid var(--ok);background:var(--ok-bg)}
+.blank.no,.pin.no{border:2px dashed var(--bad);background:var(--bad-bg)}
+.ph{display:inline-grid;place-items:center;min-width:2.2em;height:1.7em;border:1.5px dashed #8b95a3;border-radius:6px;color:var(--muted)}
+.ans-final{font-weight:700}
+
+/* Answers */
+.ansrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.ansrow label{font-weight:600}
+.pin{font:inherit;font-size:1.05rem;width:8.5em;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;color:var(--ink);background:#fff}
+.pin:disabled,.blank:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
+.unit{font-size:1.05rem}
+.parts{list-style:none;margin:16px 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;gap:14px}
+.part{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.part .plab{font-weight:600;flex:1 1 15em}
+.part .pctl{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.pmark{font-weight:700;min-width:1em}
+.pmark.ok{color:var(--ok)} .pmark.no{color:var(--bad)}
+.checkrow{margin-top:14px}
+.choice{display:inline-flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative;cursor:pointer}
+.opt input{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer}
+.opt span{display:inline-block;border:1.5px solid #8b95a3;border-radius:8px;padding:6px 14px;font-size:1.05rem;background:#fff}
+.opt input:checked+span{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+.opt input:focus-visible+span{outline:3px solid #4c7fd6;outline-offset:2px}
+.choice.ok .opt input:checked+span{background:var(--ok);border-color:var(--ok)}
+.choice.no .opt input:checked+span{background:var(--bad-bg);color:var(--bad);border:2px dashed var(--bad)}
+
+/* Feedback */
+.fb{display:none;margin-top:14px;padding:11px 14px;border-radius:10px;border-left:5px solid;gap:10px;align-items:flex-start}
+.fb.show{display:flex}
+.fb .ic{font-weight:700;font-size:1.05rem;line-height:1.5}
+.fb p{margin:0}
+.fb p+p{margin-top:6px}
+.fb.ok{background:var(--ok-bg);border-color:var(--ok);color:#0f4a2c}
+.fb.bad{background:var(--bad-bg);border-color:var(--bad);color:#6f1712}
+.fb.warn{background:var(--warn-bg);border-color:#c98f12;color:var(--warn)}
+.fb.info{background:var(--info-bg);border-color:#5a86c4;color:var(--info)}
+.fb .sa,.fb .sb{color:inherit}
+
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tally{font-size:.9rem;color:var(--muted);margin:12px 2px 0}
+
+/* Worked solution */
+.solution{margin-top:16px;padding:14px 16px 6px;border-radius:10px;background:var(--soft)}
+.solution ol{margin:0;padding-left:1.3em}
+.solution li{margin-bottom:10px}
+.solution .note{font-size:.9rem;color:var(--muted);margin:0 0 10px}
+details.soldet{margin-top:14px}
+details.soldet summary{cursor:pointer;font-weight:600;color:var(--navy)}
+
+/* Roadmap */
+.paths{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 6px}
+.paths .lab{font-size:.9rem;font-weight:600;margin-right:2px}
+.map{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:10px 6px;margin:14px 0 18px}
+.rowlab{font-size:.9rem;font-weight:700}
+.rowlab.a{grid-column:1/-1;color:var(--a-ink)}
+.rowlab.b{grid-column:1/3;align-self:end;color:var(--b-ink)}
+.map .fill{grid-column:4/6}
+.node{border:2px solid;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:68px;transition:opacity .15s}
+.node b{font-size:.98rem;line-height:1.25}
+.node small{font-size:.8rem}
+.node.a{background:var(--a-bg);border-color:var(--a-line);color:var(--a-ink)}
+.node.b{background:var(--b-bg);border-color:var(--b-line);color:var(--b-ink)}
+.conn{appearance:none;font:inherit;font-size:.8rem;font-weight:600;line-height:1.2;color:var(--ink);background:#fff;border:1.5px solid #8b95a3;border-radius:10px;padding:6px 8px;cursor:pointer;align-self:center;display:flex;flex-direction:column;align-items:center;gap:1px;transition:opacity .15s}
+.conn .arr{font-size:1.15rem;line-height:1}
+.conn:hover{border-color:var(--navy)}
+.conn.ratio{grid-column:3;justify-self:center;flex-direction:row;gap:8px;padding:8px 14px;background:var(--r-bg);border-color:var(--r-line);color:var(--r-ink)}
+.conn.vert{justify-self:center;flex-direction:row;gap:8px;padding:8px 10px;white-space:nowrap}
+.conn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.map .dim{opacity:.28}
+.detail{border-left:5px solid var(--navy);background:var(--soft);border-radius:10px;padding:14px 16px;min-height:120px}
+.detail p{margin:0 0 8px}
+.detail ul{margin:0 0 8px;padding-left:1.2em}
+.detail .ex{font-family:var(--serif);font-size:1.08rem;margin-bottom:0}
+.builds{margin-top:22px}
+.builds ul{margin:0;padding-left:1.2em;max-width:66ch}
+.builds li{margin-bottom:6px}
+
+
+/* Enthalpy shown with an equation */
+.eq .dh{font-family:var(--sans);font-size:.95rem;font-weight:600;margin-left:auto;padding-left:1.2em;white-space:nowrap}
+.eq.small{font-size:1.12rem}
+.eqwrap.target{background:var(--b-bg);box-shadow:inset 0 0 0 2px var(--b-line)}
+.tlabel{font-size:.8rem;font-weight:700;color:var(--b-ink);margin-bottom:4px}
+
+/* Hess's law builder */
+.hcard{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0}
+.hnum,.ylab{font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:2px}
+.hctl{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:8px 0}
+.tog[aria-pressed="true"]{background:var(--navy);color:#fff}
+.hyours{background:var(--soft);border-radius:8px;padding:8px 10px}
+.hdh{margin-top:6px;font-size:.95rem}
+.hsum{border-left:5px solid var(--navy);background:var(--soft);border-radius:10px;padding:12px 14px;margin:14px 0}
+.hsum .status{margin:6px 0 0;font-weight:600}
+.hsum .status span{font-weight:400}
+.status.ok{color:var(--ok)} .status.no{color:var(--bad)}
+.hsum .cancel{font-size:.9rem;color:var(--muted);margin:4px 0 0}
+.oplist{margin:4px 0;padding-left:1.2em}
+
+/* Virtual calorimeter */
+.labgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 22px;margin:14px 0}
+.steps{margin:0;padding-left:1.4em}
+.steps li{margin-bottom:6px;color:var(--muted)}
+.steps li.now{color:var(--ink);font-weight:600}
+.steps li.done{color:var(--ok)}
+.stepbtns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.labstatus{border-left:5px solid var(--navy);background:var(--soft);border-radius:8px;padding:10px 12px;margin:0;min-height:4.4em}
+#bench svg,#graph svg{display:block;width:100%;height:auto;background:var(--soft);border-radius:10px}
+#graph svg{background:#fff;border:1px solid var(--line)}
+.gwrap{position:relative;touch-action:pan-y}
+.gtip{position:absolute;pointer-events:none;background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:.82rem;box-shadow:0 1px 4px rgba(27,36,48,.18);white-space:nowrap;transform:translate(-50%,-135%)}
+.gtip b{font-size:.95rem}
+.note-tbl{width:100%;border-collapse:collapse;font-size:.95rem}
+.note-tbl th{text-align:left;font-weight:400;color:var(--muted);padding:6px 10px 6px 0;border-bottom:1px solid var(--line)}
+.note-tbl td{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;padding:6px 0;border-bottom:1px solid var(--line)}
+.note-tbl.ref{font-size:.88rem;margin-top:6px}
+.note-tbl.ref td{font-weight:600}
+details.how{margin-top:12px}
+details.how summary{cursor:pointer;font-weight:600;color:var(--navy)}
+.conn.wide{flex-direction:row;gap:8px;justify-self:stretch;justify-content:center;padding:8px 10px}
+@media (max-width:700px){ .labgrid{grid-template-columns:minmax(0,1fr)} }
+
+@media (max-width:560px){
+  .top h1{font-size:1.6rem}
+  .problem{padding:16px 14px}
+  .eq{font-size:1.15rem}
+  .node b{font-size:.82rem} .node small{font-size:.7rem}
+  .conn{font-size:.7rem;padding:5px 4px}
+  .map{gap:8px 3px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>Calorimetry and Hess’s Law Study Guide</h1>
+    <p>Heat, temperature, calorimetry, thermochemical equations, and Hess’s law. Start with the roadmap, then work through the sections in order. The numbers change every time, so practice as much as you like. Nothing here is graded.</p>
+  </header>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
+  <main id="view" role="tabpanel"></main>
+  <noscript><p>This study guide needs JavaScript turned on.</p></noscript>
+</div>
+
+<script>
+'use strict';
+/* ============================================================
+   Chemistry data and problem logic (no page elements used here)
+   ============================================================ */
+
+// Atomic masses, kept as text so they display exactly as written.
+const AM = {H:'1.008', Li:'6.94', C:'12.011', N:'14.007', O:'15.999', F:'18.998', Na:'22.990', Mg:'24.305', Al:'26.982',
+            S:'32.06', Cl:'35.45', K:'39.098', Ca:'40.078', Fe:'55.845'};
+const CW = 4.184;                 // specific heat of water, J/(g·°C)
+const CU = 'J/(g·°C)';
+const H_NEUT = -55.8;             // strong acid + strong base, kJ per mole of water formed
+
+// Specific heats in J/(g·°C), as text.
+const SUBST = [['water','4.184'],['aluminum','0.897'],['iron','0.449'],['copper','0.385'],['silver','0.235'],
+               ['gold','0.129'],['ethanol','2.44'],['glass','0.840'],['granite','0.790'],['titanium','0.523']];
+const METALS = [['aluminum','0.897'],['titanium','0.523'],['iron','0.449'],['copper','0.385'],['silver','0.235'],['lead','0.129']];
+// Strong acid + strong base pairs: [acid, base, salt].
+const NEUT = [['HCl','NaOH','NaCl'],['HNO3','NaOH','NaNO3'],['HCl','KOH','KCl'],['HNO3','KOH','KNO3']];
+// Enthalpy of solution in kJ/mol.
+const SALTS = [['NH4NO3','ammonium nitrate',25.7],['KNO3','potassium nitrate',34.9],['NH4Cl','ammonium chloride',14.8],
+               ['CaCl2','calcium chloride',-81.3],['NaOH','sodium hydroxide',-44.5],['KCl','potassium chloride',17.2],
+               ['LiCl','lithium chloride',-37.0],['KOH','potassium hydroxide',-57.6]];
+// Thermochemical equations. dH is in kJ for the equation as written.
+const TQ = [
+  {ctx:'Methane, the main component of natural gas, burns in oxygen.',
+   r:[[1,'CH4','g'],[2,'O2','g']], p:[[1,'CO2','g'],[2,'H2O','l']], dH:'-890.3'},
+  {ctx:'Propane, the fuel in gas grills, burns in oxygen.',
+   r:[[1,'C3H8','g'],[5,'O2','g']], p:[[3,'CO2','g'],[4,'H2O','l']], dH:'-2219.9'},
+  {ctx:'Hydrogen burns in oxygen to form liquid water.',
+   r:[[2,'H2','g'],[1,'O2','g']], p:[[2,'H2O','l']], dH:'-571.6'},
+  {ctx:'Ammonia is made from nitrogen and hydrogen (the Haber process).',
+   r:[[1,'N2','g'],[3,'H2','g']], p:[[2,'NH3','g']], dH:'-91.8'},
+  {ctx:'Heating limestone (calcium carbonate) drives off carbon dioxide.',
+   r:[[1,'CaCO3','s']], p:[[1,'CaO','s'],[1,'CO2','g']], dH:'178.3'},
+  {ctx:'In the thermite reaction, aluminum reduces iron(III) oxide to molten iron.',
+   r:[[2,'Al','s'],[1,'Fe2O3','s']], p:[[1,'Al2O3','s'],[2,'Fe','s']], dH:'-851.5'},
+  {ctx:'Nitrogen and oxygen combine at high temperature to form nitrogen monoxide.',
+   r:[[1,'N2','g'],[1,'O2','g']], p:[[2,'NO','g']], dH:'180.5'},
+  {ctx:'Sulfur dioxide reacts with oxygen to form sulfur trioxide.',
+   r:[[2,'SO2','g'],[1,'O2','g']], p:[[2,'SO3','g']], dH:'-197.8'},
+  {ctx:'In cellular respiration, glucose is oxidized to carbon dioxide and water.',
+   r:[[1,'C6H12O6','s'],[6,'O2','g']], p:[[6,'CO2','g'],[6,'H2O','l']], dH:'-2803'},
+  {ctx:'Iron reacts with oxygen to form iron(III) oxide, the main component of rust.',
+   r:[[4,'Fe','s'],[3,'O2','g']], p:[[2,'Fe2O3','s']], dH:'-1648.4'},
+  {ctx:'Hydrogen peroxide decomposes into water and oxygen.',
+   r:[[2,'H2O2','l']], p:[[2,'H2O','l'],[1,'O2','g']], dH:'-196.0'},
+  {ctx:'Magnesium burns in oxygen with a bright white flame.',
+   r:[[2,'Mg','s'],[1,'O2','g']], p:[[2,'MgO','s']], dH:'-1203.2'},
+  {ctx:'Nitrogen and oxygen react to form nitrogen dioxide.',
+   r:[[1,'N2','g'],[2,'O2','g']], p:[[2,'NO2','g']], dH:'66.4'},
+  {ctx:'Ethanol burns in oxygen.',
+   r:[[1,'C2H5OH','l'],[3,'O2','g']], p:[[2,'CO2','g'],[3,'H2O','l']], dH:'-1366.8'},
+  {ctx:'Carbon (graphite) burns in oxygen.',
+   r:[[1,'C','s'],[1,'O2','g']], p:[[1,'CO2','g']], dH:'-393.5'}
+];
+// Hess's law problems. Each given equation carries m, the multiplier that builds the target
+// (negative means reversed). Equations are in their simplest form; the page rescales them at random.
+const HESS = [
+  {target:{r:[[1,'C','s'],[2,'H2','g']], p:[[1,'CH4','g']]}, dH:-74.8, eqs:[
+    {r:[[1,'C','s'],[1,'O2','g']], p:[[1,'CO2','g']], dH:-393.5, m:1},
+    {r:[[1,'H2','g'],[0.5,'O2','g']], p:[[1,'H2O','l']], dH:-285.8, m:2},
+    {r:[[1,'CH4','g'],[2,'O2','g']], p:[[1,'CO2','g'],[2,'H2O','l']], dH:-890.3, m:-1}]},
+  {target:{r:[[2,'C','s'],[1,'H2','g']], p:[[1,'C2H2','g']]}, dH:226.8, eqs:[
+    {r:[[1,'C2H2','g'],[2.5,'O2','g']], p:[[2,'CO2','g'],[1,'H2O','l']], dH:-1299.6, m:-1},
+    {r:[[1,'C','s'],[1,'O2','g']], p:[[1,'CO2','g']], dH:-393.5, m:2},
+    {r:[[1,'H2','g'],[0.5,'O2','g']], p:[[1,'H2O','l']], dH:-285.8, m:1}]},
+  {target:{r:[[1,'N2','g'],[2,'O2','g']], p:[[2,'NO2','g']]}, dH:66.4, eqs:[
+    {r:[[1,'N2','g'],[1,'O2','g']], p:[[2,'NO','g']], dH:180.5, m:1},
+    {r:[[2,'NO','g'],[1,'O2','g']], p:[[2,'NO2','g']], dH:-114.1, m:1}]},
+  {target:{r:[[1,'C','s'],[0.5,'O2','g']], p:[[1,'CO','g']]}, dH:-110.5, eqs:[
+    {r:[[1,'C','s'],[1,'O2','g']], p:[[1,'CO2','g']], dH:-393.5, m:1},
+    {r:[[1,'CO','g'],[0.5,'O2','g']], p:[[1,'CO2','g']], dH:-283.0, m:-1}]},
+  {target:{r:[[1,'S','s'],[1.5,'O2','g']], p:[[1,'SO3','g']]}, dH:-395.7, eqs:[
+    {r:[[1,'S','s'],[1,'O2','g']], p:[[1,'SO2','g']], dH:-296.8, m:1},
+    {r:[[1,'SO2','g'],[0.5,'O2','g']], p:[[1,'SO3','g']], dH:-98.9, m:1}]},
+  {target:{r:[[2,'N2','g'],[5,'O2','g']], p:[[2,'N2O5','g']]}, dH:28.4, eqs:[
+    {r:[[1,'H2','g'],[0.5,'O2','g']], p:[[1,'H2O','l']], dH:-285.8, m:-2},
+    {r:[[1,'N2O5','g'],[1,'H2O','l']], p:[[2,'HNO3','l']], dH:-76.6, m:-2},
+    {r:[[0.5,'N2','g'],[1.5,'O2','g'],[0.5,'H2','g']], p:[[1,'HNO3','l']], dH:-174.1, m:4}]},
+  {target:{r:[[3,'C','s'],[4,'H2','g']], p:[[1,'C3H8','g']]}, dH:-103.8, eqs:[
+    {r:[[1,'C3H8','g'],[5,'O2','g']], p:[[3,'CO2','g'],[4,'H2O','l']], dH:-2219.9, m:-1},
+    {r:[[1,'C','s'],[1,'O2','g']], p:[[1,'CO2','g']], dH:-393.5, m:3},
+    {r:[[1,'H2','g'],[0.5,'O2','g']], p:[[1,'H2O','l']], dH:-285.8, m:4}]},
+  {target:{r:[[1,'Fe2O3','s'],[3,'CO','g']], p:[[2,'Fe','s'],[3,'CO2','g']]}, dH:-24.8, eqs:[
+    {r:[[2,'Fe','s'],[1.5,'O2','g']], p:[[1,'Fe2O3','s']], dH:-824.2, m:-1},
+    {r:[[1,'CO','g'],[0.5,'O2','g']], p:[[1,'CO2','g']], dH:-283.0, m:3}]},
+  {target:{r:[[1,'NO','g'],[1,'O','g']], p:[[1,'NO2','g']]}, dH:-304.1, eqs:[
+    {r:[[1,'NO','g'],[1,'O3','g']], p:[[1,'NO2','g'],[1,'O2','g']], dH:-198.9, m:1},
+    {r:[[1,'O3','g']], p:[[1.5,'O2','g']], dH:-142.3, m:-1},
+    {r:[[1,'O2','g']], p:[[2,'O','g']], dH:495.0, m:-0.5}]},
+  {target:{r:[[2,'C','s'],[2,'H2','g']], p:[[1,'C2H4','g']]}, dH:52.4, eqs:[
+    {r:[[1,'C2H4','g'],[3,'O2','g']], p:[[2,'CO2','g'],[2,'H2O','l']], dH:-1411.0, m:-1},
+    {r:[[1,'C','s'],[1,'O2','g']], p:[[1,'CO2','g']], dH:-393.5, m:2},
+    {r:[[1,'H2','g'],[0.5,'O2','g']], p:[[1,'H2O','l']], dH:-285.8, m:2}]},
+  {target:{r:[[1,'ClF','g'],[1,'F2','g']], p:[[1,'ClF3','g']]}, dH:-108.7, eqs:[
+    {r:[[2,'ClF','g'],[1,'O2','g']], p:[[1,'Cl2O','g'],[1,'F2O','g']], dH:167.4, m:0.5},
+    {r:[[2,'ClF3','g'],[2,'O2','g']], p:[[1,'Cl2O','g'],[3,'F2O','g']], dH:341.4, m:-0.5},
+    {r:[[2,'F2','g'],[1,'O2','g']], p:[[2,'F2O','g']], dH:-43.4, m:0.5}]},
+  {target:{r:[[1,'C2H4','g'],[1,'H2','g']], p:[[1,'C2H6','g']]}, dH:-136.4, eqs:[
+    {r:[[1,'C2H4','g'],[3,'O2','g']], p:[[2,'CO2','g'],[2,'H2O','l']], dH:-1411.0, m:1},
+    {r:[[1,'C2H6','g'],[3.5,'O2','g']], p:[[2,'CO2','g'],[3,'H2O','l']], dH:-1560.4, m:-1},
+    {r:[[1,'H2','g'],[0.5,'O2','g']], p:[[1,'H2O','l']], dH:-285.8, m:1}]}
+];
+
+/* ---------- Formulas and numbers ---------- */
+function parseFormula(f){
+  const out=[]; const re=/\(([^()]+)\)(\d*)|([A-Z][a-z]?)(\d*)/g; let m;
+  while((m=re.exec(f))){
+    if(m[1]){ const k=m[2] ? +m[2] : 1; for(const [e,n] of parseFormula(m[1])) out.push([e,n*k]); }
+    else out.push([m[3], m[4] ? +m[4] : 1]);
+  }
+  return out;
+}
+function composition(f){
+  const out=[];
+  for(const [e,n] of parseFormula(f)){
+    const hit=out.find(x=>x[0]===e);
+    if(hit) hit[1]+=n; else out.push([e,n]);
+  }
+  return out;
+}
+// Molar mass rounded to two decimals, the way students will use it.
+function molarMass(f){
+  let s=0; for(const [e,n] of parseFormula(f)) s += Number(AM[e])*n;
+  return Math.round(s*100+1e-7)/100;
+}
+function breakdown(f){
+  const parts=composition(f), M=molarMass(f).toFixed(2);
+  if(parts.length===1 && parts[0][1]===1) return M+' g/mol';
+  return parts.map(([e,n])=> n>1 ? n+'('+AM[e]+')' : AM[e]).join(' + ')+' = '+M+' g/mol';
+}
+const F = f => f.replace(/(\d+)/g,'<sub>$1</sub>');          // formula with subscripts
+const tag = (f,c) => '<span class="'+c+'">'+F(f)+'</span>';  // colored formula
+
+// Number with n significant figures, as display HTML, with a true minus sign.
+function sig(x,n){
+  let s=Number(x).toPrecision(n); const neg=s[0]==='-'; if(neg) s=s.slice(1);
+  if(s.indexOf('e')>=0){ const p=s.split('e'), ex=Number(p[1]); s=p[0]+' × 10<sup>'+(ex<0?'−'+(-ex):ex)+'</sup>'; }
+  return (neg?'−':'')+s;
+}
+// Fixed decimals with a true minus sign.
+function fx(x,d){
+  const s=Number(x).toFixed(d);
+  return s[0]==='-' ? (Number(s)===0 ? s.slice(1) : '−'+s.slice(1)) : s;
+}
+const plus = s => (s[0]==='−' ? s : '+'+s);       // show the sign on enthalpy values
+const dHtext = s => plus(String(s).replace('-','−'));
+// A value written with exactly 3 unambiguous significant figures, or null if that is not possible.
+function fmt3(v){
+  if(!(v>0) || !isFinite(v)) return null;
+  const s=Number(v).toPrecision(3);
+  if(s.indexOf('e')>=0) return null;
+  if(s.indexOf('.')<0 && /0$/.test(s)) return null;
+  return s;
+}
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const rint = (a,b) => a+Math.floor(Math.random()*(b-a+1));
+function g3(lo,hi){
+  for(;;){ const s=fmt3(lo*Math.pow(hi/lo, Math.random())); if(s) return s; }
+}
+// Milliliters (text) to liters (text), keeping the same significant figures.
+function toL(v){ return (Number(v)/1000).toPrecision(parseInput(v).sfMax); }
+// Significant figures in a temperature change that was read to two decimals.
+function sfOfDelta(dT){
+  const d=Math.abs(dT).toFixed(2).replace('.','').replace(/^0+/,'');
+  return Math.max(d.length,1);
+}
+const spc = (arr, role) => arr.map(e=>({c:e[0], f:e[1], st:e[2], role, M:molarMass(e[1])}));
+
+/* ---------- Small HTML builders ---------- */
+const frac = (t,b) => '<span class="frac"><span class="t">'+t+'</span><span class="b">'+b+'</span></span>';
+const XOP = '<span class="op" aria-hidden="true">×</span>';
+const EQOP = '<span class="op">=</span>';
+const ARW = '<span class="arw" aria-hidden="true">→</span>';
+const PH = '<span class="ph" aria-label="blank">?</span>';
+const cxs = t => '<span class="cx">'+t+'</span>';
+const lab = t => '<p class="helplab">'+t+'</p>';
+const txt = t => '<p class="helptext">'+t+'</p>';
+const blankIn = (k,label,wide) => '<input class="blank'+(wide?' wide':'')+'" data-k="'+k+'" type="text" inputmode="text" autocomplete="off" aria-label="'+label+'">';
+const bl = (mode,k,label,wide) => mode==='live' ? blankIn(k,label,wide) : PH;
+const row = inner => '<div class="chain">'+inner+'</div>';
+const q = s => '<span class="qty">'+s+'</span>';
+const cellRow = inner => '<div class="chain cells">'+inner+'</div>';
+// One "symbol = value unit" cell: a blank to fill in, a question mark, or the value.
+const gcell = (mode,sym,k,label,unit,val,unk) => q(sym+' = '+(unk ? '<b>?</b>' : mode==='show' ? val : bl(mode,k,label,true))+' '+unit);
+const clean = (errors, ans, minAbs) => errors.filter(e => isFinite(e.value) && Math.abs(e.value-ans) > Math.max(0.02*Math.abs(ans), minAbs||0));
+const roundNote = sf => '<p class="note">Keep extra digits through the middle steps and round only at the end. The answer gets '+sf+' significant figures, the fewest in the given data.</p>';
+const solWrap = (items, note) => '<div class="solution"><h3>Worked solution</h3><ol>'+items.map(t=>'<li>'+t+'</li>').join('')+'</ol>'+(note||'')+'</div>';
+const mmLines = list => '<b>Molar mass'+(list.length>1?'es':'')+'.</b> '+list.map(([f,cls])=>tag(f,cls)+': '+breakdown(f)).join('<br>');
+const DT='ΔT', DH='ΔH';
+
+// Coefficients, including halves: 0.5 shows as ½ and 1.5 as 3/2.
+const coefTxt = c => Number.isInteger(c) ? String(c) : c===0.5 ? '½' : (c*2)+'/2';
+function eqSide(arr, hl){
+  return arr.map(e=>'<span class="sp'+(hl && hl[e[1]] ? ' '+hl[e[1]] : '')+'">'+(e[0]!==1 ? '<span class="coef">'+coefTxt(e[0])+'</span>' : '')+F(e[1])+(e[2] ? '<span class="st">('+e[2]+')</span>' : '')+'</span>').join('<span class="plus">+</span>');
+}
+const eqInner = (rxn, hl) => eqSide(rxn.r,hl)+'<span class="arrow">→</span>'+eqSide(rxn.p,hl);
+function eqSpoken(rxn){
+  const side=arr=>arr.map(e=>(e[0]!==1 ? coefTxt(e[0])+' ' : '')+e[1]).join(' plus ');
+  return side(rxn.r)+' yields '+side(rxn.p);
+}
+// Equation box. extra is shown at the right, for example an enthalpy change.
+function eqBox(rxn, hl, extra){
+  return '<div class="eqwrap"><div class="eq" role="img" aria-label="Equation: '+eqSpoken(rxn)+(extra ? '. '+extra.replace(/<[^>]+>/g,'') : '')+'">'+
+    eqInner(rxn,hl)+(extra ? '<span class="dh">'+extra+'</span>' : '')+'</div></div>';
+}
+
+/* ---------- 1. Heat and temperature: q = m c ΔT ---------- */
+const EQ_Q = row(q('q = m × c × '+DT)+q('with '+DT+' = T<sub>final</sub> − T<sub>initial</sub>'));
+function makeHeat(prev){
+  for(let t=0;;t++){
+    const type=pick(['q','q','qk','m','c','dT','Tf']);
+    const sub = type==='c' ? pick(METALS) : pick(SUBST);
+    if(t<50 && prev && prev.sub===sub[0]) continue;
+    const name=sub[0], cs=sub[1], c=Number(cs), heating=Math.random()<0.65;
+    const m=g3(10,500), mn=Number(m);
+    const mag=rint(100,600)/10;
+    const Ti = heating ? rint(150,300)/10 : rint(600,950)/10, Tf = heating ? Ti+mag : Ti-mag;
+    if(Tf<5) continue;
+    const TiS=Ti.toFixed(1), TfS=Tf.toFixed(1), dT=Number((Number(TfS)-Number(TiS)).toFixed(1));
+    const qTrue=mn*c*dT;                                   // joules, with its sign
+    // For problems that give the heat, it is rounded to 3 significant figures.
+    const big=Math.abs(qTrue)>=1000, qS=fmt3(big ? Math.abs(qTrue)/1000 : Math.abs(qTrue)), qU=big ? 'kJ' : 'J';
+    const givesQ = type==='m' || type==='c' || type==='dT' || type==='Tf';
+    if(givesQ && !qS) continue;
+    const qJ = givesQ ? (heating?1:-1)*Number(qS)*(big?1000:1) : qTrue;
+    const verb = heating ? 'absorbs' : 'releases';
+    const qText=qS+' '+qU, spec='(specific heat '+cs+' '+CU+')';
+    const E=[]; const add=(value,msg)=>E.push({value,msg});
+    const KJ='It looks like the heat was left in kilojoules. Convert it to joules first: multiply by 1000.';
+    let question, unk, ans, unit, label, sf=3, tolAbs=0, show, rearr, sol, extra='';
+
+    if(type==='q' || type==='qk'){
+      const k = type==='qk' ? 1000 : 1;
+      unk='q'; ans=qTrue/k; unit = type==='qk' ? 'kJ' : 'J'; label='Heat, q';
+      question='A '+m+' g sample of '+name+' '+spec+' '+(heating?'is heated':'cools')+' from '+TiS+' °C to '+TfS+' °C. What is q for the '+name+', in '+(type==='qk'?'kilojoules':'joules')+'?';
+      add(-ans, heating ? 'The sample warmed up, so it absorbed heat and q is positive.' : 'The sample cooled, so it lost heat and q is negative. '+DT+' is final minus initial.');
+      add(mn*c*Number(TfS)/k, 'It looks like the final temperature was used. Use the change in temperature: '+DT+' = final − initial.');
+      add(mn*dT/k, 'The specific heat is missing. q = m × c × '+DT+'.');
+      add(type==='qk' ? qTrue : qTrue/1000, type==='qk' ? 'That is the heat in joules. The question asks for kilojoules, so divide by 1000.' : 'That is the heat in kilojoules. The question asks for joules.');
+      rearr=row(q('q')+EQOP+q('m')+XOP+q('c')+XOP+q(DT));
+      sol=['<b>Temperature change.</b> '+DT+' = '+TfS+' °C − '+TiS+' °C = '+fx(dT,1)+' °C',
+           '<b>Heat.</b> q = '+m+' g × '+cs+' '+CU+' × '+fx(dT,1)+' °C = '+(type==='qk' ? sig(qTrue,4)+' J = <b>'+sig(ans,3)+' kJ</b>' : '<b>'+sig(ans,3)+' J</b>')];
+    } else if(type==='m'){
+      unk='m'; ans=qJ/(c*dT); unit='g'; label='Mass';
+      question='A sample of '+name+' '+spec+' '+verb+' '+qText+' of heat, and its temperature changes from '+TiS+' °C to '+TfS+' °C. What is the mass of the sample?';
+      if(big) add(ans/1000, KJ);
+      add(Math.abs(qJ/(c*Number(TfS))), 'It looks like the final temperature was used. Use the change in temperature: '+DT+' = final − initial.');
+      add(Math.abs(c*dT/qJ), 'The fraction is upside down. m = q ÷ (c × '+DT+').');
+      add(-ans, 'A mass cannot be negative. q and '+DT+' have the same sign, so the signs cancel.');
+      rearr=row(q('m')+EQOP+frac('q','c × '+DT));
+      sol=['<b>Temperature change.</b> '+DT+' = '+TfS+' °C − '+TiS+' °C = '+fx(dT,1)+' °C',
+           '<b>Heat in joules.</b> q = '+fx(qJ,0)+' J'+(heating?'':' (negative, because heat is released)'),
+           '<b>Mass.</b> m = q ÷ (c × '+DT+') = '+fx(qJ,0)+' J ÷ ('+cs+' '+CU+' × '+fx(dT,1)+' °C) = <b>'+sig(ans,3)+' g</b>'];
+    } else if(type==='c'){
+      unk='c'; ans=qJ/(mn*dT); unit=CU; label='Specific heat';
+      question='A '+m+' g sample of an unknown metal '+verb+' '+qText+' of heat, and its temperature changes from '+TiS+' °C to '+TfS+' °C. What is the specific heat of the metal?';
+      if(big) add(ans/1000, KJ);
+      add(Math.abs(mn*dT/qJ), 'The fraction is upside down. c = q ÷ (m × '+DT+').');
+      add(-ans, 'A specific heat cannot be negative. q and '+DT+' have the same sign, so the signs cancel.');
+      add(Math.abs(qJ/(mn*Number(TfS))), 'It looks like the final temperature was used. Use the change in temperature: '+DT+' = final − initial.');
+      rearr=row(q('c')+EQOP+frac('q','m × '+DT));
+      sol=['<b>Temperature change.</b> '+DT+' = '+TfS+' °C − '+TiS+' °C = '+fx(dT,1)+' °C',
+           '<b>Heat in joules.</b> q = '+fx(qJ,0)+' J'+(heating?'':' (negative, because heat is released)'),
+           '<b>Specific heat.</b> c = q ÷ (m × '+DT+') = '+fx(qJ,0)+' J ÷ ('+m+' g × '+fx(dT,1)+' °C) = <b>'+sig(ans,3)+' '+CU+'</b>'];
+    } else {
+      const d=qJ/(mn*c);
+      unk='dT';
+      rearr=row(q(DT)+EQOP+frac('q','m × c'));
+      const base=['<b>Heat in joules.</b> q = '+fx(qJ,0)+' J'+(heating?'':' (negative, because heat is released)'),
+                  '<b>Temperature change.</b> '+DT+' = q ÷ (m × c) = '+fx(qJ,0)+' J ÷ ('+m+' g × '+cs+' '+CU+') = '+sig(d,4)+' °C'];
+      if(type==='dT'){
+        ans=d; unit='°C'; label='Temperature change, '+DT;
+        question='A '+m+' g sample of '+name+' '+spec+' '+verb+' '+qText+' of heat. What is the temperature change, '+DT+', of the sample?';
+        add(-ans, heating ? 'The sample absorbed heat, so its temperature goes up and '+DT+' is positive.' : 'The sample released heat, so its temperature goes down and '+DT+' is negative.');
+        if(big) add(ans/1000, KJ);
+        add(qJ/mn, 'The specific heat is missing. '+DT+' = q ÷ (m × c).');
+        base[1]='<b>Temperature change.</b> '+DT+' = q ÷ (m × c) = '+fx(qJ,0)+' J ÷ ('+m+' g × '+cs+' '+CU+') = <b>'+sig(d,3)+' °C</b>';
+        sol=base;
+      } else {
+        ans=Number(TiS)+d; unit='°C'; label='Final temperature'; sf=null; tolAbs=0.15; show=fx(ans,1)+' °C';
+        question='A '+m+' g sample of '+name+' '+spec+' at '+TiS+' °C '+verb+' '+qText+' of heat. What is its final temperature?';
+        add(d, 'That is the temperature change. The final temperature is the starting temperature plus the change.');
+        add(Math.abs(d), 'That is the size of the temperature change. The final temperature is the starting temperature plus the change.');
+        add(Number(TiS)-d, heating ? 'The sample absorbed heat, so its temperature goes up, not down.' : 'The sample released heat, so its temperature goes down, not up.');
+        if(big) add(Number(TiS)+d/1000, KJ);
+        extra=row(q('T<sub>final</sub>')+EQOP+q('T<sub>initial</sub> + '+DT));
+        sol=base.concat(['<b>Final temperature.</b> '+TiS+' °C + ('+sig(d,4)+' °C) = <b>'+fx(ans,1)+' °C</b>']);
+      }
+    }
+    const tUnk = type==='Tf';
+    const cells=mode=>cellRow(
+      gcell(mode,'q','q','heat in joules, with its sign','J',fx(qJ,0),unk==='q')+
+      gcell(mode,'m','m','mass in grams','g',m,unk==='m')+
+      gcell(mode,'c','c','specific heat',CU,cs,unk==='c')+
+      gcell(mode,DT,'dT','temperature change, final minus initial','°C',fx(dT,1),unk==='dT'));
+    const want={q:{want:qJ,tol:0.01}, m:{want:mn,tol:0.002}, c:{want:c,tol:0.002}, dT:{want:dT,tol:0.005}}, blanks={};
+    Object.keys(want).forEach(k=>{ if(k!==unk) blanks[k]=want[k]; });
+    const blankMsg=got=>{
+      const bad=k=>got[k] && !got[k].empty && !got[k].good;
+      const flipped=k=>Math.abs(got[k].v+want[k].want)<=0.01*Math.abs(want[k].want);
+      if(bad('dT')) return flipped('dT') ? DT+' is final minus initial, so it is '+(dT<0?'negative when the sample cools.':'positive when the sample warms up.') : 'Check '+DT+'. Subtract the initial temperature from the final temperature.';
+      if(bad('q')) return flipped('q') ? 'Check the sign of q. Heat absorbed is positive, and heat released is negative.' : 'Check q. '+(big ? 'Convert kilojoules to joules: multiply by 1000.' : 'Use the heat given in the problem.');
+      if(bad('m')) return 'Check the mass. Use the value given in the problem.';
+      if(bad('c')) return 'Check the specific heat. Use the value given in the problem.';
+      return '';
+    };
+    const part={type:'num', label, unit, answer:ans, sf, tolAbs, tolRel: sf ? undefined : 0, errors:clean(E,ans,sf ? 0 : 0.3), show:show||sig(ans,3)+' '+unit,
+      generic:'Not yet. Sort the values into q = m × c × '+DT+', with '+DT+' = final − initial and q in joules, then solve for the unknown.'};
+    return {kind:'heat', type, sub:name, ctx:'Heating or cooling a sample of '+(type==='c' ? 'an unknown metal' : name)+'.', eqHTML:'', am:null, question, parts:[part],
+      guided: lab('Sort the values into the equation. Give q in joules with its sign, and '+DT+' as final minus initial.')+EQ_Q+cells('live')+lab('Then solve for the unknown')+rearr+extra,
+      hints: [lab('Hint 1')+txt('Use q = m × c × '+DT+'. Heat absorbed is positive and heat released is negative. '+DT+' is always final minus initial.')+rearr+extra,
+              lab('Hint 2: the values')+cells('ph')],
+      blanks, blankMsg, solution:solWrap(sol, sf ? roundNote(3) : '')};
+  }
+}
+
+/* ---------- 2. Heat exchange: a hot metal in cool water ---------- */
+function makeExchange(prev){
+  for(let t=0;;t++){
+    const mt=pick(METALS); if(t<50 && prev && prev.sub===mt[0]) continue;
+    const name=mt[0], cs=mt[1], c=Number(cs);
+    const type=pick(['c','c','Tf']);
+    const mm=g3(25,150), mw=g3(50,200), Mm=Number(mm), Mw=Number(mw);
+    const TmS=(rint(7500,10000)/100).toFixed(2), TwS=(rint(1800,2500)/100).toFixed(2), Tm=Number(TmS), Tw=Number(TwS);
+    const Cm=Mm*c, Cw=Mw*CW;
+    const TfS=((Cm*Tm+Cw*Tw)/(Cm+Cw)).toFixed(2), Tf=Number(TfS);
+    const dTw=Number((Tf-Tw).toFixed(2)), dTm=Number((Tf-Tm).toFixed(2));
+    if(dTw<1.2 || dTw>30) continue;
+    const setup='A '+mm+' g piece of '+(type==='c' ? 'an unknown metal' : name+' (specific heat '+cs+' '+CU+')')+' at '+TmS+' °C is dropped into '+mw+' g of water at '+TwS+' °C in an insulated cup.';
+    const WATER=' The specific heat of water is 4.184 '+CU+'.';
+    if(type==='c'){
+      const qw=Mw*CW*dTw, ans=qw/(Mm*-dTm), sf=Math.min(3, sfOfDelta(dTw));
+      const parts=[
+        {type:'num', label:'Heat gained by the water', unit:'J', answer:qw, sf, show:sig(qw,sf)+' J',
+         errors:clean([
+           {value:Mm*CW*dTw, msg:'It looks like the mass of the metal was used. The water is what you have the specific heat for: use the mass of the water.'},
+           {value:Mw*CW*Tf, msg:'It looks like the final temperature was used. Use the change in the water temperature: final − initial.'},
+           {value:Mw*CW*-dTm, msg:'That uses the temperature change of the metal. The water went from '+TwS+' °C to '+TfS+' °C.'},
+           {value:-qw, msg:'The water warmed up, so it gained heat and its q is positive.'},
+           {value:qw/1000, msg:'That is the heat in kilojoules. Give it in joules.'}
+         ], qw),
+         generic:'Not yet. q(water) = mass of water × 4.184 '+CU+' × ('+TfS+' °C − '+TwS+' °C).'},
+        {type:'num', label:'Specific heat of the metal', unit:CU, answer:ans, sf, show:sig(ans,sf)+' '+CU,
+         errors:clean([
+           {value:-ans, msg:'A specific heat cannot be negative. The metal lost the heat the water gained, so q(metal) = −q(water), and the metal has a negative '+DT+'. The two negative signs cancel.'},
+           {value:qw/(Mm*dTw), msg:'That uses the temperature change of the water. The metal has its own '+DT+': it cooled from '+TmS+' °C to '+TfS+' °C.'},
+           {value:qw/(Mm*(Tm-Tw)), msg:'The metal cools only to the final temperature of the mixture ('+TfS+' °C), not to the starting temperature of the water.'},
+           {value:qw/-dTm, msg:'That is the heat capacity of the whole piece, in J/°C. Divide by the mass of the metal to get the specific heat.'},
+           {value:qw/(Mw*-dTm), msg:'It looks like the mass of the water was used. Divide by the mass of the metal.'}
+         ], ans),
+         generic:'Not yet. The metal lost what the water gained: q(metal) = −q(water). Then c = q(metal) ÷ (mass of metal × '+DT+' of the metal).'}
+      ];
+      const steps=m=>lab('Step 1: the water')+cellRow(gcell(m,DT,'dTw','temperature change of the water','°C','',false)+gcell(m,'q','qw','heat gained by the water in joules','J','',false))+
+        lab('Step 2: the metal lost the heat the water gained')+cellRow(gcell(m,'q','qm','heat lost by the metal in joules, with its sign','J','',false)+gcell(m,DT,'dTm','temperature change of the metal, final minus initial','°C','',false))+
+        lab('Step 3: solve for the specific heat of the metal')+row(q('c')+EQOP+frac('q(metal)','m(metal) × '+DT+'(metal)'));
+      const blanks={dTw:{want:dTw,tol:0.004}, qw:{want:qw,tol:0.01}, qm:{want:-qw,tol:0.01}, dTm:{want:dTm,tol:0.002}};
+      const blankMsg=got=>{
+        const bad=k=>got[k] && !got[k].empty && !got[k].good;
+        const flipped=k=>Math.abs(got[k].v+blanks[k].want)<=0.01*Math.abs(blanks[k].want);
+        if(bad('dTw')) return 'Check '+DT+' for the water: '+TfS+' °C − '+TwS+' °C.';
+        if(bad('qw')) return 'Check q for the water: mass of water × 4.184 × its '+DT+'.';
+        if(bad('qm')) return flipped('qm') ? 'The metal lost heat, so its q is negative: q(metal) = −q(water).' : 'Check q for the metal. It is the same size as q for the water, with the opposite sign.';
+        if(bad('dTm')) return flipped('dTm') ? DT+' is final minus initial. The metal cooled, so its '+DT+' is negative.' : 'Check '+DT+' for the metal: '+TfS+' °C − '+TmS+' °C.';
+        return '';
+      };
+      return {kind:'exchange', type, sub:name, ctx:'Heat flows from the hot metal into the cool water until both reach the same temperature.', eqHTML:'', am:null, parts,
+        question:setup+' The final temperature of the water and the metal is '+TfS+' °C.'+WATER,
+        guided:steps('live'),
+        hints:[lab('Hint 1')+txt('The heat the water gains is the heat the metal loses: q(metal) = −q(water). Find q for the water first, because you know its specific heat.'),
+               lab('Hint 2: the steps')+steps('ph')],
+        blanks, blankMsg, dTw, name,
+        solution:solWrap([
+          '<b>Water: temperature change.</b> '+DT+' = '+TfS+' °C − '+TwS+' °C = '+fx(dTw,2)+' °C',
+          '<b>Water: heat gained.</b> q = '+mw+' g × 4.184 '+CU+' × '+fx(dTw,2)+' °C = <b>'+sig(qw,sf)+' J</b>',
+          '<b>Metal: heat lost.</b> q(metal) = −q(water) = '+sig(-qw,sf+1)+' J',
+          '<b>Metal: temperature change.</b> '+DT+' = '+TfS+' °C − '+TmS+' °C = '+fx(dTm,2)+' °C',
+          '<b>Specific heat.</b> c = '+sig(-qw,sf+1)+' J ÷ ('+mm+' g × '+fx(dTm,2)+' °C) = <b>'+sig(ans,sf)+' '+CU+'</b>'
+        ], roundNote(sf))};
+    }
+    // Find the final temperature.
+    const part={type:'num', label:'Final temperature', unit:'°C', answer:Tf, sf:null, tolRel:0, tolAbs:0.15, show:fx(Tf,1)+' °C',
+      errors:clean([
+        {value:(Tm+Tw)/2, msg:'That is the plain average of the two temperatures. The water holds much more heat per degree than the metal, so the final temperature ends up closer to the water.'},
+        {value:(Mm*Tm+Mw*Tw)/(Mm+Mw), msg:'That weights the temperatures by mass only. Each mass has to be multiplied by its specific heat as well.'},
+        {value:(Cm*Tw+Cw*Tm)/(Cm+Cw), msg:'The two heat capacities look swapped. Multiply each temperature by the heat capacity of that same substance.'},
+        {value:(Cm*Tm-Cw*Tw)/(Cm-Cw), msg:'Check the signs. Heat lost by the metal equals heat gained by the water: m c (T − T) for the metal is the negative of m c (T − T) for the water.'}
+      ], Tf, 0.3),
+      generic:'Not yet. Set heat lost by the metal equal to heat gained by the water and solve for the one final temperature they share. It must fall between '+TwS+' °C and '+TmS+' °C.'};
+    const steps=m=>lab('Step 1: heat capacity of each (mass × specific heat)')+
+      cellRow(gcell(m,'C(metal)','Cm','mass of metal times its specific heat','J/°C','',false)+gcell(m,'C(water)','Cw','mass of water times 4.184','J/°C','',false))+
+      lab('Step 2: heat lost by the metal = heat gained by the water')+
+      row(q('T<sub>final</sub>')+EQOP+frac('C(metal) × T(metal) + C(water) × T(water)','C(metal) + C(water)'));
+    const blanks={Cm:{want:Cm,tol:0.01}, Cw:{want:Cw,tol:0.01}};
+    const blankMsg=got=>{
+      const bad=k=>got[k] && !got[k].empty && !got[k].good;
+      if(bad('Cm')) return 'Check the heat capacity of the metal: '+mm+' g × '+cs+' '+CU+'.';
+      if(bad('Cw')) return 'Check the heat capacity of the water: '+mw+' g × 4.184 '+CU+'.';
+      return '';
+    };
+    return {kind:'exchange', type, sub:name, ctx:'Heat flows from the hot metal into the cool water until both reach the same temperature.', eqHTML:'', am:null, parts:[part],
+      question:setup+' What is the final temperature?'+WATER,
+      guided:steps('live'),
+      hints:[lab('Hint 1')+txt('Both end at the same final temperature. Write q = m × c × (T<sub>final</sub> − T<sub>initial</sub>) for each, and set q(metal) = −q(water).'),
+             lab('Hint 2: the steps')+steps('ph')],
+      blanks, blankMsg,
+      solution:solWrap([
+        '<b>Set up.</b> q(metal) = −q(water), so '+mm+' g × '+cs+' × (T − '+TmS+') = −'+mw+' g × 4.184 × (T − '+TwS+')',
+        '<b>Heat capacities.</b> Metal: '+mm+' g × '+cs+' '+CU+' = '+sig(Cm,4)+' J/°C<br>Water: '+mw+' g × 4.184 '+CU+' = '+sig(Cw,4)+' J/°C',
+        '<b>Solve for T.</b> T = ('+sig(Cm,4)+' × '+TmS+' + '+sig(Cw,4)+' × '+TwS+') ÷ ('+sig(Cm,4)+' + '+sig(Cw,4)+') = <b>'+fx(Tf,1)+' °C</b>'
+      ], '<p class="note">Check: the answer falls between the two starting temperatures, and closer to the water.</p>')};
+  }
+}
+
+/* ---------- 3. Coffee-cup calorimetry ---------- */
+const ASSUME=' Assume the solution has a density of 1.00 g/mL and a specific heat of 4.184 '+CU+', and that no heat is lost to the cup.';
+const ASSUME_S=' Assume the solution has a specific heat of 4.184 '+CU+' and that no heat is lost to the cup.';
+function makeCoffee(prev){
+  for(let t=0;;t++){
+    const r0=Math.random(), type = r0<0.45 ? 'neut' : r0<0.80 ? 'diss' : 'predict';
+    const TiS=(rint(1900,2500)/100).toFixed(2), Ti=Number(TiS);
+    if(type==='neut'){
+      const pr=pick(NEUT); if(t<50 && prev && prev.key===pr[0]+pr[1]) continue;
+      const acid=pr[0], base=pr[1], M=g3(0.5,2), Mn=Number(M);
+      const VOL=['25.0','50.0','75.0','100.0'];
+      const Va=pick(VOL), Vb = Math.random()<0.65 ? Va : pick(VOL.filter(v=>v!==Va));
+      const va=Number(Va), vb=Number(Vb), mass=va+vb, lim=Math.min(va,vb), n=lim/1000*Mn;
+      const TfS=(Ti+n*-H_NEUT*1000/(mass*CW)).toFixed(2), dT=Number((Number(TfS)-Ti).toFixed(2));
+      if(dT<1.5) continue;
+      const qs=mass*CW*dT, dH=-qs/n/1000, sf=Math.min(3,sfOfDelta(dT));
+      const rxn={r:[[1,acid,'aq'],[1,base,'aq']], p:[[1,pr[2],'aq'],[1,'H2O','l']]};
+      const fa=tag(acid,'sa'), fb=tag(base,'sa'), equal=va===vb;
+      const limF = va<=vb ? acid : base;
+      const nErr=[{value:n*1000, msg:'Molarity is moles per liter. Convert the milliliters to liters first.'}];
+      if(equal) nErr.push({value:2*n, msg:'Do not add the moles of acid and base together. They react 1:1, so the moles of reaction equal the moles of either one.'});
+      else nErr.push({value:Math.max(va,vb)/1000*Mn, msg:'That is the reactant in excess. Only the smaller amount can react, so the limiting reactant sets the moles of reaction.'},
+                     {value:(va+vb)/1000*Mn, msg:'Do not add the moles of acid and base together. They react 1:1, and the smaller amount limits the reaction.'});
+      const parts=[
+        {type:'num', label:'q for the solution', unit:'J', answer:qs, sf, show:sig(qs,sf)+' J',
+         errors:clean([
+           {value:lim*CW*dT, msg:'Both solutions end up in the cup. Use the total mass: '+Va+' mL + '+Vb+' mL of solution, at 1.00 g/mL.'},
+           {value:Math.max(va,vb)*CW*dT, msg:'Both solutions end up in the cup. Use the total mass: '+Va+' mL + '+Vb+' mL of solution, at 1.00 g/mL.'},
+           {value:mass*CW*Number(TfS), msg:'It looks like the final temperature was used. Use the change in temperature: final − initial.'},
+           {value:-qs, msg:'The solution warmed up, so it absorbed heat and its q is positive.'},
+           {value:qs/1000, msg:'That is the heat in kilojoules. Give it in joules.'}
+         ], qs),
+         generic:'Not yet. q(solution) = total mass of solution × 4.184 '+CU+' × '+DT+'.'},
+        {type:'num', label:'Moles of '+tag(limF,'sa')+' that reacted', unit:'mol', answer:n, sf:3, show:sig(n,3)+' mol',
+         errors:clean(nErr, n),
+         generic:'Not yet. Moles = liters × molarity'+(equal ? '.' : ', for the reactant that runs out first.')},
+        {type:'num', label:DH+' of the reaction', unit:'kJ/mol', answer:dH, sf, show:sig(dH,sf)+' kJ/mol',
+         errors:clean([
+           {value:-dH, msg:'The solution warmed up, so the reaction released heat. q(reaction) = −q(solution), which makes '+DH+' negative.'},
+           {value:dH*1000, msg:'That is in joules per mole. Divide by 1000 to get kJ/mol.'},
+           {value:-dH*1000, msg:'That is in joules per mole, and the sign is off. The reaction released heat, so '+DH+' is negative, and kJ/mol means dividing by 1000.'},
+           {value:-qs/1000, msg:'That is the heat for this one experiment, in kJ. Divide by the moles that reacted to get kJ per mole.'},
+           {value:dH/2, msg:'It looks like the moles of acid and base were added together. Use the moles of reaction, which is the moles of the limiting reactant.'}
+         ], dH),
+         generic:'Not yet. q(reaction) = −q(solution). Convert it to kJ and divide by the moles that reacted.'}
+      ];
+      const steps=m=>lab('Step 1: the solution')+cellRow(gcell(m,'mass','ms','total mass of solution in grams','g','',false)+gcell(m,DT,'dT','temperature change, final minus initial','°C','',false))+
+        row(q('q(solution)')+EQOP+q('mass')+XOP+q('4.184')+XOP+q(DT))+
+        lab('Step 2: the reaction')+row(q('q(reaction)')+EQOP+q('−q(solution)'))+
+        lab('Step 3: per mole')+row(q(DH)+EQOP+frac('q(reaction), in kJ','moles that reacted'));
+      const blanks={ms:{want:mass,tol:0.002}, dT:{want:dT,tol:0.004}};
+      const blankMsg=got=>{
+        const bad=k=>got[k] && !got[k].empty && !got[k].good;
+        if(bad('ms')) return 'Check the mass of the solution. Both solutions are in the cup: '+Va+' mL + '+Vb+' mL, at 1.00 g/mL.';
+        if(bad('dT')) return 'Check '+DT+': '+TfS+' °C − '+TiS+' °C.';
+        return '';
+      };
+      return {kind:'coffee', type, key:acid+base, ctx:'A strong acid and a strong base are mixed in a coffee-cup calorimeter.', eqHTML:eqBox(rxn,{}), am:null, parts,
+        question:Va+' mL of '+M+' M '+fa+' is mixed with '+Vb+' mL of '+M+' M '+fb+' in a coffee-cup calorimeter. Both solutions start at '+TiS+' °C, and the temperature rises to '+TfS+' °C.'+ASSUME,
+        guided:steps('live'),
+        hints:[lab('Hint 1')+txt('The thermometer is in the solution, so start there: q(solution) = m × c × '+DT+'. The reaction released that heat, so q(reaction) has the opposite sign. Then divide by the moles that reacted.'),
+               lab('Hint 2: the steps')+steps('ph')],
+        blanks, blankMsg,
+        solution:solWrap([
+          '<b>Mass of solution.</b> '+Va+' mL + '+Vb+' mL = '+fx(mass,1)+' mL, which is '+fx(mass,1)+' g at 1.00 g/mL',
+          '<b>Temperature change.</b> '+DT+' = '+TfS+' °C − '+TiS+' °C = '+fx(dT,2)+' °C',
+          '<b>q for the solution.</b> '+fx(mass,1)+' g × 4.184 '+CU+' × '+fx(dT,2)+' °C = <b>'+sig(qs,sf)+' J</b>',
+          '<b>Moles that reacted.</b> '+(equal ? '' : tag(limF,'sa')+' is limiting. ')+toL(fx(lim,1))+' L × '+M+' mol/L = <b>'+sig(n,3)+' mol</b>',
+          '<b>q for the reaction.</b> q(reaction) = −q(solution) = '+sig(-qs,sf+1)+' J = '+sig(-qs/1000,sf+1)+' kJ',
+          '<b>Per mole.</b> '+DH+' = '+sig(-qs/1000,sf+1)+' kJ ÷ '+sig(n,4)+' mol = <b>'+sig(dH,sf)+' kJ/mol</b>'
+        ], roundNote(sf))};
+    }
+    const sl=pick(SALTS); if(t<50 && prev && prev.key===sl[0]) continue;
+    const f=sl[0], name=sl[1], H=sl[2], MM=molarMass(f), fs=tag(f,'sa');
+    const ms=g3(2,12), mw=pick(['50.0','75.0','100.0','150.0']), Ms=Number(ms), Mw=Number(mw), mass=Ms+Mw, n=Ms/MM;
+    const TfS=(Ti+(-n*H*1000)/(mass*CW)).toFixed(2), Tf=Number(TfS), dT=Number((Tf-Ti).toFixed(2));
+    if(Math.abs(dT)<1.5 || Tf<2) continue;
+    const rxn={r:[[1,f,'s']], p:[[1,f,'aq']]}, warm=dT>0;
+    if(type==='diss'){
+      const qs=mass*CW*dT, dH=-qs/n/1000, sf=Math.min(3,sfOfDelta(dT));
+      const parts=[
+        {type:'num', label:'q for the solution', unit:'J', answer:qs, sf, show:sig(qs,sf)+' J',
+         errors:clean([
+           {value:Mw*CW*dT, msg:'The solution is the water plus the dissolved '+name+'. Use the total mass: '+mw+' g + '+ms+' g.'},
+           {value:-qs, msg:warm ? 'The solution warmed up, so it absorbed heat and its q is positive.' : 'The solution cooled, so it lost heat and its q is negative. '+DT+' is final minus initial.'},
+           {value:-Mw*CW*dT, msg:'Two things to check: use the total mass of the solution ('+mw+' g + '+ms+' g), and the sign of '+DT+' (final minus initial).'},
+           {value:Ms*CW*dT, msg:'That uses only the mass of the '+name+'. Use the mass of the whole solution: water plus solid.'},
+           {value:qs/1000, msg:'That is the heat in kilojoules. Give it in joules.'}
+         ], qs),
+         generic:'Not yet. q(solution) = total mass of solution × 4.184 '+CU+' × '+DT+', with '+DT+' = final − initial.'},
+        {type:'num', label:'Moles of '+fs, unit:'mol', answer:n, sf:3, show:sig(n,3)+' mol',
+         errors:clean([
+           {value:Ms*MM, msg:'To go from grams to moles, divide by the molar mass. It looks like you multiplied.'},
+           {value:mass/MM, msg:'Only the '+name+' counts here: '+ms+' g, not the mass of the whole solution.'}
+         ], n),
+         generic:'Not yet. Moles = grams of '+F(f)+' ÷ its molar mass.'},
+        {type:'num', label:DH+' of solution', unit:'kJ/mol', answer:dH, sf, show:plus(sig(dH,sf))+' kJ/mol',
+         errors:clean([
+           {value:-dH, msg:warm ? 'The solution warmed up, so dissolving released heat. q(dissolving) = −q(solution), which makes '+DH+' negative.' : 'The solution cooled, so dissolving absorbed heat from it. q(dissolving) = −q(solution), which makes '+DH+' positive.'},
+           {value:dH*1000, msg:'That is in joules per mole. Divide by 1000 to get kJ/mol.'},
+           {value:-dH*1000, msg:'That is in joules per mole, and the sign is off. q(dissolving) = −q(solution), and kJ/mol means dividing by 1000.'},
+           {value:-qs/1000, msg:'That is the heat for this one experiment, in kJ. Divide by the moles of '+F(f)+' to get kJ per mole.'}
+         ], dH),
+         generic:'Not yet. q(dissolving) = −q(solution). Convert it to kJ and divide by the moles of '+F(f)+'.'}
+      ];
+      const steps=m=>lab('Step 1: the solution')+cellRow(gcell(m,'mass','ms','total mass of solution in grams','g','',false)+gcell(m,DT,'dT','temperature change, final minus initial','°C','',false))+
+        row(q('q(solution)')+EQOP+q('mass')+XOP+q('4.184')+XOP+q(DT))+
+        lab('Step 2: the dissolving process')+row(q('q(dissolving)')+EQOP+q('−q(solution)'))+
+        lab('Step 3: per mole')+row(q(DH)+EQOP+frac('q(dissolving), in kJ','moles of '+fs));
+      const blanks={ms:{want:mass,tol:0.002}, dT:{want:dT,tol:0.004}};
+      const blankMsg=got=>{
+        const bad=k=>got[k] && !got[k].empty && !got[k].good;
+        if(bad('ms')) return 'Check the mass of the solution: water plus solid, '+mw+' g + '+ms+' g.';
+        if(bad('dT')) return Math.abs(got.dT.v+dT)<=0.004*Math.abs(dT) ? DT+' is final minus initial, so it is '+(warm?'positive here.':'negative when the solution cools.') : 'Check '+DT+': '+TfS+' °C − '+TiS+' °C.';
+        return '';
+      };
+      return {kind:'coffee', type, key:f, ctx:'Solid '+name+' dissolves in water in a coffee-cup calorimeter.', eqHTML:eqBox(rxn,{}), am:[f], parts,
+        question:ms+' g of '+name+' ('+fs+') is dissolved in '+mw+' g of water in a coffee-cup calorimeter. The temperature changes from '+TiS+' °C to '+TfS+' °C.'+ASSUME_S,
+        guided:steps('live'),
+        hints:[lab('Hint 1')+txt('The thermometer is in the solution, so start there: q(solution) = m × c × '+DT+', using the mass of the whole solution. The dissolving process has the opposite sign. Then divide by the moles of solid.'),
+               lab('Hint 2: the steps')+steps('ph')],
+        blanks, blankMsg,
+        solution:solWrap([
+          '<b>Mass of solution.</b> '+mw+' g + '+ms+' g = '+sig(mass,4)+' g',
+          '<b>Temperature change.</b> '+DT+' = '+TfS+' °C − '+TiS+' °C = '+fx(dT,2)+' °C',
+          '<b>q for the solution.</b> '+sig(mass,4)+' g × 4.184 '+CU+' × ('+fx(dT,2)+' °C) = <b>'+sig(qs,sf)+' J</b>',
+          mmLines([[f,'sa']]),
+          '<b>Moles.</b> '+ms+' g ÷ '+MM.toFixed(2)+' g/mol = <b>'+sig(n,3)+' mol</b>',
+          '<b>q for dissolving.</b> −q(solution) = '+sig(-qs,sf+1)+' J = '+sig(-qs/1000,sf+1)+' kJ',
+          '<b>Per mole.</b> '+DH+' = '+sig(-qs/1000,sf+1)+' kJ ÷ '+sig(n,4)+' mol = <b>'+plus(sig(dH,sf))+' kJ/mol</b>'
+        ], roundNote(sf))};
+    }
+    // Predict the final temperature from a known enthalpy of solution.
+    const Hs=dHtext(H.toFixed(1)), qr=n*H*1000, d=-qr/(mass*CW), ans=Ti+d;
+    const part={type:'num', label:'Final temperature', unit:'°C', answer:ans, sf:null, tolRel:0, tolAbs:0.15, show:fx(ans,1)+' °C',
+      errors:clean([
+        {value:Ti-d, msg:H>0 ? DH+' is positive, so dissolving absorbs heat from the solution. The temperature goes down, not up.' : DH+' is negative, so dissolving releases heat into the solution. The temperature goes up, not down.'},
+        {value:d, msg:'That is the temperature change. The final temperature is the starting temperature plus the change.'},
+        {value:Math.abs(d), msg:'That is the size of the temperature change. The final temperature is the starting temperature plus the change.'},
+        {value:Ti-qr/(Mw*CW), msg:'The solution is the water plus the dissolved solid. Use the total mass: '+mw+' g + '+ms+' g.'},
+        {value:Ti-(n*H)/(mass*CW), msg:'The enthalpy is in kilojoules, and the specific heat is in joules. Convert kJ to J first.'}
+      ], ans, 0.3),
+      generic:'Not yet. Find the heat of dissolving (moles × '+DH+'), give the solution the opposite sign, then '+DT+' = q(solution) ÷ (mass of solution × 4.184).'};
+    const steps=m=>lab('Step 1: heat of dissolving')+cellRow(gcell(m,'n','n','moles of '+f,'mol','',false)+gcell(m,'q(dissolving)','qr','heat of dissolving in joules, with its sign','J','',false))+
+      lab('Step 2: the solution gets the opposite sign')+cellRow(gcell(m,'q(solution)','qs','heat for the solution in joules, with its sign','J','',false)+gcell(m,DT,'dT','temperature change of the solution, with its sign','°C','',false))+
+      lab('Step 3')+row(q('T<sub>final</sub>')+EQOP+q('T<sub>initial</sub> + '+DT));
+    const blanks={n:{want:n,tol:0.01}, qr:{want:qr,tol:0.01}, qs:{want:-qr,tol:0.01}, dT:{want:d,tol:0.01}};
+    const blankMsg=got=>{
+      const bad=k=>got[k] && !got[k].empty && !got[k].good;
+      const flipped=k=>Math.abs(got[k].v+blanks[k].want)<=0.01*Math.abs(blanks[k].want);
+      if(bad('n')) return 'Check the moles of '+F(f)+': grams ÷ molar mass.';
+      if(bad('qr')) return flipped('qr') ? 'q(dissolving) has the same sign as '+DH+', which is '+(H>0?'positive':'negative')+' here.' : 'Check q(dissolving): moles × '+DH+', converted from kJ to J.';
+      if(bad('qs')) return flipped('qs') ? 'q(solution) is the opposite of q(dissolving).' : 'Check q(solution). It is the same size as q(dissolving), with the opposite sign.';
+      if(bad('dT')) return 'Check '+DT+': q(solution) ÷ (total mass of solution × 4.184).';
+      return '';
+    };
+    return {kind:'coffee', type, key:f, ctx:'Solid '+name+' dissolves in water in a coffee-cup calorimeter.', eqHTML:eqBox(rxn,{},DH+' = '+Hs+' kJ/mol'), am:[f], parts:[part],
+      question:ms+' g of '+name+' ('+fs+') is dissolved in '+mw+' g of water at '+TiS+' °C in a coffee-cup calorimeter. The enthalpy of solution is '+Hs+' kJ/mol. What is the final temperature of the solution?'+ASSUME_S,
+      guided:steps('live'),
+      hints:[lab('Hint 1')+txt('Work the calorimetry backward. Moles × '+DH+' gives the heat of dissolving. The solution gets the same amount with the opposite sign, and q = m × c × '+DT+' turns that into a temperature change.'),
+             lab('Hint 2: the steps')+steps('ph')],
+      blanks, blankMsg,
+      solution:solWrap([
+        mmLines([[f,'sa']]),
+        '<b>Moles.</b> '+ms+' g ÷ '+MM.toFixed(2)+' g/mol = '+sig(n,4)+' mol',
+        '<b>Heat of dissolving.</b> '+sig(n,4)+' mol × ('+Hs+' kJ/mol) = '+sig(qr/1000,4)+' kJ = '+sig(qr,4)+' J',
+        '<b>Heat for the solution.</b> q(solution) = −q(dissolving) = '+sig(-qr,4)+' J',
+        '<b>Temperature change.</b> '+DT+' = '+sig(-qr,4)+' J ÷ ('+sig(mass,4)+' g × 4.184 '+CU+') = '+sig(d,3)+' °C',
+        '<b>Final temperature.</b> '+TiS+' °C + ('+sig(d,3)+' °C) = <b>'+fx(ans,1)+' °C</b>'
+      ])};
+  }
+}
+
+/* ---------- 4. Thermochemical equations ---------- */
+function makeThermo(prev){
+  for(let t=0;;t++){
+    const rxn=pick(TQ); if(t<200 && prev && prev.rxn===rxn) continue;
+    const H=Number(rxn.dH), Hs=dHtext(rxn.dH), Ha=rxn.dH.replace('-',''), exo=H<0;
+    const A=pick(spc(rxn.r,'r').concat(spc(rxn.p,'p'))), fa=tag(A.f,'sa'), a=A.c, MA=A.M;
+    const r0=Math.random(), type = r0<0.5 ? 'g2kJ' : r0<0.85 ? 'kJ2g' : 'mol2kJ';
+    const does = A.role==='r' ? 'reacts' : 'forms';
+    const E=[]; const add=(value,msg)=>E.push({value,msg});
+    const hl={}; hl[A.f]='sa';
+    const COEF='The '+DH+' belongs to the equation as written, so it goes with '+a+' mol of '+fa+', not 1 mol.';
+    let question, ans, unit, label, chain, blanks, sol, am=null, show;
+    const val=(mode,k,labelText,v,wide)=> mode==='live' ? blankIn(k,labelText,wide) : mode==='ph' ? PH : v;
+    const x = (mode,s) => mode==='full' ? cxs(s) : s;
+    if(type==='kJ2g'){
+      const qk=fmt3(Math.abs(Number(g3(1,150))/MA/a*H)); if(!qk) continue;
+      ans=Number(qk)/Math.abs(H)*a*MA; if(ans<0.2 || ans>900) continue;
+      unit='g '+fa; label='Mass'; am=[A.f]; show=sig(ans,3)+' g '+fa;
+      question='How many grams of '+fa+' '+(A.role==='r' ? 'must react' : 'form')+' when '+qk+' kJ of heat is '+(exo?'released':'absorbed')+'?';
+      if(a!==1){ add(ans/a, COEF); add(ans/(a*a), 'The '+DH+' goes with '+a+' mol of '+fa+'. Multiply the kilojoules by '+a+' mol '+fa+' over '+Ha+' kJ.'); }
+      add(Number(qk)/Math.abs(H)*a, 'That is the moles of '+fa+'. The question asks for grams, so multiply by the molar mass.');
+      add(Number(qk)*Math.abs(H)/a*MA, 'The enthalpy factor is upside down. Kilojoules have to cancel: put kJ on the bottom.');
+      chain=mode=>row(q(qk+' '+x(mode,'kJ'))+XOP+frac(val(mode,'a','coefficient of '+A.f,a)+' '+x(mode,'mol '+fa), val(mode,'H','size of the enthalpy change in kJ',Ha,true)+' '+x(mode,'kJ'))+
+        XOP+frac(val(mode,'MA','molar mass of '+A.f,MA.toFixed(2),true)+' g '+fa,'1 '+x(mode,'mol '+fa))+'<span class="grp">'+EQOP+q((mode==='full' ? '<b>'+sig(ans,3)+'</b>' : '?')+' g '+fa)+'</span>');
+      blanks={a:{want:a,tol:1e-9}, H:{want:Math.abs(H),tol:0.002}, MA:{want:MA,tol:0.005}};
+      sol=[mmLines([[A.f,'sa']]),
+           '<b>Kilojoules to moles.</b> '+qk+' kJ × ('+a+' mol '+fa+' ÷ '+Ha+' kJ) = '+sig(Number(qk)/Math.abs(H)*a,4)+' mol '+fa,
+           '<b>Moles to grams.</b> '+sig(Number(qk)/Math.abs(H)*a,4)+' mol × '+MA.toFixed(2)+' g/mol = <b>'+sig(ans,3)+' g '+fa+'</b>',
+           '<b>All in one line.</b>'+chain('full')];
+    } else {
+      const amt = type==='g2kJ' ? g3(1,150) : g3(0.05,8), n = type==='g2kJ' ? Number(amt)/MA : Number(amt);
+      ans=n/a*H; if(Math.abs(ans)<0.5 || Math.abs(ans)>50000) continue;
+      unit='kJ'; label='Enthalpy change'; show=plus(sig(ans,3))+' kJ';
+      if(type==='g2kJ') am=[A.f];
+      question='What is the enthalpy change, in kJ, when '+amt+(type==='g2kJ' ? ' g' : ' mol')+' of '+fa+' '+does+'?';
+      add(-ans, exo ? 'This reaction releases heat ('+DH+' is negative), so the enthalpy change is negative.' : 'This reaction absorbs heat ('+DH+' is positive), so the enthalpy change is positive.');
+      if(a!==1){ add(n*H, COEF); add(n*a*H, 'The '+DH+' goes with '+a+' mol of '+fa+'. Divide by '+a+', do not multiply.'); add(-n*H, COEF); }
+      if(type==='g2kJ'){
+        add(Number(amt)/a*H, 'It looks like grams were used as moles. Divide the grams by the molar mass first.');
+        add(n, 'That is the moles of '+fa+'. Multiply by '+Ha+' kJ over '+a+' mol to get the enthalpy change.');
+      }
+      chain=mode=>row(
+        (type==='g2kJ' ? q(amt+' '+x(mode,'g '+fa))+XOP+frac('1 '+x(mode,'mol '+fa), val(mode,'MA','molar mass of '+A.f,MA.toFixed(2),true)+' '+x(mode,'g '+fa))
+                       : q(amt+' '+x(mode,'mol '+fa)))+
+        XOP+frac(val(mode,'H','enthalpy change in kJ, with its sign',Hs,true)+' kJ', val(mode,'a','coefficient of '+A.f,a)+' '+x(mode,'mol '+fa))+
+        '<span class="grp">'+EQOP+q((mode==='full' ? '<b>'+plus(sig(ans,3))+'</b>' : '?')+' kJ')+'</span>');
+      blanks={H:{want:H,tol:0.002}, a:{want:a,tol:1e-9}};
+      if(type==='g2kJ') blanks.MA={want:MA,tol:0.005};
+      sol=(type==='g2kJ' ? [mmLines([[A.f,'sa']]), '<b>Grams to moles.</b> '+amt+' g ÷ '+MA.toFixed(2)+' g/mol = '+sig(n,4)+' mol '+fa] : [])
+        .concat(['<b>Moles to kilojoules.</b> '+sig(n,4)+' mol '+fa+' × ('+Hs+' kJ ÷ '+a+' mol '+fa+') = <b>'+plus(sig(ans,3))+' kJ</b>',
+                 '<b>All in one line.</b>'+chain('full')]);
+    }
+    const blankMsg=got=>{
+      const bad=k=>got[k] && !got[k].empty && !got[k].good;
+      if(bad('a')) return 'Check the coefficient. The '+DH+' goes with the equation as written, so use the coefficient of '+F(A.f)+' from the balanced equation.';
+      if(bad('H')) return type!=='kJ2g' && Math.abs(got.H.v+H)<=0.002*Math.abs(H) ? 'Check the sign of '+DH+'. It is '+(exo?'negative':'positive')+' for this reaction.' : 'Check the enthalpy value. Use the '+DH+' given with the equation.';
+      if(bad('MA')) return 'Check the molar mass of '+F(A.f)+'. Add the atomic masses for every atom in the formula.';
+      return '';
+    };
+    const part={type:'num', label, unit, answer:ans, sf:3, errors:clean(E,ans), show,
+      generic:'Not yet. The '+DH+' is a conversion factor between kilojoules and the moles in the balanced equation: '+Ha+' kJ for every '+a+' mol of '+F(A.f)+'.'};
+    return {kind:'thermo', type, rxn, ctx:rxn.ctx, eqHTML:eqBox(rxn,hl,DH+' = '+Hs+' kJ'), am, question, parts:[part],
+      guided:lab('Fill in the blanks to finish the setup, then calculate.')+chain('live'),
+      hints:[lab('Hint 1')+txt('Treat '+DH+' as a conversion factor that belongs to the equation as written: '+Ha+' kJ goes with '+a+' mol of '+fa+'.'),
+             lab('Hint 2: the setup')+chain('ph')],
+      blanks, blankMsg, solution:solWrap(sol, roundNote(3))};
+  }
+}
+
+function makeProblem(kind, prev){
+  if(kind==='heat')     return makeHeat(prev);
+  if(kind==='exchange') return makeExchange(prev);
+  if(kind==='coffee')   return makeCoffee(prev);
+  return makeThermo(prev);
+}
+
+/* ---------- 5. Hess's law ---------- */
+// Multiply an equation by s. A negative s reverses it.
+function scaleEq(eq, s){
+  const k=Math.abs(s), r=eq.r.map(e=>[e[0]*k,e[1],e[2]]), p=eq.p.map(e=>[e[0]*k,e[1],e[2]]);
+  return s>0 ? {r, p, dH:eq.dH*s} : {r:p, p:r, dH:eq.dH*s};
+}
+// Net amount of every species: products count as positive, reactants as negative.
+function netOf(list){
+  const net={};
+  list.forEach(eq=>{
+    eq.r.forEach(e=>{ const k=e[1]+'|'+e[2]; net[k]=(net[k]||0)-e[0]; });
+    eq.p.forEach(e=>{ const k=e[1]+'|'+e[2]; net[k]=(net[k]||0)+e[0]; });
+  });
+  Object.keys(net).forEach(k=>{ if(Math.abs(net[k])<1e-9) delete net[k]; });
+  return net;
+}
+const MULTS=[0.5,1,2,3,4];
+function makeHess(prev){
+  for(let t=0;;t++){
+    const base=pick(HESS); if(t<200 && prev && prev.base===base) continue;
+    const eqs=base.eqs.map(e=>{
+      const ok=[1,1,1,-1,-1,2,0.5,-2,-0.5].filter(s=>{
+        const need=e.m/s, d=e.dH*s*10;
+        return MULTS.indexOf(Math.abs(need))>=0 && Math.abs(d-Math.round(d))<1e-6 &&
+               e.r.concat(e.p).every(x=>{ const c=x[0]*Math.abs(s); return Number.isInteger(c*2) && c<=13; });
+      });
+      const s=pick(ok), sc=scaleEq(e,s);
+      return {r:sc.r, p:sc.p, dH:Math.round(sc.dH*10)/10, need:e.m/s};
+    });
+    if(t<100 && eqs.every(e=>e.need===1)) continue;
+    for(let i=eqs.length-1;i>0;i--){ const j=rint(0,i); const tmp=eqs[i]; eqs[i]=eqs[j]; eqs[j]=tmp; }
+    const answer=eqs.reduce((s,e)=>s+e.need*e.dH,0);
+    return {kind:'hess', base, target:base.target, eqs, answer};
+  }
+}
+// choices: [{rev, mult}] for each given equation.
+const hessEff = ch => ch.map(c=>(c.rev?-1:1)*c.mult);
+function hessNet(P, ch){
+  const eff=hessEff(ch), list=P.eqs.map((e,i)=>scaleEq(e,eff[i]));
+  const net=netOf(list), want=netOf([P.target]);
+  const keys=Object.keys(Object.assign({},net,want));
+  const match=keys.every(k=>Math.abs((net[k]||0)-(want[k]||0))<1e-9);
+  // Everything that appeared in the student's equations but cancelled.
+  const seen={}; list.forEach(eq=>eq.r.concat(eq.p).forEach(e=>{ seen[e[1]+'|'+e[2]]=1; }));
+  const cancelled=Object.keys(seen).filter(k=>!net[k]);
+  const side=sign=>Object.keys(net).filter(k=>net[k]*sign>0).map(k=>[Math.abs(net[k]),k.split('|')[0],k.split('|')[1]]);
+  return {match, net, want, cancelled, eq:{r:side(-1), p:side(1)}, list, sum:P.eqs.reduce((s,e,i)=>s+eff[i]*e.dH,0)};
+}
+// A pointer to the first thing that does not match the target yet.
+function hessTip(P, ch){
+  const N=hessNet(P,ch); if(N.match) return '';
+  const keys=Object.keys(Object.assign({},N.net,N.want));
+  const name=k=>F(k.split('|')[0]);
+  for(const k of keys){
+    const have=N.net[k]||0, want=N.want[k]||0;
+    if(Math.abs(have-want)<1e-9) continue;
+    if(!want) return name(k)+' is not in the target, so it has to cancel. Right now '+coefTxt(Math.abs(have))+' '+name(k)+' is left on the '+(have<0?'left':'right')+'.';
+    if(!have) return 'The target needs '+coefTxt(Math.abs(want))+' '+name(k)+' on the '+(want<0?'left':'right')+', but it has cancelled out of your sum.';
+    if(have*want<0) return name(k)+' is on the wrong side. The target has it on the '+(want<0?'left':'right')+'.';
+    return 'The target needs '+coefTxt(Math.abs(want))+' '+name(k)+' on the '+(want<0?'left':'right')+'. You have '+coefTxt(Math.abs(have))+'.';
+  }
+  return '';
+}
+function hessPart(P, ch){
+  const ans=P.answer, N=hessNet(P,ch), E=[];
+  if(!N.match) E.push({value:N.sum, msg:'That is the right total for the equations as you have arranged them, but they do not add up to the target equation yet. Fix the equations first.'});
+  E.push({value:P.eqs.reduce((s,e)=>s+e.dH,0), msg:'It looks like the '+DH+' values were added just as given. Whatever you do to an equation, you do to its '+DH+': reversing changes the sign, and multiplying multiplies it.'});
+  P.eqs.forEach((e,i)=>{
+    if(e.need<0) E.push({value:ans-2*e.need*e.dH, msg:'Check equation '+(i+1)+'. It has to be reversed, so the sign of its '+DH+' changes.'});
+    if(Math.abs(e.need)!==1) E.push({value:ans-e.need*e.dH+Math.sign(e.need)*e.dH, msg:'Check equation '+(i+1)+'. It has to be multiplied by '+coefTxt(Math.abs(e.need))+', so its '+DH+' is multiplied by '+coefTxt(Math.abs(e.need))+' as well.'});
+  });
+  E.push({value:-ans, msg:'The size is right but the sign is not. Check which equations were reversed.'});
+  return {type:'num', label:DH+' for the target equation', unit:'kJ', answer:ans, sf:null, tolRel:0, tolAbs:0.15, errAbs:0.15,
+    errors:clean(E, ans, 0.5), show:plus(fx(ans,1))+' kJ',
+    generic:'Not yet. Arrange the given equations so they add up to the target, change each '+DH+' the same way as its equation, then add the '+DH+' values.'};
+}
+function hessOps(e){
+  const k=Math.abs(e.need), ops=[];
+  if(e.need<0) ops.push('reverse it');
+  if(k!==1) ops.push('multiply it by '+coefTxt(k));
+  return ops.length ? ops.join(' and ') : 'use it as written';
+}
+function hessSolution(P){
+  const items=P.eqs.map((e,i)=>{
+    const sc=scaleEq(e,e.need);
+    return '<b>Equation '+(i+1)+':</b> '+hessOps(e)+'.<div class="eq small">'+eqInner(sc)+'<span class="dh">'+DH+' = '+plus(fx(e.need*e.dH,1))+' kJ</span></div>';
+  });
+  items.push('<b>Add them.</b> Everything that is not in the target cancels, leaving the target equation.<br>'+DH+' = '+P.eqs.map(e=>'('+plus(fx(e.need*e.dH,1))+')').join(' + ')+' = <b>'+plus(fx(P.answer,1))+' kJ</b>');
+  return solWrap(items);
+}
+
+/* ---------- 6. Virtual calorimeter ----------
+   L describes the experiment. d holds the measurements the student has taken. */
+const LAB_LOSS = 0.0006;          // fraction of the difference from room temperature lost each second
+function makeLab(exp, prev){
+  const Troom=rint(2050,2450)/100;
+  if(exp==='metal'){
+    let mt; do{ mt=pick(METALS); }while(prev && prev.metal && prev.metal[0]===mt[0]);
+    // Heavier samples for metals with a small specific heat, so the water warms by a few degrees.
+    return {exp, metal:mt, c:Number(mt[1]), mMetal:Math.min(240,(14+Math.random()*22)/Number(mt[1])).toFixed(2), Tbath:(rint(9930,9995)/100).toFixed(2), Troom};
+  }
+  if(exp==='neut'){
+    const pr=pick(NEUT);
+    return {exp, acid:pr[0], base:pr[1], salt:pr[2], M:pick(['0.500','1.00','1.50','2.00']), Troom};
+  }
+  let sl; do{ sl=pick(SALTS); }while(prev && prev.f===sl[0]);
+  return {exp, f:sl[0], name:sl[1], H:sl[2], MM:molarMass(sl[0]), Troom};
+}
+// Mass of water delivered for a nominal volume, as read on the balance.
+const labWater = vol => (Number(vol)*0.9977+(Math.random()-0.5)*0.16).toFixed(2);
+// Starts the heat flow when the contents are mixed.
+function labMix(L, d){
+  if(L.exp==='metal'){
+    const Cm=Number(L.mMetal)*L.c, Cw=Number(d.mw)*CW;
+    return {T:L.Troom, C:Cw, room:L.Troom, body:{T:Number(L.Tbath), C:Cm}, h:1/(12*(1/Cm+1/Cw)), Q:0, tau:1};
+  }
+  if(L.exp==='neut'){
+    const n=Math.min(Number(d.Va),Number(d.Vb))/1000*Number(L.M);
+    return {T:L.Troom, C:(Number(d.Va)+Number(d.Vb))*CW, room:L.Troom, body:null, Q:n*-H_NEUT*1000, tau:5};
+  }
+  const n=Number(d.ms)/L.MM;
+  return {T:L.Troom, C:(Number(d.mw)+Number(d.ms))*CW, room:L.Troom, body:null, Q:-n*L.H*1000, tau:9};
+}
+// Advances the calorimeter by dt seconds.
+function labStep(sim, dt){
+  if(sim.body){ const dq=sim.h*(sim.body.T-sim.T)*dt; sim.body.T-=dq/sim.body.C; sim.T+=dq/sim.C; }
+  if(sim.Q){ const dq=sim.Q*(1-Math.exp(-dt/sim.tau)); sim.Q-=dq; sim.T+=dq/sim.C; }
+  sim.T-=LAB_LOSS*(sim.T-sim.room)*dt;
+  return sim.T;
+}
+const labRead = T => Math.round((T+(Math.random()-0.5)*0.008)*100)/100;
+// The calculation parts, graded against the student's own measurements.
+function labParts(L, d){
+  const Ti=Number(d.Ti), Tf=Number(d.Tf), dT=Number((Tf-Ti).toFixed(2)), sf=Math.min(3,sfOfDelta(dT));
+  if(L.exp==='metal'){
+    const mw=Number(d.mw), mm=Number(L.mMetal), Tm=Number(L.Tbath), qw=mw*CW*dT, dTm=Number((Tf-Tm).toFixed(2)), c=qw/(mm*-dTm);
+    let best=METALS[0]; METALS.forEach(m=>{ if(Math.abs(Number(m[1])-c)<Math.abs(Number(best[1])-c)) best=m; });
+    return [
+      {type:'num', label:'Heat gained by the water', unit:'J', answer:qw, sf, show:sig(qw,sf)+' J',
+       errors:clean([
+         {value:mm*CW*dT, msg:'It looks like the mass of the metal was used. Use the mass of the water.'},
+         {value:mw*CW*Tf, msg:'It looks like the final temperature was used. Use the change in the water temperature: final − initial.'},
+         {value:mw*CW*-dTm, msg:'That uses the temperature change of the metal. Use the change for the water: '+d.Tf+' °C − '+d.Ti+' °C.'},
+         {value:qw/1000, msg:'That is the heat in kilojoules. Give it in joules.'}
+       ], qw),
+       generic:'Not yet. q(water) = mass of water × 4.184 '+CU+' × (final − initial temperature of the water).'},
+      {type:'num', label:'Specific heat of the metal', unit:CU, answer:c, sf, show:sig(c,sf)+' '+CU,
+       errors:clean([
+         {value:-c, msg:'A specific heat cannot be negative. q(metal) = −q(water), and the metal has a negative '+DT+', so the two negative signs cancel.'},
+         {value:qw/(mm*dT), msg:'That uses the temperature change of the water. The metal cooled from '+L.Tbath+' °C to '+d.Tf+' °C.'},
+         {value:qw/(mm*(Tm-Ti)), msg:'The metal cools only to the final temperature ('+d.Tf+' °C), not to the starting temperature of the water.'},
+         {value:qw/-dTm, msg:'That is the heat capacity of the whole piece, in J/°C. Divide by the mass of the metal.'},
+         {value:qw/(mw*-dTm), msg:'It looks like the mass of the water was used. Divide by the mass of the metal.'}
+       ], c),
+       generic:'Not yet. q(metal) = −q(water). Then c = q(metal) ÷ (mass of metal × '+DT+' of the metal).'},
+      {type:'choice', label:'Which metal is it?', options:METALS.map(m=>m[0]), answer:best[0], show:best[0],
+       wrongMsg:function(){ return 'Compare your specific heat with the table of accepted values and pick the closest one.'; }}
+    ];
+  }
+  const mass = L.exp==='neut' ? Number(d.Va)+Number(d.Vb) : Number(d.mw)+Number(d.ms);
+  const qs=mass*CW*dT, warm=dT>0;
+  const n = L.exp==='neut' ? Math.min(Number(d.Va),Number(d.Vb))/1000*Number(L.M) : Number(d.ms)/L.MM;
+  const dH=-qs/n/1000;
+  const SIGN = warm ? 'The solution warmed up, so the process released heat. q(reaction) = −q(solution), which makes '+DH+' negative.'
+                    : 'The solution cooled, so the process absorbed heat from it. q(reaction) = −q(solution), which makes '+DH+' positive.';
+  const qErr=[{value:-qs, msg:warm ? 'The solution warmed up, so it absorbed heat and its q is positive.' : 'The solution cooled, so it lost heat and its q is negative. '+DT+' is final minus initial.'},
+              {value:qs/1000, msg:'That is the heat in kilojoules. Give it in joules.'},
+              {value:mass*CW*Tf, msg:'It looks like the final temperature was used. Use the change in temperature: final − initial.'}];
+  const nErr=[];
+  if(L.exp==='neut'){
+    const va=Number(d.Va), vb=Number(d.Vb);
+    qErr.unshift({value:Math.min(va,vb)*CW*dT, msg:'Both solutions end up in the cup. Use the total mass of solution, at 1.00 g/mL.'},
+                 {value:Math.max(va,vb)*CW*dT, msg:'Both solutions end up in the cup. Use the total mass of solution, at 1.00 g/mL.'});
+    nErr.push({value:n*1000, msg:'Molarity is moles per liter. Convert the milliliters to liters first.'});
+    if(va===vb) nErr.push({value:2*n, msg:'Do not add the moles of acid and base together. They react 1:1.'});
+    else nErr.push({value:Math.max(va,vb)/1000*Number(L.M), msg:'That is the reactant in excess. The smaller amount limits the reaction.'});
+  } else {
+    qErr.unshift({value:Number(d.mw)*CW*dT, msg:'The solution is the water plus the dissolved solid. Use the total mass.'},
+                 {value:-Number(d.mw)*CW*dT, msg:'Two things to check: use the total mass of the solution, and the sign of '+DT+' (final minus initial).'});
+    nErr.push({value:Number(d.ms)*L.MM, msg:'To go from grams to moles, divide by the molar mass. It looks like you multiplied.'});
+  }
+  return [
+    {type:'num', label:'q for the solution', unit:'J', answer:qs, sf, show:sig(qs,sf)+' J', errors:clean(qErr,qs),
+     generic:'Not yet. q(solution) = total mass of solution × 4.184 '+CU+' × '+DT+', with '+DT+' = final − initial.'},
+    {type:'num', label: L.exp==='neut' ? 'Moles that reacted' : 'Moles of '+F(L.f), unit:'mol', answer:n, sf:3, show:sig(n,3)+' mol', errors:clean(nErr,n),
+     generic: L.exp==='neut' ? 'Not yet. Moles = liters × molarity, for the reactant that runs out first.' : 'Not yet. Moles = grams ÷ molar mass.'},
+    {type:'num', label: L.exp==='neut' ? DH+' of neutralization' : DH+' of solution', unit:'kJ/mol', answer:dH, sf, show:plus(sig(dH,sf))+' kJ/mol',
+     errors:clean([
+       {value:-dH, msg:SIGN},
+       {value:dH*1000, msg:'That is in joules per mole. Divide by 1000 to get kJ/mol.'},
+       {value:-dH*1000, msg:'That is in joules per mole, and the sign is off. '+SIGN},
+       {value:-qs/1000, msg:'That is the heat for this one experiment, in kJ. Divide by the moles to get kJ per mole.'}
+     ], dH),
+     generic:'Not yet. q(reaction) = −q(solution). Convert it to kJ and divide by the moles.'}
+  ];
+}
+function labSolution(L, d){
+  const Ti=Number(d.Ti), Tf=Number(d.Tf), dT=Number((Tf-Ti).toFixed(2)), sf=Math.min(3,sfOfDelta(dT));
+  if(L.exp==='metal'){
+    const mw=Number(d.mw), mm=Number(L.mMetal), qw=mw*CW*dT, dTm=Number((Tf-Number(L.Tbath)).toFixed(2)), c=qw/(mm*-dTm);
+    return solWrap([
+      '<b>Water: temperature change.</b> '+DT+' = '+d.Tf+' °C − '+d.Ti+' °C = '+fx(dT,2)+' °C',
+      '<b>Water: heat gained.</b> q = '+d.mw+' g × 4.184 '+CU+' × '+fx(dT,2)+' °C = <b>'+sig(qw,sf)+' J</b>',
+      '<b>Metal: heat lost.</b> q(metal) = −q(water) = '+sig(-qw,sf+1)+' J',
+      '<b>Metal: temperature change.</b> '+DT+' = '+d.Tf+' °C − '+L.Tbath+' °C = '+fx(dTm,2)+' °C',
+      '<b>Specific heat.</b> c = '+sig(-qw,sf+1)+' J ÷ ('+L.mMetal+' g × '+fx(dTm,2)+' °C) = <b>'+sig(c,sf)+' '+CU+'</b>'
+    ], roundNote(sf));
+  }
+  const neut=L.exp==='neut', mass = neut ? Number(d.Va)+Number(d.Vb) : Number(d.mw)+Number(d.ms);
+  const qs=mass*CW*dT, n = neut ? Math.min(Number(d.Va),Number(d.Vb))/1000*Number(L.M) : Number(d.ms)/L.MM, dH=-qs/n/1000;
+  return solWrap([
+    '<b>Mass of solution.</b> '+(neut ? d.Va+' mL + '+d.Vb+' mL = '+fx(mass,1)+' mL, which is '+fx(mass,1)+' g at 1.00 g/mL' : d.mw+' g + '+d.ms+' g = '+fx(mass,2)+' g'),
+    '<b>Temperature change.</b> '+DT+' = '+d.Tf+' °C − '+d.Ti+' °C = '+fx(dT,2)+' °C',
+    '<b>q for the solution.</b> '+fx(mass,neut?1:2)+' g × 4.184 '+CU+' × ('+fx(dT,2)+' °C) = <b>'+sig(qs,sf)+' J</b>',
+    '<b>Moles.</b> '+(neut ? toL(fx(Math.min(Number(d.Va),Number(d.Vb)),1))+' L × '+L.M+' mol/L' : d.ms+' g ÷ '+L.MM.toFixed(2)+' g/mol')+' = <b>'+sig(n,3)+' mol</b>',
+    '<b>q for the '+(neut?'reaction':'dissolving')+'.</b> −q(solution) = '+sig(-qs,sf+1)+' J = '+sig(-qs/1000,sf+1)+' kJ',
+    '<b>Per mole.</b> '+DH+' = '+sig(-qs/1000,sf+1)+' kJ ÷ '+sig(n,4)+' mol = <b>'+plus(sig(dH,sf))+' kJ/mol</b>'
+  ], roundNote(sf));
+}
+
+/* ---------- Reading and grading answers ---------- */
+// Reads what a student typed: 2.50, -25.7, +14.8, .25, 1.2e3, 1.2 x 10^3, with or without units after it.
+function parseInput(raw){
+  const s=String(raw).trim().replace(/,/g,'').replace(/[−–]/g,'-');
+  const m=s.match(/^([+-]?\s*(?:\d+\.?\d*|\.\d+))(?:\s*(?:[eE]|[x×*]\s*10\s*\^?\s*)([+-]?\d+))?/);
+  if(!m) return null;
+  const mant=m[1].replace(/\s+/g,'');
+  const value=Number(mant)*Math.pow(10, m[2] ? Number(m[2]) : 0);
+  if(!isFinite(value)) return null;
+  let d=mant.replace(/^[+-]/,''), sfMin, sfMax;
+  if(d.indexOf('.')>=0){
+    d=d.replace('.','').replace(/^0+/,'');
+    sfMin=sfMax=Math.max(d.length,1);
+  } else {
+    d=d.replace(/^0+/,'');
+    sfMax=Math.max(d.length,1);
+    sfMin=Math.max(d.replace(/0+$/,'').length,1);   // trailing zeros without a decimal point are ambiguous
+  }
+  return {value, sfMin, sfMax};
+}
+
+// status: 'empty', 'invalid', 'correct', 'sig' (right value, wrong sig figs), 'close' or 'wrong'.
+function gradePart(part, raw){
+  if(part.type==='choice'){
+    if(raw==null || raw==='') return {status:'empty'};
+    return raw===part.answer ? {status:'correct'} : {status:'wrong', msg:part.wrongMsg(raw)};
+  }
+  if(String(raw).trim()==='') return {status:'empty'};
+  const inp=parseInput(raw);
+  if(!inp) return {status:'invalid', msg:'Enter your answer as a number, such as 2.50 or −25.7.'};
+  const v=inp.value, ans=part.answer, diff=Math.abs(v-ans);
+  let tol=Math.max((part.tolRel===undefined ? 0.01 : part.tolRel)*Math.abs(ans), part.tolAbs||0);
+  // An answer correctly rounded to the required significant figures always counts.
+  if(part.sf) tol=Math.max(tol, 0.5001*Math.pow(10, Math.floor(Math.log10(Math.abs(ans)))-part.sf+1));
+  if(diff<=tol){
+    if(!part.sf) return {status:'correct'};
+    return {status: (inp.sfMin<=part.sf && part.sf<=inp.sfMax) ? 'correct' : 'sig'};
+  }
+  for(const e of part.errors){
+    if(Math.abs(v-e.value)<=Math.max(0.01*Math.abs(e.value), part.errAbs||0)) return {status:'wrong', msg:e.msg};
+  }
+  if(diff<=3*tol){
+    return {status:'close', msg:'Close. This is usually a rounding issue: keep extra digits through the middle steps and round only at the end.'};
+  }
+  if(v*ans>0){
+    const lg=Math.log10(v/ans);
+    if(Math.round(lg)!==0 && Math.abs(lg-Math.round(lg))<0.005){
+      return {status:'wrong', msg:'The digits are right but the decimal point is in the wrong place. Check the joule and kilojoule conversions.'};
+    }
+  }
+  return {status:'wrong', msg:part.generic};
+}
+
+if(typeof module!=='undefined' && module.exports){
+  module.exports={AM,CW,H_NEUT,SUBST,METALS,NEUT,SALTS,TQ,HESS,MULTS,parseFormula,molarMass,sig,fx,fmt3,sfOfDelta,
+                  makeProblem,makeHess,scaleEq,netOf,hessNet,hessTip,hessPart,hessSolution,hessEff,
+                  makeLab,labWater,labMix,labStep,labRead,labParts,labSolution,parseInput,gradePart};
+}
+
+/* ============================================================
+   Page
+   ============================================================ */
+if(typeof document!=='undefined'){
+
+const $ = (s,r) => (r||document).querySelector(s);
+const view=$('#view'), nav=$('#tabs');
+const LET='abcdef';
+
+const TABS=[
+  {id:'map',      label:'Roadmap'},
+  {id:'heat',     label:'Heat and temperature', n:1},
+  {id:'exchange', label:'Heat exchange', n:2},
+  {id:'coffee',   label:'Coffee-cup calorimetry', n:3},
+  {id:'thermo',   label:'Thermochemical equations', n:4},
+  {id:'hess',     label:'Hess’s law', n:5},
+  {id:'lab',      label:'Run an experiment', n:6}
+];
+const META={
+  heat:{title:'Heat and temperature',
+    lede:'When a substance absorbs or releases heat, its temperature changes. How much depends on its mass and its specific heat: q = m × c × ΔT. Heat absorbed is positive and heat released is negative. ΔT is always final minus initial.'},
+  exchange:{title:'Heat exchange',
+    lede:'When a hot object is put into cool water, heat flows from the object into the water until both are at the same temperature. Energy is conserved, so the heat the water gains is the heat the object loses: q(metal) = −q(water).'},
+  coffee:{title:'Coffee-cup calorimetry',
+    lede:'A coffee-cup calorimeter measures the heat of a process that happens in solution. The thermometer tells you what happened to the solution. The reaction itself gets the same amount of heat with the opposite sign, and dividing by moles gives ΔH.'},
+  thermo:{title:'Thermochemical equations',
+    lede:'A thermochemical equation gives ΔH for the reaction exactly as it is written, with those numbers of moles. That makes ΔH a conversion factor between kilojoules and moles of any substance in the equation.'},
+  hess:{title:'Hess’s law',
+    lede:'If equations add up to a target equation, their ΔH values add up to the target ΔH. Reverse an equation and its ΔH changes sign. Multiply an equation and its ΔH is multiplied by the same number. Arrange the equations below so that they add up to the target.'},
+  lab:{title:'Run an experiment',
+    lede:'Now collect your own data. Choose an experiment, work through the procedure, watch the temperature, and decide when to record it. Then calculate the result from your own measurements.'}
+};
+const MODES=[
+  {id:'guided', label:'Guided setup'},
+  {id:'hint',   label:'Hints if I ask'},
+  {id:'solo',   label:'On my own'}
+];
+const fresh = () => ({mode:'guided', P:null, misses:0, hint:0, done:false, solved:0, streak:0, partDone:[]});
+const state={tab:'map', mapSel:null, mapPath:null,
+  heat:fresh(), exchange:fresh(), coffee:fresh(), thermo:fresh(),
+  hess:Object.assign(fresh(),{ch:[]}),
+  lab:{exp:'metal', L:null, d:{}, stage:0, sim:null, log:[], t:0, timer:null, mixedAt:null, rec:null, busy:false, yr:null, misses:0, done:false, solved:0, partDone:[], hover:null}};
+
+/* ---------- Tabs ---------- */
+function renderTabs(){
+  nav.innerHTML=TABS.map(t=>
+    '<button role="tab" data-tab="'+t.id+'"'+(t.n?' data-n="'+t.n+'"':'')+' aria-selected="'+(state.tab===t.id)+'">'+
+    (t.n?'<span class="tn">'+t.n+'</span>':'')+t.label+'</button>').join('');
+}
+nav.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-tab]'); if(!b) return;
+  state.tab=b.dataset.tab; render();
+});
+function render(){
+  stopLabTimer();
+  renderTabs();
+  if(state.tab==='map') renderMap();
+  else if(state.tab==='hess') renderHess();
+  else if(state.tab==='lab') renderLab();
+  else renderPractice(state.tab);
+}
+
+/* ---------- Roadmap ---------- */
+const MAPINFO={
+  mc:{t:'q = m × c × ΔT: from a temperature change to heat', h:'<p>The heat a substance absorbs or releases depends on its mass, its specific heat, and how much its temperature changes. ΔT is final minus initial, so q is positive when the temperature rises.</p><ul><li>m is the mass of whatever the thermometer is in: the water, or the whole solution.</li><li>For water and dilute solutions, c = 4.184 J/(g·°C).</li></ul><p class="ex">100.0 g × 4.184 J/(g·°C) × 6.50 °C = 2720 J</p>'},
+  sign:{t:'Opposite sign: from the solution to the reaction', h:'<p>Energy is conserved. Whatever heat the water or solution gains, the reaction or the hot object lost, and the other way around.</p><ul><li>q(reaction) = −q(solution)</li><li>Temperature goes up: the reaction released heat, so its q is negative (exothermic).</li><li>Temperature goes down: the reaction absorbed heat, so its q is positive (endothermic).</li></ul><p class="ex">q(solution) = +2720 J, so q(reaction) = −2720 J</p>'},
+  mol:{t:'Divide by moles: from heat to ΔH', h:'<p>The heat depends on how much reacted. Dividing by the moles that reacted gives ΔH for one mole, which is the same for any amount. Convert joules to kilojoules on the way.</p><p class="ex">−2720 J = −2.72 kJ, and −2.72 kJ ÷ 0.0500 mol = −54.4 kJ/mol</p>'},
+  hess:{t:'Hess’s law: from other equations to ΔH', h:'<p>ΔH depends only on where a reaction starts and ends, not on the route. So if known equations add up to the one you want, their ΔH values add up too.</p><ul><li>Reverse an equation: the sign of ΔH changes.</li><li>Multiply an equation: ΔH is multiplied by the same number.</li><li>Add the equations: add the ΔH values.</li></ul><p class="ex">C + O<sub>2</sub> → CO<sub>2</sub>, ΔH = −393.5 kJ. Reversed: CO<sub>2</sub> → C + O<sub>2</sub>, ΔH = +393.5 kJ</p>'},
+  use:{t:'Multiply by moles: from ΔH to the heat for any amount', h:'<p>The ΔH written with an equation goes with the moles in that equation, so it works as a conversion factor.</p><p>For CH<sub>4</sub> + 2 O<sub>2</sub> → CO<sub>2</sub> + 2 H<sub>2</sub>O, ΔH = −890.3 kJ:</p><p class="ex">2.00 mol CH<sub>4</sub> × (−890.3 kJ ÷ 1 mol CH<sub>4</sub>) = −1780 kJ</p>'}
+};
+const PATHS={
+  cal:{label:'Calorimetry', on:['dT','mc','qs','sign','qr','mol','dH']},
+  hess:{label:'Hess’s law', on:['eqs','hess','dH']},
+  use:{label:'Using ΔH', on:['dH','use','heat']}
+};
+function renderMap(){
+  const at=(c,r)=>' style="grid-column:'+c+';grid-row:'+r+'"';
+  const node=(id,cls,b,s,c,r)=>'<div class="node '+cls+'" data-id="'+id+'"'+at(c,r)+'><b>'+b+'</b><small>'+s+'</small></div>';
+  const conn=(id,label,c,r,down)=>'<button type="button" class="conn'+(down?' vert':'')+'" data-id="'+id+'" aria-pressed="false"'+at(c,r)+'><span class="arr" aria-hidden="true">'+(down?'↓':'→')+'</span><span>'+label+'</span></button>';
+  view.innerHTML=
+    '<section>'+
+    '<h2>The roadmap</h2>'+
+    '<p class="lede">The goal is <b>ΔH</b>, the heat of a reaction per mole. You can measure it with a calorimeter, or work it out from other equations with Hess’s law. Once you have it, it tells you the heat for any amount. Select any step on the map to see how it works.</p>'+
+    '<div class="paths" role="group" aria-label="Highlight a route"><span class="lab">Show the route for</span>'+
+      Object.keys(PATHS).map(k=>'<button type="button" class="btn inline" style="margin-top:0" data-path="'+k+'" aria-pressed="false">'+PATHS[k].label+'</button>').join('')+
+      '<button type="button" class="btn inline" style="margin-top:0" data-path="">Whole map</button>'+
+    '</div>'+
+    '<div class="map">'+
+      '<div class="rowlab a"'+at('1/-1',1)+'>Calorimetry: what you measure</div>'+
+      node('dT','a','Temperature change','ΔT = final − initial',1,2)+conn('mc','q = mcΔT',2,2)+
+      node('qs','a','Heat of the solution','q, in joules',3,2)+conn('sign','opposite sign',4,2)+
+      node('qr','a','Heat of the reaction','q(reaction)',5,2)+
+      '<div class="rowlab b"'+at('1/5',3)+'>ΔH: what you want</div>'+
+      conn('mol','÷ moles',5,3,true)+
+      node('eqs','a','Other equations','with known ΔH',1,4)+
+      '<button type="button" class="conn wide" data-id="hess" aria-pressed="false"'+at('2/5',4)+'><span class="arr" aria-hidden="true">→</span><span>Hess’s law: reverse, multiply, add</span></button>'+
+      node('dH','b','ΔH of the reaction','kJ per mole',5,4)+
+      conn('use','× moles',5,5,true)+
+      node('heat','b','Heat for any amount','kJ',5,6)+
+    '</div>'+
+    '<div class="detail" id="detail" aria-live="polite"></div>'+
+    '<div class="builds"><h3>Signs to keep straight</h3><ul>'+
+      '<li><b>Heat absorbed is positive. Heat released is negative.</b> That goes for q and for ΔH.</li>'+
+      '<li><b>ΔT is final minus initial.</b> It is negative when something cools.</li>'+
+      '<li><b>Exothermic</b> reactions release heat: the solution warms up and ΔH is negative. <b>Endothermic</b> reactions absorb heat: the solution cools and ΔH is positive.</li>'+
+    '</ul></div>'+
+    '</section>';
+  view.onclick=e=>{
+    const c=e.target.closest('.conn'); if(c){ state.mapSel=c.dataset.id; paintMap(); return; }
+    const p=e.target.closest('button[data-path]'); if(p){ state.mapPath=p.dataset.path||null; paintMap(); }
+  };
+  paintMap();
+}
+function paintMap(){
+  const on = state.mapPath ? PATHS[state.mapPath].on : null;
+  view.querySelectorAll('.map [data-id]').forEach(el=>{
+    el.classList.toggle('dim', !!on && on.indexOf(el.dataset.id)<0);
+    if(el.classList.contains('conn')) el.setAttribute('aria-pressed', String(state.mapSel===el.dataset.id));
+  });
+  view.querySelectorAll('button[data-path]').forEach(b=>{
+    if(b.dataset.path) b.setAttribute('aria-pressed', String(state.mapPath===b.dataset.path));
+    b.classList.toggle('primary', !!b.dataset.path && state.mapPath===b.dataset.path);
+  });
+  const d=$('#detail'), info=MAPINFO[state.mapSel];
+  d.innerHTML = info ? '<h3>'+info.t+'</h3>'+info.h
+    : '<h3>How to read the map</h3><p>The top row is an experiment: a temperature change becomes a heat, the heat changes sign to describe the reaction, and dividing by moles gives ΔH. Hess’s law is a second way to reach the same ΔH, with no experiment at all.</p><p style="margin:0">Select any arrow on the map for details and an example.</p>';
+}
+
+/* ---------- Shared pieces for practice sections ---------- */
+function amLine(list){
+  const seen=[]; list.forEach(f=>parseFormula(f).forEach(([e])=>{ if(seen.indexOf(e)<0) seen.push(e); }));
+  return seen.map(e=>e+' '+AM[e]).join(', ');
+}
+function partHTML(part, i, multi){
+  if(!multi){
+    return '<div class="ansrow"><label for="pin0">Your answer</label>'+
+      '<input id="pin0" class="pin" type="text" inputmode="text" autocomplete="off" spellcheck="false">'+
+      '<span class="unit">'+part.unit+'</span><span class="pmark" id="pm0" aria-hidden="true"></span>'+
+      '<button class="btn primary" type="submit">Check answer</button></div>';
+  }
+  const letter='('+LET[i]+') ';
+  if(part.type==='choice'){
+    return '<li class="part"><span class="plab" id="pl'+i+'">'+letter+part.label+'</span>'+
+      '<span class="pctl"><span class="choice" id="pc'+i+'" role="radiogroup" aria-labelledby="pl'+i+'">'+
+      part.options.map(o=>'<label class="opt"><input type="radio" name="p'+i+'" value="'+o+'"><span>'+F(o)+'</span></label>').join('')+
+      '</span><span class="pmark" id="pm'+i+'" aria-hidden="true"></span></span></li>';
+  }
+  return '<li class="part"><label class="plab" for="pin'+i+'">'+letter+part.label+'</label>'+
+    '<span class="pctl"><input id="pin'+i+'" class="pin" type="text" inputmode="text" autocomplete="off" spellcheck="false">'+
+    '<span class="unit">'+part.unit+'</span><span class="pmark" id="pm'+i+'" aria-hidden="true"></span></span></li>';
+}
+function setFb(type, html){
+  const fb=$('#fb'), ic={ok:'✓',bad:'✗',warn:'!',info:'i'}[type];
+  fb.className='fb show '+type;
+  fb.innerHTML='<span class="ic" aria-hidden="true">'+ic+'</span><div>'+html+'</div>';
+}
+function lock(){
+  document.querySelectorAll('#ans input, #ans button').forEach(el=>{ el.disabled=true; });
+}
+function readPart(parts, i){
+  if(parts[i].type==='choice'){ const c=$('#ans input[name="p'+i+'"]:checked'); return c ? c.value : ''; }
+  return $('#pin'+i).value;
+}
+function markPart(parts, i, good){
+  const el = parts[i].type==='choice' ? $('#pc'+i) : $('#pin'+i), pm=$('#pm'+i);
+  el.classList.remove('ok','no'); el.classList.add(good?'ok':'no');
+  pm.className='pmark '+(good?'ok':'no'); pm.textContent=good?'✓':'✗';
+  if(good){
+    if(parts[i].type==='choice') el.querySelectorAll('input').forEach(x=>{ x.disabled=true; });
+    else el.disabled=true;
+  }
+}
+const sigMsg = (part, lead) => '<p>'+lead+'The value is right. Report it with '+part.sf+' significant figures, the fewest in the given data: <b>'+part.show+'</b>.</p>';
+
+/* ---------- Practice sections ---------- */
+function nextProblem(kind){
+  const S=state[kind];
+  S.P=makeProblem(kind, S.P); S.misses=0; S.hint=0; S.done=false; S.partDone=[];
+}
+function renderPractice(kind){
+  const S=state[kind], m=META[kind], n=TABS.find(t=>t.id===kind).n;
+  if(!S.P) nextProblem(kind);
+  view.onclick=null;
+  view.innerHTML=
+    '<section>'+
+    '<h2>'+n+'. '+m.title+'</h2>'+
+    '<p class="lede">'+m.lede+'</p>'+
+    '<div class="modebar"><span class="modebar-label" id="ml">How much help</span>'+
+      '<div class="seg" role="group" aria-labelledby="ml">'+
+      MODES.map(o=>'<button type="button" data-mode="'+o.id+'" aria-pressed="'+(S.mode===o.id)+'">'+o.label+'</button>').join('')+
+      '</div></div>'+
+    '<article class="problem" id="problem"></article>'+
+    '<p class="tally" id="tally"></p>'+
+    '</section>';
+  $('.seg',view).addEventListener('click',e=>{
+    const b=e.target.closest('button[data-mode]'); if(!b) return;
+    setMode(kind, b.dataset.mode);
+  });
+  $('#problem').addEventListener('click',e=>{
+    const b=e.target.closest('button[data-act]'); if(!b) return;
+    const act=b.dataset.act;
+    if(act==='hint'){ S.hint++; drawHelp(kind); drawActions(kind); }
+    else if(act==='solution'){ revealSolution(kind); }
+    else if(act==='next'){ nextProblem(kind); drawProblem(kind,true); }
+    else if(act==='levelup'){ setMode(kind, S.mode==='guided' ? 'hint' : 'solo'); const f=$('#problem .pin'); if(f) f.focus(); }
+  });
+  drawProblem(kind,false);
+}
+// Changing the help level keeps whatever the student has already typed.
+function setMode(kind, mode){
+  const S=state[kind];
+  S.mode=mode; S.hint=0;
+  view.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.mode===mode)));
+  if(S.done){ nextProblem(kind); drawProblem(kind,false); }
+  else { drawHelp(kind); drawActions(kind); }
+}
+function drawProblem(kind, focus){
+  const S=state[kind], P=S.P, multi=P.parts.length>1;
+  $('#problem').innerHTML=
+    '<p class="ctx">'+P.ctx+'</p>'+
+    (P.eqHTML || '')+
+    (P.am ? '<p class="am">Atomic masses (g/mol): '+amLine(P.am)+'</p>' : '')+
+    '<p class="q">'+P.question+'</p>'+
+    '<form id="ans" novalidate autocomplete="off">'+
+      '<div id="help"></div>'+
+      (multi ? '<ol class="parts">'+P.parts.map((p,i)=>partHTML(p,i,true)).join('')+'</ol>'+
+               '<div class="checkrow"><button class="btn primary" type="submit">Check answers</button></div>'
+             : partHTML(P.parts[0],0,false))+
+    '</form>'+
+    '<div id="fb" class="fb" role="status" aria-live="polite"></div>'+
+    '<div id="sol"></div>'+
+    '<div class="actions" id="actions"></div>';
+  $('#ans').addEventListener('submit',e=>{ e.preventDefault(); check(kind); });
+  drawHelp(kind); drawActions(kind); drawTally(kind);
+  if(focus){ const f=$('#help input')||$('#problem .pin')||$('#problem .opt input'); if(f) f.focus(); }
+}
+function drawHelp(kind){
+  const S=state[kind], P=S.P; let out='';
+  if(S.mode==='guided') out=P.guided;
+  else if(S.mode==='hint') out=P.hints.slice(0,S.hint).join('');
+  $('#help').innerHTML=out;
+}
+function drawActions(kind){
+  const S=state[kind]; let out='';
+  if(S.mode==='hint' && !S.done && S.hint<2)
+    out+='<button type="button" class="btn" data-act="hint">'+(S.hint===0?'Show a hint':'Show another hint')+'</button>';
+  if(!S.done && S.misses>=2)
+    out+='<button type="button" class="btn" data-act="solution">Show worked solution</button>';
+  out+='<button type="button" class="btn'+(S.done?' primary':'')+'" data-act="next">'+(S.done?'Next problem':'Skip to a new problem')+'</button>';
+  $('#actions').innerHTML=out;
+}
+function drawTally(kind){
+  const S=state[kind];
+  $('#tally').textContent = S.solved===0 ? 'No problems solved yet this session.'
+    : 'Solved this session: '+S.solved+(S.streak>1 ? ' ('+S.streak+' in a row)' : '');
+}
+// Marks each filled blank right or wrong and returns the most useful message.
+function checkBlanks(P){
+  const res={any:false, allOK:true, msg:''}, got={};
+  Object.keys(P.blanks).forEach(k=>{
+    const i=$('#help input[data-k="'+k+'"]'); if(!i) return;
+    const raw=i.value.trim(), inp=parseInput(raw), v=inp ? inp.value : NaN;
+    i.classList.remove('ok','no'); i.removeAttribute('aria-invalid');
+    if(!raw){ res.allOK=false; got[k]={empty:true}; return; }
+    res.any=true;
+    const want=P.blanks[k].want;
+    const good=isFinite(v) && Math.abs(v-want)<=P.blanks[k].tol*Math.abs(want)+1e-12;
+    i.classList.add(good?'ok':'no'); if(!good){ i.setAttribute('aria-invalid','true'); res.allOK=false; }
+    got[k]={v, good};
+  });
+  res.msg=P.blankMsg(got)||'';
+  return res;
+}
+function check(kind){
+  const S=state[kind], P=S.P; if(S.done) return;
+  const multi=P.parts.length>1, tagOf=i=> multi ? '<b>('+LET[i]+')</b> ' : '';
+  const bl = S.mode==='guided' ? checkBlanks(P) : {any:false, allOK:true, msg:''};
+  const res=P.parts.map((part,i)=> S.partDone[i] ? {status:'done'} : gradePart(part, readPart(P.parts,i)));
+  const open=res.filter(r=>r.status!=='done');
+
+  if(open.every(r=>r.status==='empty')){
+    if(bl.any && bl.msg) setFb('bad','<p>'+bl.msg+'</p>');
+    else if(bl.any && bl.allOK) setFb('info','<p>The setup is right. Now run the numbers and enter your answer'+(multi?'s':'')+'.</p>');
+    else if(bl.any) setFb('info','<p>Good so far. Fill in the remaining blanks, then calculate.</p>');
+    else setFb('info','<p>Enter your answer'+(multi?'s':'')+', then select Check answer'+(multi?'s':'')+'.</p>');
+    return;
+  }
+  const inv=res.findIndex(r=>r.status==='invalid');
+  if(inv>=0){ setFb('info','<p>'+tagOf(inv)+res[inv].msg+'</p>'); return; }
+
+  const wrong=[], sigs=[], newlyRight=[];
+  res.forEach((r,i)=>{
+    if(r.status==='correct' || r.status==='sig'){ S.partDone[i]=true; markPart(P.parts,i,true); newlyRight.push(i); if(r.status==='sig') sigs.push(i); }
+    else if(r.status==='wrong' || r.status==='close'){ markPart(P.parts,i,false); wrong.push(i); }
+  });
+  const sigNote=sigs.map(i=>sigMsg(P.parts[i], tagOf(i))).join('');
+
+  if(P.parts.every((p,i)=>S.partDone[i])){
+    S.done=true; S.solved++; S.streak++;
+    let html = multi
+      ? '<p><b>All parts correct.</b> '+P.parts.map((p,i)=>'('+LET[i]+') '+p.show).join('; ')+'</p>'+sigNote
+      : (sigs.length ? sigMsg(P.parts[0], '<b>Correct value.</b> ') : '<p><b>Correct.</b> '+P.parts[0].show+'</p>');
+    if(S.streak>=2 && S.mode!=='solo'){
+      html+='<p>That is '+S.streak+' in a row. Ready for less help?</p>'+
+            '<button type="button" class="btn inline" data-act="levelup">Try one '+(S.mode==='guided'?'with hints only if you ask':'on your own')+'</button>';
+    }
+    setFb('ok', html); lock();
+    $('#sol').innerHTML='<details class="soldet"><summary>See the worked solution</summary>'+P.solution+'</details>';
+    drawActions(kind); drawTally(kind);
+    const nx=$('#actions [data-act="next"]'); if(nx) nx.focus();
+    return;
+  }
+  if(wrong.length){
+    S.misses++; S.streak=0;
+    let msg;
+    if(!multi) msg='<p>'+(bl.msg || res[0].msg)+'</p>';
+    else msg=(bl.msg ? '<p><b>Setup.</b> '+bl.msg+'</p>' : '')+wrong.map(i=>'<p>'+tagOf(i)+res[i].msg+'</p>').join('')+sigNote;
+    if(S.misses===2) msg+='<p>You can try again or open the worked solution below.</p>';
+    const onlyClose = !bl.msg && wrong.every(i=>res[i].status==='close');
+    setFb(onlyClose ? 'warn' : 'bad', msg);
+  } else {
+    const todo=P.parts.map((p,i)=>i).filter(i=>!S.partDone[i]);
+    const rest='part'+(todo.length>1?'s ':' ')+todo.map(i=>'('+LET[i]+')').join(' and ');
+    const msg=(bl.msg ? '<p><b>Setup.</b> '+bl.msg+'</p>' : '')+
+      '<p>'+(newlyRight.length ? 'Right so far. ' : '')+'Now answer '+rest+'.</p>'+sigNote;
+    setFb(bl.msg ? 'bad' : 'info', msg);
+  }
+  drawActions(kind); drawTally(kind);
+}
+function revealSolution(kind){
+  const S=state[kind];
+  S.done=true; S.streak=0; lock();
+  $('#sol').innerHTML=S.P.solution;
+  setFb('info','<p>Read through each step, then try a new problem with different numbers.</p>');
+  drawActions(kind); drawTally(kind);
+}
+
+
+/* ---------- 5. Hess's law ---------- */
+function newHess(){
+  const S=state.hess;
+  S.P=makeHess(S.P); S.ch=S.P.eqs.map(()=>({rev:false, mult:1})); S.misses=0; S.hint=0; S.done=false;
+}
+function renderHess(){
+  const S=state.hess, m=META.hess;
+  if(!S.P) newHess();
+  view.onclick=null;
+  view.innerHTML=
+    '<section>'+
+    '<h2>5. '+m.title+'</h2>'+
+    '<p class="lede">'+m.lede+'</p>'+
+    '<div class="modebar"><span class="modebar-label" id="ml">How much help</span>'+
+      '<div class="seg" role="group" aria-labelledby="ml">'+
+      MODES.map(o=>'<button type="button" data-mode="'+o.id+'" aria-pressed="'+(S.mode===o.id)+'">'+o.label+'</button>').join('')+
+      '</div></div>'+
+    '<article class="problem" id="problem"></article>'+
+    '<p class="tally" id="tally"></p>'+
+    '</section>';
+  $('.modebar .seg',view).addEventListener('click',e=>{
+    const b=e.target.closest('button[data-mode]'); if(!b) return;
+    S.mode=b.dataset.mode; S.hint=0;
+    view.querySelectorAll('.modebar .seg button').forEach(x=>x.setAttribute('aria-pressed', String(x.dataset.mode===S.mode)));
+    if(S.done) newHess();
+    drawHess();
+  });
+  $('#problem').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b || b.disabled) return;
+    if(b.dataset.rev!==undefined){ const i=Number(b.dataset.rev); S.ch[i].rev=!S.ch[i].rev; touchHess(i); }
+    else if(b.dataset.mult!==undefined){ const p=b.dataset.mult.split(':'); S.ch[Number(p[0])].mult=Number(p[1]); touchHess(Number(p[0])); }
+    else if(b.dataset.act==='hint'){ S.hint++; paintHess(); hessActions(); }
+    else if(b.dataset.act==='solution'){
+      S.done=true; S.streak=0; lock();
+      $('#sol').innerHTML=hessSolution(S.P);
+      setFb('info','<p>Read through each step, then try a new problem.</p>');
+      hessActions();
+    }
+    else if(b.dataset.act==='next'){ newHess(); drawHess(); }
+    else if(b.dataset.act==='levelup'){
+      S.mode = S.mode==='guided' ? 'hint' : 'solo'; S.hint=0;
+      view.querySelectorAll('.modebar .seg button').forEach(x=>x.setAttribute('aria-pressed', String(x.dataset.mode===S.mode)));
+      newHess(); drawHess();
+    }
+  });
+  drawHess();
+}
+// The student changed equation i: its ΔH blank is no longer checked.
+function touchHess(i){
+  const inp=$('#hb'+i); if(inp){ inp.classList.remove('ok','no'); inp.removeAttribute('aria-invalid'); }
+  $('#fb').className='fb';
+  paintHess();
+}
+function drawHess(){
+  const S=state.hess, P=S.P;
+  const card=(e,i)=>
+    '<div class="hcard">'+
+      '<div class="hnum">Equation '+(i+1)+', as given</div>'+
+      '<div class="eq small" role="img" aria-label="'+eqSpoken(e)+'">'+eqInner(e)+'<span class="dh">'+DH+' = '+plus(fx(e.dH,1))+' kJ</span></div>'+
+      '<div class="hctl">'+
+        '<button type="button" class="btn inline tog" style="margin-top:0" data-rev="'+i+'" aria-pressed="false">Reverse</button>'+
+        '<span class="seg" role="group" aria-label="Multiply equation '+(i+1)+'">'+
+          MULTS.map(k=>'<button type="button" data-mult="'+i+':'+k+'" aria-pressed="false">× '+coefTxt(k)+'</button>').join('')+
+        '</span>'+
+      '</div>'+
+      '<div class="hyours"><div class="ylab">Your version</div><div class="eq small" id="hv'+i+'"></div>'+
+        (S.mode==='guided' ? '<div class="hdh"><label for="hb'+i+'">'+DH+' for your version</label> <input class="blank wide" id="hb'+i+'" type="text" inputmode="text" autocomplete="off"> kJ</div>' : '')+
+      '</div>'+
+    '</div>';
+  $('#problem').innerHTML=
+    '<p class="ctx">Use the given equations to find '+DH+' for the target equation.</p>'+
+    '<div class="eqwrap target"><div class="tlabel">Target equation</div>'+
+      '<div class="eq" role="img" aria-label="Target: '+eqSpoken(P.target)+'">'+eqInner(P.target)+'<span class="dh">'+DH+' = ?</span></div></div>'+
+    '<form id="ans" novalidate autocomplete="off">'+
+      P.eqs.map(card).join('')+
+      '<div class="hsum" id="hsum" aria-live="polite"></div>'+
+      '<div id="help"></div>'+
+      '<div class="ansrow"><label for="pin0">'+DH+' for the target equation</label>'+
+        '<input id="pin0" class="pin" type="text" inputmode="text" autocomplete="off" spellcheck="false">'+
+        '<span class="unit">kJ</span><span class="pmark" id="pm0" aria-hidden="true"></span>'+
+        '<button class="btn primary" type="submit">Check answer</button></div>'+
+    '</form>'+
+    '<div id="fb" class="fb" role="status" aria-live="polite"></div>'+
+    '<div id="sol"></div>'+
+    '<div class="actions" id="actions"></div>';
+  $('#ans').addEventListener('submit',e=>{ e.preventDefault(); checkHess(); });
+  paintHess(); hessActions(); hessTally();
+}
+function paintHess(){
+  const S=state.hess, P=S.P, eff=hessEff(S.ch), N=hessNet(P,S.ch);
+  P.eqs.forEach((e,i)=>{
+    const sc=scaleEq(e,eff[i]);
+    $('#hv'+i).innerHTML=eqInner(sc);
+    $('#hv'+i).setAttribute('aria-label', eqSpoken(sc));
+    $('#problem [data-rev="'+i+'"]').setAttribute('aria-pressed', String(S.ch[i].rev));
+    view.querySelectorAll('#problem [data-mult^="'+i+':"]').forEach(b=>b.setAttribute('aria-pressed', String(Number(b.dataset.mult.split(':')[1])===S.ch[i].mult)));
+  });
+  const empty=!N.eq.r.length && !N.eq.p.length;
+  let html='<div class="ylab">Your equations add up to</div>'+
+    (empty ? '<div class="eq small">Everything cancels</div>' : '<div class="eq small">'+eqInner(N.eq)+'</div>')+
+    (N.cancelled.length ? '<p class="cancel">Cancelled out: '+N.cancelled.map(k=>F(k.split('|')[0])).join(', ')+'</p>' : '');
+  if(S.mode!=='solo'){
+    html+= N.match ? '<p class="status ok">✓ This matches the target equation.</p>'
+                   : '<p class="status no">✗ This is not the target equation yet.'+(S.mode==='guided' ? ' <span>'+hessTip(P,S.ch)+'</span>' : '')+'</p>';
+  }
+  $('#hsum').innerHTML=html;
+  let help='';
+  if(S.mode==='hint'){
+    if(S.hint>=1) help+=lab('Hint 1')+txt('Look for a substance that appears in the target and in only one of the given equations. Put it on the correct side with the correct coefficient first. Then use the other equations to cancel everything that is not in the target.');
+    if(S.hint>=2) help+=lab('Hint 2: what to do with each equation')+'<ul class="oplist">'+P.eqs.map((e,i)=>'<li>Equation '+(i+1)+': '+hessOps(e)+'.</li>').join('')+'</ul>';
+  }
+  $('#help').innerHTML=help;
+}
+function hessActions(){
+  const S=state.hess; let out='';
+  if(S.mode==='hint' && !S.done && S.hint<2)
+    out+='<button type="button" class="btn" data-act="hint">'+(S.hint===0?'Show a hint':'Show another hint')+'</button>';
+  if(!S.done && S.misses>=2)
+    out+='<button type="button" class="btn" data-act="solution">Show worked solution</button>';
+  out+='<button type="button" class="btn'+(S.done?' primary':'')+'" data-act="next">'+(S.done?'Next problem':'Skip to a new problem')+'</button>';
+  $('#actions').innerHTML=out;
+}
+function hessTally(){
+  const S=state.hess;
+  $('#tally').textContent = S.solved===0 ? 'No problems solved yet this session.'
+    : 'Solved this session: '+S.solved+(S.streak>1 ? ' ('+S.streak+' in a row)' : '');
+}
+function checkHess(){
+  const S=state.hess, P=S.P; if(S.done) return;
+  const eff=hessEff(S.ch), N=hessNet(P,S.ch);
+  // The ΔH blanks follow whatever the student has done to each equation.
+  let any=false, allOK=true, bmsg='';
+  P.eqs.forEach((e,i)=>{
+    const inp=$('#hb'+i); if(!inp) return;
+    const raw=inp.value.trim(); inp.classList.remove('ok','no'); inp.removeAttribute('aria-invalid');
+    if(!raw){ allOK=false; return; }
+    any=true;
+    const pv=parseInput(raw), v=pv ? pv.value : NaN, want=eff[i]*e.dH, good=Math.abs(v-want)<=0.06;
+    inp.classList.add(good?'ok':'no');
+    if(!good){
+      inp.setAttribute('aria-invalid','true'); allOK=false;
+      if(!bmsg){
+        if(Math.abs(v+want)<=0.06) bmsg='Check the sign of '+DH+' for your version of equation '+(i+1)+'. Reversing an equation changes the sign of its '+DH+'.';
+        else if(Math.abs(Math.abs(v)-Math.abs(e.dH))<=0.06 && S.ch[i].mult!==1) bmsg='You multiplied equation '+(i+1)+' by '+coefTxt(S.ch[i].mult)+', so its '+DH+' has to be multiplied by '+coefTxt(S.ch[i].mult)+' as well.';
+        else bmsg='Check '+DH+' for your version of equation '+(i+1)+'. Start from '+plus(fx(e.dH,1))+' kJ and apply the same changes you made to the equation.';
+      }
+    }
+  });
+  const part=hessPart(P,S.ch), res=gradePart(part, $('#pin0').value);
+  if(res.status==='empty'){
+    if(bmsg) setFb('bad','<p>'+bmsg+'</p>');
+    else if(N.match && any && allOK) setFb('info','<p>Your equations add up to the target and each '+DH+' is right. Now add the '+DH+' values.</p>');
+    else if(N.match) setFb('info','<p>Your equations add up to the target. Change each '+DH+' the same way as its equation, then add them.</p>');
+    else setFb('info','<p>Arrange the equations so they add up to the target, then enter '+DH+' for the target.</p>');
+    return;
+  }
+  if(res.status==='invalid'){ setFb('info','<p>'+res.msg+'</p>'); return; }
+  const pin=$('#pin0'), pm=$('#pm0');
+  if(res.status==='correct'){
+    S.done=true; S.solved++; S.streak++;
+    pin.classList.remove('no'); pin.classList.add('ok'); pm.className='pmark ok'; pm.textContent='✓';
+    let html='<p><b>Correct.</b> '+DH+' = '+part.show+'</p>';
+    if(S.streak>=2 && S.mode!=='solo'){
+      html+='<p>That is '+S.streak+' in a row. Ready for less help?</p>'+
+            '<button type="button" class="btn inline" data-act="levelup">Try one '+(S.mode==='guided'?'with hints only if you ask':'on your own')+'</button>';
+    }
+    setFb('ok',html); lock();
+    $('#sol').innerHTML='<details class="soldet"><summary>See the worked solution</summary>'+hessSolution(P)+'</details>';
+    hessActions(); hessTally();
+    const nx=$('#actions [data-act="next"]'); if(nx) nx.focus();
+    return;
+  }
+  S.misses++; S.streak=0;
+  pin.classList.remove('ok'); pin.classList.add('no'); pm.className='pmark no'; pm.textContent='✗';
+  let msg='<p>'+(bmsg || res.msg)+'</p>';
+  if(S.misses===2) msg+='<p>You can try again or open the worked solution below.</p>';
+  setFb(res.status==='close' && !bmsg ? 'warn' : 'bad', msg);
+  hessActions(); hessTally();
+}
+
+/* ---------- 6. Virtual calorimeter ---------- */
+// Formula with Unicode subscripts, for labels inside drawings.
+const subU = f => f.replace(/\d/g, d=>'₀₁₂₃₄₅₆₇₈₉'[d]);
+const EXPS=[['metal','Specific heat of a metal'],['neut','Heat of neutralization'],['salt','Heat of solution']];
+const LAB_END=240;                 // seconds of data collection
+function stopLabTimer(){
+  const S=state.lab;
+  if(S.timer){ clearInterval(S.timer); S.timer=null; }
+}
+function newLab(sameSample){
+  const S=state.lab;
+  stopLabTimer();
+  if(!sameSample || !S.L || S.L.exp!==S.exp) S.L=makeLab(S.exp, S.L && S.L.exp===S.exp ? S.L : null);
+  S.d={}; S.stage=0; S.sim=null; S.log=[]; S.t=0; S.mixedAt=null; S.rec=null; S.busy=false; S.yr=null;
+  S.misses=0; S.done=false; S.partDone=[]; S.hover=null; S.scoops=0;
+}
+// The procedure for each experiment. Each step names the action that completes it.
+function labSteps(L){
+  if(L.exp==='metal') return [
+    ['weigh','Weigh the metal sample on the balance.'],
+    ['water','Add water to the calorimeter. The cup is tared, so the balance shows the mass of water.'],
+    ['heat','Heat the metal in the boiling water bath until it reaches the temperature of the bath.'],
+    ['start','Start recording the temperature of the water in the calorimeter.'],
+    ['mix','Move the hot metal quickly into the calorimeter and put the lid on.'],
+    ['record','Record the temperature when it reaches its highest point.']];
+  if(L.exp==='neut') return [
+    ['acid','Measure the '+L.acid+' solution into the calorimeter.'],
+    ['base','Measure the '+L.base+' solution into a graduated cylinder.'],
+    ['start','Start recording the temperature in the calorimeter.'],
+    ['mix','Pour the '+L.base+' into the calorimeter, put the lid on, and stir.'],
+    ['record','Record the temperature when it reaches its highest point.']];
+  return [
+    ['water','Add water to the calorimeter. The cup is tared, so the balance shows the mass of water.'],
+    ['scoop','Weigh out between 2 and 10 grams of '+L.name+'.'],
+    ['start','Start recording the temperature of the water.'],
+    ['mix','Add the solid to the calorimeter, put the lid on, and stir until it dissolves.'],
+    ['record','Record the temperature when it stops changing: its highest or lowest point.']];
+}
+function labAim(L){
+  if(L.exp==='metal') return 'Find the specific heat of an unknown metal, then identify the metal.';
+  if(L.exp==='neut') return 'Find '+DH+' for the neutralization of '+F(L.acid)+' by '+F(L.base)+', in kJ per mole.';
+  return 'Find the enthalpy of solution of '+L.name+' ('+F(L.f)+'), in kJ per mole.';
+}
+function renderLab(){
+  const S=state.lab, m=META.lab;
+  if(!S.L || S.L.exp!==S.exp) newLab(false);
+  const L=S.L;
+  view.onclick=null;
+  view.innerHTML=
+    '<section>'+
+    '<h2>6. '+m.title+'</h2>'+
+    '<p class="lede">'+m.lede+'</p>'+
+    '<div class="modebar"><span class="modebar-label" id="xl">Experiment</span>'+
+      '<div class="seg" role="group" aria-labelledby="xl">'+
+      EXPS.map(x=>'<button type="button" data-exp="'+x[0]+'" aria-pressed="'+(S.exp===x[0])+'">'+x[1]+'</button>').join('')+
+      '</div></div>'+
+    '<article class="problem" id="problem">'+
+      '<p class="q" style="margin-bottom:8px">'+labAim(L)+'</p>'+
+      (L.exp==='metal' ? '' : eqBox(L.exp==='neut' ? {r:[[1,L.acid,'aq'],[1,L.base,'aq']], p:[[1,L.salt,'aq'],[1,'H2O','l']]} : {r:[[1,L.f,'s']], p:[[1,L.f,'aq']]}, {}))+
+      '<div class="labgrid">'+
+        '<div><h3>Procedure</h3><ol class="steps" id="steps"></ol><div class="stepbtns" id="stepbtns"></div>'+
+          '<p class="labstatus" id="labstatus" role="status" aria-live="polite"></p></div>'+
+        '<div><h3>Bench</h3><div id="bench"></div></div>'+
+      '</div>'+
+      '<div class="labgrid">'+
+        '<div><h3>Temperature in the calorimeter</h3><div class="gwrap" id="gwrap"><div id="graph"></div><div class="gtip" id="gtip" hidden></div></div>'+
+          '<details class="how"><summary>Show the readings as a table</summary><div id="gtable"></div></details></div>'+
+        '<div><h3>Lab notebook</h3><table class="note-tbl" id="notebook"></table><div id="ref"></div></div>'+
+      '</div>'+
+      '<form id="ans" novalidate autocomplete="off" hidden>'+
+        '<h3 style="margin-top:6px">Calculations</h3><ol class="parts" id="labparts" style="margin-top:6px;padding-top:10px"></ol>'+
+        '<div class="checkrow"><button class="btn primary" type="submit">Check answers</button></div>'+
+      '</form>'+
+      '<div id="fb" class="fb" role="status" aria-live="polite"></div>'+
+      '<div id="sol"></div>'+
+      '<div class="actions" id="actions"></div>'+
+    '</article>'+
+    '<p class="tally" id="tally"></p>'+
+    '</section>';
+  $('.modebar .seg',view).addEventListener('click',e=>{
+    const b=e.target.closest('button[data-exp]'); if(!b || b.dataset.exp===S.exp) return;
+    S.exp=b.dataset.exp; newLab(false); renderLab();
+  });
+  $('#problem').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b || b.disabled) return;
+    if(b.dataset.do) labDo(b.dataset.do, b.dataset.arg);
+    else if(b.dataset.act==='again'){ newLab(true); renderLab(); }
+    else if(b.dataset.act==='new'){ newLab(false); renderLab(); }
+    else if(b.dataset.act==='solution'){
+      S.done=true; lock();
+      $('#sol').innerHTML=labSolution(L,S.d);
+      setFb('info','<p>These steps use your own measurements. Read through them, then run another experiment.</p>');
+      labActions(); paintSteps();
+    }
+  });
+  $('#ans').addEventListener('submit',e=>{ e.preventDefault(); checkLab(); });
+  $('#gtable').parentNode.addEventListener('toggle',()=>paintGraph());
+  const gw=$('#gwrap');
+  gw.addEventListener('pointermove',e=>labHover(e));
+  gw.addEventListener('pointerleave',()=>{ S.hover=null; paintGraph(); });
+  paintLab(); labActions();
+  $('#tally').textContent = S.solved===0 ? 'No experiments completed yet this session.' : 'Experiments completed this session: '+S.solved;
+}
+function labDo(what, arg){
+  const S=state.lab, L=S.L, d=S.d; if(S.busy || S.done) return;
+  if(what==='weigh'){ d.mm=L.mMetal; S.stage++; }
+  else if(what==='water'){ d.vw=arg; d.mw=labWater(arg); S.stage++; }
+  else if(what==='acid'){ d.Va=arg; S.stage++; }
+  else if(what==='base'){ d.Vb=arg; S.stage++; }
+  else if(what==='scoop'){ S.scoops=(S.scoops||0)+0.9+Math.random()*1.3; d.msLive=S.scoops.toFixed(2); }
+  else if(what==='useSalt'){ d.ms=d.msLive; S.stage++; }
+  else if(what==='heat'){
+    S.busy=true; paintLab();
+    setTimeout(()=>{ if(state.lab.L!==L) return; S.busy=false; d.Tm=L.Tbath; S.stage++; if(state.tab==='lab') paintLab(); }, 2200);
+    return;
+  }
+  else if(what==='start'){
+    S.stage++; S.log=[]; S.t=0;
+    S.yr=[Math.floor(L.Troom)-2, Math.ceil(L.Troom)+2];
+    S.log.push({t:0, T:labRead(L.Troom)});
+    S.timer=setInterval(labTick, 100);     // one simulated second every tenth of a second
+  }
+  else if(what==='mix'){
+    d.Ti=S.log[S.log.length-1].T.toFixed(2);
+    S.sim=labMix(L,d); S.mixedAt=S.t; S.stage++;
+    // Set the graph range from where the temperature is heading.
+    const probe=labMix(L,d); let lo=L.Troom, hi=L.Troom;
+    for(let i=0;i<LAB_END;i++){ const T=labStep(probe,1); lo=Math.min(lo,T); hi=Math.max(hi,T); }
+    S.yr=[Math.floor(lo-0.6), Math.ceil(hi+0.6)];
+  }
+  else if(what==='record'){
+    const last=S.log[S.log.length-1];
+    d.Tf=last.T.toFixed(2); S.rec={t:last.t, T:last.T};
+    S.partDone=[]; $('#fb').className='fb';
+    drawLabParts();
+  }
+  paintLab();
+}
+function labTick(){
+  const S=state.lab, L=S.L;
+  if(state.tab!=='lab'){ stopLabTimer(); return; }
+  // Hold the clock once a baseline is on the graph, until the contents are mixed.
+  if(S.mixedAt===null && S.t>=30){ return; }
+  S.t+=1;
+  const T = S.sim ? labStep(S.sim,1) : L.Troom;
+  S.log.push({t:S.t, T:labRead(T)});
+  if(S.t>=LAB_END) stopLabTimer();
+  paintGraph(); paintBench(); paintStatus();
+  if(!S.timer){ paintSteps(); }
+}
+const labNow = () => { const S=state.lab; return S.log.length ? S.log[S.log.length-1].T : S.L.Troom; };
+function paintLab(){ paintSteps(); paintBench(); paintGraph(); paintNotebook(); paintStatus(); }
+function paintSteps(){
+  const S=state.lab, L=S.L, steps=labSteps(L), cur=steps[S.stage] ? steps[S.stage][0] : null;
+  $('#steps').innerHTML=steps.map((s,i)=>{
+    const done = i<S.stage || (s[0]==='record' && S.d.Tf);
+    return '<li class="'+(done ? 'done' : i===S.stage ? 'now' : '')+'">'+(done ? '<span aria-hidden="true">✓ </span>' : '')+s[1]+'</li>';
+  }).join('');
+  const B=(what,label,arg,primary)=>'<button type="button" class="btn'+(primary?' primary':'')+'" data-do="'+what+'"'+(arg?' data-arg="'+arg+'"':'')+(S.busy||S.done?' disabled':'')+'>'+label+'</button>';
+  let out='';
+  if(cur==='weigh') out=B('weigh','Weigh the metal',null,true);
+  else if(cur==='water') out=['50.0','75.0','100.0'].map(v=>B('water','Add '+v+' mL',v)).join('');
+  else if(cur==='heat') out=B('heat', S.busy ? 'Heating…' : 'Heat the metal',null,true);
+  else if(cur==='acid') out=['25.0','50.0'].map(v=>B('acid','Measure '+v+' mL',v)).join('');
+  else if(cur==='base') out=['25.0','50.0'].map(v=>B('base','Measure '+v+' mL',v)).join('');
+  else if(cur==='scoop'){
+    const ms=S.scoops||0;
+    out=(ms<10 ? B('scoop','Add a scoop') : '')+(ms>=2 ? B('useSalt','Use '+S.d.msLive+' g',null,true) : '');
+  }
+  else if(cur==='start') out=B('start','Start recording',null,true);
+  else if(cur==='mix') out=B('mix', L.exp==='metal' ? 'Transfer the metal' : L.exp==='neut' ? 'Pour in the base' : 'Add the solid', null, true);
+  else if(cur==='record') out=B('record', S.d.Tf ? 'Record again at this temperature' : 'Record this temperature', null, !S.d.Tf);
+  $('#stepbtns').innerHTML=out;
+}
+function paintStatus(){
+  const S=state.lab, L=S.L, steps=labSteps(L), cur=steps[S.stage] ? steps[S.stage][0] : null;
+  let s;
+  if(S.done) s='Experiment complete.';
+  else if(S.busy) s='The metal is heating in the boiling water. Give it time to reach the bath temperature.';
+  else if(cur==='scoop') s = S.scoops ? 'The balance reads '+S.d.msLive+' g.'+(S.scoops<2 ? ' Add more: you need at least 2 g.' : '') : 'The weighing boat is empty and tared.';
+  else if(cur==='mix') s='Recording. The temperature is steady at '+labNow().toFixed(2)+' °C. This is your starting temperature.';
+  else if(cur==='record'){
+    const run=!!S.timer;
+    s = (run ? 'The probe reads '+labNow().toFixed(2)+' °C.' : 'Data collection has stopped at '+labNow().toFixed(2)+' °C.')+
+        (S.d.Tf ? ' You recorded '+S.d.Tf+' °C. You can record again if you think a different moment is better.' : run ? ' Watch the graph and record when the temperature stops changing.' : ' Record the temperature, or run the sample again to catch the peak.');
+  }
+  else if(cur==='start') s='Everything is ready. The probe is in the calorimeter.';
+  else s='Follow the procedure. The next step is highlighted.';
+  $('#labstatus').textContent=s;
+}
+function paintNotebook(){
+  const S=state.lab, L=S.L, d=S.d, v=(x,u)=> x ? x+' '+u : '—';
+  let rows;
+  if(L.exp==='metal') rows=[['Mass of metal',v(d.mm,'g')],['Mass of water',v(d.mw,'g')],['Temperature of the boiling water bath (starting temperature of the metal)',v(d.Tm,'°C')],
+                            ['Starting temperature of the water',v(d.Ti,'°C')],['Final temperature',v(d.Tf,'°C')]];
+  else if(L.exp==='neut') rows=[[F(L.acid)+' solution, '+L.M+' M',v(d.Va,'mL')],[F(L.base)+' solution, '+L.M+' M',v(d.Vb,'mL')],
+                                ['Starting temperature (both solutions)',v(d.Ti,'°C')],['Final temperature',v(d.Tf,'°C')]];
+  else rows=[['Mass of water',v(d.mw,'g')],['Mass of '+L.name,v(d.ms,'g')],['Starting temperature',v(d.Ti,'°C')],['Final temperature',v(d.Tf,'°C')]];
+  $('#notebook').innerHTML=rows.map(r=>'<tr><th scope="row">'+r[0]+'</th><td>'+r[1]+'</td></tr>').join('');
+  $('#ref').innerHTML = L.exp==='metal'
+    ? '<details class="how" open><summary>Accepted specific heats</summary><table class="note-tbl ref">'+[['water','4.184']].concat(METALS).map(m=>'<tr><th scope="row">'+m[0]+'</th><td>'+m[1]+' '+CU+'</td></tr>').join('')+'</table></details>'
+    : '<p class="am" style="margin-top:10px">Treat the solution as water: specific heat 4.184 '+CU+(L.exp==='neut' ? ', density 1.00 g/mL.' : '.<br>Atomic masses (g/mol): '+amLine([L.f]))+'</p>';
+}
+// The bench drawing: balance, heat source or cylinder, and the calorimeter with its probe.
+function paintBench(){
+  const S=state.lab, L=S.L, d=S.d, st=labSteps(L), cur=st[S.stage] ? st[S.stage][0] : 'record';
+  const mixed=S.mixedAt!==null, ink='#1b2430', water='#cfe1f2';
+  const T=labNow().toFixed(2);
+  let g='';
+  const text=(x,y,s,o)=>'<text x="'+x+'" y="'+y+'" font-size="'+((o&&o.size)||11)+'" text-anchor="'+((o&&o.anchor)||'middle')+'" fill="'+((o&&o.fill)||'#566070')+'"'+(o&&o.bold?' font-weight="700"':'')+'>'+s+'</text>';
+  const balance=(x,reading)=>'<rect x="'+(x-42)+'" y="186" width="84" height="22" rx="4" fill="#e6eaf0" stroke="'+ink+'" stroke-width="1.5"/>'+
+    '<rect x="'+(x-34)+'" y="178" width="68" height="8" rx="2" fill="#fff" stroke="'+ink+'" stroke-width="1.5"/>'+
+    '<rect x="'+(x-26)+'" y="191" width="52" height="13" rx="2" fill="#1f3a5f"/>'+text(x,201,reading,{fill:'#fff',size:10,bold:true})+text(x,222,'balance');
+  // Calorimeter: nested foam cups with a lid and a temperature probe.
+  const cx=290, liquid = L.exp==='metal' ? !!d.mw : L.exp==='neut' ? !!d.Va : !!d.mw;
+  let level=0;
+  if(L.exp==='neut') level=(Number(d.Va||0)+(mixed?Number(d.Vb||0):0))/100;
+  else level=Number(d.vw||0)/100;
+  const top=198-Math.max(0,Math.min(1,level))*62-(liquid?8:0);
+  const wAt=y=>26+ (198-y)*0.13;             // half-width of the cup at height y
+  g+='<path d="M'+(cx-41)+' 126 L'+(cx-31)+' 204 Q'+cx+' 212 '+(cx+31)+' 204 L'+(cx+41)+' 126" fill="#f7f8fa" stroke="#566070" stroke-width="1.4" stroke-linejoin="round"/>';
+  g+='<path d="M'+(cx-36)+' 118 L'+(cx+36)+' 118 L'+(cx+27)+' 200 Q'+cx+' 206 '+(cx-27)+' 200 Z" fill="#fff" stroke="'+ink+'" stroke-width="1.8" stroke-linejoin="round"/>';
+  if(liquid) g+='<path d="M'+(cx-wAt(top)+3)+' '+top+' L'+(cx+wAt(top)-3)+' '+top+' L'+(cx+24)+' 198 Q'+cx+' 203 '+(cx-24)+' 198 Z" fill="'+water+'"/>';
+  if(L.exp==='metal' && mixed) g+='<rect x="'+(cx-13)+'" y="184" width="26" height="12" rx="2" fill="#8d97a3" stroke="'+ink+'" stroke-width="1.2"/>';
+  if(L.exp==='salt' && mixed && S.t-S.mixedAt<25) g+=[[-12,190],[-4,194],[6,191],[13,195],[0,187]].map(p=>'<rect x="'+(cx+p[0])+'" y="'+p[1]+'" width="4" height="4" fill="#fff" stroke="'+ink+'" stroke-width="0.8"/>').join('');
+  g+='<line x1="'+(cx-14)+'" y1="84" x2="'+(cx-14)+'" y2="180" stroke="#566070" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="'+(cx-14)+'" cy="183" rx="7" ry="3" fill="none" stroke="#566070" stroke-width="1.6"/><circle cx="'+(cx-14)+'" cy="82" r="3.5" fill="#566070"/>';
+  g+='<rect x="'+(cx-40)+'" y="110" width="80" height="9" rx="3" fill="#e6eaf0" stroke="'+ink+'" stroke-width="1.5"/>';
+  g+='<line x1="'+(cx+12)+'" y1="62" x2="'+(cx+12)+'" y2="186" stroke="'+ink+'" stroke-width="2.5" stroke-linecap="round"/>';
+  g+='<path d="M'+(cx+12)+' 62 Q'+(cx+12)+' 40 '+(cx-6)+' 40" fill="none" stroke="'+ink+'" stroke-width="1.5"/>';
+  g+='<rect x="'+(cx-62)+'" y="26" width="58" height="28" rx="5" fill="#1f3a5f"/>'+text(cx-33,45,T+' °C',{fill:'#fff',size:12,bold:true});
+  g+=text(cx-33,18,'temperature probe')+text(cx,222,'calorimeter');
+  if(L.exp==='metal'){
+    const onBal = S.stage<=1 || (S.stage===2 && !S.busy), inBath = (S.stage===2 && S.busy) || S.stage===3 || S.stage===4;
+    g+=balance(58, d.mm && onBal ? d.mm+' g' : '0.00 g');
+    if(onBal && S.stage>=1) g+='<rect x="45" y="166" width="26" height="12" rx="2" fill="#8d97a3" stroke="'+ink+'" stroke-width="1.2"/>';
+    if(S.stage===0) g+='<rect x="8" y="166" width="26" height="12" rx="2" fill="#8d97a3" stroke="'+ink+'" stroke-width="1.2"/>'+text(21,160,'sample');
+    // Hot plate and beaker of boiling water.
+    g+='<rect x="136" y="196" width="76" height="12" rx="3" fill="#3b4656"/><rect x="146" y="191" width="56" height="5" fill="#a3241d"/>';
+    g+='<path d="M150 120 L150 188 Q150 191 153 191 L195 191 Q198 191 198 188 L198 120" fill="none" stroke="'+ink+'" stroke-width="1.8"/>';
+    g+='<rect x="151.5" y="140" width="45" height="50" fill="#f6dccd"/>';
+    g+=[[160,170],[172,158],[186,174],[180,148],[166,150]].map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="2.4" fill="none" stroke="'+ink+'" stroke-width="0.8"/>').join('');
+    if(inBath) g+='<line x1="174" y1="104" x2="174" y2="172" stroke="'+ink+'" stroke-width="1"/><rect x="161" y="172" width="26" height="12" rx="2" fill="#8d97a3" stroke="'+ink+'" stroke-width="1.2"/>';
+    g+=text(174,222,'boiling water bath')+text(174,112,L.Tbath+' °C',{bold:true,fill:ink});
+  } else if(L.exp==='neut'){
+    // Graduated cylinder for the base.
+    const full = d.Vb && !mixed ? Number(d.Vb)/50 : 0;
+    g+='<path d="M150 96 L150 196 L182 196 L182 96" fill="none" stroke="'+ink+'" stroke-width="1.8"/><rect x="140" y="196" width="52" height="8" rx="2" fill="#e6eaf0" stroke="'+ink+'" stroke-width="1.5"/>';
+    if(full) g+='<rect x="151.5" y="'+(195-full*80)+'" width="29" height="'+(full*80)+'" fill="'+water+'"/>';
+    for(let k=1;k<=5;k++) g+='<line x1="150" y1="'+(195-k*16)+'" x2="158" y2="'+(195-k*16)+'" stroke="'+ink+'" stroke-width="1"/>';
+    g+=text(166,222,'graduated cylinder')+text(166,88,L.M+' M '+subU(L.base),{bold:true,fill:ink});
+    g+='<rect x="30" y="140" width="56" height="64" rx="6" fill="#fff" stroke="'+ink+'" stroke-width="1.8"/><rect x="46" y="126" width="24" height="14" rx="2" fill="#e6eaf0" stroke="'+ink+'" stroke-width="1.5"/>'+
+       '<rect x="31.5" y="164" width="53" height="38" rx="4" fill="'+water+'"/>'+text(58,178,L.M+' M',{bold:true,fill:ink,size:10})+text(58,192,subU(L.acid),{bold:true,fill:ink,size:10})+text(58,222,'stock bottle');
+  } else {
+    const ms=Number(mixed ? 0 : (d.ms || d.msLive || 0));
+    g+=balance(70, cur==='scoop' || d.ms ? (mixed ? '0.00' : (d.ms||d.msLive||'0.00'))+' g' : (d.mw ? d.mw+' g' : '0.00 g'));
+    g+='<path d="M46 178 L52 170 L88 170 L94 178 Z" fill="#fff" stroke="'+ink+'" stroke-width="1.3"/>';
+    if(ms>0) g+='<path d="M'+(70-6-ms*1.3)+' 170 Q70 '+(170-4-ms*1.6)+' '+(70+6+ms*1.3)+' 170 Z" fill="#f4f6f9" stroke="'+ink+'" stroke-width="1"/>';
+    g+=text(70,160,subU(L.f),{bold:true,fill:ink})+
+       '<rect x="150" y="150" width="50" height="54" rx="6" fill="#fff" stroke="'+ink+'" stroke-width="1.8"/><rect x="160" y="140" width="30" height="10" rx="2" fill="#e6eaf0" stroke="'+ink+'" stroke-width="1.5"/>'+
+       text(175,180,L.name.split(' ')[0],{size:9,fill:ink})+text(175,192,L.name.split(' ')[1]||'',{size:9,fill:ink})+text(175,222,'reagent jar');
+  }
+  $('#bench').innerHTML='<svg viewBox="0 0 360 230" role="img" aria-label="Lab bench. The temperature probe reads '+T+' degrees Celsius.">'+g+'</svg>';
+}
+// Temperature against time. One series, so the title names it and there is no legend.
+const G={w:360,h:230,l:46,r:14,t:16,b:40};
+function gScale(){
+  const S=state.lab, yr=S.yr || [Math.floor(S.L.Troom)-2, Math.ceil(S.L.Troom)+2];
+  const X=t=>G.l+t/LAB_END*(G.w-G.l-G.r), Y=T=>G.t+(yr[1]-T)/(yr[1]-yr[0])*(G.h-G.t-G.b);
+  return {X,Y,yr};
+}
+function paintGraph(){
+  const S=state.lab, sc=gScale(), X=sc.X, Y=sc.Y, yr=sc.yr, grid='#e3e7ed', mute='#566070', ink='#1b2430';
+  const span=yr[1]-yr[0], step=[0.5,1,2,5,10].find(s=>span/s<=6) || 20;
+  let g='';
+  for(let v=Math.ceil(yr[0]/step)*step; v<=yr[1]+1e-9; v+=step){
+    g+='<line x1="'+G.l+'" y1="'+Y(v)+'" x2="'+(G.w-G.r)+'" y2="'+Y(v)+'" stroke="'+grid+'" stroke-width="1"/>'+
+       '<text x="'+(G.l-6)+'" y="'+(Y(v)+4)+'" font-size="11" text-anchor="end" fill="'+mute+'">'+(step<1 ? v.toFixed(1) : v)+'</text>';
+  }
+  for(let s=0;s<=LAB_END;s+=60) g+='<text x="'+X(s)+'" y="'+(G.h-G.b+16)+'" font-size="11" text-anchor="middle" fill="'+mute+'">'+s+'</text>';
+  g+='<line x1="'+G.l+'" y1="'+(G.h-G.b)+'" x2="'+(G.w-G.r)+'" y2="'+(G.h-G.b)+'" stroke="#b9c0cb" stroke-width="1"/>';
+  g+='<text x="'+((G.l+G.w-G.r)/2)+'" y="'+(G.h-6)+'" font-size="11" text-anchor="middle" fill="'+mute+'">Time (s)</text>';
+  g+='<text x="12" y="'+((G.t+G.h-G.b)/2)+'" font-size="11" text-anchor="middle" fill="'+mute+'" transform="rotate(-90 12 '+((G.t+G.h-G.b)/2)+')">Temperature (°C)</text>';
+  if(S.mixedAt!==null){
+    g+='<line x1="'+X(S.mixedAt)+'" y1="'+G.t+'" x2="'+X(S.mixedAt)+'" y2="'+(G.h-G.b)+'" stroke="#b9c0cb" stroke-width="1"/>'+
+       '<text x="'+(X(S.mixedAt)+4)+'" y="'+(G.t+9)+'" font-size="10" fill="'+mute+'">mixed</text>';
+  }
+  if(S.log.length>1){
+    g+='<path d="'+S.log.map((p,i)=>(i?'L':'M')+X(p.t).toFixed(1)+' '+Y(p.T).toFixed(1)).join(' ')+'" fill="none" stroke="#1f3a5f" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+  } else if(!S.log.length){
+    g+='<text x="'+((G.l+G.w-G.r)/2)+'" y="'+((G.t+G.h-G.b)/2)+'" font-size="12" text-anchor="middle" fill="'+mute+'">The graph starts when you start recording.</text>';
+  }
+  if(S.rec){
+    const rx=X(S.rec.t), ry=Y(S.rec.T), left=rx>G.w-120;
+    g+='<circle cx="'+rx+'" cy="'+ry+'" r="5" fill="#dd962a" stroke="#fff" stroke-width="2"/>'+
+       '<text x="'+(left?rx-9:rx+9)+'" y="'+(ry+(S.rec.T>(yr[0]+yr[1])/2 ? 16 : -8))+'" font-size="11" font-weight="700" text-anchor="'+(left?'end':'start')+'" fill="'+ink+'">recorded '+S.rec.T.toFixed(2)+' °C</text>';
+  }
+  if(S.hover!==null && S.log[S.hover]){
+    const p=S.log[S.hover];
+    g+='<line x1="'+X(p.t)+'" y1="'+G.t+'" x2="'+X(p.t)+'" y2="'+(G.h-G.b)+'" stroke="'+mute+'" stroke-width="1"/>'+
+       '<circle cx="'+X(p.t)+'" cy="'+Y(p.T)+'" r="4" fill="#1f3a5f" stroke="#fff" stroke-width="2"/>';
+  }
+  const last=S.log.length ? S.log[S.log.length-1] : null;
+  $('#graph').innerHTML='<svg viewBox="0 0 '+G.w+' '+G.h+'" role="img" aria-label="Temperature against time.'+(last ? ' Latest reading '+last.T.toFixed(2)+' degrees Celsius at '+last.t+' seconds.' : ' No data yet.')+'">'+g+'</svg>';
+  const tip=$('#gtip');
+  if(S.hover!==null && S.log[S.hover]){
+    const p=S.log[S.hover], box=$('#graph svg').getBoundingClientRect(), k=box.width/G.w;
+    tip.hidden=false; tip.style.left=(X(p.t)*k)+'px'; tip.style.top=(Y(p.T)*k)+'px';
+    tip.textContent=''; const b=document.createElement('b'); b.textContent=p.T.toFixed(2)+' °C'; tip.appendChild(b);
+    tip.appendChild(document.createTextNode(' at '+p.t+' s'));
+  } else tip.hidden=true;
+  const tb=$('#gtable');
+  if(tb && tb.parentNode.open){
+    tb.innerHTML = S.log.length ? '<table class="note-tbl ref"><tr><th>Time (s)</th><td>Temperature (°C)</td></tr>'+
+      S.log.filter(p=>p.t%10===0).map(p=>'<tr><th scope="row">'+p.t+'</th><td>'+p.T.toFixed(2)+'</td></tr>').join('')+'</table>' : '<p class="am">No readings yet.</p>';
+  }
+}
+function labHover(e){
+  const S=state.lab; if(!S.log.length) return;
+  const svg=$('#graph svg'); if(!svg) return;
+  const box=svg.getBoundingClientRect(), x=(e.clientX-box.left)/box.width*G.w;
+  const t=(x-G.l)/(G.w-G.l-G.r)*LAB_END;
+  let best=0; S.log.forEach((p,i)=>{ if(Math.abs(p.t-t)<Math.abs(S.log[best].t-t)) best=i; });
+  S.hover=best; paintGraph();
+}
+function drawLabParts(){
+  const S=state.lab, parts=labParts(S.L,S.d);
+  $('#ans').hidden=false;
+  $('#labparts').innerHTML=parts.map((p,i)=>partHTML(p,i,true)).join('');
+  $('#sol').innerHTML='';
+}
+function labActions(){
+  const S=state.lab; let out='';
+  if(!S.done && S.misses>=2 && S.d.Tf) out+='<button type="button" class="btn" data-act="solution">Show worked solution</button>';
+  out+='<button type="button" class="btn" data-act="again">Run this sample again</button>';
+  out+='<button type="button" class="btn'+(S.done?' primary':'')+'" data-act="new">New sample</button>';
+  $('#actions').innerHTML=out;
+}
+// How well the final temperature was chosen, judged against the whole run.
+function labTechnique(){
+  const S=state.lab, after=S.log.filter(p=>p.t>S.mixedAt), start=Number(S.d.Ti);
+  const sim=labMix(S.L,S.d); let ext=start, tExt=S.mixedAt;
+  for(let i=1;i<=LAB_END;i++){ const T=labStep(sim,1); if(Math.abs(T-start)>Math.abs(ext-start)){ ext=T; tExt=S.mixedAt+i; } }
+  const short=Math.abs(ext-S.rec.T), up=ext>start;
+  if(short<=0.10) return 'You recorded the temperature right at its '+(up?'highest':'lowest')+' point.';
+  if(S.rec.t<tExt) return 'You recorded while the temperature was still '+(up?'rising':'falling')+', about '+short.toFixed(2)+' °C short of where it ended up. Waiting until the reading levels off gives a better result.';
+  return 'You recorded after the temperature had started drifting back toward room temperature, about '+short.toFixed(2)+' °C past its '+(up?'highest':'lowest')+' point. Recording at the peak gives a better result.';
+}
+function checkLab(){
+  const S=state.lab, L=S.L, d=S.d; if(S.done || !d.Tf) return;
+  if(Math.abs(Number(d.Tf)-Number(d.Ti))<0.05){
+    setFb('info','<p>The temperature you recorded is the same as the starting temperature, so there is nothing to calculate yet. Record again once the temperature has changed.</p>'); return;
+  }
+  const parts=labParts(L,d), tagOf=i=>'<b>('+LET[i]+')</b> ';
+  const res=parts.map((part,i)=> S.partDone[i] ? {status:'done'} : gradePart(part, readPart(parts,i)));
+  if(res.filter(r=>r.status!=='done').every(r=>r.status==='empty')){
+    setFb('info','<p>Use the values in your lab notebook to work out each part, then enter your answers.</p>'); return;
+  }
+  const inv=res.findIndex(r=>r.status==='invalid');
+  if(inv>=0){ setFb('info','<p>'+tagOf(inv)+res[inv].msg+'</p>'); return; }
+  const wrong=[], sigs=[];
+  res.forEach((r,i)=>{
+    if(r.status==='correct' || r.status==='sig'){ S.partDone[i]=true; markPart(parts,i,true); if(r.status==='sig') sigs.push(i); }
+    else if(r.status==='wrong' || r.status==='close'){ markPart(parts,i,false); wrong.push(i); }
+  });
+  const sigNote=sigs.map(i=>'<p>'+tagOf(i)+'The value is right. Your temperature change limits this to '+parts[i].sf+' significant figures: <b>'+parts[i].show+'</b>.</p>').join('');
+  if(parts.every((p,i)=>S.partDone[i])){
+    S.done=true; S.solved++; stopLabTimer();
+    let got, acc, what, extra='';
+    if(L.exp==='metal'){
+      got=parts[1].answer; acc=L.c; what='The sample was '+L.metal[0]+', with an accepted specific heat of '+L.metal[1]+' '+CU+'.';
+      if(parts[2].answer!==L.metal[0]) extra=' Your data point to '+parts[2].answer+', which is a reasonable conclusion from your numbers, but the measurement was off far enough to change the identification.';
+    } else if(L.exp==='neut'){ got=parts[2].answer; acc=H_NEUT; what='The accepted value for a strong acid and a strong base is '+fx(H_NEUT,1)+' kJ/mol.'; }
+    else { got=parts[2].answer; acc=L.H; what='The accepted enthalpy of solution of '+L.name+' is '+plus(fx(L.H,1))+' kJ/mol.'; }
+    const pe=Math.abs(got-acc)/Math.abs(acc)*100;
+    setFb('ok','<p><b>Your calculations are correct.</b> '+parts.map((p,i)=>'('+LET[i]+') '+p.show).join('; ')+'</p>'+sigNote+
+      '<p>'+what+' Your result is off by '+pe.toFixed(1)+'%.'+extra+'</p>'+
+      '<p>'+labTechnique()+' Even with perfect technique, a coffee cup lets a little heat escape, so results come out slightly small.</p>');
+    lock(); paintSteps(); paintStatus();
+    $('#sol').innerHTML='<details class="soldet"><summary>See the worked solution</summary>'+labSolution(L,d)+'</details>';
+    labActions();
+    $('#tally').textContent='Experiments completed this session: '+S.solved;
+    return;
+  }
+  if(wrong.length){
+    S.misses++;
+    let msg=wrong.map(i=>'<p>'+tagOf(i)+res[i].msg+'</p>').join('')+sigNote;
+    if(S.misses===2) msg+='<p>You can try again or open the worked solution below.</p>';
+    setFb(wrong.every(i=>res[i].status==='close') ? 'warn' : 'bad', msg);
+  } else {
+    const todo=parts.map((p,i)=>i).filter(i=>!S.partDone[i]);
+    setFb('info','<p>Right so far. Now answer part'+(todo.length>1?'s ':' ')+todo.map(i=>'('+LET[i]+')').join(' and ')+'.</p>'+sigNote);
+  }
+  labActions();
+}
+
+render();
+}
+</script>
+</body>
+</html>
