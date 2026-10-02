@@ -1,0 +1,1719 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solutions and Gases Study Guide</title>
+<style>
+:root{
+  --ink:#1b2430; --muted:#566070; --line:#d6dbe3; --soft:#f3f5f8;
+  --a-bg:#fff1dc; --a-line:#dd962a; --a-ink:#7a4300;
+  --b-bg:#ddf2ee; --b-line:#2c9383; --b-ink:#0a564c;
+  --r-bg:#ebe7f8; --r-line:#7560c4; --r-ink:#3e2c85;
+  --navy:#1f3a5f; --navy-d:#152b49;
+  --ok:#17693f; --ok-bg:#e4f4ea;
+  --bad:#a3241d; --bad-bg:#fcebe9;
+  --warn:#6f4b00; --warn-bg:#fff5d9;
+  --info:#274b7a; --info-bg:#e9f0fa;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:#fff;color:var(--ink);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
+.app{max-width:880px;margin:0 auto;padding:20px 16px 48px}
+sub{font-size:.72em;line-height:0}
+sup{font-size:.72em;line-height:0}
+:focus-visible{outline:3px solid #4c7fd6;outline-offset:2px}
+
+/* Header */
+.top h1{font-family:var(--serif);font-weight:600;font-size:2rem;line-height:1.15;letter-spacing:-.01em;margin:0 0 .4rem}
+.top p{margin:0;color:var(--muted);max-width:64ch}
+
+/* Tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:20px 0 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.tabs button{appearance:none;font:inherit;font-size:.92rem;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px 7px 8px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.tabs button:not([data-n]){padding-left:14px}
+.tabs .tn{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--soft);font-size:.82rem}
+.tabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.tabs button[aria-selected="true"] .tn{background:#fff;color:var(--navy)}
+.tabs button:not([aria-selected="true"]):hover{border-color:var(--navy)}
+
+/* Section heading */
+h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;line-height:1.2;margin:0 0 .35rem}
+.lede{margin:0 0 18px;max-width:66ch}
+h3{font-size:1rem;margin:0 0 .4rem}
+
+/* Substance colors: given (A) and wanted (B) */
+.sa{color:var(--a-ink);font-weight:600}
+.sb{color:var(--b-ink);font-weight:600}
+
+/* Buttons */
+.btn{appearance:none;font:inherit;font-weight:600;font-size:.95rem;border-radius:8px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);padding:8px 14px;cursor:pointer}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy-d)}
+.btn.inline{padding:4px 10px;font-size:.9rem;margin-top:8px}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* Help level */
+.modebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 14px}
+.modebar-label{font-size:.9rem;font-weight:600}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{appearance:none;font:inherit;font-size:.9rem;border:0;background:#fff;color:var(--ink);padding:7px 12px;cursor:pointer;border-left:1.5px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff;font-weight:600}
+.seg button:focus-visible{outline-offset:-3px}
+
+/* Problem */
+.problem{border:1.5px solid var(--line);border-radius:14px;padding:20px 20px 18px}
+.ctx{margin:0 0 10px;color:var(--muted)}
+.eqwrap{background:var(--soft);border-radius:10px;padding:14px 16px 10px;margin:0 0 12px}
+.eq{font-family:var(--serif);font-size:1.4rem;line-height:1.35;display:flex;flex-wrap:wrap;align-items:baseline;gap:.15em .45em}
+.eq .coef{margin-right:.2em}
+.eq .plus,.eq .arrow{color:var(--muted)}
+.eq .sp{font-weight:400;color:var(--ink);padding:0 .15em;border-radius:5px;white-space:nowrap}
+.eq .sp.sa{background:var(--a-bg);color:var(--a-ink);box-shadow:0 2px 0 var(--a-line)}
+.eq .sp.sb{background:var(--b-bg);color:var(--b-ink);box-shadow:0 2px 0 var(--b-line)}
+.eq .st{font-size:.6em;font-family:var(--sans);margin-left:.1em;opacity:.8}
+.keys{display:flex;gap:14px;margin-top:8px;font-size:.8rem}
+.key{display:inline-flex;align-items:center;gap:6px}
+.key::before{content:"";width:.9em;height:.9em;border-radius:3px;border:1.5px solid}
+.key.a{color:var(--a-ink)} .key.a::before{background:var(--a-bg);border-color:var(--a-line)}
+.key.b{color:var(--b-ink)} .key.b::before{background:var(--b-bg);border-color:var(--b-line)}
+.am{margin:0 0 10px;font-size:.9rem;color:var(--muted)}
+.q{font-size:1.1rem;margin:0 0 14px;max-width:62ch}
+
+/* Route strip and per-reactant trails */
+.helplab{font-size:.88rem;font-weight:600;margin:14px 0 6px}
+.helptext{font-size:.95rem;margin:4px 0 6px;max-width:64ch}
+.rn{border:1.5px solid;border-radius:8px;padding:3px 10px;font-weight:600;font-size:.95rem;white-space:nowrap}
+.rn.a{background:var(--a-bg);border-color:var(--a-line);color:var(--a-ink)}
+.rn.b{background:var(--b-bg);border-color:var(--b-line);color:var(--b-ink)}
+.rn .sa,.rn .sb{color:inherit}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 4px;padding:0;list-style:none}
+.route .rs{font-size:.82rem;color:var(--muted);display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.route .rs::after{content:"\2192";font-size:1.1rem;color:var(--ink)}
+.route .rs.ratio{color:var(--r-ink);font-weight:600}
+.trail{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}
+.trail .arw{font-size:1.1rem;margin-right:2px}
+.trail .tq{white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+
+/* Dimensional analysis chain */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:10px 10px;font-size:1.02rem;margin:4px 0 6px}
+.chain .op{color:var(--muted);font-size:1.15rem}
+.chain .qty{white-space:nowrap}
+.chain .grp{display:inline-flex;align-items:center;gap:10px}
+.chain.cells{gap:10px 22px}
+.frac{display:inline-flex;flex-direction:column;text-align:center}
+.frac>span{padding:3px 8px;white-space:nowrap}
+.frac>.t{border-bottom:2px solid var(--ink)}
+.cx{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:var(--bad)}
+.blank{font:inherit;width:2.8em;text-align:center;border:1.5px solid #8b95a3;border-radius:6px;padding:2px 4px;background:#fff;color:var(--ink)}
+.blank.wide{width:5.2em}
+.blank.ok,.pin.ok{border:2px solid var(--ok);background:var(--ok-bg)}
+.blank.no,.pin.no{border:2px dashed var(--bad);background:var(--bad-bg)}
+.ph{display:inline-grid;place-items:center;min-width:2.2em;height:1.7em;border:1.5px dashed #8b95a3;border-radius:6px;color:var(--muted)}
+.ans-final{font-weight:700}
+
+/* Answers */
+.ansrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.ansrow label{font-weight:600}
+.pin{font:inherit;font-size:1.05rem;width:8.5em;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;color:var(--ink);background:#fff}
+.pin:disabled,.blank:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
+.unit{font-size:1.05rem}
+.parts{list-style:none;margin:16px 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;gap:14px}
+.part{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.part .plab{font-weight:600;flex:1 1 15em}
+.part .pctl{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.pmark{font-weight:700;min-width:1em}
+.pmark.ok{color:var(--ok)} .pmark.no{color:var(--bad)}
+.checkrow{margin-top:14px}
+.choice{display:inline-flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative;cursor:pointer}
+.opt input{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer}
+.opt span{display:inline-block;border:1.5px solid #8b95a3;border-radius:8px;padding:6px 14px;font-size:1.05rem;background:#fff}
+.opt input:checked+span{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+.opt input:focus-visible+span{outline:3px solid #4c7fd6;outline-offset:2px}
+.choice.ok .opt input:checked+span{background:var(--ok);border-color:var(--ok)}
+.choice.no .opt input:checked+span{background:var(--bad-bg);color:var(--bad);border:2px dashed var(--bad)}
+
+/* Feedback */
+.fb{display:none;margin-top:14px;padding:11px 14px;border-radius:10px;border-left:5px solid;gap:10px;align-items:flex-start}
+.fb.show{display:flex}
+.fb .ic{font-weight:700;font-size:1.05rem;line-height:1.5}
+.fb p{margin:0}
+.fb p+p{margin-top:6px}
+.fb.ok{background:var(--ok-bg);border-color:var(--ok);color:#0f4a2c}
+.fb.bad{background:var(--bad-bg);border-color:var(--bad);color:#6f1712}
+.fb.warn{background:var(--warn-bg);border-color:#c98f12;color:var(--warn)}
+.fb.info{background:var(--info-bg);border-color:#5a86c4;color:var(--info)}
+.fb .sa,.fb .sb{color:inherit}
+
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tally{font-size:.9rem;color:var(--muted);margin:12px 2px 0}
+
+/* Worked solution */
+.solution{margin-top:16px;padding:14px 16px 6px;border-radius:10px;background:var(--soft)}
+.solution ol{margin:0;padding-left:1.3em}
+.solution li{margin-bottom:10px}
+.solution .note{font-size:.9rem;color:var(--muted);margin:0 0 10px}
+details.soldet{margin-top:14px}
+details.soldet summary{cursor:pointer;font-weight:600;color:var(--navy)}
+
+/* Roadmap */
+.paths{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 6px}
+.paths .lab{font-size:.9rem;font-weight:600;margin-right:2px}
+.map{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:10px 6px;margin:14px 0 18px}
+.rowlab{font-size:.9rem;font-weight:700}
+.rowlab.a{grid-column:1/-1;color:var(--a-ink)}
+.rowlab.b{grid-column:1/3;align-self:end;color:var(--b-ink)}
+.map .fill{grid-column:4/6}
+.node{border:2px solid;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:68px;transition:opacity .15s}
+.node b{font-size:.98rem;line-height:1.25}
+.node small{font-size:.8rem}
+.node.a{background:var(--a-bg);border-color:var(--a-line);color:var(--a-ink)}
+.node.b{background:var(--b-bg);border-color:var(--b-line);color:var(--b-ink)}
+.conn{appearance:none;font:inherit;font-size:.8rem;font-weight:600;line-height:1.2;color:var(--ink);background:#fff;border:1.5px solid #8b95a3;border-radius:10px;padding:6px 8px;cursor:pointer;align-self:center;display:flex;flex-direction:column;align-items:center;gap:1px;transition:opacity .15s}
+.conn .arr{font-size:1.15rem;line-height:1}
+.conn:hover{border-color:var(--navy)}
+.conn.ratio{grid-column:3;justify-self:center;flex-direction:row;gap:8px;padding:8px 14px;background:var(--r-bg);border-color:var(--r-line);color:var(--r-ink)}
+.conn.vert{justify-self:center;flex-direction:row;gap:8px;padding:8px 10px;white-space:nowrap}
+.conn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.map .dim{opacity:.28}
+.detail{border-left:5px solid var(--navy);background:var(--soft);border-radius:10px;padding:14px 16px;min-height:120px}
+.detail p{margin:0 0 8px}
+.detail ul{margin:0 0 8px;padding-left:1.2em}
+.detail .ex{font-family:var(--serif);font-size:1.08rem;margin-bottom:0}
+.builds{margin-top:22px}
+.builds ul{margin:0;padding-left:1.2em;max-width:66ch}
+.builds li{margin-bottom:6px}
+
+@media (max-width:560px){
+  .top h1{font-size:1.6rem}
+  .problem{padding:16px 14px}
+  .eq{font-size:1.15rem}
+  .node b{font-size:.82rem} .node small{font-size:.7rem}
+  .conn{font-size:.7rem;padding:5px 4px}
+  .map{gap:8px 3px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>Solutions and Gases Study Guide</h1>
+    <p>Molarity, dilution, reactions in solution, the ideal gas law, and reactions that involve gases. Start with the roadmap, then work through the sections in order. The numbers change every time, so practice as much as you like. Nothing here is graded.</p>
+  </header>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
+  <main id="view" role="tabpanel"></main>
+  <noscript><p>This study guide needs JavaScript turned on.</p></noscript>
+</div>
+
+<script>
+'use strict';
+/* ============================================================
+   Chemistry data and problem logic (no page elements used here)
+   ============================================================ */
+
+// Atomic masses, kept as text so they display exactly as written.
+const AM = {H:'1.008', He:'4.003', C:'12.011', N:'14.007', O:'15.999', Ne:'20.180', Na:'22.990', Mg:'24.305', Al:'26.982',
+            P:'30.974', S:'32.06', Cl:'35.45', Ar:'39.948', K:'39.098', Ca:'40.078', Cr:'51.996', Fe:'55.845',
+            Cu:'63.546', Zn:'65.38', Br:'79.904', Ag:'107.87', I:'126.90', Ba:'137.33', Hg:'200.59', Pb:'207.2'};
+
+// Solutes for the molarity section.
+const SOLUTES = {NaCl:'sodium chloride', KCl:'potassium chloride', NaOH:'sodium hydroxide', KNO3:'potassium nitrate',
+                 CaCl2:'calcium chloride', Na2SO4:'sodium sulfate', C6H12O6:'glucose', AgNO3:'silver nitrate',
+                 KBr:'potassium bromide', MgCl2:'magnesium chloride', NaHCO3:'sodium bicarbonate', CuSO4:'copper(II) sulfate',
+                 KOH:'potassium hydroxide', NH4Cl:'ammonium chloride', Na2CO3:'sodium carbonate', KI:'potassium iodide'};
+// Solutes for the dilution section.
+const DILUTES = ['HCl','HNO3','H2SO4','NaOH','NH3','NaCl','CuSO4','KCl','KNO3'];
+const FLASKS = ['100.0','250.0','500.0'];
+
+// Reaction banks. r = reactants, p = products, each as [coefficient, formula, state].
+const SRX = [
+  {ctx:'Mixing lead(II) nitrate and potassium iodide solutions gives a bright yellow precipitate of lead(II) iodide.',
+   r:[[1,'Pb(NO3)2','aq'],[2,'KI','aq']], p:[[1,'PbI2','s'],[2,'KNO3','aq']]},
+  {ctx:'Silver nitrate and sodium chloride solutions react to form a white precipitate of silver chloride.',
+   r:[[1,'AgNO3','aq'],[1,'NaCl','aq']], p:[[1,'AgCl','s'],[1,'NaNO3','aq']]},
+  {ctx:'Silver nitrate and calcium chloride solutions react to form a white precipitate of silver chloride.',
+   r:[[2,'AgNO3','aq'],[1,'CaCl2','aq']], p:[[2,'AgCl','s'],[1,'Ca(NO3)2','aq']]},
+  {ctx:'Barium chloride and sodium sulfate solutions react to form a white precipitate of barium sulfate.',
+   r:[[1,'BaCl2','aq'],[1,'Na2SO4','aq']], p:[[1,'BaSO4','s'],[2,'NaCl','aq']]},
+  {ctx:'Calcium chloride and sodium phosphate solutions react to form a white precipitate of calcium phosphate.',
+   r:[[3,'CaCl2','aq'],[2,'Na3PO4','aq']], p:[[1,'Ca3(PO4)2','s'],[6,'NaCl','aq']]},
+  {ctx:'Silver nitrate and potassium chromate solutions react to form a red precipitate of silver chromate.',
+   r:[[2,'AgNO3','aq'],[1,'K2CrO4','aq']], p:[[1,'Ag2CrO4','s'],[2,'KNO3','aq']]},
+  {ctx:'Sodium carbonate and calcium chloride solutions react to form a white precipitate of calcium carbonate.',
+   r:[[1,'Na2CO3','aq'],[1,'CaCl2','aq']], p:[[1,'CaCO3','s'],[2,'NaCl','aq']]},
+  {ctx:'Iron(III) chloride and sodium hydroxide solutions react to form a rust-colored precipitate of iron(III) hydroxide.',
+   r:[[1,'FeCl3','aq'],[3,'NaOH','aq']], p:[[1,'Fe(OH)3','s'],[3,'NaCl','aq']]},
+  {ctx:'Copper(II) sulfate and sodium hydroxide solutions react to form a blue precipitate of copper(II) hydroxide.',
+   r:[[1,'CuSO4','aq'],[2,'NaOH','aq']], p:[[1,'Cu(OH)2','s'],[1,'Na2SO4','aq']]},
+  {ctx:'Lead(II) nitrate and sodium sulfate solutions react to form a white precipitate of lead(II) sulfate.',
+   r:[[1,'Pb(NO3)2','aq'],[1,'Na2SO4','aq']], p:[[1,'PbSO4','s'],[2,'NaNO3','aq']]},
+  {ctx:'Zinc metal dissolves in hydrochloric acid, releasing hydrogen gas.',
+   r:[[1,'Zn','s'],[2,'HCl','aq']], p:[[1,'ZnCl2','aq'],[1,'H2','g']]},
+  {ctx:'Magnesium metal dissolves in hydrochloric acid, releasing hydrogen gas.',
+   r:[[1,'Mg','s'],[2,'HCl','aq']], p:[[1,'MgCl2','aq'],[1,'H2','g']]},
+  {ctx:'Calcium carbonate (limestone) reacts with hydrochloric acid, releasing carbon dioxide gas.',
+   r:[[1,'CaCO3','s'],[2,'HCl','aq']], p:[[1,'CaCl2','aq'],[1,'H2O','l'],[1,'CO2','g']]},
+  {ctx:'Aluminum metal dissolves in hydrochloric acid, releasing hydrogen gas.',
+   r:[[2,'Al','s'],[6,'HCl','aq']], p:[[2,'AlCl3','aq'],[3,'H2','g']]},
+  {ctx:'Magnesium hydroxide, the active ingredient in milk of magnesia, neutralizes hydrochloric acid (stomach acid).',
+   r:[[1,'Mg(OH)2','s'],[2,'HCl','aq']], p:[[1,'MgCl2','aq'],[2,'H2O','l']]},
+  {ctx:'Baking soda (sodium bicarbonate) reacts with hydrochloric acid, releasing carbon dioxide gas.',
+   r:[[1,'NaHCO3','s'],[1,'HCl','aq']], p:[[1,'NaCl','aq'],[1,'H2O','l'],[1,'CO2','g']]}
+];
+// Precipitation reactions: two dissolved reactants and a solid product.
+const PRX = SRX.filter(x => x.r.every(e=>e[2]==='aq') && x.p.some(e=>e[2]==='s'));
+// Reactions that make or use up a gas, with no solutions involved.
+const GRX = [
+  {ctx:'Heating potassium chlorate decomposes it into potassium chloride and oxygen gas.',
+   r:[[2,'KClO3','s']], p:[[2,'KCl','s'],[3,'O2','g']]},
+  {ctx:'In a car airbag, sodium azide decomposes rapidly to produce nitrogen gas.',
+   r:[[2,'NaN3','s']], p:[[2,'Na','s'],[3,'N2','g']]},
+  {ctx:'Ammonia is made industrially from nitrogen and hydrogen gases (the Haber process).',
+   r:[[1,'N2','g'],[3,'H2','g']], p:[[2,'NH3','g']]},
+  {ctx:'Hydrogen burns in oxygen to form water.',
+   r:[[2,'H2','g'],[1,'O2','g']], p:[[2,'H2O','l']]},
+  {ctx:'Propane, the fuel in gas grills, burns in oxygen.',
+   r:[[1,'C3H8','g'],[5,'O2','g']], p:[[3,'CO2','g'],[4,'H2O','l']]},
+  {ctx:'Methane, the main component of natural gas, burns in oxygen.',
+   r:[[1,'CH4','g'],[2,'O2','g']], p:[[1,'CO2','g'],[2,'H2O','l']]},
+  {ctx:'Iron reacts with oxygen to form iron(III) oxide, the main component of rust.',
+   r:[[4,'Fe','s'],[3,'O2','g']], p:[[2,'Fe2O3','s']]},
+  {ctx:'Magnesium metal burns in oxygen with a bright white flame.',
+   r:[[2,'Mg','s'],[1,'O2','g']], p:[[2,'MgO','s']]},
+  {ctx:'Heating baking soda (sodium bicarbonate) releases carbon dioxide gas.',
+   r:[[2,'NaHCO3','s']], p:[[1,'Na2CO3','s'],[1,'H2O','l'],[1,'CO2','g']]},
+  {ctx:'Aluminum metal reacts with chlorine gas to form aluminum chloride.',
+   r:[[2,'Al','s'],[3,'Cl2','g']], p:[[2,'AlCl3','s']]},
+  {ctx:'Sulfur dioxide reacts with oxygen to form sulfur trioxide, a step in making sulfuric acid.',
+   r:[[2,'SO2','g'],[1,'O2','g']], p:[[2,'SO3','g']]},
+  {ctx:'Heating mercury(II) oxide decomposes it into liquid mercury and oxygen gas.',
+   r:[[2,'HgO','s']], p:[[2,'Hg','l'],[1,'O2','g']]},
+  {ctx:'Sodium metal reacts with chlorine gas to form sodium chloride.',
+   r:[[2,'Na','s'],[1,'Cl2','g']], p:[[2,'NaCl','s']]}
+];
+// Reactions that connect a solution (molarity) with a gas (PV = nRT).
+const QRX = [
+  {ctx:'Zinc metal dissolves in hydrochloric acid, releasing hydrogen gas.',
+   r:[[1,'Zn','s'],[2,'HCl','aq']], p:[[1,'ZnCl2','aq'],[1,'H2','g']]},
+  {ctx:'Magnesium metal dissolves in hydrochloric acid, releasing hydrogen gas.',
+   r:[[1,'Mg','s'],[2,'HCl','aq']], p:[[1,'MgCl2','aq'],[1,'H2','g']]},
+  {ctx:'Aluminum metal dissolves in hydrochloric acid, releasing hydrogen gas.',
+   r:[[2,'Al','s'],[6,'HCl','aq']], p:[[2,'AlCl3','aq'],[3,'H2','g']]},
+  {ctx:'Calcium carbonate (limestone) reacts with hydrochloric acid, releasing carbon dioxide gas.',
+   r:[[1,'CaCO3','s'],[2,'HCl','aq']], p:[[1,'CaCl2','aq'],[1,'H2O','l'],[1,'CO2','g']]},
+  {ctx:'Baking soda (sodium bicarbonate) reacts with hydrochloric acid, releasing carbon dioxide gas.',
+   r:[[1,'NaHCO3','s'],[1,'HCl','aq']], p:[[1,'NaCl','aq'],[1,'H2O','l'],[1,'CO2','g']]},
+  {ctx:'Sodium carbonate solution reacts with hydrochloric acid, releasing carbon dioxide gas.',
+   r:[[1,'Na2CO3','aq'],[2,'HCl','aq']], p:[[2,'NaCl','aq'],[1,'H2O','l'],[1,'CO2','g']]},
+  {ctx:'Magnesium metal dissolves in sulfuric acid, releasing hydrogen gas.',
+   r:[[1,'Mg','s'],[1,'H2SO4','aq']], p:[[1,'MgSO4','aq'],[1,'H2','g']]},
+  {ctx:'Iron metal dissolves in sulfuric acid, releasing hydrogen gas.',
+   r:[[1,'Fe','s'],[1,'H2SO4','aq']], p:[[1,'FeSO4','aq'],[1,'H2','g']]},
+  {ctx:'Hydrogen peroxide solution decomposes into water and oxygen gas when a catalyst is added.',
+   r:[[2,'H2O2','aq']], p:[[2,'H2O','l'],[1,'O2','g']]},
+  {ctx:'Sodium sulfide solution reacts with hydrochloric acid, releasing hydrogen sulfide gas.',
+   r:[[1,'Na2S','aq'],[2,'HCl','aq']], p:[[2,'NaCl','aq'],[1,'H2S','g']]},
+  {ctx:'Warming ammonium chloride solution with sodium hydroxide releases ammonia gas.',
+   r:[[1,'NH4Cl','aq'],[1,'NaOH','aq']], p:[[1,'NaCl','aq'],[1,'H2O','l'],[1,'NH3','g']]},
+  {ctx:'Carbon dioxide gas is absorbed by sodium hydroxide solution.',
+   r:[[1,'CO2','g'],[2,'NaOH','aq']], p:[[1,'Na2CO3','aq'],[1,'H2O','l']]},
+  {ctx:'Chlorine gas is bubbled into sodium hydroxide solution to make bleach (sodium hypochlorite).',
+   r:[[1,'Cl2','g'],[2,'NaOH','aq']], p:[[1,'NaCl','aq'],[1,'NaClO','aq'],[1,'H2O','l']]},
+  {ctx:'Sulfur dioxide gas is absorbed by sodium hydroxide solution.',
+   r:[[1,'SO2','g'],[2,'NaOH','aq']], p:[[1,'Na2SO3','aq'],[1,'H2O','l']]},
+  {ctx:'Ammonia gas is absorbed by hydrochloric acid.',
+   r:[[1,'NH3','g'],[1,'HCl','aq']], p:[[1,'NH4Cl','aq']]}
+];
+// A solid and a solution react to give a gas: used for the last section.
+const CRX = QRX.filter(x => x.r.some(e=>e[2]==='s') && x.r.some(e=>e[2]==='aq') && x.p.some(e=>e[2]==='g'));
+// Gases for the ideal gas law section.
+const GASES = {He:'helium', Ne:'neon', Ar:'argon', H2:'hydrogen', N2:'nitrogen', O2:'oxygen',
+               CO2:'carbon dioxide', CH4:'methane', NH3:'ammonia', Cl2:'chlorine'};
+
+/* ---------- Formulas and numbers ---------- */
+// Handles parentheses: Ca3(PO4)2 -> Ca3 P2 O8.
+function parseFormula(f){
+  const out=[]; const re=/\(([^()]+)\)(\d*)|([A-Z][a-z]?)(\d*)/g; let m;
+  while((m=re.exec(f))){
+    if(m[1]){ const k=m[2] ? +m[2] : 1; for(const [e,n] of parseFormula(m[1])) out.push([e,n*k]); }
+    else out.push([m[3], m[4] ? +m[4] : 1]);
+  }
+  return out;
+}
+function composition(f){
+  const out=[];
+  for(const [e,n] of parseFormula(f)){
+    const hit=out.find(x=>x[0]===e);
+    if(hit) hit[1]+=n; else out.push([e,n]);
+  }
+  return out;
+}
+// Molar mass rounded to two decimals, the way students will use it.
+function molarMass(f){
+  let s=0; for(const [e,n] of parseFormula(f)) s += Number(AM[e])*n;
+  return Math.round(s*100+1e-7)/100;
+}
+function breakdown(f){
+  const parts=composition(f), M=molarMass(f).toFixed(2);
+  if(parts.length===1 && parts[0][1]===1) return M+' g/mol';
+  return parts.map(([e,n])=> n>1 ? n+'('+AM[e]+')' : AM[e]).join(' + ')+' = '+M+' g/mol';
+}
+const F = f => f.replace(/(\d+)/g,'<sub>$1</sub>');          // formula with subscripts
+const tag = (f,c) => '<span class="'+c+'">'+F(f)+'</span>';  // colored formula
+
+// Number with n significant figures, as display HTML.
+function sig(x,n){
+  const s=Number(x).toPrecision(n);
+  if(s.indexOf('e')<0) return s;
+  const parts=s.split('e'); const ex=Number(parts[1]);
+  return parts[0]+' × 10<sup>'+(ex<0?'−'+(-ex):ex)+'</sup>';
+}
+// A value written with exactly 3 unambiguous significant figures, or null if that is not possible.
+function fmt3(v){
+  if(!(v>0) || !isFinite(v)) return null;
+  const s=Number(v).toPrecision(3);
+  if(s.indexOf('e')>=0) return null;
+  if(s.indexOf('.')<0 && /0$/.test(s)) return null;
+  return s;
+}
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const rint = (a,b) => a+Math.floor(Math.random()*(b-a+1));
+// Random value with 3 significant figures between lo and hi.
+function g3(lo,hi){
+  for(;;){ const s=fmt3(lo*Math.pow(hi/lo, Math.random())); if(s) return s; }
+}
+// Milliliters (text) to liters (text), keeping the same significant figures.
+function toL(v){ return (Number(v)/1000).toPrecision(parseInput(v).sfMax); }
+
+function spc(arr, role){
+  return arr.map(e=>({c:e[0], f:e[1], st:e[2], role, M:molarMass(e[1])}));
+}
+
+/* ---------- Small HTML builders ---------- */
+const frac = (t,b) => '<span class="frac"><span class="t">'+t+'</span><span class="b">'+b+'</span></span>';
+const XOP = '<span class="op" aria-hidden="true">×</span>';
+const EQOP = '<span class="op">=</span>';
+const ARW = '<span class="arw" aria-hidden="true">→</span>';
+const PH = '<span class="ph" aria-label="blank">?</span>';
+const cxs = t => '<span class="cx">'+t+'</span>';
+const lab = t => '<p class="helplab">'+t+'</p>';
+const txt = t => '<p class="helptext">'+t+'</p>';
+const blankIn = (k,label,wide) => '<input class="blank'+(wide?' wide':'')+'" data-k="'+k+'" type="text" inputmode="decimal" autocomplete="off" aria-label="'+label+'">';
+const bl = (mode,k,label,wide) => mode==='live' ? blankIn(k,label,wide) : PH;
+const row = inner => '<div class="chain">'+inner+'</div>';
+const q = s => '<span class="qty">'+s+'</span>';
+const clean = (errors, ans) => errors.filter(e => isFinite(e.value) && e.value>0 && Math.abs(e.value-ans)/Math.abs(ans) > 0.02);
+const M1='M<sub>1</sub>', V1='V<sub>1</sub>', M2='M<sub>2</sub>', V2='V<sub>2</sub>';
+const roundNote = sf => '<p class="note">Keep extra digits through the middle steps and round only at the end. The answer gets '+sf+' significant figures, the fewest in the given data.</p>';
+const solWrap = (items, note) => '<div class="solution"><h3>Worked solution</h3><ol>'+items.map(t=>'<li>'+t+'</li>').join('')+'</ol>'+(note||'')+'</div>';
+const mmLines = list => '<b>Molar mass'+(list.length>1?'es':'')+'.</b> '+list.map(([f,cls])=>tag(f,cls)+': '+breakdown(f)).join('<br>');
+const F_M = row(q('molarity (M)')+EQOP+frac('moles of solute','liters of solution'));
+
+/* ---------- 1. Molarity ---------- */
+function makeMolarity(prev){
+  for(let t=0;;t++){
+    const f=pick(Object.keys(SOLUTES)); if(t<50 && prev && prev.solute===f) continue;
+    const MM=molarMass(f), MMs=MM.toFixed(2), name=SOLUTES[f], fs=tag(f,'sa');
+    const type=pick(['Mmol','Mg','Mg','mol','g','g','mL']);
+    const Mt=g3(0.1,2.5), Mn=Number(Mt);
+    const V=Math.random()<0.5 ? pick(FLASKS) : g3(25,950), Vn=Number(V), VL=Vn/1000, VLs=toL(V);
+    const stepL = m => row(q(V+' mL')+EQOP+q(bl(m,'L','volume in liters',true)+' L'));
+    const LMSG='Check the volume in liters. Divide the milliliters by 1000.';
+    const MMMSG='Check the molar mass of '+F(f)+'. Add the atomic masses for every atom in the formula.';
+    const bad=(got,k)=>got[k] && !got[k].empty && !got[k].good;
+    let question, part, steps, blanks, blankMsg, sol, am=null, hint1;
+
+    if(type==='Mmol'){
+      const n=fmt3(Mn*VL); if(!n) continue;
+      const nn=Number(n), ans=nn/VL;
+      question='A solution contains '+n+' mol of '+fs+' in '+V+' mL of solution. What is the molarity of the solution?';
+      part={label:'Molarity', unit:'M '+fs, answer:ans, show:sig(ans,3)+' M '+fs,
+        errors:[{value:nn/Vn, msg:'Molarity is moles per liter, not per milliliter. Convert '+V+' mL to liters first.'},
+                {value:VL/nn, msg:'The fraction is upside down. Molarity is moles on top, liters on the bottom.'},
+                {value:nn*VL, msg:'Molarity = moles ÷ liters. It looks like you multiplied.'}],
+        generic:'Not yet. Convert the volume to liters, then divide the moles by the liters.'};
+      steps=m=>lab('Step 1: volume in liters')+stepL(m)+lab('Step 2: divide moles by liters')+F_M;
+      blanks={L:{want:VL,tol:0.002}};
+      blankMsg=got=>bad(got,'L') ? LMSG : '';
+      hint1=txt('Molarity is moles of solute divided by liters of solution. The volume here is in milliliters.')+F_M;
+      sol=['<b>Volume in liters.</b> '+V+' mL ÷ 1000 = '+VLs+' L',
+           '<b>Molarity.</b> '+n+' mol ÷ '+VLs+' L = <b>'+sig(ans,3)+' M '+fs+'</b>'];
+    } else if(type==='Mg'){
+      const m0=fmt3(Mn*VL*MM); if(!m0) continue;
+      const mn=Number(m0), nn=mn/MM, ans=nn/VL;
+      am=[f];
+      question='A solution is made by dissolving '+m0+' g of '+name+' ('+fs+') in enough water to make '+V+' mL of solution. What is the molarity of the solution?';
+      part={label:'Molarity', unit:'M '+fs, answer:ans, show:sig(ans,3)+' M '+fs,
+        errors:[{value:mn/VL, msg:'It looks like grams were used in place of moles. Convert '+m0+' g to moles with the molar mass first.'},
+                {value:nn/Vn, msg:'Molarity is moles per liter, not per milliliter. Convert '+V+' mL to liters first.'},
+                {value:VL/nn, msg:'The fraction is upside down. Molarity is moles on top, liters on the bottom.'},
+                {value:nn,    msg:'That is the moles of '+fs+'. Divide by the liters of solution to get the molarity.'}],
+        generic:'Not yet. Convert grams to moles, convert milliliters to liters, then divide moles by liters.'};
+      steps=m=>lab('Step 1: grams to moles')+row(q(m0+' g')+'<span class="op">÷</span>'+q(bl(m,'MM','molar mass of '+f,true)+' g/mol')+EQOP+q(bl(m,'n','moles of '+f,true)+' mol '+fs))+
+               lab('Step 2: volume in liters')+stepL(m)+lab('Step 3: divide moles by liters')+F_M;
+      blanks={MM:{want:MM,tol:0.005}, n:{want:nn,tol:0.01}, L:{want:VL,tol:0.002}};
+      blankMsg=got=>bad(got,'MM') ? MMMSG : bad(got,'n') ? 'Check the moles of '+F(f)+'. Divide the grams by the molar mass.' : bad(got,'L') ? LMSG : '';
+      hint1=txt('Molarity needs moles, and you are given grams. Convert grams to moles first, then divide by the liters of solution.')+F_M;
+      sol=[mmLines([[f,'sa']]),
+           '<b>Grams to moles.</b> '+m0+' g ÷ '+MMs+' g/mol = '+sig(nn,4)+' mol '+fs,
+           '<b>Volume in liters.</b> '+V+' mL ÷ 1000 = '+VLs+' L',
+           '<b>Molarity.</b> '+sig(nn,4)+' mol ÷ '+VLs+' L = <b>'+sig(ans,3)+' M '+fs+'</b>'];
+    } else if(type==='mol'){
+      const ans=Mn*VL;
+      question='How many moles of '+fs+' are in '+V+' mL of '+Mt+' M '+fs+' solution?';
+      part={label:'Moles', unit:'mol '+fs, answer:ans, show:sig(ans,3)+' mol '+fs,
+        errors:[{value:Mn*Vn, msg:'Molarity is moles per liter. Convert '+V+' mL to liters before multiplying.'},
+                {value:Mn/VL, msg:'Moles = molarity × liters. It looks like you divided.'},
+                {value:VL/Mn, msg:'Moles = molarity × liters. It looks like you divided.'}],
+        generic:'Not yet. Convert the volume to liters, then multiply by the molarity.'};
+      steps=m=>lab('Step 1: volume in liters')+stepL(m)+lab('Step 2: multiply molarity by liters')+row(q('moles')+EQOP+q('molarity')+XOP+q('liters'));
+      blanks={L:{want:VL,tol:0.002}};
+      blankMsg=got=>bad(got,'L') ? LMSG : '';
+      hint1=txt('Molarity is a conversion factor: '+Mt+' M means '+Mt+' mol in every liter. Multiply the liters of solution by the molarity.');
+      sol=['<b>Volume in liters.</b> '+V+' mL ÷ 1000 = '+VLs+' L',
+           '<b>Moles.</b> '+VLs+' L × '+Mt+' mol/L = <b>'+sig(ans,3)+' mol '+fs+'</b>'];
+    } else if(type==='g'){
+      const nn=Mn*VL, ans=nn*MM;
+      am=[f];
+      question='How many grams of '+name+' ('+fs+') are needed to prepare '+V+' mL of '+Mt+' M '+fs+' solution?';
+      part={label:'Mass needed', unit:'g '+fs, answer:ans, show:sig(ans,3)+' g '+fs,
+        errors:[{value:nn,       msg:'That is the moles of '+fs+' needed. The question asks for grams, so multiply by the molar mass.'},
+                {value:Mn*Vn*MM, msg:'Molarity is moles per liter. Convert '+V+' mL to liters before multiplying.'},
+                {value:nn/MM,    msg:'To go from moles to grams, multiply by the molar mass. It looks like you divided.'},
+                {value:Mn*MM,    msg:'That is the mass in one full liter. You are making only '+V+' mL, so multiply the molarity by the liters first.'}],
+        generic:'Not yet. Find the moles needed (molarity × liters), then convert moles to grams with the molar mass.'};
+      steps=m=>lab('Step 1: volume in liters')+stepL(m)+
+               lab('Step 2: moles needed = molarity × liters')+row(q(Mt+' mol/L')+XOP+q('liters')+EQOP+q(bl(m,'n','moles of '+f,true)+' mol '+fs))+
+               lab('Step 3: moles to grams')+row(q('moles')+XOP+q(bl(m,'MM','molar mass of '+f,true)+' g/mol')+EQOP+q('? g '+fs));
+      blanks={L:{want:VL,tol:0.002}, n:{want:nn,tol:0.01}, MM:{want:MM,tol:0.005}};
+      blankMsg=got=>bad(got,'L') ? LMSG : bad(got,'n') ? 'Check the moles of '+F(f)+'. Multiply the molarity by the liters of solution.' : bad(got,'MM') ? MMMSG : '';
+      hint1=txt('Work out how many moles the finished solution must contain (molarity × liters). Then convert those moles to grams.');
+      sol=[mmLines([[f,'sa']]),
+           '<b>Volume in liters.</b> '+V+' mL ÷ 1000 = '+VLs+' L',
+           '<b>Moles needed.</b> '+VLs+' L × '+Mt+' mol/L = '+sig(nn,4)+' mol '+fs,
+           '<b>Moles to grams.</b> '+sig(nn,4)+' mol × '+MMs+' g/mol = <b>'+sig(ans,3)+' g '+fs+'</b>'];
+    } else {
+      const m0=fmt3(Mn*Number(g3(25,950))/1000*MM); if(!m0) continue;
+      const mn=Number(m0), nn=mn/MM, ans=nn/Mn*1000;
+      if(ans<5 || ans>999) continue;
+      am=[f];
+      question='What volume, in milliliters, of '+Mt+' M '+fs+' solution contains '+m0+' g of '+fs+'?';
+      part={label:'Volume', unit:'mL', answer:ans, show:sig(ans,3)+' mL',
+        errors:[{value:nn/Mn,      msg:'That is the volume in liters. The question asks for milliliters, so multiply by 1000.'},
+                {value:nn*Mn*1000, msg:'Liters = moles ÷ molarity. It looks like you multiplied.'},
+                {value:mn/Mn*1000, msg:'It looks like grams were used in place of moles. Convert '+m0+' g to moles with the molar mass first.'},
+                {value:nn,         msg:'That is the moles of '+fs+'. Divide by the molarity to get liters, then convert to milliliters.'}],
+        generic:'Not yet. Convert grams to moles, divide by the molarity to get liters, then convert liters to milliliters.'};
+      steps=m=>lab('Step 1: grams to moles')+row(q(m0+' g')+'<span class="op">÷</span>'+q(bl(m,'MM','molar mass of '+f,true)+' g/mol')+EQOP+q(bl(m,'n','moles of '+f,true)+' mol '+fs))+
+               lab('Step 2: liters = moles ÷ molarity, then convert to milliliters')+row(q('liters')+EQOP+frac('moles','molarity'));
+      blanks={MM:{want:MM,tol:0.005}, n:{want:nn,tol:0.01}};
+      blankMsg=got=>bad(got,'MM') ? MMMSG : bad(got,'n') ? 'Check the moles of '+F(f)+'. Divide the grams by the molar mass.' : '';
+      hint1=txt('Convert the grams to moles. Then ask how many liters of a '+Mt+' mol/L solution hold that many moles: divide moles by molarity.');
+      sol=[mmLines([[f,'sa']]),
+           '<b>Grams to moles.</b> '+m0+' g ÷ '+MMs+' g/mol = '+sig(nn,4)+' mol '+fs,
+           '<b>Moles to liters.</b> '+sig(nn,4)+' mol ÷ '+Mt+' mol/L = '+sig(nn/Mn,4)+' L',
+           '<b>Liters to milliliters.</b> '+sig(nn/Mn,4)+' L × 1000 = <b>'+sig(ans,3)+' mL</b>'];
+    }
+    part.type='num'; part.sf=3; part.errors=clean(part.errors, part.answer);
+    return {kind:'molarity', type, solute:f, ctx:'A solution of '+name+' in water.', rxn:null, hl:{}, am, question, parts:[part],
+      guided:steps('live'), hints:[lab('Hint 1')+hint1, lab('Hint 2: the steps')+steps('ph')],
+      blanks, blankMsg, solution:solWrap(sol, roundNote(3))};
+  }
+}
+
+/* ---------- 2. Dilution ---------- */
+function makeDilution(prev){
+  for(let t=0;;t++){
+    const f=pick(DILUTES); if(t<50 && prev && prev.solute===f) continue;
+    const fs=tag(f,'sa');
+    const type=pick(['V1','V1','M2','V2','water']);
+    const m1=g3(1,12), m1n=Number(m1);
+    let v1,v2,m2, unk;
+    if(type==='V1'){
+      m2=fmt3(m1n/(2.5+Math.random()*30)); if(!m2 || Number(m2)<0.05) continue;
+      v2=Math.random()<0.6 ? pick(FLASKS) : g3(100,900);
+      unk='V1'; if(Number(m2)*Number(v2)/m1n<1) continue;
+    } else if(type==='M2'){
+      v1=g3(5,50); v2=Math.random()<0.6 ? pick(FLASKS) : g3(100,900);
+      if(Number(v2)<2.5*Number(v1)) continue;
+      unk='M2';
+    } else {
+      v1=g3(5,50);
+      m2=fmt3(m1n/(2.5+Math.random()*30)); if(!m2 || Number(m2)<0.05) continue;
+      unk='V2'; if(m1n*Number(v1)/Number(m2)>999) continue;
+    }
+    const val={M1:m1n, V1:v1?Number(v1):null, M2:m2?Number(m2):null, V2:v2?Number(v2):null};
+    if(unk==='V1') val.V1=val.M2*val.V2/val.M1;
+    if(unk==='M2') val.M2=val.M1*val.V1/val.V2;
+    if(unk==='V2') val.V2=val.M1*val.V1/val.M2;
+    const str={M1:m1, V1:v1, M2:m2, V2:v2};
+    const SYM={M1:M1, V1:V1, M2:M2, V2:V2}, UN={M1:'M', V1:'mL', M2:'M', V2:'mL'};
+    const NAME={M1:'M1, the molarity of the stock solution', V1:'V1, the volume of stock solution', M2:'M2, the molarity of the diluted solution', V2:'V2, the volume of the diluted solution'};
+    const cell=(k,m)=>q(SYM[k]+' = '+(k===unk ? '<b>?</b>' : m==='show' ? str[k] : bl(m,k,NAME[k],true))+' '+UN[k]);
+    const cells=m=>'<div class="chain cells">'+['M1','V1','M2','V2'].map(k=>cell(k,m)).join('')+'</div>';
+    const EQN=row(q(M1+' × '+V1+' = '+M2+' × '+V2));
+    const blanks={};
+    ['M1','V1','M2','V2'].forEach(k=>{ if(k!==unk) blanks[k]={want:val[k],tol:0.002}; });
+    const blankMsg=got=>{
+      const bad=Object.keys(blanks).filter(k=>got[k] && !got[k].empty && !got[k].good);
+      if(!bad.length) return '';
+      return 'Check '+(bad.length>1 ? bad.slice(0,-1).map(k=>SYM[k]).join(', ')+' and '+SYM[bad[bad.length-1]] : SYM[bad[0]])+'. The 1s describe the concentrated stock solution you start with. The 2s describe the diluted solution you end with.';
+    };
+    let question, part, solve, rearr;
+    if(type==='V1'){
+      question='What volume, in milliliters, of '+m1+' M '+fs+' stock solution is needed to prepare '+v2+' mL of '+m2+' M '+fs+'?';
+      rearr=V1+' = '+M2+' × '+V2+' ÷ '+M1;
+      part={label:'Volume of stock solution', unit:'mL', answer:val.V1, sf:3, show:sig(val.V1,3)+' mL',
+        errors:[{value:val.M1*val.V2/val.M2, msg:'That is more than the final volume, which cannot be right: only part of the diluted solution is stock. Multiply '+M2+' × '+V2+', then divide by '+M1+'.'}],
+        generic:'Not yet. Solve '+M1+V1+' = '+M2+V2+' for '+V1+'.'};
+      solve='<b>Solve for '+V1+'.</b> '+rearr+' = '+m2+' M × '+v2+' mL ÷ '+m1+' M = <b>'+sig(val.V1,3)+' mL</b>';
+    } else if(type==='M2'){
+      question=v1+' mL of '+m1+' M '+fs+' is diluted with water to a total volume of '+v2+' mL. What is the molarity of the diluted solution?';
+      rearr=M2+' = '+M1+' × '+V1+' ÷ '+V2;
+      part={label:'Molarity after dilution', unit:'M '+fs, answer:val.M2, sf:3, show:sig(val.M2,3)+' M '+fs,
+        errors:[{value:val.M1*val.V2/val.V1, msg:'A diluted solution is always less concentrated than the stock it came from. Multiply '+M1+' × '+V1+', then divide by '+V2+'.'}],
+        generic:'Not yet. Solve '+M1+V1+' = '+M2+V2+' for '+M2+'.'};
+      solve='<b>Solve for '+M2+'.</b> '+rearr+' = '+m1+' M × '+v1+' mL ÷ '+v2+' mL = <b>'+sig(val.M2,3)+' M</b>';
+    } else if(type==='V2'){
+      question='To what total volume, in milliliters, must '+v1+' mL of '+m1+' M '+fs+' be diluted to make a '+m2+' M solution?';
+      rearr=V2+' = '+M1+' × '+V1+' ÷ '+M2;
+      part={label:'Total volume after dilution', unit:'mL', answer:val.V2, sf:3, show:sig(val.V2,3)+' mL',
+        errors:[{value:val.M2*val.V1/val.M1, msg:'The final volume has to be larger than the '+v1+' mL you start with. Multiply '+M1+' × '+V1+', then divide by '+M2+'.'}],
+        generic:'Not yet. Solve '+M1+V1+' = '+M2+V2+' for '+V2+'.'};
+      solve='<b>Solve for '+V2+'.</b> '+rearr+' = '+m1+' M × '+v1+' mL ÷ '+m2+' M = <b>'+sig(val.V2,3)+' mL</b>';
+    } else {
+      const water=val.V2-val.V1;
+      question='How many milliliters of water must be added to '+v1+' mL of '+m1+' M '+fs+' to make a '+m2+' M solution? Assume the volumes add.';
+      rearr=V2+' = '+M1+' × '+V1+' ÷ '+M2+', then water added = '+V2+' − '+V1;
+      part={label:'Water to add', unit:'mL', answer:water, sf:null, show:sig(water,3)+' mL of water',
+        errors:[{value:val.V2, msg:'That is the total volume of the diluted solution. The question asks how much water is added, so subtract the '+v1+' mL you started with.'},
+                {value:val.M2*val.V1/val.M1, msg:'The final volume has to be larger than the '+v1+' mL you start with. Multiply '+M1+' × '+V1+', then divide by '+M2+'.'}],
+        generic:'Not yet. Find the total volume '+V2+' first, then subtract the starting volume.'};
+      solve='<b>Solve for '+V2+'.</b> '+V2+' = '+m1+' M × '+v1+' mL ÷ '+m2+' M = '+sig(val.V2,4)+' mL</li><li><b>Water added.</b> '+sig(val.V2,4)+' mL − '+v1+' mL = <b>'+sig(water,3)+' mL</b>';
+    }
+    part.type='num'; part.errors=clean(part.errors, part.answer);
+    return {kind:'dilution', type, solute:f, ctx:'A stock solution is diluted with water. The moles of solute stay the same.', rxn:null, hl:{}, am:null,
+      question, parts:[part],
+      guided:lab('Sort the numbers from the problem into the equation, then solve for the unknown.')+EQN+cells('live'),
+      hints:[lab('Hint 1')+txt('Adding water does not change the moles of solute, so '+M1+V1+' = '+M2+V2+'. The 1s are the concentrated stock. The 2s are the diluted solution.')+cells('ph'),
+             lab('Hint 2: rearranged')+row(q(rearr))],
+      blanks, blankMsg,
+      solution:solWrap(['<b>Sort the values.</b>'+cells('show'), solve], roundNote(3))};
+  }
+}
+
+/* ---------- Gas helpers ---------- */
+const R_GAS = 0.08206;
+const PCONV = {atm:1, mmHg:760, kPa:101.325};       // this many of the unit in 1 atm
+const PDIV  = {mmHg:'760', kPa:'101.325'};
+// g = {V, Vu, T, P, Pu} as text. Any of them may be missing.
+function gasVals(g){
+  return {TK: g.T!==undefined ? Number(g.T)+273.15 : null,
+          Patm: g.P!==undefined ? Number(g.P)/PCONV[g.Pu] : null,
+          VL: g.V!==undefined ? Number(g.V)/(g.Vu==='mL' ? 1000 : 1) : null};
+}
+const kelvin = g => (Number(g.T)+273.15).toFixed(2);
+const atmText = g => g.Pu==='atm' ? g.P : sig(Number(g.P)/PCONV[g.Pu],4);
+const literText = g => g.Vu==='mL' ? toL(g.V) : g.V;
+const notSTP = g => Math.abs(Number(g.T))>0.5 || Math.abs(Number(g.P)/PCONV[g.Pu]-1)>0.005;
+const randT = () => (rint(50,1200)/10).toFixed(1);
+function randP(){
+  const u=pick(['atm','atm','mmHg','kPa']);
+  if(u==='atm') return {P:g3(0.6,4), Pu:u};
+  if(u==='kPa') return {P:g3(85,250), Pu:u};
+  let v; do{ v=rint(610,790); }while(v%10===0);
+  return {P:String(v), Pu:u};
+}
+const randVol = () => Math.random()<0.6 ? {V:g3(0.5,25), Vu:'L'} : {V:g3(120,950), Vu:'mL'};
+// Conditions for a gas: usually any temperature and pressure, sometimes STP.
+const randCond = () => Math.random()<0.15 ? {T:'0.0', P:'1.00', Pu:'atm', stp:true} : Object.assign({T:randT()}, randP());
+// Conditions in a teaching lab: near room temperature and near 1 atm.
+function labCond(){
+  const T=(rint(150,350)/10).toFixed(1), u=pick(['atm','mmHg','mmHg','kPa']);
+  if(u==='atm') return {T, P:g3(0.92,1.05), Pu:u};
+  if(u==='kPa') return {T, P:g3(94,104), Pu:u};
+  let v; do{ v=rint(700,790); }while(v%10===0);
+  return {T, P:String(v), Pu:u};
+}
+const condText = g => g.stp ? 'STP (0 °C and 1.00 atm)' : g.T+' °C and '+g.P+' '+g.Pu;
+// Lines that show each unit conversion a gas needs.
+function convLines(g){
+  const out=[];
+  if(g.T!==undefined) out.push('T = '+g.T+' °C + 273.15 = '+kelvin(g)+' K');
+  if(g.P!==undefined && g.Pu!=='atm') out.push('P = '+g.P+' '+g.Pu+' ÷ '+PDIV[g.Pu]+' = '+atmText(g)+' atm');
+  if(g.V!==undefined && g.Vu==='mL') out.push('V = '+g.V+' mL ÷ 1000 = '+literText(g)+' L');
+  return out;
+}
+const T_MSG='It looks like the temperature was left in °C. The gas law needs kelvins: add 273.15 to the Celsius temperature.';
+const pMsg = g => 'It looks like the pressure was left in '+g.Pu+'. With R = 0.08206 L·atm/(mol·K) the pressure must be in atm: divide by '+PDIV[g.Pu]+'.';
+const V_MSG='It looks like the gas volume was left in milliliters. With R = 0.08206 L·atm/(mol·K) the volume must be in liters.';
+const STP_MSG='It looks like 22.4 L/mol was used. That value only applies at STP (0 °C and 1 atm). Use PV = nRT with the temperature and pressure given.';
+const T_BLANK='Check the temperature. The gas law needs kelvins: add 273.15 to the Celsius temperature.';
+const pBlank = g => 'Check the pressure in atm. '+(g.Pu==='atm' ? 'Use the value given in the problem.' : 'Divide the '+g.Pu+' value by '+PDIV[g.Pu]+'.');
+const vBlank = g => 'Check the gas volume in liters. '+(g.Vu==='mL' ? 'Divide the milliliters by 1000.' : 'Use the value given in the problem.');
+// One "symbol = value unit" cell: a blank to fill in, a question mark, or the value.
+const gcell = (mode,sym,k,label,unit,val,unk) => q(sym+' = '+(unk ? '<b>?</b>' : mode==='show' ? val : bl(mode,k,label,true))+' '+unit);
+const cellRow = inner => '<div class="chain cells">'+inner+'</div>';
+
+/* ---------- Reactions: one substance to another ----------
+   S = {A, B, from, to, sf}
+   from: {type:'sol', v, M}  (v mL of an M molar solution of A)
+       | {type:'g', x}
+       | {type:'gas', V, Vu, T, P, Pu}  (a gas sample of A)
+   to:   {type:'g'}
+       | {type:'mL', M}   (volume of an M molar solution of B)
+       | {type:'M', v}    (molarity of v mL of B solution)
+       | {type:'gasV', T, P, Pu}   (liters of gas B at T and P)
+       | {type:'gasP', T, V, Vu}   (pressure of gas B, in atm, in a container) */
+const isGasOut = t => t.type==='gasV' || t.type==='gasP';
+function chainCalc(S){
+  const a=S.A.c, b=S.B.c, f=S.from, t=S.to;
+  const gi = f.type==='gas' ? gasVals(f) : null, go = isGasOut(t) ? gasVals(t) : null;
+  const LA = f.type==='sol' ? Number(f.v)/1000 : null;
+  const nA = f.type==='sol' ? LA*Number(f.M) : f.type==='g' ? Number(f.x)/S.A.M : gi.Patm*gi.VL/(R_GAS*gi.TK);
+  const nB = nA*b/a;
+  const LB = t.type==='M' ? Number(t.v)/1000 : t.type==='mL' ? nB/Number(t.M) : null;
+  const ans = t.type==='g' ? nB*S.B.M : t.type==='mL' ? LB*1000 : t.type==='M' ? nB/LB
+            : t.type==='gasV' ? nB*R_GAS*go.TK/go.Patm : nB*R_GAS*go.TK/go.VL;
+  return {a,b,LA,nA,nB,LB,ans,gi,go};
+}
+function mkChain(A,B,from,to,sf){
+  const S={A,B,from,to,sf};
+  S.ans=chainCalc(S).ans;
+  return S;
+}
+const unitOf = S => S.to.type==='gasP' ? 'atm' : ({g:'g ', mL:'mL ', M:'M ', gasV:'L '})[S.to.type]+tag(S.B.f,'sb');
+// Wrong answers that come from specific, common mistakes.
+function chainErrors(S){
+  const c=chainCalc(S), fa=tag(S.A.f,'sa'), fb=tag(S.B.f,'sb');
+  const a=c.a, b=c.b, ans=c.ans, f=S.from, t=S.to, E=[];
+  const add=(value,msg)=>E.push({value,msg});
+  if(a!==b){
+    add(ans*a/b, 'It looks like a 1:1 mole ratio was assumed. The balanced equation pairs '+a+' mol '+fa+' with '+b+' mol '+fb+'.'+
+      (f.type==='sol' && (t.type==='mL' || t.type==='M') ? ' The shortcut M<sub>1</sub>V<sub>1</sub> = M<sub>2</sub>V<sub>2</sub> does not work here. Go through moles and use the mole ratio.' : ' Multiply the moles of '+fa+' by '+b+' mol '+fb+' over '+a+' mol '+fa+'.'));
+    add(ans*a*a/(b*b), 'That is the result with the mole ratio upside down. Put mol '+fb+' on top so that mol '+fa+' cancels: '+b+' mol '+fb+' over '+a+' mol '+fa+'.');
+  }
+  if(t.type==='g') add(c.nB, 'That is the moles of '+fb+'. The question asks for grams, so multiply by the molar mass of '+fb+'.');
+  if(f.type==='sol'){
+    add(ans*1000, 'It looks like milliliters were used where liters are needed. Molarity is moles per liter, so convert '+f.v+' mL to liters (divide by 1000) before multiplying by the molarity.');
+    add(ans/(Number(f.M)*Number(f.M)), 'To get moles from a solution, multiply the liters by the molarity. It looks like the volume was divided by the molarity.');
+  }
+  if(f.type==='g') add(ans*S.A.M, 'It looks like the grams of '+fa+' were used as moles. Divide by the molar mass of '+fa+' first.');
+  if(f.type==='gas'){
+    if(Number(f.T)>0) add(ans*c.gi.TK/Number(f.T), T_MSG);
+    if(f.Pu!=='atm') add(ans*PCONV[f.Pu], pMsg(f));
+    if(f.Vu==='mL') add(ans*1000, V_MSG);
+    if(notSTP(f)) add(ans*(c.gi.VL/22.414)/c.nA, STP_MSG);
+  }
+  if(t.type==='mL'){
+    add(ans/1000, 'That is the volume in liters. The question asks for milliliters, so multiply by 1000.');
+    add(c.nB*Number(t.M)*1000, 'To get a volume from moles, divide by the molarity (mol/L). It looks like you multiplied.');
+    add(c.nB, 'That is the moles of '+fb+'. Divide by the molarity to get liters, then convert to milliliters.');
+  }
+  if(t.type==='M'){
+    add(ans/1000, 'Molarity is moles per liter. Convert '+t.v+' mL to liters before dividing.');
+    add(c.nB*c.LB, 'Molarity = moles ÷ liters. It looks like you multiplied.');
+    if(f.type==='sol') add(c.nB/c.LA, 'You divided by the volume of the '+fa+' solution. Divide the moles of '+fb+' by the volume of the '+fb+' solution.');
+    add(c.nB, 'That is the moles of '+fb+'. Divide by the liters of '+fb+' solution to get the molarity.');
+  }
+  if(isGasOut(t)){
+    if(Number(t.T)>0) add(ans*Number(t.T)/c.go.TK, T_MSG);
+    add(c.nB, 'That is the moles of '+fb+'. Use PV = nRT to turn the moles into a '+(t.type==='gasV' ? 'volume' : 'pressure')+'.');
+  }
+  if(t.type==='gasV'){
+    if(t.Pu!=='atm') add(ans/PCONV[t.Pu], pMsg(t));
+    if(notSTP(t)) add(c.nB*22.414, STP_MSG);
+    add(c.nB*R_GAS*c.go.TK*c.go.Patm, 'V = nRT ÷ P. It looks like you multiplied by the pressure instead of dividing.');
+  }
+  if(t.type==='gasP'){
+    if(t.Vu==='mL') add(ans/1000, V_MSG);
+    add(c.nB*R_GAS*c.go.TK*c.go.VL, 'P = nRT ÷ V. It looks like you multiplied by the volume instead of dividing.');
+  }
+  add(c.nA, 'That is the moles of '+fa+'. Keep going: apply the mole ratio to get moles of '+fb+'.');
+  return clean(E, ans);
+}
+function routeHTML(S){
+  const a=F(S.A.f), b=F(S.B.f), f=S.from, t=S.to, items=[];
+  const n=(cls,s)=>items.push('<li class="rn '+cls+'">'+s+'</li>'), st=(s,c)=>items.push('<li class="rs '+(c||'')+'">'+s+'</li>');
+  if(f.type==='sol'){ n('a','mL '+a); st('÷ 1000'); n('a','L '+a); st('× molarity'); }
+  else if(f.type==='g'){ n('a','g '+a); st('÷ molar mass'); }
+  else { n('a','P, V, T of '+a); st('n = PV ÷ RT'); }
+  n('a','mol '+a); st('× mole ratio','ratio'); n('b','mol '+b);
+  if(t.type==='g'){ st('× molar mass'); n('b','g '+b); }
+  if(t.type==='mL'){ st('÷ molarity'); n('b','L '+b); st('× 1000'); n('b','mL '+b); }
+  if(t.type==='M'){ st('÷ liters of solution'); n('b','M '+b); }
+  if(t.type==='gasV'){ st('V = nRT ÷ P'); n('b','L '+b); }
+  if(t.type==='gasP'){ st('P = nRT ÷ V'); n('b','atm '+b); }
+  return '<ol class="route" aria-label="Route">'+items.join('')+'</ol>';
+}
+// The dimensional-analysis part of the setup. mode: 'live' = blanks to fill in, 'ph' = question marks, 'full' = worked out.
+// A gas at the start enters as moles; a gas at the end leaves as moles. The gas law steps are shown separately.
+function chainHTML(S, mode){
+  const full=mode==='full', f=S.from, t=S.to, c=chainCalc(S), k=S.sf+1, gasOut=isGasOut(t);
+  const a=tag(S.A.f,'sa'), b=tag(S.B.f,'sb');
+  const x = s => full ? cxs(s) : s;
+  const val=(key,label,v,wide)=> mode==='live' ? blankIn(key,label,wide) : mode==='ph' ? PH : v;
+  let out;
+  if(f.type==='sol'){
+    out=q(f.v+' '+x('mL'))+XOP+frac('1 '+x('L'),'1000 '+x('mL'))+
+        XOP+frac(val('mA','molarity of '+S.A.f,f.M,true)+' '+x('mol '+a),'1 '+x('L'));
+  } else if(f.type==='g'){
+    out=q(f.x+' '+x('g '+a))+XOP+frac('1 '+x('mol '+a), val('MA','molar mass of '+S.A.f,S.A.M.toFixed(2),true)+' '+x('g '+a));
+  } else {
+    out=q((full ? sig(c.nA,k) : 'n')+' '+x('mol '+a));
+  }
+  const keepB = t.type==='M' || gasOut;
+  out+=XOP+frac(val('b','coefficient of '+S.B.f,S.B.c)+' '+(keepB ? 'mol '+b : x('mol '+b)),
+                val('a','coefficient of '+S.A.f,S.A.c)+' '+x('mol '+a));
+  if(t.type==='g')  out+=XOP+frac(val('MB','molar mass of '+S.B.f,S.B.M.toFixed(2),true)+' g '+b, '1 '+x('mol '+b));
+  if(t.type==='mL') out+=XOP+frac('1 '+x('L'), val('mB','molarity of '+S.B.f,t.M,true)+' '+x('mol '+b))+XOP+frac('1000 mL','1 '+x('L'));
+  if(t.type==='M')  out+=XOP+frac('1', val('LB','liters of '+S.B.f+' solution',toL(t.v),true)+' L');
+  const end = gasOut ? (full ? sig(c.nB,k) : '?')+' mol '+b : (full ? sig(c.ans,S.sf) : '?')+' '+unitOf(S);
+  out+='<span class="grp">'+EQOP+'<span class="qty'+(full && !gasOut ? ' ans-final' : '')+'">'+end+'</span></span>';
+  return row(out);
+}
+// The whole setup: gas law in (if needed), the chain, gas law out (if needed).
+function setupHTML(S, mode){
+  const f=S.from, t=S.to, fa=tag(S.A.f,'sa'), fb=tag(S.B.f,'sb'), gasOut=isGasOut(t);
+  if(f.type!=='gas' && !gasOut){
+    return (mode==='live' ? lab('Fill in the blanks to finish the setup, then calculate.') : '')+chainHTML(S,mode);
+  }
+  let out='', n=0;
+  const head = s => lab('Step '+(++n)+': '+s);
+  if(f.type==='gas'){
+    out+=head('moles of '+fa+' from the ideal gas law. Convert the units first.')+
+      row(q('n')+EQOP+frac('P × V','R × T')+q('with R = 0.08206 L·atm/(mol·K)'))+
+      cellRow(gcell(mode,'P','PA','pressure of '+S.A.f+' in atm','atm','',false)+gcell(mode,'V','VA','volume of '+S.A.f+' in liters','L','',false)+
+              gcell(mode,'T','TA','temperature of '+S.A.f+' in kelvins','K','',false)+gcell(mode,'n','nA','moles of '+S.A.f,'mol '+fa,'',false));
+  }
+  out+=head(f.type==='gas' ? 'mole ratio, starting from the n you just found' : 'from '+fa+' to moles of '+fb)+chainHTML(S,mode);
+  if(gasOut){
+    out+=head((t.type==='gasV' ? 'volume' : 'pressure')+' of '+fb+' from the ideal gas law. Convert the units first.')+
+      row(q(t.type==='gasV' ? 'V' : 'P')+EQOP+frac('n × R × T', t.type==='gasV' ? 'P' : 'V')+q('with R = 0.08206 L·atm/(mol·K)'))+
+      cellRow(gcell(mode,'n','nB','moles of '+S.B.f,'mol '+fb,'',false)+gcell(mode,'T','TB','temperature of '+S.B.f+' in kelvins','K','',false)+
+              (t.type==='gasV' ? gcell(mode,'P','PB','pressure of '+S.B.f+' in atm','atm','',false)
+                               : gcell(mode,'V','VB','volume of the container in liters','L','',false)));
+  }
+  return out;
+}
+function chainBlanks(S){
+  const B={b:{want:S.B.c,tol:1e-9}, a:{want:S.A.c,tol:1e-9}}, f=S.from, t=S.to, c=chainCalc(S);
+  if(f.type==='sol') B.mA={want:Number(f.M),tol:0.002};
+  if(f.type==='g')   B.MA={want:S.A.M,tol:0.005};
+  if(f.type==='gas'){ B.PA={want:c.gi.Patm,tol:0.003}; B.VA={want:c.gi.VL,tol:0.002}; B.TA={want:c.gi.TK,tol:0.002}; B.nA={want:c.nA,tol:0.01}; }
+  if(t.type==='g')  B.MB={want:S.B.M,tol:0.005};
+  if(t.type==='mL') B.mB={want:Number(t.M),tol:0.002};
+  if(t.type==='M')  B.LB={want:Number(t.v)/1000,tol:0.002};
+  if(isGasOut(t)){ B.nB={want:c.nB,tol:0.01}; B.TB={want:c.go.TK,tol:0.002}; }
+  if(t.type==='gasV') B.PB={want:c.go.Patm,tol:0.003};
+  if(t.type==='gasP') B.VB={want:c.go.VL,tol:0.002};
+  return B;
+}
+// got[k] = {v, good} or {empty:true} for each blank. Returns the most useful message, or ''.
+function chainBlankMsg(S, got){
+  const a=S.A.c, b=S.B.c, fa=F(S.A.f), fb=F(S.B.f), f=S.from, t=S.to;
+  const bad=k=>got[k] && !got[k].empty && !got[k].good;
+  const near=(v,w)=>isFinite(v) && Math.abs(v-w)/w<=0.005;
+  if(bad('TA')) return T_BLANK;
+  if(bad('PA')) return pBlank(f);
+  if(bad('VA')) return vBlank(f);
+  if(bad('nA')) return 'Check the moles of '+fa+'. n = PV ÷ RT, with P in atm, V in liters, T in kelvins and R = 0.08206.';
+  if(bad('a')||bad('b')){
+    return (got.a && got.b && got.a.v===b && got.b.v===a)
+      ? 'The mole ratio is upside down. The substance you want ('+fb+') goes on top, so that mol '+fa+' cancels.'
+      : 'Check the mole ratio. Use the coefficients from the balanced equation: the coefficient of '+fb+' on top and the coefficient of '+fa+' on the bottom.';
+  }
+  if(bad('mA')) return 'Check the molarity of '+fa+'. Use the value given in the problem: '+f.M+' mol in every liter.';
+  if(bad('mB')) return 'Check the molarity of '+fb+'. Use the value given in the problem: '+t.M+' mol in every liter.';
+  if(bad('MA')||bad('MB')){
+    if((bad('MA') && a>1 && near(got.MA.v,a*S.A.M)) || (bad('MB') && b>1 && near(got.MB.v,b*S.B.M)))
+      return 'Leave the coefficient out of the molar mass. Molar mass is for one mole of the formula. Coefficients belong only in the mole ratio.';
+    return 'Check the molar mass of '+(bad('MA')?fa:fb)+'. Add the atomic masses for every atom in the formula.';
+  }
+  if(bad('LB')) return 'Check the liters of '+fb+' solution. Divide '+t.v+' mL by 1000.';
+  if(bad('nB')) return 'Check the moles of '+fb+'. It is the result of the setup in the step before.';
+  if(bad('TB')) return T_BLANK;
+  if(bad('PB')) return pBlank(t);
+  if(bad('VB')) return vBlank(t);
+  return '';
+}
+// The conversion written out one step per line.
+function stepLines(S){
+  const c=chainCalc(S), fa=tag(S.A.f,'sa'), fb=tag(S.B.f,'sb'), f=S.from, t=S.to, out=[], k=S.sf+1;
+  const done=(v,u)=>'<b>'+sig(v,S.sf)+' '+u+'</b>';
+  if(f.type==='sol'){
+    out.push('<b>Milliliters to liters.</b> '+f.v+' mL ÷ 1000 = '+toL(f.v)+' L');
+    out.push('<b>Liters to moles.</b> '+toL(f.v)+' L × '+f.M+' mol/L = '+sig(c.nA,k)+' mol '+fa);
+  } else if(f.type==='g'){
+    out.push('<b>Grams to moles.</b> '+f.x+' g '+fa+' ÷ '+S.A.M.toFixed(2)+' g/mol = '+sig(c.nA,k)+' mol '+fa);
+  } else {
+    out.push('<b>Convert the units for '+fa+'.</b> '+convLines(f).join('<br>'));
+    out.push('<b>Moles of '+fa+'.</b> n = PV ÷ RT = ('+atmText(f)+' atm × '+literText(f)+' L) ÷ (0.08206 × '+kelvin(f)+' K) = '+sig(c.nA,k)+' mol '+fa);
+  }
+  out.push('<b>Mole ratio.</b> '+sig(c.nA,k)+' mol '+fa+' × ('+S.B.c+' mol '+fb+' ÷ '+S.A.c+' mol '+fa+') = '+sig(c.nB,k)+' mol '+fb);
+  if(t.type==='g') out.push('<b>Moles to grams.</b> '+sig(c.nB,k)+' mol '+fb+' × '+S.B.M.toFixed(2)+' g/mol = '+done(c.ans,'g '+fb));
+  if(t.type==='mL'){
+    out.push('<b>Moles to liters.</b> '+sig(c.nB,k)+' mol '+fb+' ÷ '+t.M+' mol/L = '+sig(c.LB,k)+' L');
+    out.push('<b>Liters to milliliters.</b> '+sig(c.LB,k)+' L × 1000 = '+done(c.ans,'mL '+fb));
+  }
+  if(t.type==='M') out.push('<b>Molarity.</b> '+sig(c.nB,k)+' mol '+fb+' ÷ '+toL(t.v)+' L = '+done(c.ans,'M '+fb));
+  if(isGasOut(t)){
+    const cl=convLines(t);
+    if(S.same) out.push('<b>Same conditions.</b> '+fb+' is measured at the same temperature and pressure: '+kelvin(t)+' K and '+atmText(t)+' atm.');
+    else if(cl.length) out.push('<b>Convert the units for '+fb+'.</b> '+cl.join('<br>'));
+  }
+  if(t.type==='gasV') out.push('<b>Volume of '+fb+'.</b> V = nRT ÷ P = ('+sig(c.nB,k)+' mol × 0.08206 × '+kelvin(t)+' K) ÷ '+atmText(t)+' atm = '+done(c.ans,'L '+fb));
+  if(t.type==='gasP') out.push('<b>Pressure of '+fb+'.</b> P = nRT ÷ V = ('+sig(c.nB,k)+' mol × 0.08206 × '+kelvin(t)+' K) ÷ '+literText(t)+' L = '+done(c.ans,'atm'));
+  return out;
+}
+function chainSolution(S){
+  const mm=[]; if(S.from.type==='g') mm.push([S.A.f,'sa']); if(S.to.type==='g') mm.push([S.B.f,'sb']);
+  const gas = S.from.type==='gas' || isGasOut(S.to);
+  return solWrap((mm.length ? [mmLines(mm)] : []).concat(stepLines(S), gas ? [] : ['<b>All in one line.</b>'+chainHTML(S,'full')]), roundNote(S.sf));
+}
+function fromText(S, cls){
+  const f=S.from, a=tag(S.A.f,cls);
+  if(f.type==='sol') return f.v+' mL of '+f.M+' M '+a;
+  if(f.type==='g') return f.x+' g of '+a;
+  return f.V+' '+f.Vu+' of '+a+' gas at '+condText(f);
+}
+function chainProblem(kind, rxn, S, question, generic){
+  const gas = S.from.type==='gas' || isGasOut(S.to);
+  const part={type:'num', label:'Your answer', unit:unitOf(S), answer:S.ans, sf:S.sf,
+              errors:chainErrors(S), generic, show:sig(S.ans,S.sf)+' '+unitOf(S)};
+  const hl={}; hl[S.A.f]='sa'; hl[S.B.f]='sb';
+  const am=[]; if(S.from.type==='g') am.push(S.A.f); if(S.to.type==='g') am.push(S.B.f);
+  return {kind, rxn, ctx:rxn.ctx, hl, am:am.length?am:null, question, parts:[part],
+    guided: lab('Your route')+routeHTML(S)+setupHTML(S,'live'),
+    hints: [lab('Hint 1: your route')+routeHTML(S)+(gas ? txt('For the gas, use PV = nRT with R = 0.08206 L·atm/(mol·K). Pressure must be in atm, volume in liters, and temperature in kelvins.') : ''),
+            lab('Hint 2: the setup')+setupHTML(S,'ph')],
+    blanks: chainBlanks(S), blankMsg: got=>chainBlankMsg(S,got), solution: chainSolution(S), S};
+}
+
+/* ---------- 3. Solution stoichiometry ---------- */
+function makeSolStoich(prev){
+  for(let t=0;;t++){
+    const rxn=pick(SRX); if(t<200 && prev && prev.rxn===rxn) continue;
+    const cand=spc(rxn.r,'r').concat(spc(rxn.p,'p').filter(s=>s.st==='s'||s.st==='g'));
+    const A=pick(cand), B=pick(cand.filter(s=>s!==A));
+    const solA=A.role==='r' && A.st==='aq', solB=B.role==='r' && B.st==='aq';
+    if(!solA && !solB) continue;
+    if(t<200 && A.c===B.c) continue;
+    const from = solA ? {type:'sol', v:g3(10,150), M:g3(0.1,1.5)} : {type:'g', x:g3(0.5,15)};
+    const to = solB ? {type:'mL', M:g3(0.1,1.5)} : {type:'g'};
+    const S=mkChain(A,B,from,to,3);
+    if(to.type==='mL' && (S.ans<2 || S.ans>900)) continue;
+    if(to.type==='g' && S.ans<0.02) continue;
+    const G=fromText(S,'sa'), fb=tag(B.f,'sb');
+    const Q = to.type==='mL' ? 'milliliters of '+to.M+' M '+fb : 'grams of '+fb;
+    let question;
+    if(A.role==='r' && B.role==='p')      question='How many '+Q+' can form from '+G+'? Assume the other reactant is in excess.';
+    else if(A.role==='r' && B.role==='r') question='How many '+Q+' are needed to react completely with '+G+'?';
+    else                                  question='How many '+Q+' must react to produce '+G+'?';
+    return chainProblem('solstoich', rxn, S, question,
+      'Not yet. Follow the route one step at a time: get to moles of the given substance, apply the mole ratio, then convert to what the question asks for.');
+  }
+}
+
+/* ---------- 4. Mixing two solutions ---------- */
+function makeMix(prev){
+  for(let t=0;;t++){
+    const rxn=pick(PRX); if(t<200 && prev && prev.rxn===rxn) continue;
+    const R=spc(rxn.r,'r'), Pd=spc(rxn.p,'p').find(s=>s.st==='s');
+    const i=Math.random()<0.5 ? 0 : 1, j=1-i;
+    R[i].v=g3(10,100); R[i].Mo=g3(0.1,1.0); R[j].Mo=g3(0.1,1.0);
+    const ni=Number(R[i].v)/1000*Number(R[i].Mo);
+    const fct=Math.random()<0.5 ? 0.45+Math.random()*0.40 : 1.2+Math.random()*1.0;
+    const vj=fmt3(ni*R[j].c/R[i].c/Number(R[j].Mo)*1000*fct);
+    if(!vj || Number(vj)<5 || Number(vj)>250) continue;
+    R[j].v=vj;
+    R.forEach(r=>{ r.n=Number(r.v)/1000*Number(r.Mo); r.y=r.n*Pd.c/r.c*Pd.M; });
+    const iL = R[0].y<=R[1].y ? 0 : 1, L=R[iL], E=R[1-iL];
+    if((E.y-L.y)/L.y < 0.08) continue;
+    const actual=fmt3(L.y*(55+Math.random()*40)/100); if(!actual) continue;
+    const act=Number(actual), pct=act/L.y*100;
+    if(pct<50 || pct>97) continue;
+    const fp=tag(Pd.f,'sb');
+    const tail=' Convert each solution to moles, then work out how much '+F(Pd.f)+' each could make. The one that makes less is limiting.';
+    const parts=[
+      {type:'choice', label:'Which reactant is limiting?', options:R.map(r=>r.f), answer:L.f, show:F(L.f)+' is limiting',
+       wrongMsg:function(){
+         if(Number(E.v)<Number(L.v)) return 'The solution with the smaller volume is not automatically limiting.'+tail;
+         if(Number(E.Mo)<Number(L.Mo)) return 'The solution with the lower molarity is not automatically limiting.'+tail;
+         if(E.n<L.n) return 'Having fewer moles is not enough to decide, because the reactants are not used 1:1.'+tail;
+         return 'Not that one.'+tail;
+       }},
+      {type:'num', label:'Theoretical yield of '+fp, unit:'g '+fp, answer:L.y, sf:3, show:sig(L.y,3)+' g '+fp,
+       errors:clean([
+         {value:E.y, msg:'That is the amount the other reactant could make, but it would run out of its partner first. The reactant that makes less product limits the reaction, so the smaller amount is the theoretical yield.'},
+         {value:L.y*1000, msg:'It looks like milliliters were used where liters are needed. Molarity is moles per liter, so convert each volume to liters first.'},
+         {value:L.n*Pd.c/L.c, msg:'That is the moles of '+fp+'. The question asks for grams, so multiply by the molar mass of '+fp+'.'},
+         {value:L.y+E.y, msg:'Do not add the two amounts. Only the limiting reactant decides how much product forms, so use the smaller amount.'},
+         {value:act, msg:'That is the actual yield, the amount that was collected. The theoretical yield comes from the limiting reactant.'}
+       ], L.y),
+       generic:'Not yet. For each solution: liters × molarity gives moles, the mole ratio gives moles of '+fp+', and the molar mass gives grams. Take the smaller result.'},
+      {type:'num', label:'Percent yield', unit:'%', answer:pct, sf:3, show:sig(pct,3)+'%',
+       errors:clean([
+         {value:L.y/act*100, msg:'A percent yield above 100% means the fraction is upside down. Put the actual yield on top: actual ÷ theoretical × 100.'},
+         {value:act/L.y,     msg:'That is the fraction of the theoretical yield. Multiply by 100 to make it a percent.'},
+         {value:act/E.y*100, msg:'That uses the amount of product the excess reactant could make. Percent yield compares the actual yield to the theoretical yield, which comes from the limiting reactant.'}
+       ], pct),
+       generic:'Not yet. Percent yield = actual yield ÷ theoretical yield × 100.'}
+    ];
+    const hl={}; R.forEach(r=>{ hl[r.f]='sa'; }); hl[Pd.f]='sb';
+    const trail=(r,idx,m)=>'<div class="trail"><span class="rn a">'+r.v+' mL of '+r.Mo+' M '+F(r.f)+'</span>'+
+      '<span class="tq">'+ARW+bl(m,'n'+idx,'moles of '+r.f,true)+' mol '+tag(r.f,'sa')+'</span>'+
+      '<span class="tq">'+ARW+bl(m,'y'+idx,'grams of '+Pd.f+' from '+r.f,true)+' g '+fp+'</span></div>';
+    const blanks={};
+    R.forEach((r,idx)=>{ blanks['n'+idx]={want:r.n,tol:0.01}; blanks['y'+idx]={want:r.y,tol:0.01}; });
+    const blankMsg=got=>{
+      const bad=k=>got[k] && !got[k].empty && !got[k].good;
+      for(let idx=0;idx<2;idx++){
+        const r=R[idx];
+        if(bad('n'+idx)) return 'Check the moles of '+F(r.f)+'. Convert '+r.v+' mL to liters, then multiply by the molarity.';
+        if(bad('y'+idx)) return 'Check the '+F(Pd.f)+' from '+F(r.f)+'. Multiply the moles of '+F(r.f)+' by the mole ratio ('+Pd.c+' mol '+F(Pd.f)+' over '+r.c+' mol '+F(r.f)+'), then by the molar mass of '+F(Pd.f)+'.';
+      }
+      return '';
+    };
+    const F_PCT=row(q('percent yield')+EQOP+'<span class="grp">'+frac('actual yield','theoretical yield')+XOP+q('100')+'</span>');
+    const rule=txt('The smaller amount of '+fp+' is the theoretical yield, and the reactant that gives it is limiting.');
+    const line=r=>toL(r.v)+' L × '+r.Mo+' mol/L = '+sig(r.n,4)+' mol '+tag(r.f,'sa');
+    const pline=r=>sig(r.n,4)+' mol '+tag(r.f,'sa')+' × ('+Pd.c+' mol '+fp+' ÷ '+r.c+' mol '+tag(r.f,'sa')+') × '+Pd.M.toFixed(2)+' g/mol = '+sig(r.y,4)+' g '+fp;
+    return {kind:'mix', rxn, ctx:rxn.ctx, hl, am:[Pd.f], parts, R, Pd, L, E, actual, pct,
+      question:'A student mixes '+R[0].v+' mL of '+R[0].Mo+' M '+tag(R[0].f,'sa')+' with '+R[1].v+' mL of '+R[1].Mo+' M '+tag(R[1].f,'sa')+'. After filtering and drying, '+actual+' g of '+fp+' is collected.',
+      guided: lab('Take each solution to moles, then to grams of product. Fill in the blanks.')+trail(R[0],0,'live')+trail(R[1],1,'live')+rule+F_PCT,
+      hints: [lab('Hint 1')+txt('For each solution, liters × molarity gives moles. Then work out how much '+fp+' each reactant could make on its own. The smaller amount is the theoretical yield.'),
+              lab('Hint 2: the setup')+trail(R[0],0,'ph')+trail(R[1],1,'ph')+F_PCT],
+      blanks, blankMsg,
+      solution:solWrap([
+        mmLines([[Pd.f,'sb']]),
+        '<b>Moles of each reactant.</b><br>'+line(R[0])+'<br>'+line(R[1]),
+        '<b>Product from each reactant.</b><br>'+pline(R[0])+'<br>'+pline(R[1]),
+        '<b>Limiting reactant.</b> '+F(L.f)+' makes less '+fp+', so <b>'+F(L.f)+' is limiting</b>. Theoretical yield: <b>'+sig(L.y,3)+' g '+fp+'</b>',
+        '<b>Percent yield.</b> '+actual+' g ÷ '+sig(L.y,4)+' g × 100 = <b>'+sig(pct,3)+'%</b>'
+      ], roundNote(3))};
+  }
+}
+
+/* ---------- 5. Ideal gas law ---------- */
+const EQ_GAS = row(q('P × V = n × R × T')+q('with R = 0.08206 L·atm/(mol·K)'));
+function makeGasLaw(prev){
+  for(let t=0;;t++){
+    const f=pick(Object.keys(GASES)); if(t<50 && prev && prev.gas===f) continue;
+    const MM=molarMass(f), MMs=MM.toFixed(2), name=GASES[f], fs=tag(f,'sa');
+    const type=pick(['V','Vg','P','n','T','g','MM']);
+    const g=Object.assign(randCond(), randVol());
+    const gv=gasVals(g), TK=gv.TK, TC=Number(g.T), Pa=gv.Patm, VL=gv.VL, RT=R_GAS*TK;
+    const nTrue=Pa*VL/RT;
+    const cond=condText(g), box=g.V+' '+g.Vu;
+    const E=[]; const add=(value,msg)=>E.push({value,msg});
+    const conv=keys=>{
+      const o={}; keys.forEach(k=>{ o[k]=g[k]; }); o.Pu=g.Pu; o.Vu=g.Vu;
+      const c=convLines(o); return c.length ? ['<b>Convert the units.</b> '+c.join('<br>')] : [];
+    };
+    const nLine='n = PV ÷ RT = ('+atmText(g)+' atm × '+literText(g)+' L) ÷ (0.08206 × '+kelvin(g)+' K)';
+    let question, unk, nn=nTrue, nStr=null, ans, unit, label, rearr, sol, am=null, extra='', nNote='Use the moles given in the problem.';
+
+    if(type==='V' || type==='Vg'){
+      unk='V'; unit='L'; label='Volume';
+      const sub=type==='V' ? fmt3(nTrue) : fmt3(nTrue*MM); if(!sub) continue;
+      nn = type==='V' ? Number(sub) : Number(sub)/MM;
+      if(type==='V') nStr=sub;
+      ans=nn*RT/Pa;
+      question='What volume, in liters, does '+sub+(type==='V' ? ' mol' : ' g')+' of '+name+' ('+fs+') occupy at '+cond+'?';
+      rearr=row(q('V')+EQOP+frac('n × R × T','P'));
+      if(type==='Vg'){
+        am=[f]; nNote='Divide the grams by the molar mass.';
+        extra=txt('Here n comes from the mass: moles = grams ÷ molar mass.');
+        add(ans*MM, 'It looks like grams were used in place of moles. Divide '+sub+' g by the molar mass first.');
+      }
+      if(TC>0) add(ans*TC/TK, T_MSG);
+      if(g.Pu!=='atm') add(ans/PCONV[g.Pu], pMsg(g));
+      if(notSTP(g)) add(nn*22.414, STP_MSG);
+      add(nn*RT*Pa, 'V = nRT ÷ P. It looks like you multiplied by the pressure instead of dividing.');
+      sol=(type==='Vg' ? [mmLines([[f,'sa']]), '<b>Grams to moles.</b> '+sub+' g ÷ '+MMs+' g/mol = '+sig(nn,4)+' mol '+fs] : [])
+        .concat(conv(['T','P']), ['<b>Solve for V.</b> V = nRT ÷ P = ('+(nStr||sig(nn,4))+' mol × 0.08206 × '+kelvin(g)+' K) ÷ '+atmText(g)+' atm = <b>'+sig(ans,3)+' L</b>']);
+    } else if(type==='P'){
+      unk='P'; unit='atm'; label='Pressure';
+      nStr=fmt3(nTrue); if(!nStr) continue; nn=Number(nStr);
+      ans=nn*RT/VL;
+      question='A '+box+' container holds '+nStr+' mol of '+name+' ('+fs+') at '+g.T+' °C. What is the pressure in the container, in atm?';
+      rearr=row(q('P')+EQOP+frac('n × R × T','V'));
+      if(TC>0) add(ans*TC/TK, T_MSG);
+      if(g.Vu==='mL') add(ans/1000, V_MSG);
+      add(nn*RT*VL, 'P = nRT ÷ V. It looks like you multiplied by the volume instead of dividing.');
+      sol=conv(['T','V']).concat(['<b>Solve for P.</b> P = nRT ÷ V = ('+nStr+' mol × 0.08206 × '+kelvin(g)+' K) ÷ '+literText(g)+' L = <b>'+sig(ans,3)+' atm</b>']);
+    } else if(type==='n'){
+      unk='n'; unit='mol '+fs; label='Moles';
+      ans=nTrue;
+      question='How many moles of '+name+' ('+fs+') are in a '+box+' container at '+cond+'?';
+      rearr=row(q('n')+EQOP+frac('P × V','R × T'));
+      if(TC>0) add(ans*TK/TC, T_MSG);
+      if(g.Pu!=='atm') add(ans*PCONV[g.Pu], pMsg(g));
+      if(g.Vu==='mL') add(ans*1000, V_MSG);
+      add(RT/(Pa*VL), 'The fraction is upside down. n = PV ÷ RT.');
+      sol=conv(['T','P','V']).concat(['<b>Solve for n.</b> '+nLine+' = <b>'+sig(ans,3)+' mol '+fs+'</b>']);
+    } else if(type==='T'){
+      unk='T'; unit='K'; label='Temperature';
+      nStr=fmt3(nTrue); if(!nStr) continue; nn=Number(nStr);
+      ans=Pa*VL/(nn*R_GAS);
+      question='A '+box+' container holds '+nStr+' mol of '+name+' ('+fs+') at a pressure of '+g.P+' '+g.Pu+'. What is the temperature of the gas, in kelvins?';
+      rearr=row(q('T')+EQOP+frac('P × V','n × R'));
+      if(g.Pu!=='atm') add(ans*PCONV[g.Pu], pMsg(g));
+      if(g.Vu==='mL') add(ans*1000, V_MSG);
+      add(ans-273.15, 'That is the temperature in °C. The question asks for kelvins, which is what PV = nRT gives directly.');
+      add(nn*R_GAS/(Pa*VL), 'The fraction is upside down. T = PV ÷ nR.');
+      sol=conv(['P','V']).concat(['<b>Solve for T.</b> T = PV ÷ nR = ('+atmText(g)+' atm × '+literText(g)+' L) ÷ ('+nStr+' mol × 0.08206) = <b>'+sig(ans,3)+' K</b>']);
+    } else if(type==='g'){
+      unk='n'; unit='g '+fs; label='Mass'; am=[f];
+      ans=nTrue*MM;
+      question='What mass, in grams, of '+name+' ('+fs+') is in a '+box+' container at '+cond+'?';
+      rearr=row(q('n')+EQOP+frac('P × V','R × T'))+row(q('mass')+EQOP+q('n')+XOP+q('molar mass'));
+      add(nTrue, 'That is the moles of gas. The question asks for grams, so multiply by the molar mass.');
+      if(TC>0) add(ans*TK/TC, T_MSG);
+      if(g.Pu!=='atm') add(ans*PCONV[g.Pu], pMsg(g));
+      if(g.Vu==='mL') add(ans*1000, V_MSG);
+      add(nTrue/MM, 'To go from moles to grams, multiply by the molar mass. It looks like you divided.');
+      sol=[mmLines([[f,'sa']])].concat(conv(['T','P','V']), ['<b>Moles.</b> '+nLine+' = '+sig(nTrue,4)+' mol '+fs,
+        '<b>Moles to grams.</b> '+sig(nTrue,4)+' mol × '+MMs+' g/mol = <b>'+sig(ans,3)+' g '+fs+'</b>']);
+    } else {
+      unk='n'; unit='g/mol'; label='Molar mass';
+      const m0=fmt3(nTrue*MM); if(!m0) continue;
+      ans=Number(m0)/nTrue;
+      question='A '+m0+' g sample of an unknown gas occupies '+box+' at '+cond+'. What is the molar mass of the gas?';
+      rearr=row(q('n')+EQOP+frac('P × V','R × T'))+row(q('molar mass')+EQOP+frac('grams','moles'));
+      add(nTrue/Number(m0), 'The fraction is upside down. Molar mass is grams on top, moles on the bottom.');
+      add(nTrue, 'That is the moles of gas. Molar mass = grams ÷ moles.');
+      if(TC>0) add(ans*TC/TK, T_MSG);
+      if(g.Pu!=='atm') add(ans/PCONV[g.Pu], pMsg(g));
+      if(g.Vu==='mL') add(ans/1000, V_MSG);
+      sol=conv(['T','P','V']).concat(['<b>Moles.</b> '+nLine+' = '+sig(nTrue,4)+' mol',
+        '<b>Molar mass.</b> '+m0+' g ÷ '+sig(nTrue,4)+' mol = <b>'+sig(ans,3)+' g/mol</b>']);
+    }
+    const cells=mode=>cellRow(
+      gcell(mode,'P','P','pressure in atm','atm',atmText(g),unk==='P')+
+      gcell(mode,'V','V','volume in liters','L',literText(g),unk==='V')+
+      gcell(mode,'n','n','moles of gas','mol',nStr||sig(nn,4),unk==='n')+
+      gcell(mode,'T','T','temperature in kelvins','K',kelvin(g),unk==='T'));
+    const want={P:{want:Pa,tol:0.003}, V:{want:VL,tol:0.002}, n:{want:nn,tol:0.01}, T:{want:TK,tol:0.002}}, blanks={};
+    Object.keys(want).forEach(k=>{ if(k!==unk) blanks[k]=want[k]; });
+    const blankMsg=got=>{
+      const bad=k=>got[k] && !got[k].empty && !got[k].good;
+      if(bad('T')) return T_BLANK;
+      if(bad('P')) return pBlank(g);
+      if(bad('V')) return vBlank(g);
+      if(bad('n')) return 'Check the moles. '+nNote;
+      return '';
+    };
+    const part={type:'num', label, unit, answer:ans, sf:3, errors:clean(E,ans), show:sig(ans,3)+' '+unit,
+      generic:'Not yet. Put the pressure in atm, the volume in liters and the temperature in kelvins, then solve PV = nRT for the unknown.'};
+    return {kind:'gaslaw', type, gas:f, rxn:null, hl:{}, am, question, parts:[part],
+      ctx: type==='MM' ? 'A sample of an unknown gas.' : 'A sample of '+name+' gas.',
+      guided: lab('Sort the values into PV = nRT. Convert each one first: pressure in atm, volume in liters, temperature in kelvins.')+EQ_GAS+extra+cells('live')+lab('Then solve for the unknown')+rearr,
+      hints: [lab('Hint 1')+txt('Use PV = nRT with R = 0.08206 L·atm/(mol·K). The units have to match R: atm, liters and kelvins.')+rearr,
+              lab('Hint 2: the values')+extra+cells('ph')],
+      blanks, blankMsg, solution:solWrap(sol, roundNote(3))};
+  }
+}
+
+/* ---------- 6. Gas stoichiometry ---------- */
+const GAS_GENERIC='Not yet. Get to moles of the given substance, apply the mole ratio, then convert to what the question asks for. For a gas, that conversion is PV = nRT with atm, liters and kelvins.';
+function makeGasStoich(prev){
+  for(let t=0;;t++){
+    const rxn=pick(GRX); if(t<200 && prev && prev.rxn===rxn) continue;
+    const cand=spc(rxn.r,'r').concat(spc(rxn.p,'p')).filter(s=>s.st==='s'||s.st==='g');
+    const A=pick(cand), B=pick(cand.filter(s=>s!==A));
+    if(A.st!=='g' && B.st!=='g') continue;
+    if(t<200 && A.c===B.c) continue;
+    let from, to, same=false;
+    if(A.st==='g' && (B.st!=='g' || Math.random()<0.8)) from=Object.assign({type:'gas'}, randCond(), randVol());
+    else from={type:'g', x:g3(0.5,25)};
+    if(B.st!=='g') to={type:'g'};
+    else if(from.type==='gas'){
+      if(Math.random()<0.6){ to={type:'gasV', T:from.T, P:from.P, Pu:from.Pu, stp:from.stp}; same=true; } else to={type:'g'};
+    }
+    else if(A.role==='r' && B.role==='p' && Math.random()<0.3) to={type:'gasP', T:randT(), V:g3(0.5,10), Vu:'L'};
+    else to=Object.assign({type:'gasV'}, randCond());
+    const S=mkChain(A,B,from,to,3); S.same=same;
+    if(to.type==='g' && (S.ans<0.05 || S.ans>900)) continue;
+    if(to.type==='gasV' && (S.ans<0.05 || S.ans>400)) continue;
+    if(to.type==='gasP' && (S.ans<0.1 || S.ans>40)) continue;
+    const G=fromText(S,'sa'), fb=tag(B.f,'sb');
+    const excess=rxn.r.length>1 ? ' Assume the other reactant is in excess.' : '';
+    let question;
+    if(to.type==='gasP'){
+      question='What pressure, in atm, does the '+fb+' gas reach if '+G+' reacts completely and the gas is collected in a '+to.V+' L container at '+to.T+' °C?'+excess;
+    } else {
+      const Q = to.type==='g' ? 'grams of '+fb
+              : same ? 'liters of '+fb+' gas, measured at the same temperature and pressure,'
+              : 'liters of '+fb+' gas, measured at '+condText(to)+',';
+      if(A.role==='r' && B.role==='p')      question='How many '+Q+' can form from '+G+'?'+excess;
+      else if(A.role==='r' && B.role==='r') question='How many '+Q+' are needed to react completely with '+G+'?';
+      else if(A.role==='p' && B.role==='r') question='How many '+Q+' must react to produce '+G+'?';
+      else                                  question='When '+G+' forms, how many '+Q+' form along with it?';
+    }
+    return chainProblem('gasstoich', rxn, S, question, GAS_GENERIC);
+  }
+}
+
+/* ---------- 7. Solutions and gases ---------- */
+function makeSolGas(prev){
+  for(let t=0;;t++){
+    const rxn=pick(QRX); if(t<200 && prev && prev.rxn===rxn) continue;
+    const sp=spc(rxn.r,'r').concat(spc(rxn.p,'p'));
+    const So=pick(sp.filter(s=>s.role==='r' && s.st==='aq')), G=pick(sp.filter(s=>s.st==='g'));
+    const made=G.role==='p';
+    const others=rxn.r.some(e=>e[1]!==So.f && e[1]!==G.f);
+    const excess=others ? ' Assume the other reactant is in excess.' : '';
+    const dir=pick(['solV','solV','solP','gasmL','gasmL','gasM','gasM']);
+    if(dir==='solP' && !made) continue;
+    const cond=labCond();
+    const fs=c=>tag(So.f,c), fg=c=>tag(G.f,c);
+    let S, question;
+    if(dir==='solV'){
+      S=mkChain(So,G,{type:'sol', v:g3(10,150), M:g3(0.1,2)}, Object.assign({type:'gasV'},cond), 3);
+      if(S.ans<0.02 || S.ans>100) continue;
+      const Q='liters of '+fg('sb')+' gas, measured at '+condText(cond)+',';
+      question = made ? 'How many '+Q+' can form from '+fromText(S,'sa')+'?'+excess
+                      : 'How many '+Q+' are needed to react completely with '+fromText(S,'sa')+'?';
+    } else if(dir==='solP'){
+      const to={type:'gasP', T:cond.T, V:g3(0.25,5), Vu:'L'};
+      S=mkChain(So,G,{type:'sol', v:g3(10,150), M:g3(0.1,2)}, to, 3);
+      if(S.ans<0.1 || S.ans>30) continue;
+      question='What pressure, in atm, does the '+fg('sb')+' gas reach if '+fromText(S,'sa')+' reacts completely and the gas is collected in a '+to.V+' L container at '+to.T+' °C?'+excess;
+    } else if(dir==='gasmL'){
+      const vol=Math.random()<0.5 ? {V:g3(0.2,5), Vu:'L'} : {V:g3(50,900), Vu:'mL'};
+      S=mkChain(G,So,Object.assign({type:'gas'},cond,vol), {type:'mL', M:g3(0.1,2)}, 3);
+      if(S.ans<2 || S.ans>900) continue;
+      const Q='milliliters of '+S.to.M+' M '+fs('sb');
+      question = made ? 'How many '+Q+' must react to produce '+fromText(S,'sa')+'?'+excess
+                      : 'How many '+Q+' are needed to react completely with '+fromText(S,'sa')+'?';
+    } else {
+      // The gas volume is chosen so that the solution has a sensible molarity.
+      const v=g3(10,150), gv=gasVals(cond);
+      const nG=Number(v)/1000*Number(g3(0.1,2))*G.c/So.c, VL=nG*R_GAS*gv.TK/gv.Patm;
+      const vol = VL<1 ? {V:fmt3(VL*1000), Vu:'mL'} : {V:fmt3(VL), Vu:'L'};
+      if(!vol.V) continue;
+      S=mkChain(G,So,Object.assign({type:'gas'},cond,vol), {type:'M', v}, 3);
+      question = made ? 'When '+v+' mL of a '+fs('sb')+' solution reacts completely'+(others ? ' with an excess of the other reactant' : '')+', '+vol.V+' '+vol.Vu+' of '+fg('sa')+' gas is collected at '+condText(cond)+'. What is the molarity of the '+fs('sb')+' solution?'
+                      : 'It takes '+fromText(S,'sa')+' to react completely with '+v+' mL of a '+fs('sb')+' solution. What is the molarity of the '+fs('sb')+' solution?';
+    }
+    return Object.assign(chainProblem('solgas', rxn, S, question, GAS_GENERIC), {type:dir});
+  }
+}
+
+/* ---------- 8. Putting it together ---------- */
+function makeCapstone(prev){
+  for(let t=0;;t++){
+    const rxn=pick(CRX); if(t<200 && prev && prev.rxn===rxn) continue;
+    const sp=spc(rxn.r,'r'), So=sp.find(s=>s.st==='s'), Ac=sp.find(s=>s.st==='aq'), G=spc(rxn.p,'p').find(s=>s.st==='g');
+    const R=[So,Ac];
+    So.amt=g3(0.3,8); So.n=Number(So.amt)/So.M;
+    Ac.Mo=g3(0.2,3);
+    const fct=Math.random()<0.5 ? 0.45+Math.random()*0.40 : 1.2+Math.random()*1.0;
+    const v=fmt3(So.n*Ac.c/So.c/Number(Ac.Mo)*1000*fct);
+    if(!v || Number(v)<5 || Number(v)>250) continue;
+    Ac.v=v; Ac.n=Number(v)/1000*Number(Ac.Mo);
+    R.forEach(r=>{ r.yn=r.n*G.c/r.c; });
+    const iL = R[0].yn<=R[1].yn ? 0 : 1, L=R[iL], E=R[1-iL];
+    if((E.yn-L.yn)/L.yn < 0.08) continue;
+    const g=labCond(), gv=gasVals(g), RTP=R_GAS*gv.TK/gv.Patm;
+    const Vt=L.yn*RTP;
+    if(Vt<0.05 || Vt>60) continue;
+    const actual=fmt3(Vt*(55+Math.random()*40)/100); if(!actual) continue;
+    const act=Number(actual), pct=act/Vt*100;
+    if(pct<50 || pct>97) continue;
+    const fp=tag(G.f,'sb'), TC=Number(g.T);
+    const vErr=[{value:E.yn*RTP, msg:'That is the volume the other reactant could make, but it would run out of its partner first. The reactant that makes fewer moles of gas limits the reaction.'}];
+    if(TC>0) vErr.push({value:Vt*TC/gv.TK, msg:T_MSG});
+    if(g.Pu!=='atm') vErr.push({value:Vt/PCONV[g.Pu], msg:pMsg(g)});
+    if(notSTP(g)) vErr.push({value:L.yn*22.414, msg:STP_MSG});
+    vErr.push({value:L.yn, msg:'That is the moles of '+fp+'. Use V = nRT ÷ P to turn the moles into liters.'});
+    vErr.push({value:act, msg:'That is the actual volume collected. The theoretical yield comes from the limiting reactant.'});
+    const tail=' Convert each reactant to moles, then work out how many moles of '+F(G.f)+' each could make. The one that makes less is limiting.';
+    const parts=[
+      {type:'choice', label:'Which reactant is limiting?', options:R.map(r=>r.f), answer:L.f, show:F(L.f)+' is limiting',
+       wrongMsg:function(){ return (E.n<L.n ? 'Having fewer moles is not enough to decide, because the reactants are not used 1:1.' : 'Not that one.')+tail; }},
+      {type:'num', label:'Theoretical yield of '+fp+' gas', unit:'L '+fp, answer:Vt, sf:3, show:sig(Vt,3)+' L '+fp,
+       errors:clean(vErr, Vt),
+       generic:'Not yet. Find the moles of '+fp+' each reactant could make and take the smaller amount. Then V = nRT ÷ P, with the temperature in kelvins and the pressure in atm.'},
+      {type:'num', label:'Percent yield', unit:'%', answer:pct, sf:3, show:sig(pct,3)+'%',
+       errors:clean([
+         {value:Vt/act*100, msg:'A percent yield above 100% means the fraction is upside down. Put the actual yield on top: actual ÷ theoretical × 100.'},
+         {value:act/Vt,     msg:'That is the fraction of the theoretical yield. Multiply by 100 to make it a percent.'},
+         {value:act/(E.yn*RTP)*100, msg:'That uses the volume the excess reactant could make. Percent yield compares the actual yield to the theoretical yield, which comes from the limiting reactant.'}
+       ], pct),
+       generic:'Not yet. Percent yield = actual volume ÷ theoretical volume × 100.'}
+    ];
+    const hl={}; R.forEach(r=>{ hl[r.f]='sa'; }); hl[G.f]='sb';
+    const startTxt=r=> r===So ? r.amt+' g '+F(r.f) : r.v+' mL of '+r.Mo+' M '+F(r.f);
+    const trail=(r,idx,m)=>'<div class="trail"><span class="rn a">'+startTxt(r)+'</span>'+
+      '<span class="tq">'+ARW+bl(m,'n'+idx,'moles of '+r.f,true)+' mol '+tag(r.f,'sa')+'</span>'+
+      '<span class="tq">'+ARW+bl(m,'y'+idx,'moles of '+G.f+' from '+r.f,true)+' mol '+fp+'</span></div>';
+    const gasStep=m=>lab('The smaller amount of '+fp+' is the theoretical yield in moles. Turn it into liters.')+
+      row(q('V')+EQOP+frac('n × R × T','P')+q('with R = 0.08206 L·atm/(mol·K)'))+
+      cellRow(gcell(m,'T','TB','temperature in kelvins','K','',false)+gcell(m,'P','PB','pressure in atm','atm','',false));
+    const F_PCT=row(q('percent yield')+EQOP+'<span class="grp">'+frac('actual volume','theoretical volume')+XOP+q('100')+'</span>');
+    const blanks={TB:{want:gv.TK,tol:0.002}, PB:{want:gv.Patm,tol:0.003}};
+    R.forEach((r,idx)=>{ blanks['n'+idx]={want:r.n,tol:0.01}; blanks['y'+idx]={want:r.yn,tol:0.01}; });
+    const blankMsg=got=>{
+      const bad=k=>got[k] && !got[k].empty && !got[k].good;
+      for(let idx=0;idx<2;idx++){
+        const r=R[idx];
+        if(bad('n'+idx)) return 'Check the moles of '+F(r.f)+'. '+(r===So ? 'Divide the grams by the molar mass.' : 'Convert '+r.v+' mL to liters, then multiply by the molarity.');
+        if(bad('y'+idx)) return 'Check the moles of '+F(G.f)+' from '+F(r.f)+'. Multiply the moles of '+F(r.f)+' by the mole ratio: '+G.c+' mol '+F(G.f)+' over '+r.c+' mol '+F(r.f)+'.';
+      }
+      if(bad('TB')) return T_BLANK;
+      if(bad('PB')) return pBlank(g);
+      return '';
+    };
+    const nline=r=> r===So ? r.amt+' g ÷ '+r.M.toFixed(2)+' g/mol = '+sig(r.n,4)+' mol '+tag(r.f,'sa')
+                           : toL(r.v)+' L × '+r.Mo+' mol/L = '+sig(r.n,4)+' mol '+tag(r.f,'sa');
+    const yline=r=>sig(r.n,4)+' mol '+tag(r.f,'sa')+' × ('+G.c+' mol '+fp+' ÷ '+r.c+' mol '+tag(r.f,'sa')+') = '+sig(r.yn,4)+' mol '+fp;
+    return {kind:'capstone', rxn, ctx:rxn.ctx, hl, am:[So.f], parts, R, G, L, E, actual, pct, Vt,
+      question:'A student adds '+So.amt+' g of '+tag(So.f,'sa')+' to '+Ac.v+' mL of '+Ac.Mo+' M '+tag(Ac.f,'sa')+'. The '+fp+' gas is collected at '+condText(g)+', and its volume is '+actual+' L.',
+      guided: lab('Take each reactant to moles, then to moles of gas. Fill in the blanks.')+trail(R[0],0,'live')+trail(R[1],1,'live')+gasStep('live')+F_PCT,
+      hints: [lab('Hint 1')+txt('Find the moles of each reactant: grams ÷ molar mass for the solid, liters × molarity for the solution. Then work out how many moles of '+fp+' each could make. The smaller amount is the theoretical yield, and V = nRT ÷ P turns it into liters.'),
+              lab('Hint 2: the setup')+trail(R[0],0,'ph')+trail(R[1],1,'ph')+gasStep('ph')+F_PCT],
+      blanks, blankMsg,
+      solution:solWrap([
+        mmLines([[So.f,'sa']]),
+        '<b>Moles of each reactant.</b><br>'+nline(R[0])+'<br>'+nline(R[1]),
+        '<b>Moles of gas from each reactant.</b><br>'+yline(R[0])+'<br>'+yline(R[1]),
+        '<b>Limiting reactant.</b> '+F(L.f)+' makes less '+fp+', so <b>'+F(L.f)+' is limiting</b>. Theoretical yield: '+sig(L.yn,4)+' mol '+fp,
+        '<b>Convert the units.</b> '+convLines(g).join('<br>'),
+        '<b>Theoretical volume.</b> V = nRT ÷ P = ('+sig(L.yn,4)+' mol × 0.08206 × '+kelvin(g)+' K) ÷ '+atmText(g)+' atm = <b>'+sig(Vt,3)+' L '+fp+'</b>',
+        '<b>Percent yield.</b> '+actual+' L ÷ '+sig(Vt,4)+' L × 100 = <b>'+sig(pct,3)+'%</b>'
+      ], roundNote(3))};
+  }
+}
+
+function makeProblem(kind, prev){
+  if(kind==='molarity')  return makeMolarity(prev);
+  if(kind==='dilution')  return makeDilution(prev);
+  if(kind==='solstoich') return makeSolStoich(prev);
+  if(kind==='mix')       return makeMix(prev);
+  if(kind==='gaslaw')    return makeGasLaw(prev);
+  if(kind==='gasstoich') return makeGasStoich(prev);
+  if(kind==='solgas')    return makeSolGas(prev);
+  return makeCapstone(prev);
+}
+
+/* ---------- Reading and grading answers ---------- */
+// Reads what a student typed: 2.50, .25, 1.2e3, 1.2 x 10^3, with or without units after it.
+function parseInput(raw){
+  const s=String(raw).trim().replace(/,/g,'').replace(/−/g,'-');
+  const m=s.match(/^([+-]?(?:\d+\.?\d*|\.\d+))(?:\s*(?:[eE]|[x×*]\s*10\s*\^?\s*)([+-]?\d+))?/);
+  if(!m) return null;
+  const value=Number(m[1])*Math.pow(10, m[2] ? Number(m[2]) : 0);
+  if(!isFinite(value)) return null;
+  let d=m[1].replace(/^[+-]/,''), sfMin, sfMax;
+  if(d.indexOf('.')>=0){
+    d=d.replace('.','').replace(/^0+/,'');
+    sfMin=sfMax=Math.max(d.length,1);
+  } else {
+    d=d.replace(/^0+/,'');
+    sfMax=Math.max(d.length,1);
+    sfMin=Math.max(d.replace(/0+$/,'').length,1);   // trailing zeros without a decimal point are ambiguous
+  }
+  return {value, sfMin, sfMax};
+}
+
+// status: 'empty', 'invalid', 'correct', 'sig' (right value, wrong sig figs), 'close' or 'wrong'.
+function gradePart(part, raw){
+  if(part.type==='choice'){
+    if(raw==null || raw==='') return {status:'empty'};
+    return raw===part.answer ? {status:'correct'} : {status:'wrong', msg:part.wrongMsg(raw)};
+  }
+  if(String(raw).trim()==='') return {status:'empty'};
+  const inp=parseInput(raw);
+  if(!inp) return {status:'invalid', msg:'Enter your answer as a number, such as 2.50 or 0.0125.'};
+  const v=inp.value, ans=part.answer, diff=Math.abs(v-ans);
+  const tol=Math.max((part.tolRel===undefined ? 0.01 : part.tolRel)*Math.abs(ans), part.tolAbs||0);
+  if(diff<=tol){
+    if(!part.sf) return {status:'correct'};
+    return {status: (inp.sfMin<=part.sf && part.sf<=inp.sfMax) ? 'correct' : 'sig'};
+  }
+  for(const e of part.errors){
+    if(Math.abs(v-e.value)<=0.01*Math.abs(e.value)) return {status:'wrong', msg:e.msg};
+  }
+  if(diff<=3*tol){
+    return {status:'close', msg:'Close. This is usually a rounding issue: keep extra digits through the middle steps and round only at the end.'};
+  }
+  if(v>0){
+    const lg=Math.log10(v/ans);
+    if(Math.round(lg)!==0 && Math.abs(lg-Math.round(lg))<0.005){
+      return {status:'wrong', msg:'The digits are right but the decimal point is in the wrong place. Check the unit conversions.'};
+    }
+  }
+  return {status:'wrong', msg:part.generic};
+}
+
+if(typeof module!=='undefined' && module.exports){
+  module.exports={AM,SOLUTES,GASES,SRX,PRX,GRX,QRX,CRX,parseFormula,composition,molarMass,breakdown,sig,fmt3,toL,
+                  makeProblem,parseInput,gradePart,chainCalc,gasVals,R_GAS,PCONV};
+}
+
+/* ============================================================
+   Page
+   ============================================================ */
+if(typeof document!=='undefined'){
+
+const $ = (s,r) => (r||document).querySelector(s);
+const view=$('#view'), nav=$('#tabs');
+const LET='abcdef';
+
+const TABS=[
+  {id:'map',       label:'Roadmap'},
+  {id:'molarity',  label:'Molarity', n:1},
+  {id:'dilution',  label:'Dilution', n:2},
+  {id:'solstoich', label:'Solution stoichiometry', n:3},
+  {id:'mix',       label:'Mixing two solutions', n:4},
+  {id:'gaslaw',    label:'Ideal gas law', n:5},
+  {id:'gasstoich', label:'Gas stoichiometry', n:6},
+  {id:'solgas',    label:'Solutions and gases', n:7},
+  {id:'capstone',  label:'Putting it together', n:8}
+];
+const META={
+  molarity:{title:'Molarity',
+    lede:'Molarity (M) is the concentration of a solution: moles of solute per liter of solution. It is the conversion factor between the volume of a solution and the moles of solute in it. Always convert milliliters to liters first.'},
+  dilution:{title:'Dilution',
+    lede:'Adding water to a solution changes its volume but not the moles of solute in it. Since moles = M × V, the product M × V is the same before and after dilution: M<sub>1</sub>V<sub>1</sub> = M<sub>2</sub>V<sub>2</sub>. Any volume unit works as long as both volumes use the same one.'},
+  solstoich:{title:'Solution stoichiometry',
+    lede:'When a reactant is dissolved, you measure its volume instead of its mass. Molarity turns that volume into moles. From there the route is the one you already know: the mole ratio, then on to grams or to the volume of another solution.'},
+  mix:{title:'Mixing two solutions',
+    lede:'When two solutions are mixed, one reactant usually runs out first. Convert each solution to moles, find how much precipitate each could make, and take the smaller amount. Comparing that to what was actually collected gives the percent yield.'},
+  gaslaw:{title:'Ideal gas law',
+    lede:'The ideal gas law, PV = nRT, links the pressure, volume, temperature and moles of any gas. With R = 0.08206 L·atm/(mol·K), the pressure must be in atm, the volume in liters and the temperature in kelvins. Convert the units first, then solve for the one thing you do not know.'},
+  gasstoich:{title:'Gas stoichiometry',
+    lede:'A gas is measured by its pressure, volume and temperature instead of on a balance. The ideal gas law turns those into moles, or turns moles back into a volume or a pressure. In between, the route is the same as always: the mole ratio.'},
+  solgas:{title:'Solutions and gases',
+    lede:'Many reactions start with a solution and give off a gas, or bubble a gas into a solution. Molarity handles the solution side and PV = nRT handles the gas side. The two meet at moles.'},
+  capstone:{title:'Putting it together',
+    lede:'A solid and a solution react to give off a gas. Find which reactant runs out first, how much gas it can make at the temperature and pressure given, and the percent yield.'}
+};
+const MODES=[
+  {id:'guided', label:'Guided setup'},
+  {id:'hint',   label:'Hints if I ask'},
+  {id:'solo',   label:'On my own'}
+];
+const fresh = mode => ({mode:mode||'guided', P:null, misses:0, hint:0, done:false, solved:0, streak:0, partDone:[]});
+const state={tab:'map', mapSel:null, mapPath:null,
+  molarity:fresh(), dilution:fresh(), solstoich:fresh(), mix:fresh(),
+  gaslaw:fresh(), gasstoich:fresh(), solgas:fresh(), capstone:fresh('solo')};
+
+/* ---------- Tabs ---------- */
+function renderTabs(){
+  nav.innerHTML=TABS.map(t=>
+    '<button role="tab" data-tab="'+t.id+'"'+(t.n?' data-n="'+t.n+'"':'')+' aria-selected="'+(state.tab===t.id)+'">'+
+    (t.n?'<span class="tn">'+t.n+'</span>':'')+t.label+'</button>').join('');
+}
+nav.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-tab]'); if(!b) return;
+  state.tab=b.dataset.tab; render();
+});
+function render(){
+  renderTabs();
+  if(state.tab==='map') renderMap();
+  else renderPractice(state.tab);
+}
+
+/* ---------- Roadmap ---------- */
+const MAPINFO={
+  MA:{t:'Molar mass: grams to moles', h:'<p>Molar mass is the mass of one mole of a substance, in g/mol. Use it when a substance is weighed out as a solid.</p><ul><li>g to mol: divide by the molar mass.</li><li>mol to g: multiply by the molar mass.</li></ul><p class="ex">2.50 g Zn × (1 mol ÷ 65.38 g) = 0.0382 mol Zn</p>'},
+  cA:{t:'Molarity: solution volume to moles', h:'<p>Molarity (M) is moles of solute per liter of solution. Use it when a substance is dissolved and measured by volume. Convert milliliters to liters first.</p><ul><li>L to mol: multiply by the molarity.</li><li>mol to L: divide by the molarity.</li></ul><p class="ex">25.0 mL = 0.0250 L, and 0.0250 L × 0.150 mol/L = 0.00375 mol HCl</p>'},
+  gcA:{t:'Ideal gas law: P, V and T to moles', h:'<p>A gas is measured by its pressure, volume and temperature. PV = nRT turns those into moles: n = PV ÷ RT, with R = 0.08206 L·atm/(mol·K).</p><ul><li>Pressure in atm: divide mmHg by 760, or kPa by 101.325.</li><li>Volume in liters: divide mL by 1000.</li><li>Temperature in kelvins: add 273.15 to °C.</li></ul><p class="ex">(0.980 atm × 0.250 L) ÷ (0.08206 × 298.15 K) = 0.0100 mol</p>'},
+  ratio:{t:'Mole ratio: substance A to substance B', h:'<p>This is the only step that switches from one substance to another, and it only works in moles. The ratio comes from the coefficients in the balanced equation. Put the substance you want on top.</p><p>For Zn + 2 HCl → ZnCl<sub>2</sub> + H<sub>2</sub>:</p><p class="ex">0.00375 mol HCl × (1 mol H<sub>2</sub> ÷ 2 mol HCl) = 0.00188 mol H<sub>2</sub></p>'},
+  MB:{t:'Molar mass: moles to grams', h:'<p>If the substance you want is a solid, finish by converting moles to grams.</p><ul><li>mol to g: multiply by the molar mass.</li><li>g to mol: divide by the molar mass.</li></ul><p class="ex">0.00188 mol PbI<sub>2</sub> × 461.00 g/mol = 0.867 g PbI<sub>2</sub></p>'},
+  cB:{t:'Molarity: moles to solution volume, or to molarity', h:'<p>Once you have moles of the substance you want, molarity connects them to a volume of solution.</p><ul><li>To find a volume: divide the moles by the molarity, then convert liters to milliliters.</li><li>To find a molarity: divide the moles by the liters of that solution.</li></ul><p class="ex">0.00150 mol NaOH ÷ 0.02500 L = 0.0600 M NaOH</p>'},
+  gcB:{t:'Ideal gas law: moles to a volume or a pressure', h:'<p>If the substance you want is a gas, PV = nRT turns its moles into the volume it fills, or into the pressure it reaches in a container.</p><ul><li>Volume: V = nRT ÷ P.</li><li>Pressure: P = nRT ÷ V.</li><li>22.4 L/mol works only at STP (0 °C and 1 atm).</li></ul><p class="ex">(0.00188 mol × 0.08206 × 298.15 K) ÷ 1.00 atm = 0.0460 L H<sub>2</sub></p>'}
+};
+const PATHS={
+  s2gas:{label:'Solution to gas', on:['vA','cA','nA','ratio','nB','gcB','GB']},
+  m2gas:{label:'Solid to gas', on:['mA','MA','nA','ratio','nB','gcB','GB']},
+  gas2s:{label:'Gas to solution', on:['GA','gcA','nA','ratio','nB','cB','vB']}
+};
+function renderMap(){
+  const at=(c,r)=>' style="grid-column:'+c+';grid-row:'+r+'"';
+  const node=(id,cls,b,s,c,r)=>'<div class="node '+cls+'" data-id="'+id+'"'+at(c,r)+'><b>'+b+'</b><small>'+s+'</small></div>';
+  const conn=(id,label,c,r,extra)=>'<button type="button" class="conn '+(extra||'')+'" data-id="'+id+'" aria-pressed="false"'+at(c,r)+'><span class="arr" aria-hidden="true">'+(extra?'⇅':'⇄')+'</span><span>'+label+'</span></button>';
+  view.innerHTML=
+    '<section>'+
+    '<h2>The roadmap</h2>'+
+    '<p class="lede">Every reaction problem is a trip through <b>moles</b>, and there are three doors into moles. A solid uses its molar mass. A solution uses its molarity. A gas uses PV = nRT. Select any conversion on the map to see how it works.</p>'+
+    '<div class="paths" role="group" aria-label="Highlight a route"><span class="lab">Show the route for</span>'+
+      Object.keys(PATHS).map(k=>'<button type="button" class="btn inline" style="margin-top:0" data-path="'+k+'" aria-pressed="false">'+PATHS[k].label+'</button>').join('')+
+      '<button type="button" class="btn inline" style="margin-top:0" data-path="">Whole map</button>'+
+    '</div>'+
+    '<div class="map">'+
+      '<div class="rowlab a"'+at('1/3',1)+'>Substance A: what you are given</div>'+
+      node('GA','a','Gas A','P, V and T',3,1)+
+      conn('gcA','PV = nRT',3,2,'vert')+
+      node('mA','a','Mass of A','grams',1,3)+conn('MA','molar mass',2,3)+
+      node('nA','a','Moles of A','mol',3,3)+conn('cA','molarity',4,3)+
+      node('vA','a','Solution of A','volume in liters',5,3)+
+      '<div class="rowlab b"'+at('1/3',4)+'>Substance B: what you want</div>'+
+      conn('ratio','mole ratio',3,4,'ratio')+
+      node('mB','b','Mass of B','grams',1,5)+conn('MB','molar mass',2,5)+
+      node('nB','b','Moles of B','mol',3,5)+conn('cB','molarity',4,5)+
+      node('vB','b','Solution of B','volume or molarity',5,5)+
+      conn('gcB','PV = nRT',3,6,'vert')+
+      node('GB','b','Gas B','volume or pressure',3,7)+
+    '</div>'+
+    '<div class="detail" id="detail" aria-live="polite"></div>'+
+    '<div class="builds"><h3>Three things to keep in mind</h3><ul>'+
+      '<li><b>Gas units.</b> With R = 0.08206 L·atm/(mol·K), pressure must be in atm, volume in liters and temperature in kelvins. Convert before you calculate.</li>'+
+      '<li><b>Dilution.</b> Adding water changes the volume of a solution but not the moles of solute, so M<sub>1</sub>V<sub>1</sub> = M<sub>2</sub>V<sub>2</sub>. No reaction happens, so no mole ratio is needed.</li>'+
+      '<li><b>Limiting reactant.</b> When you have amounts of two reactants, take the trip from each one. The smaller amount of product is the real answer.</li>'+
+    '</ul></div>'+
+    '</section>';
+  view.onclick=e=>{
+    const c=e.target.closest('.conn'); if(c){ state.mapSel=c.dataset.id; paintMap(); return; }
+    const p=e.target.closest('button[data-path]'); if(p){ state.mapPath=p.dataset.path||null; paintMap(); }
+  };
+  paintMap();
+}
+function paintMap(){
+  const on = state.mapPath ? PATHS[state.mapPath].on : null;
+  view.querySelectorAll('.map [data-id]').forEach(el=>{
+    el.classList.toggle('dim', !!on && on.indexOf(el.dataset.id)<0);
+    if(el.classList.contains('conn')) el.setAttribute('aria-pressed', String(state.mapSel===el.dataset.id));
+  });
+  view.querySelectorAll('button[data-path]').forEach(b=>{
+    if(b.dataset.path) b.setAttribute('aria-pressed', String(state.mapPath===b.dataset.path));
+    b.classList.toggle('primary', !!b.dataset.path && state.mapPath===b.dataset.path);
+  });
+  const d=$('#detail'), info=MAPINFO[state.mapSel];
+  d.innerHTML = info ? '<h3>'+info.t+'</h3>'+info.h
+    : '<h3>How to read the map</h3><p>The upper half is the substance you are given. The lower half is the substance you want. Start at the box that matches what the question gives you, travel through moles and the mole ratio, and finish at the box the question asks for.</p><p style="margin:0">Select molar mass, molarity, PV = nRT, or mole ratio on the map for details and an example.</p>';
+}
+
+/* ---------- Shared pieces for practice sections ---------- */
+function eqBlock(rxn, hl){
+  const side=arr=>arr.map(e=>
+    '<span class="sp'+(hl[e[1]] ? ' '+hl[e[1]] : '')+'">'+(e[0]>1?'<span class="coef">'+e[0]+'</span>':'')+F(e[1])+'<span class="st">('+e[2]+')</span></span>'
+  ).join('<span class="plus">+</span>');
+  const text=arr=>arr.map(e=>(e[0]>1?e[0]+' ':'')+e[1]).join(' plus ');
+  return '<div class="eqwrap"><div class="eq" role="img" aria-label="Balanced equation: '+text(rxn.r)+' yields '+text(rxn.p)+'">'+
+    side(rxn.r)+'<span class="arrow">→</span>'+side(rxn.p)+'</div>'+
+    '<div class="keys" aria-hidden="true"><span class="key a">given</span><span class="key b">wanted</span></div></div>';
+}
+function amLine(list){
+  const seen=[]; list.forEach(f=>parseFormula(f).forEach(([e])=>{ if(seen.indexOf(e)<0) seen.push(e); }));
+  return seen.map(e=>e+' '+AM[e]).join(', ');
+}
+function partHTML(part, i, multi){
+  if(!multi){
+    return '<div class="ansrow"><label for="pin0">Your answer</label>'+
+      '<input id="pin0" class="pin" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">'+
+      '<span class="unit">'+part.unit+'</span><span class="pmark" id="pm0" aria-hidden="true"></span>'+
+      '<button class="btn primary" type="submit">Check answer</button></div>';
+  }
+  const letter='('+LET[i]+') ';
+  if(part.type==='choice'){
+    return '<li class="part"><span class="plab" id="pl'+i+'">'+letter+part.label+'</span>'+
+      '<span class="pctl"><span class="choice" id="pc'+i+'" role="radiogroup" aria-labelledby="pl'+i+'">'+
+      part.options.map(o=>'<label class="opt"><input type="radio" name="p'+i+'" value="'+o+'"><span>'+F(o)+'</span></label>').join('')+
+      '</span><span class="pmark" id="pm'+i+'" aria-hidden="true"></span></span></li>';
+  }
+  return '<li class="part"><label class="plab" for="pin'+i+'">'+letter+part.label+'</label>'+
+    '<span class="pctl"><input id="pin'+i+'" class="pin" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">'+
+    '<span class="unit">'+part.unit+'</span><span class="pmark" id="pm'+i+'" aria-hidden="true"></span></span></li>';
+}
+function setFb(type, html){
+  const fb=$('#fb'), ic={ok:'✓',bad:'✗',warn:'!',info:'i'}[type];
+  fb.className='fb show '+type;
+  fb.innerHTML='<span class="ic" aria-hidden="true">'+ic+'</span><div>'+html+'</div>';
+}
+function lock(){
+  document.querySelectorAll('#ans input, #ans button').forEach(el=>{ el.disabled=true; });
+}
+function readPart(parts, i){
+  if(parts[i].type==='choice'){ const c=$('#ans input[name="p'+i+'"]:checked'); return c ? c.value : ''; }
+  return $('#pin'+i).value;
+}
+function markPart(parts, i, good){
+  const el = parts[i].type==='choice' ? $('#pc'+i) : $('#pin'+i), pm=$('#pm'+i);
+  el.classList.remove('ok','no'); el.classList.add(good?'ok':'no');
+  pm.className='pmark '+(good?'ok':'no'); pm.textContent=good?'✓':'✗';
+  if(good){
+    if(parts[i].type==='choice') el.querySelectorAll('input').forEach(x=>{ x.disabled=true; });
+    else el.disabled=true;
+  }
+}
+const sigMsg = (part, lead) => '<p>'+lead+'The value is right. Report it with '+part.sf+' significant figures, the fewest in the given data: <b>'+part.show+'</b>.</p>';
+
+/* ---------- Practice sections ---------- */
+function nextProblem(kind){
+  const S=state[kind];
+  S.P=makeProblem(kind, S.P); S.misses=0; S.hint=0; S.done=false; S.partDone=[];
+}
+function renderPractice(kind){
+  const S=state[kind], m=META[kind], n=TABS.find(t=>t.id===kind).n;
+  if(!S.P) nextProblem(kind);
+  view.onclick=null;
+  view.innerHTML=
+    '<section>'+
+    '<h2>'+n+'. '+m.title+'</h2>'+
+    '<p class="lede">'+m.lede+'</p>'+
+    '<div class="modebar"><span class="modebar-label" id="ml">How much help</span>'+
+      '<div class="seg" role="group" aria-labelledby="ml">'+
+      MODES.map(o=>'<button type="button" data-mode="'+o.id+'" aria-pressed="'+(S.mode===o.id)+'">'+o.label+'</button>').join('')+
+      '</div></div>'+
+    '<article class="problem" id="problem"></article>'+
+    '<p class="tally" id="tally"></p>'+
+    '</section>';
+  $('.seg',view).addEventListener('click',e=>{
+    const b=e.target.closest('button[data-mode]'); if(!b) return;
+    setMode(kind, b.dataset.mode);
+  });
+  $('#problem').addEventListener('click',e=>{
+    const b=e.target.closest('button[data-act]'); if(!b) return;
+    const act=b.dataset.act;
+    if(act==='hint'){ S.hint++; drawHelp(kind); drawActions(kind); }
+    else if(act==='solution'){ revealSolution(kind); }
+    else if(act==='next'){ nextProblem(kind); drawProblem(kind,true); }
+    else if(act==='levelup'){ setMode(kind, S.mode==='guided' ? 'hint' : 'solo'); const f=$('#problem .pin'); if(f) f.focus(); }
+  });
+  drawProblem(kind,false);
+}
+// Changing the help level keeps whatever the student has already typed.
+function setMode(kind, mode){
+  const S=state[kind];
+  S.mode=mode; S.hint=0;
+  view.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.mode===mode)));
+  if(S.done){ nextProblem(kind); drawProblem(kind,false); }
+  else { drawHelp(kind); drawActions(kind); }
+}
+function drawProblem(kind, focus){
+  const S=state[kind], P=S.P, multi=P.parts.length>1;
+  $('#problem').innerHTML=
+    '<p class="ctx">'+P.ctx+'</p>'+
+    (P.rxn ? eqBlock(P.rxn, P.hl) : '')+
+    (P.am ? '<p class="am">Atomic masses (g/mol): '+amLine(P.am)+'</p>' : '')+
+    '<p class="q">'+P.question+'</p>'+
+    '<form id="ans" novalidate autocomplete="off">'+
+      '<div id="help"></div>'+
+      (multi ? '<ol class="parts">'+P.parts.map((p,i)=>partHTML(p,i,true)).join('')+'</ol>'+
+               '<div class="checkrow"><button class="btn primary" type="submit">Check answers</button></div>'
+             : partHTML(P.parts[0],0,false))+
+    '</form>'+
+    '<div id="fb" class="fb" role="status" aria-live="polite"></div>'+
+    '<div id="sol"></div>'+
+    '<div class="actions" id="actions"></div>';
+  $('#ans').addEventListener('submit',e=>{ e.preventDefault(); check(kind); });
+  drawHelp(kind); drawActions(kind); drawTally(kind);
+  if(focus){ const f=$('#help input')||$('#problem .pin')||$('#problem .opt input'); if(f) f.focus(); }
+}
+function drawHelp(kind){
+  const S=state[kind], P=S.P; let out='';
+  if(S.mode==='guided') out=P.guided;
+  else if(S.mode==='hint') out=P.hints.slice(0,S.hint).join('');
+  $('#help').innerHTML=out;
+}
+function drawActions(kind){
+  const S=state[kind]; let out='';
+  if(S.mode==='hint' && !S.done && S.hint<2)
+    out+='<button type="button" class="btn" data-act="hint">'+(S.hint===0?'Show a hint':'Show another hint')+'</button>';
+  if(!S.done && S.misses>=2)
+    out+='<button type="button" class="btn" data-act="solution">Show worked solution</button>';
+  out+='<button type="button" class="btn'+(S.done?' primary':'')+'" data-act="next">'+(S.done?'Next problem':'Skip to a new problem')+'</button>';
+  $('#actions').innerHTML=out;
+}
+function drawTally(kind){
+  const S=state[kind];
+  $('#tally').textContent = S.solved===0 ? 'No problems solved yet this session.'
+    : 'Solved this session: '+S.solved+(S.streak>1 ? ' ('+S.streak+' in a row)' : '');
+}
+// Marks each filled blank right or wrong and returns the most useful message.
+function checkBlanks(P){
+  const res={any:false, allOK:true, msg:''}, got={};
+  Object.keys(P.blanks).forEach(k=>{
+    const i=$('#help input[data-k="'+k+'"]'); if(!i) return;
+    const raw=i.value.trim(), inp=parseInput(raw), v=inp ? inp.value : NaN;
+    i.classList.remove('ok','no'); i.removeAttribute('aria-invalid');
+    if(!raw){ res.allOK=false; got[k]={empty:true}; return; }
+    res.any=true;
+    const want=P.blanks[k].want;
+    const good=isFinite(v) && Math.abs(v-want)<=P.blanks[k].tol*Math.abs(want)+1e-12;
+    i.classList.add(good?'ok':'no'); if(!good){ i.setAttribute('aria-invalid','true'); res.allOK=false; }
+    got[k]={v, good};
+  });
+  res.msg=P.blankMsg(got)||'';
+  return res;
+}
+function check(kind){
+  const S=state[kind], P=S.P; if(S.done) return;
+  const multi=P.parts.length>1, tagOf=i=> multi ? '<b>('+LET[i]+')</b> ' : '';
+  const bl = S.mode==='guided' ? checkBlanks(P) : {any:false, allOK:true, msg:''};
+  const res=P.parts.map((part,i)=> S.partDone[i] ? {status:'done'} : gradePart(part, readPart(P.parts,i)));
+  const open=res.filter(r=>r.status!=='done');
+
+  if(open.every(r=>r.status==='empty')){
+    if(bl.any && bl.msg) setFb('bad','<p>'+bl.msg+'</p>');
+    else if(bl.any && bl.allOK) setFb('info','<p>The setup is right. Now run the numbers and enter your answer'+(multi?'s':'')+'.</p>');
+    else if(bl.any) setFb('info','<p>Good so far. Fill in the remaining blanks, then calculate.</p>');
+    else setFb('info','<p>Enter your answer'+(multi?'s':'')+', then select Check answer'+(multi?'s':'')+'.</p>');
+    return;
+  }
+  const inv=res.findIndex(r=>r.status==='invalid');
+  if(inv>=0){ setFb('info','<p>'+tagOf(inv)+res[inv].msg+'</p>'); return; }
+
+  const wrong=[], sigs=[], newlyRight=[];
+  res.forEach((r,i)=>{
+    if(r.status==='correct' || r.status==='sig'){ S.partDone[i]=true; markPart(P.parts,i,true); newlyRight.push(i); if(r.status==='sig') sigs.push(i); }
+    else if(r.status==='wrong' || r.status==='close'){ markPart(P.parts,i,false); wrong.push(i); }
+  });
+  const sigNote=sigs.map(i=>sigMsg(P.parts[i], tagOf(i))).join('');
+
+  if(P.parts.every((p,i)=>S.partDone[i])){
+    S.done=true; S.solved++; S.streak++;
+    let html = multi
+      ? '<p><b>All parts correct.</b> '+P.parts.map((p,i)=>'('+LET[i]+') '+p.show).join('; ')+'</p>'+sigNote
+      : (sigs.length ? sigMsg(P.parts[0], '<b>Correct value.</b> ') : '<p><b>Correct.</b> '+P.parts[0].show+'</p>');
+    if(S.streak>=2 && S.mode!=='solo'){
+      html+='<p>That is '+S.streak+' in a row. Ready for less help?</p>'+
+            '<button type="button" class="btn inline" data-act="levelup">Try one '+(S.mode==='guided'?'with hints only if you ask':'on your own')+'</button>';
+    }
+    setFb('ok', html); lock();
+    $('#sol').innerHTML='<details class="soldet"><summary>See the worked solution</summary>'+P.solution+'</details>';
+    drawActions(kind); drawTally(kind);
+    const nx=$('#actions [data-act="next"]'); if(nx) nx.focus();
+    return;
+  }
+  if(wrong.length){
+    S.misses++; S.streak=0;
+    let msg;
+    if(!multi) msg='<p>'+(bl.msg || res[0].msg)+'</p>';
+    else msg=(bl.msg ? '<p><b>Setup.</b> '+bl.msg+'</p>' : '')+wrong.map(i=>'<p>'+tagOf(i)+res[i].msg+'</p>').join('')+sigNote;
+    if(S.misses===2) msg+='<p>You can try again or open the worked solution below.</p>';
+    const onlyClose = !bl.msg && wrong.every(i=>res[i].status==='close');
+    setFb(onlyClose ? 'warn' : 'bad', msg);
+  } else {
+    const todo=P.parts.map((p,i)=>i).filter(i=>!S.partDone[i]);
+    const rest='part'+(todo.length>1?'s ':' ')+todo.map(i=>'('+LET[i]+')').join(' and ');
+    const msg=(bl.msg ? '<p><b>Setup.</b> '+bl.msg+'</p>' : '')+
+      '<p>'+(newlyRight.length ? 'Right so far. ' : '')+'Now answer '+rest+'.</p>'+sigNote;
+    setFb(bl.msg ? 'bad' : 'info', msg);
+  }
+  drawActions(kind); drawTally(kind);
+}
+function revealSolution(kind){
+  const S=state[kind];
+  S.done=true; S.streak=0; lock();
+  $('#sol').innerHTML=S.P.solution;
+  setFb('info','<p>Read through each step, then try a new problem with different numbers.</p>');
+  drawActions(kind); drawTally(kind);
+}
+
+render();
+}
+</script>
+</body>
+</html>
