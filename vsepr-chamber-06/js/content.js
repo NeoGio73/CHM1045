@@ -9,6 +9,14 @@ export const CONFIG = {
   maxDomains: 6,
 };
 
+// Which model file in assets/ plays which part (names without the .glb ending).
+// Each subject below also names the core that stands in for its central atom.
+export const MODELS = {
+  device: 'portal-gun',
+  turrets: ['turret', 'turret-defective', 'turret'], // left to right, one per subject
+  narrator: 'core-adventure', // the supervising core on the pedestal
+};
+
 export const ELEMENTS = {
   S: { name: 'sulfur', valence: 6, color: '#e9c72f' },
   Br: { name: 'bromine', valence: 7, color: '#c4513a' },
@@ -24,7 +32,7 @@ export const ANGLE_OPTIONS = ['Exactly 90°', 'Slightly less than 90°', '109.5�
 export const SUBJECTS = [
   {
     formula: 'SF₆', html: 'SF<sub>6</sub>', name: 'sulfur hexafluoride',
-    central: 'S', terminal: 'F', bonds: 6, lone: 0,
+    central: 'S', terminal: 'F', bonds: 6, lone: 0, core: 'core-space',
     shape: 'Octahedral', angle: 'Exactly 90°',
     count: 'S brings 6 valence electrons and six F bring 42, so 48 in total. Six bonds use 12. Three lone pairs on each F use 36. Nothing is left over, so sulfur has no lone pairs.',
     shapeWhy: 'Six bonding pairs and no lone pairs: the atoms sit at all six corners of an octahedron.',
@@ -37,7 +45,7 @@ export const SUBJECTS = [
   },
   {
     formula: 'BrF₅', html: 'BrF<sub>5</sub>', name: 'bromine pentafluoride',
-    central: 'Br', terminal: 'F', bonds: 5, lone: 1,
+    central: 'Br', terminal: 'F', bonds: 5, lone: 1, core: 'core-fact',
     shape: 'Square pyramidal', angle: 'Slightly less than 90°',
     count: 'Br brings 7 valence electrons and five F bring 35, so 42 in total. Five bonds use 10. Three lone pairs on each F use 30. That leaves 2 electrons: one lone pair on bromine.',
     shapeWhy: 'Six domains make an octahedron, but one corner holds a lone pair. The five atoms that remain form a square-based pyramid.',
@@ -52,7 +60,7 @@ export const SUBJECTS = [
   },
   {
     formula: 'XeF₄', html: 'XeF<sub>4</sub>', name: 'xenon tetrafluoride',
-    central: 'Xe', terminal: 'F', bonds: 4, lone: 2,
+    central: 'Xe', terminal: 'F', bonds: 4, lone: 2, core: 'core-wheatley',
     shape: 'Square planar', angle: 'Exactly 90°',
     count: 'Xe brings 8 valence electrons and four F bring 28, so 36 in total. Four bonds use 8. Three lone pairs on each F use 24. That leaves 4 electrons: two lone pairs on xenon.',
     shapeWhy: 'The two lone pairs take opposite corners of the octahedron, 180° apart. The four fluorines are left in a flat square around xenon.',

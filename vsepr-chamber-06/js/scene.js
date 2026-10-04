@@ -4,8 +4,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { settle, BOND, LONE } from './vsepr.js';
-import { CONFIG, ELEMENTS } from './content.js';
+import { CONFIG, ELEMENTS, MODELS, SUBJECTS } from './content.js';
 
 // Where things sit inside the map (metres, y up). The molecule floats in the
 // white chamber with the pedestal button; the camera is kept inside that room.
@@ -15,6 +16,8 @@ const ROOM_MAX = new THREE.Vector3(-0.95, 5.2, -31.3);
 const CAMERA_START = new THREE.Vector3(-3.0, 3.5, -31.5);
 const FLOOR_Y = 0.61;
 const TURRET_SPOTS = [[-6.7, -37.3, 0.25], [-4.6, -37.6, 0], [-2.5, -37.3, -0.25]]; // x, z, turn
+const NARRATOR_SPOT = new THREE.Vector3(-8.95, 2.85, -34.75); // on top of the pedestal button
+const NARRATOR_SCALE = 0.7;
 
 const BLUE = 0x1e9bff;
 const ORANGE = 0xff8a1e;
@@ -79,52 +82,40 @@ function radialTexture(inner, outer) {
   return new THREE.CanvasTexture(c);
 }
 
-// --- Stand-in props. Each is built facing +z so a real model can replace it. ---
+// --- Props. Every model file is 1 unit along its longest side. The numbers here
+// turn each one to face +z and size it for the chamber. ---
 
-function makeCore() {
+const CORE_MODEL_SCALE = 1.16; // makes the ball of the core about CORE_RADIUS
+const TURRET_HEIGHT = { turret: 1.2, 'turret-defective': 0.93 };
+const DEVICE_LENGTH = 0.42;
+
+function makeCore(model) {
   const core = new THREE.Group();
-  const shell = new THREE.Mesh(
-    new THREE.SphereGeometry(CORE_RADIUS, 48, 32),
-    new THREE.MeshStandardMaterial({ color: 0xf1f1ee, roughness: 0.35, metalness: 0.1 }),
-  );
-  const cap = (radius, angle, material) => {
-    const m = new THREE.Mesh(new THREE.SphereGeometry(radius, 40, 12, 0, Math.PI * 2, 0, angle), material);
-    m.rotation.x = Math.PI / 2; // cap pole from +y to +z
-    return m;
-  };
-  const socket = cap(CORE_RADIUS + 0.004, 0.68, new THREE.MeshStandardMaterial({ color: 0x15181d, roughness: 0.5 }));
-  const irisMat = new THREE.MeshStandardMaterial({ color: 0x111111, emissive: 0xffffff, emissiveIntensity: 1.6 });
-  const iris = cap(CORE_RADIUS + 0.008, 0.4, irisMat);
-  const pupil = cap(CORE_RADIUS + 0.012, 0.15, new THREE.MeshBasicMaterial({ color: 0x0a0c10 }));
-  const seamMat = new THREE.MeshStandardMaterial({ color: 0x2a2e35, roughness: 0.6 });
-  const seam = new THREE.Mesh(new THREE.TorusGeometry(CORE_RADIUS + 0.002, 0.012, 8, 64), seamMat);
-  seam.rotation.y = Math.PI / 2;
-  core.add(shell, socket, iris, pupil, seam);
-  core.userData.irisMat = irisMat;
+  model.rotation.y = -Math.PI / 2; // the eye is on the +x side of the model
+  model.scale.setScalar(CORE_MODEL_SCALE);
+  core.add(model);
   return core;
 }
 
-function makeTurret() {
+function makeTurret(model, height) {
   const turret = new THREE.Group();
-  const white = new THREE.MeshStandardMaterial({ color: 0xf3f3f0, roughness: 0.25, metalness: 0.05 });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x15181d, roughness: 0.5 });
-  const body = new THREE.Mesh(new THREE.SphereGeometry(0.3, 32, 24), white);
-  body.scale.set(0.72, 1.45, 0.9);
-  body.position.y = 0.95;
-  const slit = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.7, 0.04), dark);
-  slit.position.set(0, 0.95, 0.262);
-  const eyeMat = new THREE.MeshStandardMaterial({ color: 0x220000, emissive: 0xff2010, emissiveIntensity: 2.5 });
-  const eye = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 12), eyeMat);
-  eye.position.set(0, 1.0, 0.275);
-  turret.add(body, slit, eye);
-  for (const [x, z] of [[-0.3, 0.26], [0.3, 0.26], [0, -0.38]]) {
-    const top = new THREE.Vector3(x * 0.25, 0.62, z * 0.25);
-    const foot = new THREE.Vector3(x, 0, z);
-    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, top.distanceTo(foot), 8), dark);
-    leg.position.copy(top).add(foot).multiplyScalar(0.5);
-    leg.quaternion.setFromUnitVectors(UP, top.clone().sub(foot).normalize());
-    turret.add(leg);
-  }
+  model.scale.setScalar(height);
+  turret.add(model);
+  turret.updateMatrixWorld(true);
+  // The eye has its own material: use it to find where the laser starts, and
+  // give each turret a private copy so its eye can be switched off alone.
+  const eyeBox = new THREE.Box3();
+  let eyeMat = null;
+  model.traverse((o) => {
+    if (!o.isMesh || o.material.name !== 'turret_eye') return;
+    o.material = o.material.clone();
+    eyeMat = o.material;
+    eyeBox.expandByObject(o);
+  });
+  const eye = new THREE.Object3D();
+  if (eyeMat) eyeBox.getCenter(eye.position);
+  else eye.position.set(0, height * 0.7, height * 0.15);
+  turret.add(eye);
   const laser = new THREE.Line(
     new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(0, 0, 1)]),
     new THREE.LineBasicMaterial({ color: 0xff3020, transparent: true, opacity: 0.85 }),
@@ -134,30 +125,20 @@ function makeTurret() {
   return turret;
 }
 
-function makeDevice() {
+function makeDevice(model) {
   const device = new THREE.Group();
-  const white = new THREE.MeshStandardMaterial({ color: 0xf1f1ee, roughness: 0.3 });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x17191e, roughness: 0.5 });
-  const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.075, 0.2, 8, 20), white);
-  body.rotation.x = Math.PI / 2;
-  const barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.036, 0.05, 0.24, 20), dark);
-  barrel.rotation.x = Math.PI / 2;
-  barrel.position.z = -0.24;
-  const glowMat = new THREE.MeshBasicMaterial({ color: BLUE });
-  const tube = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.2, 12), glowMat);
-  tube.rotation.x = Math.PI / 2;
-  tube.position.set(0, 0.075, -0.05);
-  const tip = new THREE.Mesh(new THREE.SphereGeometry(0.026, 16, 12), glowMat);
-  tip.position.z = -0.37;
-  device.add(body, barrel, tube, tip);
-  for (let i = 0; i < 3; i++) {
-    const prong = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.012, 0.16), dark);
-    const a = (i / 3) * Math.PI * 2 + Math.PI / 2;
-    prong.position.set(Math.cos(a) * 0.06, Math.sin(a) * 0.06, -0.36);
-    prong.rotation.set(Math.sin(a) * 0.25, -Math.cos(a) * 0.25, 0);
-    device.add(prong);
-  }
-  device.userData = { glowMat, recoil: 0 };
+  model.rotation.y = Math.PI; // the barrel is on the +z side of the model; the camera looks down -z
+  model.scale.setScalar(DEVICE_LENGTH);
+  // the glass tube and a glow at the muzzle show the colour of the last shot
+  const tubeMat = new THREE.MeshBasicMaterial({ color: BLUE, transparent: true, opacity: 0.75 });
+  model.traverse((o) => { if (o.isMesh && o.material.name === 'portalgun_glass') o.material = tubeMat; });
+  const glowMat = new THREE.SpriteMaterial({ map: radialTexture('rgba(255,255,255,0.9)', 'rgba(255,255,255,0)'), color: BLUE, transparent: true, opacity: 0.85, depthWrite: false });
+  const glow = new THREE.Sprite(glowMat);
+  const muzzle = new THREE.Vector3(0, 0, -DEVICE_LENGTH / 2);
+  glow.position.copy(muzzle);
+  glow.scale.setScalar(0.05);
+  device.add(model, glow);
+  device.userData = { recoil: 0, muzzle, setColor: (c) => { tubeMat.color.set(c); glowMat.color.set(c); } };
   return device;
 }
 
@@ -181,12 +162,21 @@ export async function createWorld(canvas, stage, onProgress = () => {}) {
   lamp.position.copy(CENTER).add(new THREE.Vector3(-0.8, 1.7, 1.2));
   scene.add(lamp);
 
-  // --- map ---
-  const gltf = await new GLTFLoader().loadAsync('assets/map.glb', (e) => {
-    if (e.total) onProgress(e.loaded / e.total);
-  });
+  // soft reflections so the metal parts of the models do not render black
+  scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environmentIntensity = 0.35;
+
+  // --- map and models ---
+  const loader = new GLTFLoader();
+  const files = [...new Set(['map', MODELS.device, MODELS.narrator, ...MODELS.turrets, ...SUBJECTS.map((s) => s.core)])];
+  let loaded = 0;
+  const assets = Object.fromEntries(await Promise.all(files.map(async (name) => {
+    const gltf = await loader.loadAsync(`assets/${name}.glb`);
+    onProgress(++loaded / files.length);
+    return [name, gltf.scene];
+  })));
   const seen = new Set();
-  gltf.scene.traverse((o) => {
+  assets.map.traverse((o) => {
     if (!o.isMesh || seen.has(o.material)) return;
     const m = o.material;
     seen.add(m);
@@ -196,7 +186,7 @@ export async function createWorld(canvas, stage, onProgress = () => {}) {
     if (m.emissiveIntensity > 2) m.emissiveIntensity = 2;
     if (/^(PLASTIC\/PLASTICWALL|CONCRETE\/|METAL\/METALWALL|METAL\/METAL_MODULAR)/.test(m.name)) addPanelLines(m);
   });
-  scene.add(gltf.scene);
+  scene.add(assets.map);
 
   const controls = new OrbitControls(camera, canvas);
   controls.target.copy(CENTER);
@@ -213,9 +203,25 @@ export async function createWorld(canvas, stage, onProgress = () => {}) {
   molecule.position.copy(CENTER);
   molecule.scale.setScalar(MOLECULE_SCALE);
   scene.add(molecule);
-  const core = makeCore();
+  const core = new THREE.Group(); // turns so the eye follows the viewer
   molecule.add(core);
+  const coreModels = {};
+  for (const s of SUBJECTS) {
+    if (coreModels[s.core]) continue;
+    coreModels[s.core] = makeCore(assets[s.core]);
+    coreModels[s.core].visible = s === SUBJECTS[0];
+    core.add(coreModels[s.core]);
+  }
   let coreLabel = null;
+
+  // the supervising core watches from the pedestal and bobs when it speaks
+  const narrator = makeCore(assets[MODELS.narrator].clone(true));
+  narrator.position.copy(NARRATOR_SPOT);
+  narrator.scale.setScalar(NARRATOR_SCALE);
+  scene.add(narrator);
+  const narratorLook = new THREE.Object3D();
+  narratorLook.position.copy(NARRATOR_SPOT);
+  let speaking = 0;
 
   const shadow = new THREE.Mesh(
     new THREE.CircleGeometry(1.4, 40),
@@ -321,14 +327,14 @@ export async function createWorld(canvas, stage, onProgress = () => {}) {
     clearDomains();
     terminalSymbol = subject.terminal;
     atomMat.color.set(ELEMENTS[subject.terminal].color);
-    core.userData.irisMat.emissive.set(ELEMENTS[subject.central].color);
+    for (const [name, model] of Object.entries(coreModels)) model.visible = name === subject.core;
     if (coreLabel) { labels.remove(coreLabel); coreLabel.material.map.dispose(); }
     coreLabel = textSprite(subject.central, { size: 0.34 * MOLECULE_SCALE });
     labels.add(coreLabel);
   }
 
   // --- device and shots ---
-  const device = makeDevice();
+  const device = makeDevice(assets[MODELS.device]);
   camera.add(device);
   const shots = [];
   const shotGeo = new THREE.SphereGeometry(0.08, 16, 12);
@@ -337,9 +343,9 @@ export async function createWorld(canvas, stage, onProgress = () => {}) {
   function fire(type) {
     if (domains.length + shots.length >= CONFIG.maxDomains) { notify({ kind: 'overflow' }); return false; }
     const color = type === BOND ? BLUE : ORANGE;
-    device.userData.glowMat.color.set(color);
+    device.userData.setColor(color);
     device.userData.recoil = 1;
-    const from = device.localToWorld(new THREE.Vector3(0, 0, -0.4));
+    const from = device.localToWorld(device.userData.muzzle.clone());
     const hit = from.clone().sub(CENTER).normalize();
     const mesh = new THREE.Mesh(shotGeo, new THREE.MeshBasicMaterial({ color }));
     const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false }));
@@ -352,8 +358,12 @@ export async function createWorld(canvas, stage, onProgress = () => {}) {
   }
 
   // --- turrets ---
-  const turrets = TURRET_SPOTS.map(([x, z, turn]) => {
-    const t = makeTurret();
+  const usedTurretModels = new Set();
+  const turrets = TURRET_SPOTS.map(([x, z, turn], i) => {
+    const name = MODELS.turrets[i % MODELS.turrets.length];
+    const model = usedTurretModels.has(name) ? assets[name].clone(true) : assets[name];
+    usedTurretModels.add(name);
+    const t = makeTurret(model, TURRET_HEIGHT[name] ?? 1.2);
     t.position.set(x, FLOOR_Y, z);
     t.rotation.y = turn;
     scene.add(t, t.userData.laser);
@@ -364,7 +374,7 @@ export async function createWorld(canvas, stage, onProgress = () => {}) {
   function setTurretDisabled(index, disabled) {
     const u = turrets[index].userData;
     u.disabled = disabled;
-    u.eyeMat.emissiveIntensity = disabled ? 0 : 2.5;
+    if (u.eyeMat) u.eyeMat.emissiveIntensity = disabled ? 0 : 1;
   }
 
   // --- frame loop ---
@@ -379,9 +389,8 @@ export async function createWorld(canvas, stage, onProgress = () => {}) {
     const h = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * d;
     const w = h * camera.aspect;
     device.visible = camera.aspect > 0.8;
-    device.scale.setScalar(0.62);
-    device.position.set(Math.min(w * 0.74, 0.62), -h * 0.74, -d + device.userData.recoil * 0.05);
-    device.rotation.set(0.16, 0.34, 0);
+    device.position.set(Math.min(w * 0.7, 0.6), -h * 0.7, -d + device.userData.recoil * 0.05);
+    device.rotation.set(0.12, 0.38, 0);
   }
 
   function resize() {
@@ -411,6 +420,11 @@ export async function createWorld(canvas, stage, onProgress = () => {}) {
     look.lookAt(camera.position);
     core.quaternion.slerp(look.quaternion, 1 - Math.exp(-dt * 4));
     molecule.position.y = CENTER.y + Math.sin(time * 1.1) * 0.03;
+
+    narratorLook.lookAt(camera.position);
+    narrator.quaternion.slerp(narratorLook.quaternion, 1 - Math.exp(-dt * 3));
+    speaking = Math.max(0, speaking - dt * 1.6);
+    narrator.position.y = NARRATOR_SPOT.y + Math.abs(Math.sin(speaking * Math.PI * 3)) * speaking * 0.07;
 
     const follow = 1 - Math.exp(-dt * 5.5);
     for (const d of domains) {
@@ -496,6 +510,7 @@ export async function createWorld(canvas, stage, onProgress = () => {}) {
     setSubject,
     setTurretDisabled,
     raiseAlarm: () => { alarm = 1.4; },
+    speak: () => { speaking = 1; },
     resetView: () => { camera.position.copy(CAMERA_START); controls.update(); },
     onChange: (fn) => { listeners.add(fn); },
     // for checking the result while developing

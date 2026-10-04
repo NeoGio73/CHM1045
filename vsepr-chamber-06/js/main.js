@@ -24,7 +24,7 @@ const state = {
 
 let world = null;
 const subject = () => SUBJECTS[state.index];
-const say = (text) => { narrator.textContent = text; };
+const say = (text) => { narrator.textContent = text; world?.speak(); };
 const sayOnce = (key, text) => { if (!state.said.has(key)) { state.said.add(key); say(text); } };
 const shuffled = (list) => list.map((v) => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map((p) => p[1]);
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
