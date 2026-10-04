@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test Chamber 06: Six Electron Domains</title>
+<style>
+  :root {
+    --blue: #1e9bff;
+    --orange: #ff8a1e;
+    --ink: #171a1f;
+    --ink-soft: #4b525c;
+    --panel: #f3f4f6;
+    --line: #d5d8dd;
+    --good: #1c8a4a;
+    --bad: #c8321e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: #0b0d11;
+    overflow-x: hidden;
+  }
+  #app {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    height: 100vh;
+    min-height: 520px;
+  }
+  #stage { position: relative; min-width: 0; min-height: 0; background: #0b0d11; }
+  #view { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+  #view:active { cursor: grabbing; }
+
+  #tally {
+    position: absolute; left: 14px; bottom: 14px;
+    display: flex; gap: 8px; flex-wrap: wrap;
+    font-size: 14px; font-weight: 600; pointer-events: none;
+  }
+  #tally span {
+    background: rgba(12, 14, 18, 0.78); color: #fff;
+    padding: 6px 10px; border-radius: 4px; border-left: 4px solid #fff;
+  }
+  #tally .bond { border-color: var(--blue); }
+  #tally .lone { border-color: var(--orange); }
+  #help {
+    position: absolute; left: 14px; top: 14px; max-width: 70%;
+    font-size: 13px; color: #dfe3e8; background: rgba(12, 14, 18, 0.6);
+    padding: 6px 10px; border-radius: 4px; pointer-events: none;
+  }
+  #flash {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0;
+    box-shadow: inset 0 0 140px 30px rgba(255, 40, 20, 0.75);
+    transition: opacity 0.5s ease-out;
+  }
+  #flash.on { opacity: 1; transition: none; }
+  #loading {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    color: #dfe3e8; font-size: 16px; background: #0b0d11;
+  }
+  #loading[hidden] { display: none; }
+
+  #panel {
+    background: var(--panel);
+    display: flex; flex-direction: column;
+    min-height: 0; overflow-y: auto;
+    border-left: 4px solid var(--ink);
+  }
+  #panel > * { flex-shrink: 0; }
+  #sign {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px; background: #fff; border-bottom: 1px solid var(--line);
+  }
+  #sign .num { font-size: 54px; font-weight: 800; line-height: 0.9; letter-spacing: -2px; }
+  #sign .meta { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); }
+  #sign .meta strong { display: block; font-size: 15px; color: var(--ink); letter-spacing: 0.02em; text-transform: none; }
+  #pips { display: flex; gap: 5px; margin-top: 7px; }
+  #pips i { width: 26px; height: 6px; background: var(--line); display: block; }
+  #pips i.done { background: var(--ink); }
+  #pips i.now { background: var(--blue); }
+  #strikes { margin-left: auto; text-align: right; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); }
+  #strikes b { display: block; font-size: 24px; color: var(--ink); }
+
+  #narrator {
+    margin: 14px 18px 0; padding: 12px 14px;
+    background: var(--ink); color: #eef1f4; border-radius: 4px;
+    font-size: 14.5px; line-height: 1.45; min-height: 68px;
+  }
+  #narrator::before {
+    content: "Supervising core"; display: block;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--orange); margin-bottom: 4px;
+  }
+  #card { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+  #card h2 { margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); font-weight: 600; }
+  #card p { margin: 0; font-size: 15px; line-height: 1.45; }
+  #card ul { margin: 0; padding-left: 20px; font-size: 14.5px; line-height: 1.5; }
+  .formula { font-size: 44px; font-weight: 800; line-height: 1; }
+  .formula small { display: block; font-size: 14px; font-weight: 500; color: var(--ink-soft); margin-top: 6px; }
+  .row { display: flex; gap: 8px; }
+  .row > * { flex: 1; }
+
+  button {
+    font: inherit; font-size: 15px; font-weight: 600;
+    padding: 11px 12px; border-radius: 4px; cursor: pointer;
+    border: 2px solid var(--ink); background: #fff; color: var(--ink);
+    text-align: center;
+  }
+  button:hover:not(:disabled) { background: #e9ebee; }
+  button:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+  button:disabled { opacity: 0.45; cursor: default; }
+  button.primary { background: var(--ink); color: #fff; }
+  button.primary:hover:not(:disabled) { background: #2c313a; }
+  button.bond { border-color: var(--blue); box-shadow: inset 6px 0 0 var(--blue); }
+  button.lone { border-color: var(--orange); box-shadow: inset 6px 0 0 var(--orange); }
+  button.quiet { border-color: var(--line); font-weight: 500; font-size: 14px; padding: 8px 10px; }
+  button kbd { font: inherit; font-size: 11px; font-weight: 500; opacity: 0.6; margin-left: 4px; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .options button { text-align: left; }
+  .options button.wrong { border-color: var(--bad); color: var(--bad); text-decoration: line-through; }
+  .options button.right { border-color: var(--good); background: var(--good); color: #fff; opacity: 1; }
+
+  .feedback { font-size: 14.5px; line-height: 1.45; padding: 10px 12px; border-radius: 4px; border-left: 4px solid; }
+  .feedback.bad { background: #fbe9e6; border-color: var(--bad); }
+  .feedback.good { background: #e4f4ea; border-color: var(--good); }
+  .feedback.hint { background: #e8f2fb; border-color: var(--blue); }
+  .feedback:empty { display: none; }
+
+  table.facts { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  table.facts td { padding: 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.facts td:first-child { color: var(--ink-soft); width: 46%; padding-right: 10px; }
+  table.facts td:last-child { font-weight: 600; }
+  .code {
+    font-family: ui-monospace, Consolas, monospace; font-size: 24px; font-weight: 700;
+    letter-spacing: 0.06em; text-align: center; padding: 16px 10px;
+    background: #fff; border: 2px dashed var(--ink); border-radius: 4px; user-select: all;
+  }
+
+  @media (max-width: 760px) {
+    #app { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) minmax(0, 52%); }
+    #panel { border-left: 0; border-top: 4px solid var(--ink); }
+    #sign { padding: 8px 14px; }
+    #sign .num { font-size: 34px; }
+    #narrator { margin: 10px 14px 0; min-height: 0; font-size: 14px; }
+    #card { padding: 12px 14px 16px; }
+    .formula { font-size: 32px; }
+    #help { display: none; }
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="view" aria-label="3D view of the test chamber. The molecule being built floats in the centre of the room."></canvas>
+    <div id="help">Drag to look around · scroll or pinch to zoom</div>
+    <div id="tally" aria-hidden="true"></div>
+    <div id="flash"></div>
+    <div id="loading">Loading the chamber…</div>
+  </div>
+  <aside id="panel">
+    <div id="sign">
+      <div class="num" id="sign-num">06</div>
+      <div class="meta">Test chamber<strong id="sign-title"></strong><div id="pips"></div></div>
+      <div id="strikes">Strikes<b id="strike-count">0</b></div>
+    </div>
+    <div id="narrator" aria-live="polite"></div>
+    <div id="card"></div>
+  </aside>
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
