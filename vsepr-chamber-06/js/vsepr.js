@@ -78,11 +78,11 @@ function combinations(n, k) {
   return res;
 }
 
-// Given the current domains, return where each one should end up.
+// Where the repulsion model alone puts each domain.
 // Simply relaxing can get stuck (e.g. two lone pairs side by side on an
 // octahedron when they belong on opposite sides), so every way of handing the
 // lone pairs to the available sites is tried and the lowest-energy one wins.
-export function settle(dirs, types, p = PARAMS) {
+function settleModel(dirs, types, p) {
   const n = dirs.length;
   if (n === 0) return [];
   if (n === 1) return [norm(dirs[0])];
@@ -127,6 +127,70 @@ export function settle(dirs, types, p = PARAMS) {
   assign(loneIdx, loneSites);
   assign([...Array(n).keys()].filter((i) => types[i] === BOND), bondSites);
   return result;
+}
+
+// Measured bond-bond angles (degrees, smallest first) for arrangements where the
+// simple model is noticeably off, keyed by "bonds,lone pairs". The model still
+// decides which site each domain takes; these set the final angles.
+const MEASURED = {
+  '2,1': [119], // SO2
+  '3,1': [107, 107, 107], // NH3
+  '2,2': [104.5], // H2O
+  '4,1': [87.8, 87.8, 87.8, 87.8, 101.6, 173.1], // SF4
+  '3,2': [87.5, 87.5, 175], // ClF3
+  '5,1': [84.8, 84.8, 84.8, 84.8, 89.5, 89.5, 89.5, 89.5, 169.6, 169.6], // BrF5
+};
+
+// Nudge the bonds until their angles match the measured ones, while the lone
+// pairs keep finding the roomiest spots around them.
+function refine(dirs, types, targets, p) {
+  const n = dirs.length;
+  const out = dirs.map(norm);
+  const pairs = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      if (types[i] === BOND && types[j] === BOND) pairs.push({ i, j, angle: angleBetween(out[i], out[j]) });
+    }
+  }
+  if (pairs.length !== targets.length) return out;
+  pairs.sort((a, b) => a.angle - b.angle);
+  pairs.forEach((pair, k) => { pair.target = (targets[k] * Math.PI) / 180; });
+
+  for (let it = 0; it < 3000; it++) {
+    const force = out.map(() => [0, 0, 0]);
+    for (const { i, j, target } of pairs) {
+      const c = Math.max(-0.9999, Math.min(0.9999, dot(out[i], out[j])));
+      const k = (2 * (Math.acos(c) - target)) / Math.sqrt(1 - c * c);
+      for (let a = 0; a < 3; a++) {
+        force[i][a] += k * (out[j][a] - c * out[i][a]);
+        force[j][a] += k * (out[i][a] - c * out[j][a]);
+      }
+    }
+    for (let i = 0; i < n; i++) {
+      if (types[i] !== LONE) continue;
+      for (let j = 0; j < n; j++) {
+        if (i === j) continue;
+        const d = sub(out[i], out[j]);
+        const r = Math.sqrt(dot(d, d)) + 1e-3;
+        const k = strength(types[i], types[j], p) / Math.pow(r, p.power + 2);
+        for (let a = 0; a < 3; a++) force[i][a] += d[a] * k;
+      }
+    }
+    for (let i = 0; i < n; i++) {
+      const radial = dot(force[i], out[i]);
+      const step = types[i] === LONE ? 0.05 : 0.02;
+      out[i] = norm([0, 1, 2].map((a) => out[i][a] + step * (force[i][a] - radial * out[i][a])));
+    }
+  }
+  return out;
+}
+
+// Given the current domains, return where each one should end up.
+export function settle(dirs, types, p = PARAMS) {
+  const result = settleModel(dirs, types, p);
+  const lone = types.filter((t) => t === LONE).length;
+  const targets = MEASURED[`${types.length - lone},${lone}`];
+  return targets ? refine(result, types, targets, p) : result;
 }
 
 // Names for every arrangement a student can build with up to six domains.

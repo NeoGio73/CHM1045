@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Test Chamber 06: Six Electron Domains</title>
+<title>VSEPR Test Chambers</title>
 <style>
   :root {
     --blue: #1e9bff;
@@ -55,6 +55,11 @@
     transition: opacity 0.5s ease-out;
   }
   #flash.on { opacity: 1; transition: none; }
+  #fade {
+    position: absolute; inset: 0; background: #0b0d11; pointer-events: none;
+    opacity: 0; transition: opacity 0.25s ease;
+  }
+  #fade.on { opacity: 1; }
   #loading {
     position: absolute; inset: 0; display: grid; place-items: center;
     color: #dfe3e8; font-size: 16px; background: #0b0d11;
@@ -118,6 +123,8 @@
   button kbd { font: inherit; font-size: 11px; font-weight: 500; opacity: 0.6; margin-left: 4px; }
   .options { display: flex; flex-direction: column; gap: 8px; }
   .options button { text-align: left; }
+  .options button small { display: block; font-size: 13px; font-weight: 400; color: var(--ink-soft); margin-top: 3px; }
+  .options .tick { color: var(--good); }
   .options button.wrong { border-color: var(--bad); color: var(--bad); text-decoration: line-through; }
   .options button.right { border-color: var(--good); background: var(--good); color: #fff; opacity: 1; }
 
@@ -158,11 +165,12 @@
 <body>
 <div id="app">
   <div id="stage">
-    <canvas id="view" aria-label="3D view of the test chamber. The molecule being built floats in the centre of the room."></canvas>
+    <canvas id="view" aria-label="3D view of the test chamber. The molecule being built floats in the middle of the room."></canvas>
     <div id="help">Drag to look around · scroll or pinch to zoom</div>
     <div id="tally" aria-hidden="true"></div>
     <div id="flash"></div>
-    <div id="loading">Loading the chamber…</div>
+    <div id="fade"></div>
+    <div id="loading">Loading the chambers…</div>
   </div>
   <aside id="panel">
     <div id="sign">
