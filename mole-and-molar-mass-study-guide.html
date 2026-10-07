@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moles, Molar Mass, and Avogadro’s Number Study Guide</title>
+<style>
+:root{
+  --ink:#1b2430; --muted:#566070; --line:#d6dbe3; --soft:#f3f5f8;
+  --a-bg:#fff1dc; --a-line:#dd962a; --a-ink:#7a4300;
+  --b-bg:#ddf2ee; --b-line:#2c9383; --b-ink:#0a564c;
+  --r-bg:#ebe7f8; --r-line:#7560c4; --r-ink:#3e2c85;
+  --navy:#1f3a5f; --navy-d:#152b49;
+  --ok:#17693f; --ok-bg:#e4f4ea;
+  --bad:#a3241d; --bad-bg:#fcebe9;
+  --warn:#6f4b00; --warn-bg:#fff5d9;
+  --info:#274b7a; --info-bg:#e9f0fa;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:#fff;color:var(--ink);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
+.app{max-width:880px;margin:0 auto;padding:20px 16px 48px}
+sub{font-size:.72em;line-height:0}
+sup{font-size:.72em;line-height:0}
+:focus-visible{outline:3px solid #4c7fd6;outline-offset:2px}
+
+/* Header */
+.top h1{font-family:var(--serif);font-weight:600;font-size:2rem;line-height:1.15;letter-spacing:-.01em;margin:0 0 .4rem}
+.top p{margin:0;color:var(--muted);max-width:64ch}
+
+/* Tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:20px 0 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.tabs button{appearance:none;font:inherit;font-size:.92rem;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px 7px 8px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.tabs button:not([data-n]){padding-left:14px}
+.tabs .tn{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--soft);font-size:.82rem}
+.tabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.tabs button[aria-selected="true"] .tn{background:#fff;color:var(--navy)}
+.tabs button:not([aria-selected="true"]):hover{border-color:var(--navy)}
+
+/* Section heading */
+h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;line-height:1.2;margin:0 0 .35rem}
+.lede{margin:0 0 18px;max-width:66ch}
+h3{font-size:1rem;margin:0 0 .4rem}
+
+/* Substance colors: given (A) and wanted (B) */
+.sa{color:var(--a-ink);font-weight:600}
+.sb{color:var(--b-ink);font-weight:600}
+
+/* Buttons */
+.btn{appearance:none;font:inherit;font-weight:600;font-size:.95rem;border-radius:8px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);padding:8px 14px;cursor:pointer}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy-d)}
+.btn.inline{padding:4px 10px;font-size:.9rem;margin-top:8px}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* Help level */
+.modebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 14px}
+.modebar-label{font-size:.9rem;font-weight:600}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{appearance:none;font:inherit;font-size:.9rem;border:0;background:#fff;color:var(--ink);padding:7px 12px;cursor:pointer;border-left:1.5px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff;font-weight:600}
+.seg button:focus-visible{outline-offset:-3px}
+
+/* Problem */
+.problem{border:1.5px solid var(--line);border-radius:14px;padding:20px 20px 18px}
+.ctx{margin:0 0 10px;color:var(--muted)}
+.eqwrap{background:var(--soft);border-radius:10px;padding:14px 16px 10px;margin:0 0 12px}
+.eq{font-family:var(--serif);font-size:1.4rem;line-height:1.35;display:flex;flex-wrap:wrap;align-items:baseline;gap:.15em .45em}
+.eq .coef{margin-right:.2em}
+.eq .plus,.eq .arrow{color:var(--muted)}
+.eq .sp{font-weight:400;color:var(--ink);padding:0 .15em;border-radius:5px;white-space:nowrap}
+.eq .sp.sa{background:var(--a-bg);color:var(--a-ink);box-shadow:0 2px 0 var(--a-line)}
+.eq .sp.sb{background:var(--b-bg);color:var(--b-ink);box-shadow:0 2px 0 var(--b-line)}
+.eq .st{font-size:.6em;font-family:var(--sans);margin-left:.1em;opacity:.8}
+.keys{display:flex;gap:14px;margin-top:8px;font-size:.8rem}
+.key{display:inline-flex;align-items:center;gap:6px}
+.key::before{content:"";width:.9em;height:.9em;border-radius:3px;border:1.5px solid}
+.key.a{color:var(--a-ink)} .key.a::before{background:var(--a-bg);border-color:var(--a-line)}
+.key.b{color:var(--b-ink)} .key.b::before{background:var(--b-bg);border-color:var(--b-line)}
+.am{margin:0 0 10px;font-size:.9rem;color:var(--muted)}
+.q{font-size:1.1rem;margin:0 0 14px;max-width:62ch}
+
+/* Route strip and per-reactant trails */
+.helplab{font-size:.88rem;font-weight:600;margin:14px 0 6px}
+.helptext{font-size:.95rem;margin:4px 0 6px;max-width:64ch}
+.rn{border:1.5px solid;border-radius:8px;padding:3px 10px;font-weight:600;font-size:.95rem;white-space:nowrap}
+.rn.a{background:var(--a-bg);border-color:var(--a-line);color:var(--a-ink)}
+.rn.b{background:var(--b-bg);border-color:var(--b-line);color:var(--b-ink)}
+.rn .sa,.rn .sb{color:inherit}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 4px;padding:0;list-style:none}
+.route .rs{font-size:.82rem;color:var(--muted);display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.route .rs::after{content:"\2192";font-size:1.1rem;color:var(--ink)}
+.route .rs.ratio{color:var(--r-ink);font-weight:600}
+.trail{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}
+.trail .arw{font-size:1.1rem;margin-right:2px}
+.trail .tq{white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+
+/* Dimensional analysis chain */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:10px 10px;font-size:1.02rem;margin:4px 0 6px}
+.chain .op{color:var(--muted);font-size:1.15rem}
+.chain .qty{white-space:nowrap}
+.chain .grp{display:inline-flex;align-items:center;gap:10px}
+.chain.cells{gap:10px 22px}
+.frac{display:inline-flex;flex-direction:column;text-align:center}
+.frac>span{padding:3px 8px;white-space:nowrap}
+.frac>.t{border-bottom:2px solid var(--ink)}
+.cx{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:var(--bad)}
+.blank{font:inherit;width:2.8em;text-align:center;border:1.5px solid #8b95a3;border-radius:6px;padding:2px 4px;background:#fff;color:var(--ink)}
+.blank.wide{width:5.2em}
+.blank.ok,.pin.ok{border:2px solid var(--ok);background:var(--ok-bg)}
+.blank.no,.pin.no{border:2px dashed var(--bad);background:var(--bad-bg)}
+.ph{display:inline-grid;place-items:center;min-width:2.2em;height:1.7em;border:1.5px dashed #8b95a3;border-radius:6px;color:var(--muted)}
+.ans-final{font-weight:700}
+
+/* Answers */
+.ansrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.ansrow label{font-weight:600}
+.pin{font:inherit;font-size:1.05rem;width:8.5em;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;color:var(--ink);background:#fff}
+.pin:disabled,.blank:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
+.unit{font-size:1.05rem}
+.parts{list-style:none;margin:16px 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;gap:14px}
+.part{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.part .plab{font-weight:600;flex:1 1 15em}
+.part .pctl{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.pmark{font-weight:700;min-width:1em}
+.pmark.ok{color:var(--ok)} .pmark.no{color:var(--bad)}
+.checkrow{margin-top:14px}
+.choice{display:inline-flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative;cursor:pointer}
+.opt input{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer}
+.opt span{display:inline-block;border:1.5px solid #8b95a3;border-radius:8px;padding:6px 14px;font-size:1.05rem;background:#fff}
+.opt input:checked+span{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+.opt input:focus-visible+span{outline:3px solid #4c7fd6;outline-offset:2px}
+.choice.ok .opt input:checked+span{background:var(--ok);border-color:var(--ok)}
+.choice.no .opt input:checked+span{background:var(--bad-bg);color:var(--bad);border:2px dashed var(--bad)}
+
+/* Feedback */
+.fb{display:none;margin-top:14px;padding:11px 14px;border-radius:10px;border-left:5px solid;gap:10px;align-items:flex-start}
+.fb.show{display:flex}
+.fb .ic{font-weight:700;font-size:1.05rem;line-height:1.5}
+.fb p{margin:0}
+.fb p+p{margin-top:6px}
+.fb.ok{background:var(--ok-bg);border-color:var(--ok);color:#0f4a2c}
+.fb.bad{background:var(--bad-bg);border-color:var(--bad);color:#6f1712}
+.fb.warn{background:var(--warn-bg);border-color:#c98f12;color:var(--warn)}
+.fb.info{background:var(--info-bg);border-color:#5a86c4;color:var(--info)}
+.fb .sa,.fb .sb{color:inherit}
+
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tally{font-size:.9rem;color:var(--muted);margin:12px 2px 0}
+
+/* Worked solution */
+.solution{margin-top:16px;padding:14px 16px 6px;border-radius:10px;background:var(--soft)}
+.solution ol{margin:0;padding-left:1.3em}
+.solution li{margin-bottom:10px}
+.solution .note{font-size:.9rem;color:var(--muted);margin:0 0 10px}
+details.soldet{margin-top:14px}
+details.soldet summary{cursor:pointer;font-weight:600;color:var(--navy)}
+
+/* Roadmap */
+.paths{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 6px}
+.paths .lab{font-size:.9rem;font-weight:600;margin-right:2px}
+.map{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:10px 6px;margin:14px 0 18px}
+.rowlab{font-size:.9rem;font-weight:700}
+.rowlab.a{grid-column:1/-1;color:var(--a-ink)}
+.rowlab.b{grid-column:1/3;align-self:end;color:var(--b-ink)}
+.map .fill{grid-column:4/6}
+.node{border:2px solid;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:68px;transition:opacity .15s}
+.node b{font-size:.98rem;line-height:1.25}
+.node small{font-size:.8rem}
+.node.a{background:var(--a-bg);border-color:var(--a-line);color:var(--a-ink)}
+.node.b{background:var(--b-bg);border-color:var(--b-line);color:var(--b-ink)}
+.conn{appearance:none;font:inherit;font-size:.8rem;font-weight:600;line-height:1.2;color:var(--ink);background:#fff;border:1.5px solid #8b95a3;border-radius:10px;padding:6px 8px;cursor:pointer;align-self:center;display:flex;flex-direction:column;align-items:center;gap:1px;transition:opacity .15s}
+.conn .arr{font-size:1.15rem;line-height:1}
+.conn:hover{border-color:var(--navy)}
+.conn.ratio{grid-column:3;justify-self:center;flex-direction:row;gap:8px;padding:8px 14px;background:var(--r-bg);border-color:var(--r-line);color:var(--r-ink)}
+.conn.vert{justify-self:center;flex-direction:row;gap:8px;padding:8px 10px;white-space:nowrap}
+.conn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.map .dim{opacity:.28}
+.detail{border-left:5px solid var(--navy);background:var(--soft);border-radius:10px;padding:14px 16px;min-height:120px}
+.detail p{margin:0 0 8px}
+.detail ul{margin:0 0 8px;padding-left:1.2em}
+.detail .ex{font-family:var(--serif);font-size:1.08rem;margin-bottom:0}
+.builds{margin-top:22px}
+.builds ul{margin:0;padding-left:1.2em;max-width:66ch}
+.builds li{margin-bottom:6px}
+
+
+/* Formula card */
+.eq .nm{font-family:var(--sans);font-size:.92rem;color:var(--muted);margin-left:.4em}
+.entry{font-size:.88rem;color:var(--muted);margin:10px 0 0}
+.blank.wide{width:6.4em}
+.solution .chain{margin:6px 0 2px}
+.map .node small{line-height:1.25}
+.builds+.builds{margin-top:16px}
+@media (max-width:560px){ .map .node{padding:8px 2px} .map .node small{font-size:.62rem} .map .node b{font-size:.72rem} .conn{padding:5px 3px;font-size:.66rem} }
+
+@media (max-width:560px){
+  .top h1{font-size:1.6rem}
+  .problem{padding:16px 14px}
+  .eq{font-size:1.15rem}
+  .node b{font-size:.82rem} .node small{font-size:.7rem}
+  .conn{font-size:.7rem;padding:5px 4px}
+  .map{gap:8px 3px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>Moles, Molar Mass, and Avogadro’s Number Study Guide</h1>
+    <p>Molar mass, the mole, and Avogadro’s number: how to get between grams, moles, and particles. Start with the roadmap, then work through the sections in order. The numbers change every time, so practice as much as you like. Nothing here is graded.</p>
+  </header>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
+  <main id="view" role="tabpanel"></main>
+  <noscript><p>This study guide needs JavaScript turned on.</p></noscript>
+</div>
+
+<script>
+'use strict';
+/* ============================================================
+   Chemistry data and problem logic (no page elements used here)
+   ============================================================ */
+
+// Atomic masses, kept as text so they display exactly as written.
+const AM = {H:'1.008', C:'12.011', N:'14.007', O:'15.999', F:'18.998', Na:'22.990', Mg:'24.305', Al:'26.982',
+            Si:'28.085', P:'30.974', S:'32.06', Cl:'35.45', K:'39.098', Ca:'40.078', Cr:'51.996', Fe:'55.845',
+            Ni:'58.693', Cu:'63.546', Zn:'65.38', Br:'79.904', Ag:'107.87', Sn:'118.71', I:'126.90', Ba:'137.33',
+            Au:'196.97', Hg:'200.59', Pb:'207.2'};
+const ENAME = {H:'hydrogen', C:'carbon', N:'nitrogen', O:'oxygen', F:'fluorine', Na:'sodium', Mg:'magnesium', Al:'aluminum',
+            Si:'silicon', P:'phosphorus', S:'sulfur', Cl:'chlorine', K:'potassium', Ca:'calcium', Cr:'chromium', Fe:'iron',
+            Ni:'nickel', Cu:'copper', Zn:'zinc', Br:'bromine', Ag:'silver', Sn:'tin', I:'iodine', Ba:'barium',
+            Au:'gold', Hg:'mercury', Pb:'lead'};
+const NA = 6.022e23;
+const NA_S = '6.022 × 10<sup>23</sup>';
+
+// Substances. kind: 'atom' = an element counted in atoms, 'mol' = molecules, 'ion' = formula units.
+const SUBS = [
+  {f:'Cu', name:'copper', kind:'atom', note:'is the metal in most electrical wiring'},
+  {f:'Fe', name:'iron', kind:'atom', note:'is the main metal in steel'},
+  {f:'Al', name:'aluminum', kind:'atom', note:'is the metal in foil and drink cans'},
+  {f:'Ag', name:'silver', kind:'atom', note:'is used in jewelry and coins'},
+  {f:'Au', name:'gold', kind:'atom', note:'is used in jewelry and electronics'},
+  {f:'Zn', name:'zinc', kind:'atom', note:'is the coating on galvanized steel'},
+  {f:'Mg', name:'magnesium', kind:'atom', note:'is a light metal that burns with a bright white flame'},
+  {f:'C',  name:'carbon', kind:'atom', note:'is the element in diamond and graphite'},
+  {f:'S',  name:'sulfur', kind:'atom', note:'is a yellow solid'},
+  {f:'Ca', name:'calcium', kind:'atom', note:'is a reactive metal'},
+  {f:'Na', name:'sodium', kind:'atom', note:'is a soft, reactive metal'},
+  {f:'Pb', name:'lead', kind:'atom', note:'is the dense metal in car batteries'},
+  {f:'Ni', name:'nickel', kind:'atom', note:'is used in coins and stainless steel'},
+  {f:'Si', name:'silicon', kind:'atom', note:'is the element in computer chips'},
+  {f:'Sn', name:'tin', kind:'atom', note:'is the coating on steel food cans'},
+  {f:'Hg', name:'mercury', kind:'atom', note:'is a metal that is liquid at room temperature'},
+
+  {f:'H2O', name:'water', kind:'mol', note:'is the most familiar molecular compound'},
+  {f:'CO2', name:'carbon dioxide', kind:'mol', note:'is the gas you breathe out'},
+  {f:'NH3', name:'ammonia', kind:'mol', note:'is used in fertilizers and cleaners'},
+  {f:'CH4', name:'methane', kind:'mol', note:'is the main part of natural gas'},
+  {f:'C3H8', name:'propane', kind:'mol', note:'is the fuel in gas grills'},
+  {f:'C4H10', name:'butane', kind:'mol', note:'is the fuel in lighters'},
+  {f:'C8H18', name:'octane', kind:'mol', note:'is a component of gasoline'},
+  {f:'C2H6O', name:'ethanol', kind:'mol', note:'is the alcohol in hand sanitizer'},
+  {f:'C6H12O6', name:'glucose', kind:'mol', note:'is blood sugar'},
+  {f:'C12H22O11', name:'sucrose', kind:'mol', note:'is table sugar'},
+  {f:'O2', name:'oxygen gas', kind:'mol', note:'makes up about one fifth of air'},
+  {f:'N2', name:'nitrogen gas', kind:'mol', note:'makes up most of the air'},
+  {f:'Cl2', name:'chlorine gas', kind:'mol', note:'is used to disinfect water'},
+  {f:'SO2', name:'sulfur dioxide', kind:'mol', note:'is a gas released by volcanoes'},
+  {f:'H2O2', name:'hydrogen peroxide', kind:'mol', note:'is a disinfectant'},
+  {f:'CCl4', name:'carbon tetrachloride', kind:'mol', note:'is a dense liquid solvent'},
+  {f:'SF6', name:'sulfur hexafluoride', kind:'mol', note:'is a very dense gas'},
+  {f:'P4O10', name:'tetraphosphorus decoxide', kind:'mol', note:'is a powerful drying agent'},
+  {f:'CH3COOH', name:'acetic acid', kind:'mol', note:'is the acid in vinegar'},
+  {f:'C9H8O4', name:'aspirin', kind:'mol', note:'is a common pain reliever'},
+  {f:'C8H10N4O2', name:'caffeine', kind:'mol', note:'is the stimulant in coffee'},
+
+  {f:'NaCl', name:'sodium chloride', kind:'ion', note:'is table salt'},
+  {f:'NaF', name:'sodium fluoride', kind:'ion', note:'is the fluoride source in many toothpastes'},
+  {f:'CaCO3', name:'calcium carbonate', kind:'ion', note:'is the main compound in chalk and limestone'},
+  {f:'MgCl2', name:'magnesium chloride', kind:'ion', note:'is used to melt ice on roads'},
+  {f:'CaCl2', name:'calcium chloride', kind:'ion', note:'is used to melt ice on roads'},
+  {f:'Al2O3', name:'aluminum oxide', kind:'ion', note:'is the hard compound in sandpaper'},
+  {f:'Fe2O3', name:'iron(III) oxide', kind:'ion', note:'is rust'},
+  {f:'Na2CO3', name:'sodium carbonate', kind:'ion', note:'is washing soda'},
+  {f:'NaHCO3', name:'sodium hydrogen carbonate', kind:'ion', note:'is baking soda'},
+  {f:'KNO3', name:'potassium nitrate', kind:'ion', note:'is used in fertilizers'},
+  {f:'Na2SO4', name:'sodium sulfate', kind:'ion', note:'is used in detergents'},
+  {f:'K3PO4', name:'potassium phosphate', kind:'ion', note:'is used in fertilizers'},
+  {f:'CuSO4', name:'copper(II) sulfate', kind:'ion', note:'is used to control algae'},
+  {f:'AgNO3', name:'silver nitrate', kind:'ion', note:'was used in photographic film'},
+  {f:'BaCl2', name:'barium chloride', kind:'ion', note:'is a white salt'},
+  {f:'K2Cr2O7', name:'potassium dichromate', kind:'ion', note:'is a bright orange salt'},
+  {f:'NH4NO3', name:'ammonium nitrate', kind:'ion', note:'is a common fertilizer'},
+  {f:'Mg(OH)2', name:'magnesium hydroxide', kind:'ion', note:'is the active ingredient in milk of magnesia'},
+  {f:'Ca(OH)2', name:'calcium hydroxide', kind:'ion', note:'is slaked lime'},
+  {f:'Al(OH)3', name:'aluminum hydroxide', kind:'ion', note:'is used in antacids'},
+  {f:'Ca(NO3)2', name:'calcium nitrate', kind:'ion', note:'is used in fertilizers'},
+  {f:'Fe(NO3)3', name:'iron(III) nitrate', kind:'ion', note:'is a pale violet salt'},
+  {f:'Ca3(PO4)2', name:'calcium phosphate', kind:'ion', note:'is the main mineral in bones'},
+  {f:'Al2(SO4)3', name:'aluminum sulfate', kind:'ion', note:'is used to purify drinking water'},
+  {f:'(NH4)2SO4', name:'ammonium sulfate', kind:'ion', note:'is a common fertilizer'},
+  {f:'(NH4)3PO4', name:'ammonium phosphate', kind:'ion', note:'is a common fertilizer'}
+];
+const sub = f => SUBS.find(s=>s.f===f);
+// Ions to count in section 5: n ions in each formula unit.
+const IONS = [
+  {f:'MgCl2', ion:'Cl⁻', name:'chloride', n:2}, {f:'CaCl2', ion:'Cl⁻', name:'chloride', n:2}, {f:'BaCl2', ion:'Cl⁻', name:'chloride', n:2},
+  {f:'Na2SO4', ion:'Na⁺', name:'sodium', n:2}, {f:'Na2CO3', ion:'Na⁺', name:'sodium', n:2}, {f:'K3PO4', ion:'K⁺', name:'potassium', n:3},
+  {f:'K2Cr2O7', ion:'K⁺', name:'potassium', n:2}, {f:'Ca(NO3)2', ion:'NO₃⁻', name:'nitrate', n:2}, {f:'Fe(NO3)3', ion:'NO₃⁻', name:'nitrate', n:3},
+  {f:'Al2(SO4)3', ion:'SO₄²⁻', name:'sulfate', n:3}, {f:'(NH4)2SO4', ion:'NH₄⁺', name:'ammonium', n:2}, {f:'(NH4)3PO4', ion:'NH₄⁺', name:'ammonium', n:3}
+];
+
+/* ---------- Formulas and numbers ---------- */
+// Handles parentheses: Ca3(PO4)2 -> Ca3 P2 O8.
+function parseFormula(f){
+  const out=[]; const re=/\(([^()]+)\)(\d*)|([A-Z][a-z]?)(\d*)/g; let m;
+  while((m=re.exec(f))){
+    if(m[1]){ const k=m[2] ? +m[2] : 1; for(const [e,n] of parseFormula(m[1])) out.push([e,n*k]); }
+    else out.push([m[3], m[4] ? +m[4] : 1]);
+  }
+  return out;
+}
+function composition(f){
+  const out=[];
+  for(const [e,n] of parseFormula(f)){
+    const hit=out.find(x=>x[0]===e);
+    if(hit) hit[1]+=n; else out.push([e,n]);
+  }
+  return out;
+}
+// Molar mass rounded to two decimals, the way students will use it.
+function molarMass(f){
+  let s=0; for(const [e,n] of parseFormula(f)) s += Number(AM[e])*n;
+  return Math.round(s*100+1e-7)/100;
+}
+// What a student gets by counting each element once.
+function naiveMass(f){
+  let s=0; for(const [e] of composition(f)) s += Number(AM[e]);
+  return Math.round(s*100+1e-7)/100;
+}
+// What a student gets by ignoring a subscript outside parentheses.
+function noParenMass(f){
+  if(f.indexOf('(')<0) return null;
+  return molarMass(f.replace(/\(([^()]+)\)\d*/g,'$1'));
+}
+function breakdown(f){
+  const parts=composition(f), M=molarMass(f).toFixed(2);
+  if(parts.length===1 && parts[0][1]===1) return M+' g/mol';
+  return parts.map(([e,n])=> n>1 ? n+'('+AM[e]+')' : AM[e]).join(' + ')+' = '+M+' g/mol';
+}
+const atomCount = f => composition(f).reduce((s,x)=>s+x[1],0);
+const F = f => f.replace(/(\d+)/g,'<sub>$1</sub>');          // formula with subscripts
+const tag = (f,c) => '<span class="'+c+'">'+F(f)+'</span>';  // colored formula
+const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
+
+// Number with n significant figures, as display HTML.
+function sig(x,n){
+  const s=Number(x).toPrecision(n);
+  if(s.indexOf('e')<0) return s;
+  const parts=s.split('e'); const ex=Number(parts[1]);
+  return parts[0]+' × 10<sup>'+(ex<0?'−'+(-ex):ex)+'</sup>';
+}
+// A value written with exactly 3 unambiguous significant figures, or null if that is not possible.
+function fmt3(v){
+  if(!(v>0) || !isFinite(v)) return null;
+  const s=Number(v).toPrecision(3);
+  if(s.indexOf('e')>=0) return null;
+  if(s.indexOf('.')<0 && /0$/.test(s)) return null;
+  return s;
+}
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const rint = (a,b) => a+Math.floor(Math.random()*(b-a+1));
+// Random value with 3 significant figures between lo and hi.
+function g3(lo,hi){
+  for(;;){ const s=fmt3(lo*Math.pow(hi/lo, Math.random())); if(s) return s; }
+}
+// A count of particles with 3 significant figures: {v: number, s: display HTML}.
+function count3(x){
+  const p=Number(x).toExponential(2).split('e'), ex=Number(p[1]);
+  return {v:Number(p[0]+'e'+ex), s:p[0]+' × 10<sup>'+ex+'</sup>'};
+}
+
+/* ---------- Words for a substance ---------- */
+const ents = s => s.kind==='atom' ? 'atoms' : s.kind==='mol' ? 'molecules' : 'formula units';
+const ent1 = s => s.kind==='atom' ? 'atom' : s.kind==='mol' ? 'molecule' : 'formula unit';
+const kindWord = s => s.kind==='atom' ? 'an element' : s.kind==='ion' ? 'an ionic compound' : composition(s.f).length===1 ? 'an element made of two-atom molecules' : 'a molecular compound';
+const nm = (s,cls) => s.name+' ('+tag(s.f,cls||'sa')+')';
+const ctxOf = s => cap(s.name)+' '+s.note+'.';
+// The formula shown large above the question.
+function card(s, cls2, extra){
+  return '<div class="eqwrap"><div class="eq" role="img" aria-label="'+s.name+', formula '+s.f+'">'+
+    '<span class="sp '+(cls2||'sa')+'">'+F(s.f)+'</span><span class="nm">'+s.name+', '+kindWord(s)+(extra ? ' · '+extra : '')+'</span></div></div>';
+}
+
+/* ---------- Small HTML builders ---------- */
+const frac = (t,b) => '<span class="frac"><span class="t">'+t+'</span><span class="b">'+b+'</span></span>';
+const XOP = '<span class="op" aria-hidden="true">×</span>';
+const EQOP = '<span class="op">=</span>';
+const PH = '<span class="ph" aria-label="blank">?</span>';
+const cxs = t => '<span class="cx">'+t+'</span>';
+const lab = t => '<p class="helplab">'+t+'</p>';
+const txt = t => '<p class="helptext">'+t+'</p>';
+const blankIn = (k,label,wide) => '<input class="blank'+(wide?' wide':'')+'" data-k="'+k+'" type="text" inputmode="text" autocomplete="off" aria-label="'+label+'">';
+const row = inner => '<div class="chain">'+inner+'</div>';
+const q = s => '<span class="qty">'+s+'</span>';
+const clean = (errors, ans) => errors.filter((e,i,a) => isFinite(e.value) && e.value>0 && Math.abs(e.value-ans)/Math.abs(ans) > 0.02 &&
+                                                        a.findIndex(o=>Math.abs(o.value-e.value)<=0.011*Math.abs(e.value))===i);
+const roundNote = sf => '<p class="note">Keep extra digits through the middle steps and round only at the end. The answer gets '+sf+' significant figures, the same as the measured value in the question. Counted numbers and the 1 in “1 mol” are exact.</p>';
+const solWrap = (items, note) => '<div class="solution"><h3>Worked solution</h3><ol>'+items.map(t=>'<li>'+t+'</li>').join('')+'</ol>'+(note||'')+'</div>';
+const mmLines = list => '<b>Molar mass'+(list.length>1?'es':'')+'.</b> '+list.map(([f,cls])=>tag(f,cls)+': '+breakdown(f)).join('<br>');
+const routeHTML = items => '<ol class="route" aria-label="Route">'+items.map(it=> it.step ? '<li class="rs'+(it.ratio ? ' ratio' : '')+'">'+it.step+'</li>' : '<li class="rn '+it.c+'">'+it.t+'</li>').join('')+'</ol>';
+const SCI_NOTE = 'To type scientific notation, enter 3.01 × 10<sup>23</sup> as <b>3.01e23</b> or <b>3.01 x 10^23</b>.';
+
+/* ---------- 1. Molar mass ---------- */
+function makeMolarMass(prev){
+  const pool=SUBS.filter(s=>s.kind!=='atom');
+  for(let t=0;;t++){
+    // Half the time, pick a formula with parentheses or a repeated element, where counting takes more care.
+    const hard=pool.filter(s=>s.f.indexOf('(')>=0 || parseFormula(s.f).length!==composition(s.f).length);
+    const s=pick(Math.random()<0.5 ? hard : pool); if(t<50 && prev && prev.f===s.f) continue;
+    const comp=composition(s.f), M=molarMass(s.f), fs=tag(s.f,'sa');
+    const naive=naiveMass(s.f), nop=noParenMass(s.f);
+    const paren=s.f.indexOf('(')>=0, repeat=parseFormula(s.f).length!==comp.length;
+    const errors=[{value:naive, msg:'It looks like each element was counted only once. Multiply each atomic mass by the number of atoms of that element in the formula.'}];
+    if(nop) errors.push({value:nop, msg:'The subscript outside the parentheses multiplies every atom inside them. Recount the atoms.'});
+    // One element off by one atom.
+    comp.forEach(([e,n])=>{
+      errors.push({value:M-Number(AM[e]), msg:'Close, but an atom is missing. Recount the '+ENAME[e]+' atoms in the formula.'});
+      errors.push({value:M+Number(AM[e]), msg:'Close, but there is one atom too many. Recount the '+ENAME[e]+' atoms in the formula.'});
+    });
+    const part={type:'num', label:'Molar mass', unit:'g/mol', answer:M, sf:null, tolRel:0, tolAbs:0.03+0.004*atomCount(s.f), errRel:0, errAbs:0.06,
+      errors:errors.filter((e,i,a)=>Math.abs(e.value-M)>0.5 && a.findIndex(o=>Math.abs(o.value-e.value)<0.2)===i), show:M.toFixed(2)+' g/mol',
+      generic:'Not yet. Count the atoms of each element, multiply each count by that element’s atomic mass, and add the results.'};
+    const line=(m,i)=>{ const [e,n]=comp[i];
+      const cnt = m==='live' ? blankIn('c'+i,'number of '+e+' atoms') : m==='ph' ? PH : String(n);
+      const st = m==='live' ? blankIn('s'+i,'subtotal for '+e,true) : m==='ph' ? PH : (n*Number(AM[e])).toFixed(3);
+      return row(q('<b>'+e+'</b>')+q(cnt+' atom'+(m==='show' && n===1 ? '' : 's'))+XOP+q(AM[e]+' g/mol')+EQOP+q(st+' g/mol')); };
+    const table=m=>comp.map((x,i)=>line(m,i)).join('');
+    const blanks={}; comp.forEach(([e,n],i)=>{ blanks['c'+i]={want:n,tol:1e-9}; blanks['s'+i]={want:n*Number(AM[e]),tol:0.002}; });
+    const blankMsg=got=>{
+      for(let i=0;i<comp.length;i++){
+        const [e,n]=comp[i], c=got['c'+i], st=got['s'+i];
+        if(c && !c.empty && !c.good) return 'Check the number of '+ENAME[e]+' atoms.'+(paren ? ' A subscript outside parentheses multiplies everything inside them.' : repeat ? ' This element appears more than once in the formula, so add them up.' : ' The subscript after a symbol tells how many atoms there are. No subscript means one.');
+        if(st && !st.empty && !st.good) return 'Check the subtotal for '+ENAME[e]+': number of atoms × atomic mass.';
+      }
+      return '';
+    };
+    const countText=comp.map(([e,n])=>n+' '+e).join(', ');
+    return {kind:'molar', type:'molar', f:s.f, ctx:ctxOf(s), eqHTML:card(s), am:[s.f],
+      question:'What is the molar mass of '+nm(s)+'? Give your answer to two decimal places.',
+      parts:[part], blanks, blankMsg,
+      guided:lab('Step 1: count the atoms of each element. Step 2: multiply by the atomic mass.')+table('live')+lab('Step 3: add the subtotals.'),
+      hints:[lab('Hint 1')+txt('The molar mass of a compound is the sum of the atomic masses of all the atoms in its formula.'+
+               (paren ? ' A subscript outside parentheses multiplies everything inside them.' : repeat ? ' One element appears in two places in this formula. Count both.' : ' A subscript counts the atoms of the element just before it.')),
+             lab('Hint 2: the atoms in one '+ent1(s))+txt(countText)+table('ph')],
+      solution:solWrap(['<b>Count the atoms</b> in one '+ent1(s)+' of '+fs+': '+countText+'.',
+        '<b>Multiply and add.</b>'+table('show'),
+        '<b>Molar mass</b> = '+comp.map(([e,n])=>(n*Number(AM[e])).toFixed(3)).join(' + ')+' = <b>'+M.toFixed(2)+' g/mol</b>'],
+        '<p class="note">One mole of '+fs+' has a mass of '+M.toFixed(2)+' g.</p>')};
+  }
+}
+
+/* ---------- Conversion chains ----------
+   A chain is a starting quantity multiplied by one or more conversion factors.
+   Each factor: {kind, top:{v,s,k,lab,tol,w}, tu, bot:{...}, bu, name, after, inv, skip}
+   top/bot numbers with a key k become blanks in the guided setup. */
+const ONE = {v:1, s:'1'};
+// Molar mass factor. toMol: grams to moles. cls colors the formula. key names the blank.
+function fMM(f, toMol, cls, key, isElement){
+  const M=molarMass(f), o={v:M, s:M.toFixed(2), k:key, lab:(isElement ? 'atomic mass of ' : 'molar mass of ')+f, tol:0.005, w:true};
+  const ug='g '+tag(f,cls), um='mol '+tag(f,cls), word=isElement ? 'atomic mass' : 'molar mass';
+  return toMol
+    ? {kind:'MM', f, top:ONE, tu:um, bot:o, bu:ug, name:'Grams to moles', after:'number of moles of '+F(f),
+       inv:'To go from grams to moles, divide by the '+word+'. It looks like you multiplied.',
+       skip:'The next step needs moles, not grams. Convert grams to moles with the '+word+' first.'}
+    : {kind:'MM', f, top:o, tu:ug, bot:ONE, bu:um, name:'Moles to grams', after:'mass of '+F(f),
+       inv:'To go from moles to grams, multiply by the '+word+'. It looks like you divided.'};
+}
+// Avogadro's number factor. um = mole unit, up = particle unit, word = what is being counted.
+function fNA(um, up, toPart, word, key){
+  const o={v:NA, s:NA_S, k:key, lab:'Avogadro’s number', tol:0.002, w:true};
+  return toPart
+    ? {kind:'NA', top:o, tu:up, bot:ONE, bu:um, name:'Moles to '+word, after:'number of '+word,
+       inv:'To go from moles to '+word+', multiply by Avogadro’s number. It looks like you divided.'}
+    : {kind:'NA', top:ONE, tu:um, bot:o, bu:up, name:cap(word)+' to moles', after:'number of moles',
+       inv:'To go from '+word+' to moles, divide by Avogadro’s number. It looks like you multiplied.',
+       skip:'The next step needs moles. Divide the number of '+word+' by Avogadro’s number first.'};
+}
+// Subscript factor: n of the part in 1 of the whole. toPart: whole to part.
+function fSub(n, uPart, uWhole, toPart, partWord, wholeWord){
+  const a={v:n, s:String(n), k:'sp', lab:'number of '+partWord+' in one '+wholeWord}, b={v:1, s:'1', k:'sw', lab:'number of '+wholeWord+'s'};
+  return toPart
+    ? {kind:'sub', n, top:a, tu:uPart, bot:b, bu:uWhole, name:'Use the formula', after:'amount of '+partWord, partWord, wholeWord,
+       inv:'Each '+wholeWord+' contains '+n+' '+partWord+', so multiply by '+n+'. It looks like you divided.',
+       skip: n>1 ? 'That would be right if each '+wholeWord+' contained only one of the '+partWord+'. The formula shows '+n+', so multiply by '+n+'.' : null}
+    : {kind:'sub', n, top:b, tu:uWhole, bot:a, bu:uPart, name:'Use the formula', after:'amount of the compound', partWord, wholeWord, rev:true,
+       inv:'It takes '+n+' '+partWord+' to make one '+wholeWord+', so divide by '+n+'. It looks like you multiplied.',
+       skip: n>1 ? 'Each '+wholeWord+' contains '+n+' '+partWord+', so the moles of compound are the moles of the element divided by '+n+'.' : null};
+}
+// mode: 'live' = blanks to fill in, 'ph' = question marks, 'full' = worked out with units crossed off.
+function chainRow(C, mode){
+  const full=mode==='full', x = s => full ? cxs(s) : s;
+  const num = o => !o.k ? o.s : mode==='live' ? blankIn(o.k,o.lab,o.w) : mode==='ph' ? PH : o.s;
+  let out=q(C.start.s+' '+x(C.start.u));
+  C.factors.forEach((f,i)=>{
+    const last=i===C.factors.length-1;
+    out+=XOP+frac(num(f.top)+' '+(last ? f.tu : x(f.tu)), num(f.bot)+' '+x(f.bu));
+  });
+  out+='<span class="grp">'+EQOP+'<span class="qty'+(full?' ans-final':'')+'">'+(full ? sig(C.ans,C.sf) : '?')+' '+C.unit+'</span></span>';
+  return row(out);
+}
+function chainProblem(o){
+  const C={start:o.start, factors:o.factors, unit:o.unit, sf:o.sf||3}, n=o.factors.length;
+  const partial=[]; let v=o.start.v;
+  o.factors.forEach(f=>{ v*=f.top.v/f.bot.v; partial.push(v); });
+  C.ans=v;
+  const ans=v, errors=[];
+  // Stopped before the last step.
+  o.factors.forEach((f,i)=>{ if(i<n-1) errors.push({value:partial[i], msg:'That is the '+f.after+'. The question asks for something else, so keep going: '+o.factors[i+1].name.toLowerCase()+'.'}); });
+  // One factor upside down, or left out.
+  o.factors.forEach(f=>{
+    const r=f.top.v/f.bot.v;
+    if(r!==1) errors.push({value:ans/(r*r), msg:f.inv});
+    if(n>1 && f.skip && r!==1) errors.push({value:ans/r, msg:f.skip});
+  });
+  // A molar mass that counts each element once, or ignores parentheses.
+  o.factors.forEach(f=>{
+    if(f.kind!=='MM') return;
+    const M=molarMass(f.f), use = w => f.top.v===1 ? ans*M/w : ans*w/M;
+    const nv=naiveMass(f.f), np=noParenMass(f.f);
+    if(Math.abs(nv-M)>0.005) errors.push({value:use(nv), msg:'Check the molar mass of '+F(f.f)+'. It looks like each element was counted only once. Every atom in the formula counts.'});
+    if(np && Math.abs(np-M)>0.005) errors.push({value:use(np), msg:'Check the molar mass of '+F(f.f)+'. The subscript outside the parentheses multiplies every atom inside them.'});
+  });
+  (o.errors||[]).forEach(e=>errors.push(e));
+  const part={type:'num', label:'Your answer', unit:o.unit, answer:ans, sf:C.sf, errors:clean(errors,ans), generic:o.generic, show:sig(ans,C.sf)+' '+o.unit};
+  // Blanks in the guided setup.
+  const blanks={};
+  o.factors.forEach(f=>[f.top,f.bot].forEach(x=>{ if(x.k) blanks[x.k]={want:x.v, tol:x.tol||1e-9}; }));
+  const blankMsg=got=>{
+    const bad=k=>got[k] && !got[k].empty && !got[k].good;
+    const near=(x,w)=>isFinite(x) && Math.abs(x-w)<=0.005*Math.abs(w);
+    for(const f of o.factors){
+      if(f.kind==='MM'){
+        const k=(f.top.k||f.bot.k); if(!bad(k)) continue;
+        const M=molarMass(f.f), nv=naiveMass(f.f), np=noParenMass(f.f), g=got[k].v;
+        if(Math.abs(nv-M)>0.005 && near(g,nv)) return 'Check the molar mass of '+F(f.f)+'. Each element was counted only once. Multiply each atomic mass by the number of atoms in the formula.';
+        if(np && Math.abs(np-M)>0.005 && near(g,np)) return 'Check the molar mass of '+F(f.f)+'. The subscript outside the parentheses multiplies every atom inside them.';
+        return composition(f.f).length===1 && composition(f.f)[0][1]===1
+          ? 'Check the atomic mass of '+F(f.f)+'. Use the value from the list above, rounded to two decimal places.'
+          : 'Check the molar mass of '+F(f.f)+'. Add the atomic masses for every atom in the formula.';
+      }
+      if(f.kind==='NA'){
+        const k=(f.top.k||f.bot.k); if(!bad(k)) continue;
+        return near(got[k].v,6.022) || near(got[k].v,6.02) ? 'Include the power of ten in Avogadro’s number. Type it as 6.022e23.' : 'Avogadro’s number is 6.022 × 10<sup>23</sup>. Type it as 6.022e23.';
+      }
+      if(f.kind==='sub' && (bad('sp')||bad('sw'))){
+        const gp=got.sp, gw=got.sw;
+        if(gp && gw && !gp.empty && !gw.empty && gp.v===1 && gw.v===f.n && f.n!==1) return 'The numbers are in the wrong places. The formula shows '+f.n+' '+f.partWord+' for every 1 '+f.wholeWord+'.';
+        return 'Check the numbers from the formula. One '+f.wholeWord+' contains '+f.n+' '+f.partWord+'.';
+      }
+    }
+    return '';
+  };
+  // Worked steps.
+  const steps=[]; let prevS=o.start.s, prevU=o.start.u;
+  o.factors.forEach((f,i)=>{
+    const last=i===n-1, val = last ? '<b>'+sig(partial[i],C.sf)+' '+f.tu+'</b>' : sig(partial[i],C.sf+1)+' '+f.tu;
+    steps.push('<b>'+f.name+'.</b> '+prevS+' '+prevU+' × ('+f.top.s+' '+f.tu+' ÷ '+f.bot.s+' '+f.bu+') = '+val);
+    prevS=sig(partial[i],C.sf+1); prevU=f.tu;
+  });
+  const route=routeHTML(o.route);
+  return {kind:o.kind, type:o.type, f:o.f, ctx:o.ctx, eqHTML:o.card, am:o.am||null, na:!!o.na, note:o.sci ? SCI_NOTE : null,
+    question:o.question, parts:[part], blanks, blankMsg, C,
+    guided:lab('Your route')+route+lab('Fill in the blanks to finish the setup, then calculate. The units are arranged so that they cancel.')+chainRow(C,'live'),
+    hints:[lab('Hint 1: your route')+route+(o.hint ? txt(o.hint) : ''), lab('Hint 2: the setup')+chainRow(C,'ph')],
+    solution:solWrap((o.mm ? [mmLines(o.mm)] : []).concat(steps, n>1 ? ['<b>All in one line.</b>'+chainRow(C,'full')] : ['<b>The setup, with units canceled.</b>'+chainRow(C,'full')]), o.roundText ? '<p class="note">'+o.roundText+'</p>' : roundNote(C.sf))};
+}
+const node = (t,c) => ({t, c});
+const step = (s,ratio) => ({step:s, ratio:!!ratio});
+// A mass in grams (3 significant figures) for about n moles of f, kept under 1000 g.
+function gramsFor(f, lo, hi){
+  const M=molarMass(f);
+  for(;;){ const s=fmt3(Number(g3(lo,hi))*M); if(s && Number(s)<1000 && Number(s)>=0.1) return s; }
+}
+
+/* ---------- 2. Moles and particles ---------- */
+function makeParticles(prev, kind){
+  for(let t=0;;t++){
+    const s=pick(SUBS); if(t<50 && prev && prev.f===s.f) continue;
+    const fs=tag(s.f,'sa'), E=ents(s), um='mol '+fs, up=E+' '+fs, type=pick(['n2N','N2n']);
+    const base={kind:kind||'particles', type, f:s.f, ctx:ctxOf(s), card:card(s), na:true, sci:true};
+    if(type==='n2N'){
+      const n=g3(0.05,9);
+      return chainProblem(Object.assign(base,{question:'How many '+E+' are in '+n+' mol of '+nm(s)+'?',
+        start:{v:Number(n), s:n, u:um}, factors:[fNA(um,up,true,E,'NA')], unit:up,
+        route:[node('mol '+F(s.f),'a'), step('× Avogadro’s number'), node(E+' '+F(s.f),'b')],
+        hint:'One mole of anything contains 6.022 × 10<sup>23</sup> particles. The number of '+E+' will be a very large number.',
+        generic:'Not yet. Multiply the moles by Avogadro’s number, 6.022 × 10<sup>23</sup> '+E+' per mole.'}));
+    }
+    const N=count3(Number(g3(0.05,9))*NA);
+    return chainProblem(Object.assign(base,{question:'A sample contains '+N.s+' '+E+' of '+nm(s)+'. How many moles is that?',
+      start:{v:N.v, s:N.s, u:up}, factors:[fNA(um,up,false,E,'NA')], unit:um,
+      route:[node(E+' '+F(s.f),'a'), step('÷ Avogadro’s number'), node('mol '+F(s.f),'b')],
+      hint:'It takes 6.022 × 10<sup>23</sup> '+E+' to make one mole. The number of moles will be a much smaller number than the number of '+E+'.',
+      generic:'Not yet. Divide the number of '+E+' by Avogadro’s number, 6.022 × 10<sup>23</sup> '+E+' per mole.'}));
+  }
+}
+
+/* ---------- 3. Moles and mass ---------- */
+function makeMass(prev, kind){
+  for(let t=0;;t++){
+    const s=pick(SUBS); if(t<50 && prev && prev.f===s.f) continue;
+    const fs=tag(s.f,'sa'), um='mol '+fs, ug='g '+fs, type=pick(['n2g','g2n']), M=molarMass(s.f);
+    const base={kind:kind||'mass', type, f:s.f, ctx:ctxOf(s), card:card(s), am:[s.f], mm:[[s.f,'sa']]};
+    if(type==='n2g'){
+      const n=g3(0.02, Math.min(9, 950/M));
+      return chainProblem(Object.assign(base,{question:'What is the mass, in grams, of '+n+' mol of '+nm(s)+'?',
+        start:{v:Number(n), s:n, u:um}, factors:[fMM(s.f,false,'sa','MM',s.kind==='atom')], unit:ug,
+        route:[node('mol '+F(s.f),'a'), step('× molar mass'), node('g '+F(s.f),'b')],
+        hint:'The molar mass is the mass of one mole. Find the molar mass of '+F(s.f)+' first, then multiply.',
+        generic:'Not yet. Find the molar mass of '+F(s.f)+', then multiply the moles by it.'}));
+    }
+    const m=gramsFor(s.f,0.02,9);
+    return chainProblem(Object.assign(base,{question:'How many moles are in '+m+' g of '+nm(s)+'?',
+      start:{v:Number(m), s:m, u:ug}, factors:[fMM(s.f,true,'sa','MM',s.kind==='atom')], unit:um,
+      route:[node('g '+F(s.f),'a'), step('÷ molar mass'), node('mol '+F(s.f),'b')],
+      hint:'The molar mass tells you how many grams are in one mole. Find the molar mass of '+F(s.f)+' first, then divide.',
+      generic:'Not yet. Find the molar mass of '+F(s.f)+', then divide the grams by it.'}));
+  }
+}
+
+/* ---------- 4. Mass and particles ---------- */
+function makeTwoStep(prev, kind){
+  for(let t=0;;t++){
+    const s=pick(SUBS); if(t<50 && prev && prev.f===s.f) continue;
+    const fs=tag(s.f,'sa'), E=ents(s), um='mol '+fs, ug='g '+fs, up=E+' '+fs, type=pick(['g2N','g2N','N2g','N2g','one']);
+    const base={kind:kind||'twostep', type, f:s.f, ctx:ctxOf(s), card:card(s), am:[s.f], na:true, sci:true, mm:[[s.f,'sa']]};
+    const isEl=s.kind==='atom';
+    if(type==='g2N'){
+      const m=gramsFor(s.f,0.01,5);
+      return chainProblem(Object.assign(base,{question:'How many '+E+' are in '+m+' g of '+nm(s)+'?',
+        start:{v:Number(m), s:m, u:ug}, factors:[fMM(s.f,true,'sa','MM',isEl), fNA(um,up,true,E,'NA')], unit:up,
+        route:[node('g '+F(s.f),'a'), step('÷ molar mass'), node('mol '+F(s.f),'a'), step('× Avogadro’s number'), node(E+' '+F(s.f),'b')],
+        hint:'There is no direct path from grams to '+E+'. Go through moles: the molar mass gets you to moles, and Avogadro’s number gets you from moles to '+E+'.',
+        generic:'Not yet. Convert grams to moles with the molar mass, then moles to '+E+' with Avogadro’s number.'}));
+    }
+    if(type==='N2g'){
+      let N; for(;;){ N=count3(Number(g3(0.01,5))*NA); const g=N.v/NA*molarMass(s.f); if(g<1000 && g>=0.1) break; }
+      return chainProblem(Object.assign(base,{question:'What is the mass, in grams, of '+N.s+' '+E+' of '+nm(s)+'?',
+        start:{v:N.v, s:N.s, u:up}, factors:[fNA(um,up,false,E,'NA'), fMM(s.f,false,'sa','MM',isEl)], unit:ug,
+        route:[node(E+' '+F(s.f),'a'), step('÷ Avogadro’s number'), node('mol '+F(s.f),'a'), step('× molar mass'), node('g '+F(s.f),'b')],
+        hint:'There is no direct path from '+E+' to grams. Go through moles: Avogadro’s number gets you to moles, and the molar mass gets you from moles to grams.',
+        generic:'Not yet. Convert '+E+' to moles with Avogadro’s number, then moles to grams with the molar mass.'}));
+    }
+    const u1=ent1(s)+' '+fs;
+    return chainProblem(Object.assign(base,{question:'What is the mass, in grams, of one '+ent1(s)+' of '+nm(s)+'? Give your answer to three significant figures.',
+      start:{v:1, s:'1', u:u1}, factors:[fNA(um,up,false,E,'NA'), fMM(s.f,false,'sa','MM',isEl)], unit:ug,
+      route:[node('1 '+ent1(s)+' '+F(s.f),'a'), step('÷ Avogadro’s number'), node('mol '+F(s.f),'a'), step('× molar mass'), node('g '+F(s.f),'b')],
+      hint:'One mole of '+F(s.f)+' has a mass equal to its molar mass, and it contains 6.022 × 10<sup>23</sup> '+E+'. A single '+ent1(s)+' has a tiny mass, so expect a very small number.',
+      roundText:'Keep extra digits through the middle steps and round only at the end. The “1” is a counted number, so it is exact. The question asks for three significant figures.',
+      generic:'Not yet. Divide the molar mass by Avogadro’s number. The answer is a very small number of grams.'}));
+  }
+}
+
+/* ---------- 5. Atoms in a compound ---------- */
+function makeInside(prev, kind){
+  const comps=SUBS.filter(s=>s.kind!=='atom' && composition(s.f).length>1);
+  for(let t=0;;t++){
+    const type=pick(['n2ne','n2Ne','N2Ne','g2Ne','g2Ne','g2ge','g2ge','ge2g','total','ion']);
+    if(t<20 && prev && prev.type===type) continue;
+    const s = type==='ion' ? sub(pick(IONS).f) : pick(comps);
+    if(t<50 && prev && prev.f===s.f) continue;
+    const comp=composition(s.f), fs=tag(s.f,'sa'), E=ents(s), W=ent1(s), um='mol '+fs, ug='g '+fs, up=E+' '+fs;
+    // Prefer an element that appears more than once in the formula.
+    const multi=comp.filter(x=>x[1]>1), oneStep=(type==='n2ne' || type==='N2Ne');
+    if(oneStep && !multi.length) continue;
+    const [e,k]=pick(multi.length && (oneStep || Math.random()<0.85) ? multi : comp);
+    const es='<span class="sb">'+e+'</span>', ume='mol '+es, uae='atoms '+es, uge='g '+es, en=ENAME[e];
+    const base={kind:kind||'inside', type, f:s.f, ctx:ctxOf(s), card:card(s,'sa','one '+W+' contains '+comp.map(([x,c])=>c+' '+x).join(', '))};
+    const ratioStep=step('× atoms in the formula',true);
+    if(type==='n2ne'){
+      const n=g3(0.05,9);
+      return chainProblem(Object.assign(base,{question:'How many moles of '+en+' atoms are in '+n+' mol of '+nm(s)+'?',
+        start:{v:Number(n), s:n, u:um}, factors:[fSub(k,ume,um,true,en+' atoms',W)], unit:ume,
+        route:[node('mol '+F(s.f),'a'), ratioStep, node('mol '+e,'b')],
+        hint:'A formula is also a mole ratio. One '+W+' of '+F(s.f)+' contains '+k+' '+e+' atom'+(k>1?'s':'')+', so one mole of '+F(s.f)+' contains '+k+' mol of '+e+' atoms.',
+        generic:'Not yet. Multiply the moles of '+F(s.f)+' by the number of '+e+' atoms in the formula.'}));
+    }
+    if(type==='n2Ne'){
+      const n=g3(0.05,9);
+      return chainProblem(Object.assign(base,{na:true, sci:true, question:'How many '+en+' atoms are in '+n+' mol of '+nm(s)+'?',
+        start:{v:Number(n), s:n, u:um}, factors:[fSub(k,ume,um,true,en+' atoms',W), fNA(ume,uae,true,'atoms','NA')], unit:uae,
+        route:[node('mol '+F(s.f),'a'), ratioStep, node('mol '+e,'b'), step('× Avogadro’s number'), node('atoms '+e,'b')],
+        hint:'Use the formula to go from moles of compound to moles of '+e+' atoms. Then Avogadro’s number turns moles of atoms into atoms.',
+        generic:'Not yet. Multiply the moles of '+F(s.f)+' by the number of '+e+' atoms in the formula'+', then by Avogadro’s number.'}));
+    }
+    if(type==='N2Ne'){
+      const N=count3(Number(g3(0.05,9))*NA);
+      return chainProblem(Object.assign(base,{sci:true, question:'How many '+en+' atoms are in '+N.s+' '+E+' of '+nm(s)+'?',
+        start:{v:N.v, s:N.s, u:up}, factors:[fSub(k,uae,up,true,en+' atoms',W)], unit:uae,
+        route:[node(E+' '+F(s.f),'a'), ratioStep, node('atoms '+e,'b')],
+        hint:'No moles are needed here. Each '+W+' contains '+k+' '+e+' atom'+(k>1?'s':'')+', so count '+k+' for every '+W+'.',
+        errors:[{value:N.v*k/NA, msg:'Avogadro’s number is not needed here. You already have a count of '+E+', and the question asks for a count of atoms.'},
+                {value:N.v*k*NA, msg:'Avogadro’s number is not needed here. You already have a count of '+E+', and the question asks for a count of atoms.'}],
+        generic:'Not yet. Multiply the number of '+E+' by the number of '+e+' atoms in each one.'}));
+    }
+    if(type==='g2Ne'){
+      const m=gramsFor(s.f,0.01,4);
+      return chainProblem(Object.assign(base,{am:[s.f], na:true, sci:true, mm:[[s.f,'sa']], question:'How many '+en+' atoms are in '+m+' g of '+nm(s)+'?',
+        start:{v:Number(m), s:m, u:ug}, factors:[fMM(s.f,true,'sa','MM'), fSub(k,ume,um,true,en+' atoms',W), fNA(ume,uae,true,'atoms','NA')], unit:uae,
+        route:[node('g '+F(s.f),'a'), step('÷ molar mass'), node('mol '+F(s.f),'a'), ratioStep, node('mol '+e,'b'), step('× Avogadro’s number'), node('atoms '+e,'b')],
+        hint:'Three steps: grams of compound to moles of compound, then the formula to get moles of '+e+' atoms, then Avogadro’s number to get atoms.',
+        generic:'Not yet. Convert grams to moles of '+F(s.f)+', multiply by the number of '+e+' atoms in the formula'+', then multiply by Avogadro’s number.'}));
+    }
+    if(type==='g2ge'){
+      const m=gramsFor(s.f,0.05,4);
+      return chainProblem(Object.assign(base,{am:[s.f], mm:[[s.f,'sa'],[e,'sb']], question:'How many grams of '+en+' are in '+m+' g of '+nm(s)+'?',
+        start:{v:Number(m), s:m, u:ug}, factors:[fMM(s.f,true,'sa','MM'), fSub(k,ume,um,true,en+' atoms',W), fMM(e,false,'sb','ME',true)], unit:uge,
+        route:[node('g '+F(s.f),'a'), step('÷ molar mass'), node('mol '+F(s.f),'a'), ratioStep, node('mol '+e,'b'), step('× atomic mass'), node('g '+e,'b')],
+        hint:'Grams of one substance cannot be turned directly into grams of another. Go to moles of the compound, use the formula to get moles of '+e+', then use the atomic mass of '+e+' to get grams.',
+        generic:'Not yet. Convert grams to moles of '+F(s.f)+', multiply by the number of '+e+' atoms in the formula'+', then multiply by the atomic mass of '+e+'.'}));
+    }
+    if(type==='ge2g'){
+      let m; for(;;){ m=g3(0.5,150); const out=Number(m)/molarMass(e)/k*molarMass(s.f); if(out<1000 && out>=0.5) break; }
+      return chainProblem(Object.assign(base,{am:[s.f], mm:[[e,'sb'],[s.f,'sa']], question:'What mass of '+nm(s)+', in grams, contains '+m+' g of '+en+'?',
+        start:{v:Number(m), s:m, u:uge}, factors:[fMM(e,true,'sb','ME',true), fSub(k,ume,um,false,en+' atoms',W), fMM(s.f,false,'sa','MM')], unit:ug,
+        route:[node('g '+e,'b'), step('÷ atomic mass'), node('mol '+e,'b'), step('÷ atoms in the formula',true), node('mol '+F(s.f),'a'), step('× molar mass'), node('g '+F(s.f),'a')],
+        hint:'This runs the usual route backward. Start with grams of '+e+', go to moles of '+e+', use the formula to get moles of the compound, then use the molar mass of the compound.',
+        generic:'Not yet. Convert grams of '+e+' to moles, divide by the number of '+e+' atoms in the formula'+' to get moles of '+F(s.f)+', then multiply by the molar mass of '+F(s.f)+'.'}));
+    }
+    if(type==='total'){
+      const n=g3(0.05,9), tot=atomCount(s.f), ua='atoms', umt='mol atoms';
+      const f1=fSub(tot,umt,um,true,'atoms in all',W);
+      f1.skip='That is the number of '+E+'. Each '+W+' contains '+tot+' atoms in all, so multiply by '+tot+'.';
+      return chainProblem(Object.assign(base,{na:true, sci:true, question:'How many atoms, of all kinds together, are in '+n+' mol of '+nm(s)+'?',
+        start:{v:Number(n), s:n, u:um}, factors:[f1, fNA(umt,ua,true,'atoms','NA')], unit:ua,
+        route:[node('mol '+F(s.f),'a'), step('× atoms per '+W,true), node('mol atoms','b'), step('× Avogadro’s number'), node('atoms','b')],
+        hint:'Add up all the subscripts to find how many atoms are in one '+W+'. Then one mole of '+F(s.f)+' contains that many moles of atoms.',
+        generic:'Not yet. Count all the atoms in one '+W+', multiply the moles by that number, then multiply by Avogadro’s number.'}));
+    }
+    // ions in a mass of an ionic compound
+    const I=IONS.find(x=>x.f===s.f), is='<span class="sb">'+I.ion+'</span>', umi='mol '+is, ui=is+' ions', m=gramsFor(s.f,0.01,3);
+    return chainProblem(Object.assign(base,{am:[s.f], na:true, sci:true, mm:[[s.f,'sa']],
+      card:card(s,'sa','one formula unit contains '+I.n+' '+I.name+' ions, '+I.ion),
+      question:'How many '+I.name+' ions ('+is+') are in '+m+' g of '+nm(s)+'?',
+      start:{v:Number(m), s:m, u:ug}, factors:[fMM(s.f,true,'sa','MM'), fSub(I.n,umi,um,true,I.name+' ions','formula unit'), fNA(umi,ui,true,'ions','NA')], unit:ui,
+      route:[node('g '+F(s.f),'a'), step('÷ molar mass'), node('mol '+F(s.f),'a'), ratioStep, node('mol '+I.ion,'b'), step('× Avogadro’s number'), node(I.ion+' ions','b')],
+      hint:'Three steps: grams of compound to moles of compound, then the formula to get moles of '+I.name+' ions, then Avogadro’s number to get the number of ions.',
+      generic:'Not yet. Convert grams to moles of '+F(s.f)+', multiply by the number of '+I.name+' ions in the formula, then multiply by Avogadro’s number.'}));
+  }
+}
+
+/* ---------- 6. Mixed practice ---------- */
+function makeMixed(prev){
+  const r=Math.random();
+  if(r<0.10){ const P=makeMolarMass(prev); P.kind='mixed'; return P; }
+  if(r<0.24) return makeParticles(prev,'mixed');
+  if(r<0.38) return makeMass(prev,'mixed');
+  if(r<0.64) return makeTwoStep(prev,'mixed');
+  return makeInside(prev,'mixed');
+}
+
+function makeProblem(kind, prev){
+  if(kind==='molar')     return makeMolarMass(prev);
+  if(kind==='particles') return makeParticles(prev);
+  if(kind==='mass')      return makeMass(prev);
+  if(kind==='twostep')   return makeTwoStep(prev);
+  if(kind==='inside')    return makeInside(prev);
+  return makeMixed(prev);
+}
+
+/* ---------- Reading and grading answers ---------- */
+// Reads what a student typed: 2.50, .25, 1.2e23, 1.2 x 10^23, with or without units after it.
+function parseInput(raw){
+  const s=String(raw).trim().replace(/,/g,'').replace(/[−–]/g,'-');
+  const m=s.match(/^([+-]?\s*(?:\d+\.?\d*|\.\d+))(?:\s*(?:[eE]|[xX×*·]\s*10\s*(?:\^|\*\*)?\s*)([+-]?\d+))?/);
+  if(!m) return null;
+  const mant=m[1].replace(/\s+/g,'');
+  const value=Number(mant)*Math.pow(10, m[2] ? Number(m[2]) : 0);
+  if(!isFinite(value)) return null;
+  let d=mant.replace(/^[+-]/,''), sfMin, sfMax;
+  if(d.indexOf('.')>=0){
+    d=d.replace('.','').replace(/^0+/,'');
+    sfMin=sfMax=Math.max(d.length,1);
+  } else {
+    d=d.replace(/^0+/,'');
+    sfMax=Math.max(d.length,1);
+    sfMin=Math.max(d.replace(/0+$/,'').length,1);   // trailing zeros without a decimal point are ambiguous
+  }
+  return {value, sfMin, sfMax};
+}
+
+// status: 'empty', 'invalid', 'correct', 'sig' (right value, wrong sig figs), 'close' or 'wrong'.
+function gradePart(part, raw){
+  if(String(raw).trim()==='') return {status:'empty'};
+  const inp=parseInput(raw);
+  if(!inp) return {status:'invalid', msg:'Enter your answer as a number, such as 2.50 or 1.51e23.'};
+  const v=inp.value, ans=part.answer, diff=Math.abs(v-ans);
+  let tol=Math.max((part.tolRel===undefined ? 0.01 : part.tolRel)*Math.abs(ans), part.tolAbs||0);
+  // An answer correctly rounded to the required significant figures always counts.
+  if(part.sf) tol=Math.max(tol, 0.5001*Math.pow(10, Math.floor(Math.log10(Math.abs(ans)))-part.sf+1));
+  if(diff<=tol){
+    if(!part.sf) return {status:'correct'};
+    return {status: (inp.sfMin<=part.sf && part.sf<=inp.sfMax) ? 'correct' : 'sig'};
+  }
+  for(const e of part.errors){
+    if(Math.abs(v-e.value)<=Math.max((part.errRel===undefined ? 0.01 : part.errRel)*Math.abs(e.value), part.errAbs||0)) return {status:'wrong', msg:e.msg};
+  }
+  if(diff<=3*tol){
+    return {status:'close', msg: part.sf ? 'Close. This is usually a rounding issue: keep extra digits through the middle steps and round only at the end.'
+                                         : 'Close. Use the atomic masses exactly as listed and round only at the end.'};
+  }
+  if(v>0 && ans>0){
+    const lg=Math.log10(v/ans);
+    if(Math.round(lg)!==0 && Math.abs(lg-Math.round(lg))<0.005){
+      return {status:'wrong', msg:'The digits are right but the power of ten is off. Check the exponent, and check how you typed the scientific notation.'};
+    }
+  }
+  return {status:'wrong', msg:part.generic};
+}
+
+if(typeof module!=='undefined' && module.exports){
+  module.exports={AM,ENAME,NA,SUBS,IONS,parseFormula,composition,molarMass,naiveMass,noParenMass,breakdown,atomCount,sig,fmt3,count3,
+                  makeProblem,parseInput,gradePart};
+}
+
+/* ============================================================
+   Page
+   ============================================================ */
+if(typeof document!=='undefined'){
+
+const $ = (s,r) => (r||document).querySelector(s);
+const view=$('#view'), nav=$('#tabs');
+const LET='abcdef';
+
+const TABS=[
+  {id:'map',       label:'Roadmap'},
+  {id:'molar',     label:'Molar mass', n:1},
+  {id:'particles', label:'Moles and particles', n:2},
+  {id:'mass',      label:'Moles and mass', n:3},
+  {id:'twostep',   label:'Mass and particles', n:4},
+  {id:'inside',    label:'Atoms in a compound', n:5},
+  {id:'mixed',     label:'Mixed practice', n:6}
+];
+const META={
+  molar:{title:'Molar mass',
+    lede:'The molar mass of a substance is the mass of one mole of it, in grams per mole. For an element, it is the atomic mass from the periodic table. For a compound, add up the atomic masses of every atom in the formula.'},
+  particles:{title:'Moles and particles',
+    lede:'A mole is a counting unit, like a dozen, only much larger. One mole of anything contains 6.022 × 10<sup>23</sup> particles. That number is Avogadro’s number. The particles are atoms for an element, molecules for a molecular compound, and formula units for an ionic compound.'},
+  mass:{title:'Moles and mass',
+    lede:'Atoms are far too small to count, so chemists count them by weighing. The molar mass is the conversion factor between the grams you can measure on a balance and the moles you need for chemistry.'},
+  twostep:{title:'Mass and particles',
+    lede:'There is no direct path between grams and particles. Every trip goes through moles: the molar mass connects grams to moles, and Avogadro’s number connects moles to particles.'},
+  inside:{title:'Atoms in a compound',
+    lede:'A chemical formula is also a set of mole ratios. One molecule of H<sub>2</sub>O contains 2 hydrogen atoms, so one mole of H<sub>2</sub>O contains 2 moles of hydrogen atoms. The subscripts take you from an amount of a compound to an amount of one element inside it.'},
+  mixed:{title:'Mixed practice',
+    lede:'These problems come from all of the earlier sections, in random order. Read each one, decide what you are given and what is asked for, and plan your route through moles before you calculate.'}
+};
+const MODES=[
+  {id:'guided', label:'Guided setup'},
+  {id:'hint',   label:'Hints if I ask'},
+  {id:'solo',   label:'On my own'}
+];
+const fresh = () => ({mode:'guided', P:null, misses:0, hint:0, done:false, solved:0, streak:0, partDone:[]});
+const state={tab:'map', mapSel:null, mapPath:null,
+  molar:fresh(), particles:fresh(), mass:fresh(), twostep:fresh(), inside:fresh(), mixed:fresh()};
+
+/* ---------- Tabs ---------- */
+function renderTabs(){
+  nav.innerHTML=TABS.map(t=>
+    '<button role="tab" data-tab="'+t.id+'"'+(t.n?' data-n="'+t.n+'"':'')+' aria-selected="'+(state.tab===t.id)+'">'+
+    (t.n?'<span class="tn">'+t.n+'</span>':'')+t.label+'</button>').join('');
+}
+nav.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-tab]'); if(!b) return;
+  state.tab=b.dataset.tab; render();
+});
+function render(){
+  renderTabs();
+  if(state.tab==='map') renderMap();
+  else renderPractice(state.tab);
+}
+
+/* ---------- Roadmap ---------- */
+const MAPINFO={
+  MA:{t:'Molar mass: grams and moles', h:'<p>The molar mass is the mass of one mole of a substance, in g/mol. Find it by adding the atomic masses of every atom in the formula.</p><ul><li>Grams to moles: divide by the molar mass.</li><li>Moles to grams: multiply by the molar mass.</li></ul><p class="ex">36.0 g H<sub>2</sub>O × (1 mol H<sub>2</sub>O ÷ 18.02 g H<sub>2</sub>O) = 2.00 mol H<sub>2</sub>O</p>'},
+  NA:{t:'Avogadro’s number: moles and particles', h:'<p>One mole of anything contains 6.022 × 10<sup>23</sup> particles: atoms of an element, molecules of a molecular compound, or formula units of an ionic compound.</p><ul><li>Moles to particles: multiply by Avogadro’s number.</li><li>Particles to moles: divide by Avogadro’s number.</li></ul><p class="ex">2.00 mol H<sub>2</sub>O × (6.022 × 10<sup>23</sup> molecules ÷ 1 mol) = 1.20 × 10<sup>24</sup> molecules H<sub>2</sub>O</p>'},
+  ratio:{t:'The formula: from a compound to one element in it', h:'<p>The subscripts in a formula count the atoms in one molecule or formula unit. They also count the moles of each element in one mole of the compound. A subscript outside parentheses multiplies everything inside them.</p><p>One mole of Ca<sub>3</sub>(PO<sub>4</sub>)<sub>2</sub> contains 3 mol Ca, 2 mol P, and 8 mol O.</p><p class="ex">2.00 mol H<sub>2</sub>O × (2 mol H ÷ 1 mol H<sub>2</sub>O) = 4.00 mol H</p>'},
+  MB:{t:'Atomic mass: moles and grams of the element', h:'<p>Once you have moles of one element, its atomic mass from the periodic table converts moles to grams, or grams to moles.</p><p class="ex">4.00 mol H × (1.008 g H ÷ 1 mol H) = 4.03 g H</p>'},
+  NB:{t:'Avogadro’s number: moles and atoms of the element', h:'<p>Avogadro’s number works the same way for the atoms of one element inside a compound.</p><p class="ex">4.00 mol H × (6.022 × 10<sup>23</sup> atoms ÷ 1 mol) = 2.41 × 10<sup>24</sup> atoms H</p>'}
+};
+const PATHS={
+  g2N:{label:'Mass and particles', on:['mA','MA','nA','NA','pA']},
+  g2a:{label:'Mass of a compound to atoms of one element', on:['mA','MA','nA','ratio','nB','NB','pB']},
+  g2g:{label:'Mass of a compound to mass of one element', on:['mA','MA','nA','ratio','nB','MB','mB']}
+};
+function renderMap(){
+  const node=(id,cls,b,s)=>'<div class="node '+cls+'" data-id="'+id+'"><b>'+b+'</b><small>'+s+'</small></div>';
+  const conn=(id,label,extra)=>'<button type="button" class="conn '+(extra||'')+'" data-id="'+id+'" aria-pressed="false"><span class="arr" aria-hidden="true">'+(id==='ratio'?'⇅':'⇄')+'</span><span>'+label+'</span></button>';
+  view.innerHTML=
+    '<section>'+
+    '<h2>The roadmap</h2>'+
+    '<p class="lede">Every problem in this guide is a trip through <b>moles</b>. Molar mass connects moles to the grams you can weigh. Avogadro’s number connects moles to the particles you cannot see. Select any conversion on the map to see how it works.</p>'+
+    '<div class="paths" role="group" aria-label="Highlight a route"><span class="lab">Show the route for</span>'+
+      Object.keys(PATHS).map(k=>'<button type="button" class="btn inline" style="margin-top:0" data-path="'+k+'" aria-pressed="false">'+PATHS[k].label+'</button>').join('')+
+      '<button type="button" class="btn inline" style="margin-top:0" data-path="">Whole map</button>'+
+    '</div>'+
+    '<div class="map">'+
+      '<div class="rowlab a">The substance: an element or a compound</div>'+
+      node('mA','a','Mass','grams')+conn('MA','molar<br>mass')+
+      node('nA','a','Moles','mol')+conn('NA','Avogadro’s<br>number')+
+      node('pA','a','Particles','atoms, molecules, or formula units')+
+      '<div class="rowlab b">One element inside a compound</div>'+
+      conn('ratio','formula subscripts','ratio')+'<div class="fill"></div>'+
+      node('mB','b','Mass of the element','grams')+conn('MB','atomic<br>mass')+
+      node('nB','b','Moles of the element','mol')+conn('NB','Avogadro’s<br>number')+
+      node('pB','b','Atoms of the element','atoms')+
+    '</div>'+
+    '<div class="detail" id="detail" aria-live="polite"></div>'+
+    '<div class="builds"><h3>Three ideas to keep straight</h3><ul>'+
+      '<li><b>The mole.</b> A mole is a counting unit. Just as a dozen is 12 of something, a mole is 6.022 × 10<sup>23</sup> of something. That number is called Avogadro’s number.</li>'+
+      '<li><b>Molar mass.</b> The mass of one mole of a substance. For an element it is the atomic mass in grams: one mole of carbon atoms has a mass of 12.01 g. For a compound, add the atomic masses of all the atoms in the formula.</li>'+
+      '<li><b>The two are linked.</b> 12.01 g of carbon, 18.02 g of water, and 58.44 g of sodium chloride all contain the same number of particles, 6.022 × 10<sup>23</sup>, because each one is exactly one mole.</li>'+
+    '</ul></div>'+
+    '<div class="builds"><h3>How to use this guide</h3><ul>'+
+      '<li>Work through sections 1 to 6 in order. Each one adds one step to the route.</li>'+
+      '<li>Each section has three levels of help. <b>Guided setup</b> lays out the conversion factors and you fill in the numbers. <b>Hints if I ask</b> shows a hint only when you want one. <b>On my own</b> gives you just the question.</li>'+
+      '<li>The numbers change every time, so practice as much as you like. Nothing here is graded.</li>'+
+    '</ul></div>'+
+    '</section>';
+  view.onclick=e=>{
+    if(state.tab!=='map') return;
+    const c=e.target.closest('.conn'); if(c){ state.mapSel=c.dataset.id; paintMap(); return; }
+    const p=e.target.closest('button[data-path]'); if(p){ state.mapPath=p.dataset.path||null; paintMap(); }
+  };
+  paintMap();
+}
+function paintMap(){
+  const on = state.mapPath ? PATHS[state.mapPath].on : null;
+  view.querySelectorAll('.map [data-id]').forEach(el=>{
+    el.classList.toggle('dim', !!on && on.indexOf(el.dataset.id)<0);
+    if(el.classList.contains('conn')) el.setAttribute('aria-pressed', String(state.mapSel===el.dataset.id));
+  });
+  view.querySelectorAll('button[data-path]').forEach(b=>{
+    if(b.dataset.path) b.setAttribute('aria-pressed', String(state.mapPath===b.dataset.path));
+    b.classList.toggle('primary', !!b.dataset.path && state.mapPath===b.dataset.path);
+  });
+  const d=$('#detail'), info=MAPINFO[state.mapSel];
+  d.innerHTML = info ? '<h3>'+info.t+'</h3>'+info.h
+    : '<h3>How to read the map</h3><p>The top row is the substance itself. Start at the box that matches what the question gives you and travel to the box it asks for. Every route passes through moles.</p><p style="margin:0">The bottom row is for questions about one element inside a compound. The formula subscripts are the only way down to it. Select any connector on the map for details and an example.</p>';
+}
+
+/* ---------- Shared pieces for practice sections ---------- */
+function amLine(list){
+  const seen=[]; list.forEach(f=>parseFormula(f).forEach(([e])=>{ if(seen.indexOf(e)<0) seen.push(e); }));
+  return seen.map(e=>e+' '+AM[e]).join(', ');
+}
+function partHTML(part, i, multi){
+  if(!multi){
+    return '<div class="ansrow"><label for="pin0">Your answer</label>'+
+      '<input id="pin0" class="pin" type="text" inputmode="text" autocomplete="off" spellcheck="false">'+
+      '<span class="unit">'+part.unit+'</span><span class="pmark" id="pm0" aria-hidden="true"></span>'+
+      '<button class="btn primary" type="submit">Check answer</button></div>';
+  }
+  const letter='('+LET[i]+') ';
+  if(part.type==='choice'){
+    return '<li class="part"><span class="plab" id="pl'+i+'">'+letter+part.label+'</span>'+
+      '<span class="pctl"><span class="choice" id="pc'+i+'" role="radiogroup" aria-labelledby="pl'+i+'">'+
+      part.options.map(o=>'<label class="opt"><input type="radio" name="p'+i+'" value="'+o+'"><span>'+F(o)+'</span></label>').join('')+
+      '</span><span class="pmark" id="pm'+i+'" aria-hidden="true"></span></span></li>';
+  }
+  return '<li class="part"><label class="plab" for="pin'+i+'">'+letter+part.label+'</label>'+
+    '<span class="pctl"><input id="pin'+i+'" class="pin" type="text" inputmode="text" autocomplete="off" spellcheck="false">'+
+    '<span class="unit">'+part.unit+'</span><span class="pmark" id="pm'+i+'" aria-hidden="true"></span></span></li>';
+}
+function setFb(type, html){
+  const fb=$('#fb'), ic={ok:'✓',bad:'✗',warn:'!',info:'i'}[type];
+  fb.className='fb show '+type;
+  fb.innerHTML='<span class="ic" aria-hidden="true">'+ic+'</span><div>'+html+'</div>';
+}
+function lock(){
+  document.querySelectorAll('#ans input, #ans button').forEach(el=>{ el.disabled=true; });
+}
+function readPart(parts, i){
+  if(parts[i].type==='choice'){ const c=$('#ans input[name="p'+i+'"]:checked'); return c ? c.value : ''; }
+  return $('#pin'+i).value;
+}
+function markPart(parts, i, good){
+  const el = parts[i].type==='choice' ? $('#pc'+i) : $('#pin'+i), pm=$('#pm'+i);
+  el.classList.remove('ok','no'); el.classList.add(good?'ok':'no');
+  pm.className='pmark '+(good?'ok':'no'); pm.textContent=good?'✓':'✗';
+  if(good){
+    if(parts[i].type==='choice') el.querySelectorAll('input').forEach(x=>{ x.disabled=true; });
+    else el.disabled=true;
+  }
+}
+const sigMsg = (part, lead) => '<p>'+lead+'The value is right. Report it with '+part.sf+' significant figures, the fewest in the given data: <b>'+part.show+'</b>.</p>';
+
+/* ---------- Practice sections ---------- */
+function nextProblem(kind){
+  const S=state[kind];
+  S.P=makeProblem(kind, S.P); S.misses=0; S.hint=0; S.done=false; S.partDone=[];
+}
+function renderPractice(kind){
+  const S=state[kind], m=META[kind], n=TABS.find(t=>t.id===kind).n;
+  if(!S.P) nextProblem(kind);
+  view.onclick=null;
+  view.innerHTML=
+    '<section>'+
+    '<h2>'+n+'. '+m.title+'</h2>'+
+    '<p class="lede">'+m.lede+'</p>'+
+    '<div class="modebar"><span class="modebar-label" id="ml">How much help</span>'+
+      '<div class="seg" role="group" aria-labelledby="ml">'+
+      MODES.map(o=>'<button type="button" data-mode="'+o.id+'" aria-pressed="'+(S.mode===o.id)+'">'+o.label+'</button>').join('')+
+      '</div></div>'+
+    '<article class="problem" id="problem"></article>'+
+    '<p class="tally" id="tally"></p>'+
+    '</section>';
+  $('.seg',view).addEventListener('click',e=>{
+    const b=e.target.closest('button[data-mode]'); if(!b) return;
+    setMode(kind, b.dataset.mode);
+  });
+  $('#problem').addEventListener('click',e=>{
+    const b=e.target.closest('button[data-act]'); if(!b) return;
+    const act=b.dataset.act;
+    if(act==='hint'){ S.hint++; drawHelp(kind); drawActions(kind); }
+    else if(act==='solution'){ revealSolution(kind); }
+    else if(act==='next'){ nextProblem(kind); drawProblem(kind,true); }
+    else if(act==='levelup'){ setMode(kind, S.mode==='guided' ? 'hint' : 'solo'); const f=$('#problem .pin'); if(f) f.focus(); }
+  });
+  drawProblem(kind,false);
+}
+// Changing the help level keeps whatever the student has already typed.
+function setMode(kind, mode){
+  const S=state[kind];
+  S.mode=mode; S.hint=0;
+  view.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.mode===mode)));
+  if(S.done){ nextProblem(kind); drawProblem(kind,false); }
+  else { drawHelp(kind); drawActions(kind); }
+}
+function drawProblem(kind, focus){
+  const S=state[kind], P=S.P, multi=P.parts.length>1;
+  $('#problem').innerHTML=
+    '<p class="ctx">'+P.ctx+'</p>'+
+    (P.eqHTML || '')+
+    (P.am ? '<p class="am">Atomic masses (g/mol): '+amLine(P.am)+'</p>' : '')+(P.na ? '<p class="am">Avogadro’s number: 6.022 × 10<sup>23</sup> particles per mole</p>' : '')+
+    '<p class="q">'+P.question+'</p>'+
+    '<form id="ans" novalidate autocomplete="off">'+
+      '<div id="help"></div>'+
+      (multi ? '<ol class="parts">'+P.parts.map((p,i)=>partHTML(p,i,true)).join('')+'</ol>'+
+               '<div class="checkrow"><button class="btn primary" type="submit">Check answers</button></div>'
+             : partHTML(P.parts[0],0,false))+
+    '</form>'+(P.note ? '<p class="entry">'+P.note+'</p>' : '')+
+    '<div id="fb" class="fb" role="status" aria-live="polite"></div>'+
+    '<div id="sol"></div>'+
+    '<div class="actions" id="actions"></div>';
+  $('#ans').addEventListener('submit',e=>{ e.preventDefault(); check(kind); });
+  drawHelp(kind); drawActions(kind); drawTally(kind);
+  if(focus){ const f=$('#help input')||$('#problem .pin')||$('#problem .opt input'); if(f) f.focus(); }
+}
+function drawHelp(kind){
+  const S=state[kind], P=S.P; let out='';
+  if(S.mode==='guided') out=P.guided;
+  else if(S.mode==='hint') out=P.hints.slice(0,S.hint).join('');
+  $('#help').innerHTML=out;
+}
+function drawActions(kind){
+  const S=state[kind]; let out='';
+  if(S.mode==='hint' && !S.done && S.hint<2)
+    out+='<button type="button" class="btn" data-act="hint">'+(S.hint===0?'Show a hint':'Show another hint')+'</button>';
+  if(!S.done && S.misses>=2)
+    out+='<button type="button" class="btn" data-act="solution">Show worked solution</button>';
+  out+='<button type="button" class="btn'+(S.done?' primary':'')+'" data-act="next">'+(S.done?'Next problem':'Skip to a new problem')+'</button>';
+  $('#actions').innerHTML=out;
+}
+function drawTally(kind){
+  const S=state[kind];
+  $('#tally').textContent = S.solved===0 ? 'No problems solved yet this session.'
+    : 'Solved this session: '+S.solved+(S.streak>1 ? ' ('+S.streak+' in a row)' : '');
+}
+// Marks each filled blank right or wrong and returns the most useful message.
+function checkBlanks(P){
+  const res={any:false, allOK:true, msg:''}, got={};
+  Object.keys(P.blanks).forEach(k=>{
+    const i=$('#help input[data-k="'+k+'"]'); if(!i) return;
+    const raw=i.value.trim(), inp=parseInput(raw), v=inp ? inp.value : NaN;
+    i.classList.remove('ok','no'); i.removeAttribute('aria-invalid');
+    if(!raw){ res.allOK=false; got[k]={empty:true}; return; }
+    res.any=true;
+    const want=P.blanks[k].want;
+    const good=isFinite(v) && Math.abs(v-want)<=P.blanks[k].tol*Math.abs(want)+1e-12;
+    i.classList.add(good?'ok':'no'); if(!good){ i.setAttribute('aria-invalid','true'); res.allOK=false; }
+    got[k]={v, good};
+  });
+  res.msg=P.blankMsg(got)||'';
+  return res;
+}
+function check(kind){
+  const S=state[kind], P=S.P; if(S.done) return;
+  const multi=P.parts.length>1, tagOf=i=> multi ? '<b>('+LET[i]+')</b> ' : '';
+  const bl = S.mode==='guided' ? checkBlanks(P) : {any:false, allOK:true, msg:''};
+  const res=P.parts.map((part,i)=> S.partDone[i] ? {status:'done'} : gradePart(part, readPart(P.parts,i)));
+  const open=res.filter(r=>r.status!=='done');
+
+  if(open.every(r=>r.status==='empty')){
+    if(bl.any && bl.msg) setFb('bad','<p>'+bl.msg+'</p>');
+    else if(bl.any && bl.allOK) setFb('info','<p>The setup is right. Now run the numbers and enter your answer'+(multi?'s':'')+'.</p>');
+    else if(bl.any) setFb('info','<p>Good so far. Fill in the remaining blanks, then calculate.</p>');
+    else setFb('info','<p>Enter your answer'+(multi?'s':'')+', then select Check answer'+(multi?'s':'')+'.</p>');
+    return;
+  }
+  const inv=res.findIndex(r=>r.status==='invalid');
+  if(inv>=0){ setFb('info','<p>'+tagOf(inv)+res[inv].msg+'</p>'); return; }
+
+  const wrong=[], sigs=[], newlyRight=[];
+  res.forEach((r,i)=>{
+    if(r.status==='correct' || r.status==='sig'){ S.partDone[i]=true; markPart(P.parts,i,true); newlyRight.push(i); if(r.status==='sig') sigs.push(i); }
+    else if(r.status==='wrong' || r.status==='close'){ markPart(P.parts,i,false); wrong.push(i); }
+  });
+  const sigNote=sigs.map(i=>sigMsg(P.parts[i], tagOf(i))).join('');
+
+  if(P.parts.every((p,i)=>S.partDone[i])){
+    S.done=true; S.solved++; S.streak++;
+    let html = multi
+      ? '<p><b>All parts correct.</b> '+P.parts.map((p,i)=>'('+LET[i]+') '+p.show).join('; ')+'</p>'+sigNote
+      : (sigs.length ? sigMsg(P.parts[0], '<b>Correct value.</b> ') : '<p><b>Correct.</b> '+P.parts[0].show+'</p>');
+    if(S.streak>=2 && S.mode!=='solo'){
+      html+='<p>That is '+S.streak+' in a row. Ready for less help?</p>'+
+            '<button type="button" class="btn inline" data-act="levelup">Try one '+(S.mode==='guided'?'with hints only if you ask':'on your own')+'</button>';
+    }
+    setFb('ok', html); lock();
+    $('#sol').innerHTML='<details class="soldet"><summary>See the worked solution</summary>'+P.solution+'</details>';
+    drawActions(kind); drawTally(kind);
+    const nx=$('#actions [data-act="next"]'); if(nx) nx.focus();
+    return;
+  }
+  if(wrong.length){
+    S.misses++; S.streak=0;
+    let msg;
+    if(!multi) msg='<p>'+(bl.msg || res[0].msg)+'</p>';
+    else msg=(bl.msg ? '<p><b>Setup.</b> '+bl.msg+'</p>' : '')+wrong.map(i=>'<p>'+tagOf(i)+res[i].msg+'</p>').join('')+sigNote;
+    if(S.misses===2) msg+='<p>You can try again or open the worked solution below.</p>';
+    const onlyClose = !bl.msg && wrong.every(i=>res[i].status==='close');
+    setFb(onlyClose ? 'warn' : 'bad', msg);
+  } else {
+    const todo=P.parts.map((p,i)=>i).filter(i=>!S.partDone[i]);
+    const rest='part'+(todo.length>1?'s ':' ')+todo.map(i=>'('+LET[i]+')').join(' and ');
+    const msg=(bl.msg ? '<p><b>Setup.</b> '+bl.msg+'</p>' : '')+
+      '<p>'+(newlyRight.length ? 'Right so far. ' : '')+'Now answer '+rest+'.</p>'+sigNote;
+    setFb(bl.msg ? 'bad' : 'info', msg);
+  }
+  drawActions(kind); drawTally(kind);
+}
+function revealSolution(kind){
+  const S=state[kind];
+  S.done=true; S.streak=0; lock();
+  $('#sol').innerHTML=S.P.solution;
+  setFb('info','<p>Read through each step, then try a new problem with different numbers.</p>');
+  drawActions(kind); drawTally(kind);
+}
+
+
+
+
+render();
+}
+</script>
+</body>
+</html>
