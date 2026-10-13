@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Atomic Spectrum of Hydrogen: Prelab Review</title>
+  <meta name="description" content="A review before The Atomic Spectrum of Hydrogen lab: light and wavelength, why atoms give off lines, how a spectroscope and a detector are read, how the bench works, and where spectroscopy is used in astronomy, physics, chemistry, medicine and industry.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2317211e'/%3E%3Crect x='7' y='6' width='2.5' height='20' fill='%237a3df0'/%3E%3Crect x='11.5' y='6' width='2.5' height='20' fill='%233657ff'/%3E%3Crect x='17' y='6' width='2.5' height='20' fill='%2325d6e8'/%3E%3Crect x='24' y='6' width='2.5' height='20' fill='%23ff3b30'/%3E%3C/svg%3E">
+  <style>
+    /* Same look as the lab pages and the other prelabs: paper white, bench slate for ink, enamel blue. */
+    :root {
+      --paper: #ffffff;
+      --wash: #f3f6f4;
+      --ink: #17211e;
+      --ink-soft: #4b5854;
+      --ink-faint: #74807c;
+      --rule: #c7d1cc;
+      --rule-strong: #8d9994;
+      --enamel: #1c4c9a;
+      --enamel-deep: #153a78;
+      --enamel-wash: #e9eff9;
+      --good: #1b7a40;
+      --good-wash: #edf7f0;
+      --flag: #ab2a1c;
+      --flag-wash: #fdf1ee;
+      --dark: #10141a;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .sheet { max-width: 1040px; margin: 0 auto; padding: 0 20px 64px; }
+
+    a { color: var(--enamel-deep); }
+    a:hover { color: var(--enamel); }
+
+    /* ---- Masthead ---- */
+
+    .masthead {
+      padding: 28px 20px 26px;
+      background: var(--wash);
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 28px; }
+    .eyebrow { margin: 0 0 4px; color: var(--ink-faint); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    h1 { margin: 0; font-family: var(--serif); font-size: 2.1rem; font-weight: 600; line-height: 1.15; }
+    .dek { margin: 8px 0 0; max-width: 62ch; color: var(--ink-soft); }
+    .lab-button {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 6px;
+      background: var(--enamel); color: #fff; font-weight: 600; text-decoration: none; white-space: nowrap;
+    }
+    .lab-button:hover { background: var(--enamel-deep); color: #fff; }
+
+    /* ---- Contents ---- */
+
+    .contents { margin: 26px 0 0; padding: 14px 18px; border: 1px solid var(--rule); border-radius: 10px; }
+    .contents p { margin: 0 0 6px; font-weight: 600; }
+    .contents ol { margin: 0; padding-left: 1.3em; columns: 2; column-gap: 32px; font-size: 0.96rem; }
+    .contents li { margin-bottom: 3px; break-inside: avoid; }
+
+    /* ---- Sections ---- */
+
+    section { margin-top: 46px; }
+    h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; line-height: 1.25; }
+    .step {
+      display: inline-flex; flex: none; align-items: center; justify-content: center;
+      width: 1.75rem; height: 1.75rem; border-radius: 50%;
+      background: var(--enamel); color: #fff; font-family: var(--sans); font-size: 0.92rem; font-weight: 650;
+    }
+    h3 { margin: 22px 0 6px; font-family: var(--serif); font-size: 1.18rem; font-weight: 600; }
+    p { margin: 0 0 12px; }
+    .prose { max-width: 70ch; }
+    .soft { color: var(--ink-soft); }
+    .callout { max-width: 70ch; margin-top: 16px; padding: 14px 18px 4px; border-radius: 8px; background: var(--enamel-wash); border: 1px solid #cfdcf1; }
+    .callout h3 { margin-top: 0; }
+    .made-up { max-width: 72ch; padding: 8px 12px; border-left: 3px solid var(--enamel); background: var(--enamel-wash); border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+    sub, sup { font-size: 0.72em; line-height: 0; }
+
+    .equation { display: flex; align-items: center; gap: 24px; max-width: 40rem; margin: 8px 0 14px 1rem; }
+    .eq { font-family: var(--serif); font-size: 1.14rem; }
+    .eq-note { margin-left: auto; color: var(--ink-soft); font-size: 0.9rem; }
+    .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 0.25em; line-height: 1.25; }
+    .frac > span:first-child { padding: 0 0.35em 0.12em; border-bottom: 1.5px solid currentColor; }
+    .frac > span:last-child { padding: 0.12em 0.35em 0; }
+
+    /* ---- Cards in a row ---- */
+
+    .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 16px 0 6px; }
+    .card { padding: 14px 16px 6px; border: 1px solid var(--rule); border-radius: 8px; }
+    .card h3 { margin: 0 0 4px; font-size: 1.12rem; }
+    .card p { font-size: 0.96rem; }
+    .card .eg { color: var(--ink-soft); font-size: 0.92rem; }
+    .strip { display: block; width: 100%; height: 46px; margin: 0 0 10px; border-radius: 5px; background: var(--dark); }
+
+    /* ---- Section 1: the wavelength slider ---- */
+
+    .explorer { margin-top: 16px; padding: 16px 18px 14px; border: 1px solid var(--rule); border-radius: 10px; }
+    .band { position: relative; height: 34px; border-radius: 5px; overflow: hidden; background: var(--dark); }
+    .band canvas { display: block; width: 100%; height: 100%; }
+    .band-names { display: flex; justify-content: space-between; margin: 4px 0 8px; color: var(--ink-soft); font-size: 0.82rem; }
+    .explorer input[type="range"] { display: block; width: 100%; margin: 0; accent-color: var(--enamel); }
+    .readout { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; align-items: center; margin-top: 12px; }
+    .swatch { grid-row: span 3; width: 74px; height: 74px; border-radius: 8px; border: 1px solid var(--rule-strong); background: var(--dark); display: flex; align-items: center; justify-content: center; color: #cfd6d3; font-size: 0.72rem; text-align: center; line-height: 1.2; padding: 4px; }
+    .readout .big { font-size: 1.25rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+    .readout p { margin: 0; }
+
+    /* ---- Section 3: the animated figure, and the practice with numbers ---- */
+
+    .demo { margin-top: 14px; padding: 14px; border: 1px solid var(--rule); border-radius: 10px; background: #f6f6f2; }
+    .demo iframe { display: block; width: 100%; height: 870px; border: 0; }
+    .levels-table { border-collapse: collapse; margin: 10px 0 12px; font-variant-numeric: tabular-nums; }
+    .levels-table th, .levels-table td { padding: 5px 12px; border: 1px solid var(--rule); text-align: left; }
+    .levels-table thead th { background: var(--wash); font-size: 0.88rem; }
+    .working { max-width: 70ch; margin: 12px 0; padding: 12px 16px 2px; border: 1px solid var(--rule); border-radius: 8px; background: var(--wash); }
+    .working ol { margin: 0 0 10px; padding-left: 1.3em; }
+    .working li { margin-bottom: 6px; }
+
+    .practice { max-width: 760px; margin-top: 16px; padding: 16px 18px 14px; border: 1.5px solid var(--enamel); border-radius: 10px; }
+    .practice h3 { margin-top: 0; }
+    .practice .ask { margin: 0 0 10px; }
+    .entry-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-bottom: 8px; }
+    .entry-row label { min-width: 9.5rem; font-size: 0.95rem; }
+    .entry-row input { width: 8.5rem; padding: 7px 9px; border: 1px solid var(--rule-strong); border-radius: 4px; background: #fff; color: var(--ink); font: inherit; font-variant-numeric: tabular-nums; }
+    .entry-row input[data-state="right"] { border-color: var(--good); background: var(--good-wash); }
+    .entry-row input[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); }
+    .unit { color: var(--ink-soft); white-space: nowrap; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .buttons button, .chips button {
+      padding: 7px 13px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; cursor: pointer;
+    }
+    .buttons button:hover, .chips button:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .buttons button.main { border-color: var(--enamel); background: var(--enamel); color: #fff; font-weight: 600; }
+    .buttons button.main:hover { background: var(--enamel-deep); }
+    .say { min-height: 1.5em; margin: 10px 0 0; font-size: 0.96rem; }
+    .say b.right { color: var(--good); }
+    .say b.wrong { color: var(--flag); }
+    button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid rgba(28, 76, 154, 0.45); outline-offset: 2px; }
+
+    /* ---- Section 4: how a spectroscope sorts light, and reading its scale ---- */
+
+    .how { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+    .how figure { margin: 0; padding: 12px 14px 10px; border: 1px solid var(--rule); border-radius: 8px; }
+    .how svg, .scale-box svg, .peak-box svg { display: block; width: 100%; height: auto; }
+    .how figcaption, .peak-box figcaption { margin-top: 8px; color: var(--ink-soft); font-size: 0.9rem; }
+    .scale-box { margin: 4px 0 12px; border-radius: 8px; overflow: hidden; background: var(--dark); }
+
+    /* ---- Section 5: the detector ---- */
+
+    .peak-box { max-width: 760px; margin: 14px 0 0; padding: 12px 14px 10px; border: 1px solid var(--rule); border-radius: 8px; }
+
+    /* ---- Section 6: at the bench ---- */
+
+    .bench-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+    .things { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+    .things li { padding: 9px 14px; border: 1px solid var(--rule); border-radius: 8px; font-size: 0.95rem; }
+    .things b { display: block; }
+    .tips { margin: 0; padding-left: 1.2em; }
+    .tips li { margin-bottom: 8px; }
+    .entry-table { width: 100%; border-collapse: collapse; margin: 10px 0 6px; font-size: 0.95rem; }
+    .entry-table th, .entry-table td { padding: 7px 10px; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
+    .entry-table thead th { background: var(--wash); font-size: 0.86rem; }
+    .typed { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 0.95em; padding: 1px 6px; border: 1px solid var(--rule-strong); border-radius: 4px; background: #fff; white-space: nowrap; }
+
+    /* ---- Section 7: where this is used ---- */
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+    .chips button[aria-pressed="true"] { border-color: var(--enamel); background: var(--enamel); color: #fff; font-weight: 600; }
+    .chips .count { font-weight: 400; opacity: 0.75; margin-left: 4px; }
+    .uses-count { margin: 0 0 10px; color: var(--ink-soft); font-size: 0.92rem; }
+    .uses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .use { padding: 12px 14px 10px; border: 1px solid var(--rule); border-top: 5px solid var(--c, var(--enamel)); border-radius: 8px; break-inside: avoid; }
+    .use h3 { margin: 0 0 4px; font-family: var(--sans); font-size: 1.02rem; font-weight: 650; line-height: 1.3; }
+    .use p { margin: 0 0 8px; font-size: 0.93rem; line-height: 1.5; }
+    .use .meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; font-size: 0.78rem; }
+    .use .meta span { padding: 1px 8px; border-radius: 999px; background: var(--wash); color: var(--ink-soft); white-space: nowrap; }
+    .use .meta .field { background: none; border: 1px solid var(--c, var(--rule)); color: var(--ink); }
+    .kinds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 24px; max-width: 900px; margin: 10px 0 0; padding: 0; list-style: none; font-size: 0.93rem; }
+    .kinds b { font-weight: 650; }
+
+    /* ---- Words to know ---- */
+
+    .words { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 28px; margin: 12px 0 0; }
+    .words div { padding: 6px 0; border-bottom: 1px solid var(--rule); font-size: 0.95rem; }
+    .words dt { display: inline; font-weight: 650; }
+    .words dd { display: inline; margin: 0; }
+
+    /* ---- Self-check ---- */
+
+    .quiz { display: grid; gap: 14px; max-width: 780px; margin: 0; padding: 0; list-style: none; counter-reset: q; }
+    .q { padding: 14px 16px 12px; border: 1px solid var(--rule); border-radius: 8px; counter-increment: q; }
+    .q-text { margin: 0 0 10px; font-weight: 600; }
+    .q-text::before { content: counter(q) ". "; color: var(--ink-faint); }
+    .options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .options button {
+      padding: 7px 12px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer;
+    }
+    .options button:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .options button[data-state="right"] { border-color: var(--good); background: var(--good-wash); color: var(--good); font-weight: 600; }
+    .options button[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); color: var(--flag); }
+    .feedback { margin: 10px 0 0; font-size: 0.95rem; }
+    .feedback:empty { display: none; }
+    .feedback b.right { color: var(--good); }
+    .feedback b.wrong { color: var(--flag); }
+    .score { margin: 16px 0 0; font-weight: 600; }
+    .score .done { color: var(--good); }
+
+    /* ---- Footer ---- */
+
+    .next { margin-top: 40px; padding: 18px 20px; border-radius: 10px; background: var(--wash); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+    .next p { margin: 0; max-width: 60ch; }
+    .credit { margin-top: 30px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 0.84rem; color: var(--ink-faint); }
+
+    /* ---- Narrow screens ---- */
+
+    @media (max-width: 900px) {
+      .uses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .trio { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 820px) {
+      .how, .bench-grid, .words, .kinds { grid-template-columns: minmax(0, 1fr); }
+      .contents ol { columns: 1; }
+    }
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .sheet { padding: 0 16px 48px; }
+      .masthead { padding: 22px 16px 20px; }
+      h1 { font-size: 1.7rem; }
+      .uses { grid-template-columns: minmax(0, 1fr); }
+      .equation { margin-left: 0; flex-wrap: wrap; gap: 8px; }
+      .entry-row label { min-width: 100%; }
+      .demo { padding: 6px; }
+      .swatch { width: 60px; height: 60px; }
+    }
+    @media print {
+      .lab-button, .next, .chips, .buttons, .explorer input { display: none !important; }
+      .masthead { background: none; }
+      .uses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .use, .q, .card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div>
+        <p class="eyebrow">Prelab review · The Atomic Spectrum of Hydrogen</p>
+        <h1>What the light of an atom can tell you</h1>
+        <p class="dek">About thirty minutes. Read it before the lab, try the three short practices, and check yourself with the questions at the end. The last part before the questions shows where the same idea is used, from hospitals to distant galaxies.</p>
+      </div>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+  </header>
+
+<div class="sheet">
+  <main>
+    <nav class="contents" aria-label="Contents">
+      <p>In this review</p>
+      <ol>
+        <li><a href="#light">Light, sorted by wavelength</a></li>
+        <li><a href="#kinds">Three kinds of spectrum</a></li>
+        <li><a href="#levels">Why an atom gives lines</a></li>
+        <li><a href="#spectroscope">How a spectroscope sorts light</a></li>
+        <li><a href="#detector">Light the eye cannot see</a></li>
+        <li><a href="#bench">At the bench</a></li>
+        <li><a href="#uses">Where this is used</a></li>
+        <li><a href="#check">Check yourself</a></li>
+      </ol>
+    </nav>
+
+    <section id="light" aria-labelledby="light-title">
+      <h2 id="light-title"><span class="step" aria-hidden="true">1</span>Light, sorted by wavelength</h2>
+      <p class="prose">Light travels as a wave, and the distance from one crest of the wave to the next is its <strong>wavelength</strong>. For the light in this lab that distance is tiny, so it is measured in <strong>nanometers</strong> (nm): one nanometer is a billionth of a meter. A human hair is about 80,000 nm thick.</p>
+      <p class="prose">The eye responds to wavelengths from about 380 nm to about 770 nm, and it reports wavelength as color: violet at the short end, then blue, green, yellow and orange, and red at the long end. Light with a wavelength shorter than violet is <strong>ultraviolet</strong>. Light with a wavelength longer than red is <strong>infrared</strong>. Both are every bit as real as the light you see. Your eyes simply have nothing that answers to them. Further out still, in the same family, are X-rays on the short side and microwaves and radio waves on the long side.</p>
+      <p class="prose">Light also comes in packets, called <strong>photons</strong>, and the energy of one photon is set by its wavelength:</p>
+      <p class="equation"><span class="eq" role="math" aria-label="Energy of a photon equals h times c, divided by its wavelength">E<sub>photon</sub> = <span class="frac"><span>h c</span><span>&lambda;</span></span></span><span class="eq-note">h = 6.626 &times; 10<sup>&minus;34</sup> J s &nbsp; c = 2.998 &times; 10<sup>8</sup> m/s</span></p>
+      <p class="prose">Here &lambda; (the Greek letter lambda) is the wavelength in meters, h is Planck&rsquo;s constant and c is the speed of light. Because the wavelength is on the bottom of the fraction, <strong>a shorter wavelength means a photon with more energy</strong>. That one relation is the key to the whole lab. Slide along the scale below to see it.</p>
+
+      <div class="explorer">
+        <div class="band" aria-hidden="true"><canvas id="band" width="900" height="34"></canvas></div>
+        <div class="band-names" aria-hidden="true"><span>&larr; ultraviolet</span><span>what the eye sees</span><span>infrared &rarr;</span></div>
+        <label class="soft" for="wave" style="font-size:0.9rem">Wavelength</label>
+        <input type="range" id="wave" min="0" max="1000" step="1" value="455">
+        <div class="readout" aria-live="polite">
+          <div class="swatch" id="wave-swatch"></div>
+          <p class="big" id="wave-nm"></p>
+          <p id="wave-region"></p>
+          <p class="soft" id="wave-energy"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="kinds" aria-labelledby="kinds-title">
+      <h2 id="kinds-title"><span class="step" aria-hidden="true">2</span>Three kinds of spectrum</h2>
+      <p class="prose">Spread light out by wavelength and you have its <strong>spectrum</strong>. In 1859 Gustav Kirchhoff sorted every spectrum he could make into three kinds, and the sorting still stands.</p>
+      <div class="trio">
+        <div class="card">
+          <canvas class="strip" id="strip-band" width="600" height="46" role="img" aria-label="An unbroken band of color from violet to red"></canvas>
+          <h3>An unbroken band</h3>
+          <p>Something hot and dense, a solid or a liquid, gives off every wavelength at once. Spread out, its light is one band of color with no gaps.</p>
+          <p class="eg">The glowing element of a toaster. Molten steel. Hot coals.</p>
+        </div>
+        <div class="card">
+          <canvas class="strip" id="strip-emit" width="600" height="46" role="img" aria-label="Three separate bright lines on a dark background"></canvas>
+          <h3>Bright lines</h3>
+          <p>A thin gas whose atoms have been given energy gives off only certain wavelengths. Spread out, its light is a few sharp lines with darkness between them.</p>
+          <p class="eg">A flame colored by a pinch of salt. The glow of the northern lights.</p>
+        </div>
+        <div class="card">
+          <canvas class="strip" id="strip-absorb" width="600" height="46" role="img" aria-label="A band of color crossed by three thin dark lines"></canvas>
+          <h3>Dark lines</h3>
+          <p>Shine an unbroken band through a cooler gas and the gas takes out the very wavelengths it would give off if it were glowing. The band comes through with thin dark lines across it.</p>
+          <p class="eg">Sunlight, which has passed through the Sun&rsquo;s own outer gases.</p>
+        </div>
+      </div>
+      <p class="prose">Look at where the bright lines in the middle strip stand and where the dark lines in the right-hand strip stand. They are in the same places, because the same (imaginary) gas made both. <strong>The lines belong to the gas.</strong> No two elements give the same set, so a set of lines names an element as surely as a fingerprint names a person. That is the idea behind everything in <a href="#uses">part 7</a>.</p>
+      <p class="prose soft">In the lab you will look at two sources of light through a spectroscope and decide for yourself which kind of spectrum each one gives.</p>
+    </section>
+
+    <section id="levels" aria-labelledby="levels-title">
+      <h2 id="levels-title"><span class="step" aria-hidden="true">3</span>Why an atom gives lines</h2>
+      <p class="prose">An electron in an atom cannot have just any energy. It can have only certain values, called <strong>energy levels</strong>, the way you can stand on the rungs of a ladder but not between them. Each level is numbered with a whole number n, starting from 1 for the lowest. The lowest level is the <strong>ground state</strong>; any higher one is an <strong>excited state</strong>.</p>
+      <p class="prose">Give an atom energy, by heating it, by passing electricity through it or by shining light on it, and an electron can be lifted to a higher level. It does not stay there. Within a fraction of a millionth of a second it falls back to a lower level, and the energy it loses leaves the atom as <strong>one photon of light</strong>. The energy of that photon is exactly the size of the fall:</p>
+      <p class="equation"><span class="eq" role="math" aria-label="Delta E equals E final minus E initial">&Delta;E = E<sub>final</sub> &minus; E<sub>initial</sub></span><span class="eq-note">energy change of the electron</span></p>
+      <p class="equation"><span class="eq" role="math" aria-label="lambda equals h times c, divided by the size of Delta E">&lambda; = <span class="frac"><span>h c</span><span>|&Delta;E|</span></span></span><span class="eq-note">wavelength of the light given off</span></p>
+      <p class="prose">Since only certain levels exist, only certain falls are possible, and so only certain wavelengths can come out. That is why a glowing gas gives lines and not a band. And since every element has its own set of levels, every element has its own set of lines.</p>
+
+      <div class="callout">
+        <h3>Why the energies are negative</h3>
+        <p>By agreement, an electron that has been pulled completely free of its atom, and is standing still, has an energy of zero. An electron held by the nucleus has less energy than that, so its energy is a negative number. The more tightly it is held, the more negative the number. The ground state is the most negative of all.</p>
+        <p>When an electron falls, it ends with less energy than it started with, so its energy change &Delta;E is negative too. The photon carries off the size of that change, |&Delta;E|, which is positive.</p>
+      </div>
+
+      <h3>An imaginary atom on the bench</h3>
+      <p class="prose" id="figure-intro">The figure below is a made-up atom with four levels, built as a small machine. The marble is the electron and the four shelves on the tower are its energy levels, set at heights that match their energies. A lift carries the marble up to a shelf, which stands for energy being put into the atom. Then the marble falls to a lower shelf, and a lamp on the rail in front runs to the wavelength of the light that fall gives off and leaves a line there.</p>
+      <p class="prose">Left alone, the machine runs through all six possible falls. To choose one yourself, use the two rows of buttons under the picture (or click a shelf to start on and then a lower one, or press the arrow keys). Watch two things: how far the marble falls, and where its line lands. The longer the fall, the shorter the wavelength.</p>
+      <p class="made-up">This atom is invented for practice. Its levels are not those of hydrogen or of any real element, so nothing here is an answer to the lab.</p>
+      <div class="demo">
+        <iframe src="levels.html" id="demo-frame" title="Animation: a small bench machine that stands for an imaginary atom. A marble, the electron, is lifted to one of four shelves, the energy levels, and falls to a lower one. For each fall, a lamp on a rail moves to the wavelength of the light given off and leaves a line there."></iframe>
+      </div>
+
+      <h3>The same atom in numbers</h3>
+      <p class="prose">Energies this small are awkward to write out, so in this lab every energy is written as a number times 10<sup>&minus;18</sup> joule, and you type only the number in front.</p>
+      <table class="levels-table">
+        <thead><tr><th scope="col">Level, n</th><th scope="col">Energy of the imaginary atom</th></tr></thead>
+        <tbody id="levels-rows"></tbody>
+      </table>
+      <div class="working">
+        <p><strong>Worked example: the fall from level 3 to level 2.</strong></p>
+        <ol>
+          <li>Energy change: &Delta;E = E<sub>final</sub> &minus; E<sub>initial</sub> = (&minus;0.43) &minus; (&minus;0.11) = <strong>&minus;0.32</strong> &times; 10<sup>&minus;18</sup> J. It is negative: the electron lost energy.</li>
+          <li>Wavelength in meters, from the size of the change: &lambda; = (6.626 &times; 10<sup>&minus;34</sup> &times; 2.998 &times; 10<sup>8</sup>) &divide; (0.32 &times; 10<sup>&minus;18</sup>) = 6.21 &times; 10<sup>&minus;7</sup> m.</li>
+          <li>In nanometers: multiply by 10<sup>9</sup>, which gives <strong>621 nm</strong>. That is between 380 and 770 nm, so this line can be seen. It is orange.</li>
+        </ol>
+      </div>
+
+      <div class="practice" id="jump-practice">
+        <h3>Practice: work out a fall</h3>
+        <p class="ask" id="jump-ask"></p>
+        <div class="entry-row">
+          <label for="jump-de">Energy change, &Delta;E</label>
+          <input type="text" id="jump-de" inputmode="text" autocomplete="off" spellcheck="false">
+          <span class="unit">&times; 10<sup>&minus;18</sup> J</span>
+        </div>
+        <div class="entry-row">
+          <label for="jump-wl">Wavelength</label>
+          <input type="text" id="jump-wl" inputmode="decimal" autocomplete="off" spellcheck="false">
+          <span class="unit">nm</span>
+        </div>
+        <div class="buttons">
+          <button type="button" class="main" id="jump-check">Check</button>
+          <button type="button" id="jump-show">Show the working</button>
+          <button type="button" id="jump-next">Another fall</button>
+        </div>
+        <p class="say" id="jump-say" aria-live="polite"></p>
+      </div>
+
+      <h3>Hydrogen</h3>
+      <p class="prose">Hydrogen is the simplest atom there is: one proton and one electron. In 1885 a Swiss schoolteacher, Johann Balmer, found a formula that fitted the wavelengths of the hydrogen lines then known, without knowing why it worked. In 1913 Niels Bohr supplied the reason: a rule that gives the energy of every level of the hydrogen atom from its number n alone. In the lab you will use Bohr&rsquo;s rule to work out hydrogen&rsquo;s levels and the wavelength of each fall, and then see whether the lines you measured on the bench are where the rule says they should be.</p>
+    </section>
+
+    <section id="spectroscope" aria-labelledby="spectroscope-title">
+      <h2 id="spectroscope-title"><span class="step" aria-hidden="true">4</span>How a spectroscope sorts light</h2>
+      <p class="prose">To see a spectrum, the light first passes through a narrow <strong>slit</strong>, so that what goes on is a thin, sharp ribbon of light and not a blur. Then something has to send each wavelength in a different direction. There are two ways to do it, and the bench has both.</p>
+      <div class="how">
+        <figure>
+          <svg viewBox="0 0 360 170" role="img" aria-label="A beam of light enters a triangular glass prism and leaves as a fan of colors, with violet bent the most and red the least. The violet end of the fan is spread wider than the red end.">
+            <rect width="360" height="170" fill="#10141a" rx="6"/>
+            <polygon points="150,30 110,120 190,120" fill="rgba(190,220,235,0.18)" stroke="#9fb6c4" stroke-width="1.5"/>
+            <line x1="14" y1="104" x2="130" y2="76" stroke="#f4f1e4" stroke-width="3"/>
+            <line x1="130" y1="76" x2="171" y2="76" stroke="#f4f1e4" stroke-width="1.6" opacity="0.6"/>
+            <line x1="171" y1="76" x2="346" y2="84" stroke="#ff3b30" stroke-width="2.4"/>
+            <line x1="171" y1="76" x2="346" y2="95" stroke="#ff9a1f" stroke-width="2.4"/>
+            <line x1="171" y1="76" x2="346" y2="108" stroke="#f5e61f" stroke-width="2.4"/>
+            <line x1="171" y1="76" x2="346" y2="124" stroke="#2fd34f" stroke-width="2.4"/>
+            <line x1="171" y1="76" x2="346" y2="143" stroke="#2f6bff" stroke-width="2.4"/>
+            <line x1="171" y1="76" x2="346" y2="164" stroke="#8a3dff" stroke-width="2.4"/>
+            <text x="16" y="94" fill="#cfd6d3" font-size="11" font-family="system-ui, sans-serif">light in</text>
+          </svg>
+          <figcaption><strong>A prism</strong> bends light as it enters and leaves the glass, and it bends short wavelengths more than long ones. It gives a bright, beautiful spectrum, but it spreads the colors unevenly: the violet end is stretched out and the red end is crowded together. That makes a prism poor for measuring.</figcaption>
+        </figure>
+        <figure>
+          <svg viewBox="0 0 360 170" role="img" aria-label="A beam of light passes through a flat plate ruled with many fine lines and leaves as a fan of colors spaced evenly, with red turned the most and violet the least.">
+            <rect width="360" height="170" fill="#10141a" rx="6"/>
+            <rect x="146" y="24" width="8" height="122" fill="rgba(190,220,235,0.2)" stroke="#9fb6c4" stroke-width="1.2"/>
+            <g stroke="#9fb6c4" stroke-width="0.7">
+              <line x1="146" y1="32" x2="154" y2="32"/><line x1="146" y1="40" x2="154" y2="40"/><line x1="146" y1="48" x2="154" y2="48"/><line x1="146" y1="56" x2="154" y2="56"/>
+              <line x1="146" y1="64" x2="154" y2="64"/><line x1="146" y1="72" x2="154" y2="72"/><line x1="146" y1="80" x2="154" y2="80"/><line x1="146" y1="88" x2="154" y2="88"/>
+              <line x1="146" y1="96" x2="154" y2="96"/><line x1="146" y1="104" x2="154" y2="104"/><line x1="146" y1="112" x2="154" y2="112"/><line x1="146" y1="120" x2="154" y2="120"/>
+              <line x1="146" y1="128" x2="154" y2="128"/><line x1="146" y1="136" x2="154" y2="136"/>
+            </g>
+            <line x1="14" y1="85" x2="146" y2="85" stroke="#f4f1e4" stroke-width="3"/>
+            <line x1="154" y1="85" x2="346" y2="104" stroke="#8a3dff" stroke-width="2.4"/>
+            <line x1="154" y1="85" x2="346" y2="114" stroke="#2f6bff" stroke-width="2.4"/>
+            <line x1="154" y1="85" x2="346" y2="124" stroke="#2fd34f" stroke-width="2.4"/>
+            <line x1="154" y1="85" x2="346" y2="134" stroke="#f5e61f" stroke-width="2.4"/>
+            <line x1="154" y1="85" x2="346" y2="144" stroke="#ff9a1f" stroke-width="2.4"/>
+            <line x1="154" y1="85" x2="346" y2="154" stroke="#ff3b30" stroke-width="2.4"/>
+            <text x="16" y="76" fill="#cfd6d3" font-size="11" font-family="system-ui, sans-serif">light in</text>
+          </svg>
+          <figcaption><strong>A grating</strong> is a plate ruled with thousands of fine, evenly spaced lines in every centimeter. Light passing between the lines is turned through an angle that grows in step with its wavelength, so the colors come out evenly spaced. An even spectrum can have a ruler laid along it, which is why the spectroscope you will measure with uses a grating.</figcaption>
+        </figure>
+      </div>
+
+      <h3>Reading the scale</h3>
+      <p class="prose">Through the spectroscope you see each line standing on a scale of wavelengths. In the closer view the scale has a long mark at every nanometer and a short mark every 0.2 nm. A line seldom stands exactly on a mark, so judge where it is between two of them and give the wavelength <strong>to the nearest tenth of a nanometer</strong>. Half a division is 0.1 nm.</p>
+      <div class="practice" id="scale-practice">
+        <h3>Practice: read a line</h3>
+        <div class="scale-box"><svg id="scale-svg" viewBox="0 0 720 190" role="img" aria-label="A colored line standing on a scale of wavelengths marked every 0.2 nanometers"></svg></div>
+        <div class="entry-row">
+          <label for="scale-entry">This line is at</label>
+          <input type="text" id="scale-entry" inputmode="decimal" autocomplete="off" spellcheck="false">
+          <span class="unit">nm</span>
+        </div>
+        <div class="buttons">
+          <button type="button" class="main" id="scale-check">Check</button>
+          <button type="button" id="scale-next">Another line</button>
+        </div>
+        <p class="say" id="scale-say" aria-live="polite"></p>
+      </div>
+      <p class="prose soft">Faint lines are easy to miss in a bright room, because stray light washes them out. Astronomers build their telescopes on dark mountains for the same reason. The bench has a switch for the hood&rsquo;s light.</p>
+    </section>
+
+    <section id="detector" aria-labelledby="detector-title">
+      <h2 id="detector-title"><span class="step" aria-hidden="true">5</span>Light the eye cannot see</h2>
+      <p class="prose">An atom does not care what your eyes can do. Many of its falls give ultraviolet or infrared light, and through a spectroscope those lines are simply not there. A <strong>detector</strong> finds them. It looks at one narrow slice of wavelengths at a time, measures how much light arrives, moves on to the next slice, and draws the result as a chart: wavelength along the bottom, strength of the light up the side. A line shows up as a <strong>peak</strong>.</p>
+      <figure class="peak-box">
+        <svg id="peak-svg" viewBox="0 0 720 240" role="img" aria-label="Two charts of a detector's reading against wavelength. In the wide sweep on the left a line is a thin spike. In the narrow sweep on the right the same line is a smooth hill, with a marker standing on its top."></svg>
+        <figcaption>The same made-up line in a wide sweep and in a narrow one. In the wide sweep it is only a spike, and all you can say is roughly where it is. Sweep a narrow stretch around it and the spike opens into a hill. Put the marker on the top of the hill and read the wavelength there.</figcaption>
+      </figure>
+      <p class="prose">So finding a line with the detector takes two steps: sweep the whole range to see where the peaks are, then zoom in on each peak until you can place the marker on its top. A line in the infrared makes a wider hill than one in the ultraviolet, and the page allows for that when it checks your reading.</p>
+      <p class="prose soft">One thing about the lab&rsquo;s detector is too good to be true, and the lab page says so as well. Light of the shortest ultraviolet wavelengths is taken in by glass and even by air, so no detector standing on an open bench could see it. Real measurements there are made inside a vacuum.</p>
+    </section>
+
+    <section id="bench" aria-labelledby="bench-title">
+      <h2 id="bench-title"><span class="step" aria-hidden="true">6</span>At the bench</h2>
+      <div class="bench-grid">
+        <div>
+          <ul class="things">
+            <li><b>The tubes.</b> Glass tubes, each holding a little of one gas at low pressure: hydrogen, five other gases, and one marked with a question mark, which is your unknown. They lie in a tray.</li>
+            <li><b>The power supply.</b> It holds one tube upright and puts about 5000 volts across it. That is what gives the atoms their energy.</li>
+            <li><b>The white lamp.</b> An ordinary lamp with a hot wire inside, to compare with the tubes.</li>
+            <li><b>The slit, the prism and the screen.</b> Some of the light passes through them and lands on the screen, spread out by color. This part is for looking, not for measuring.</li>
+            <li><b>The spectroscope.</b> Click it to look through. It has the scale you read wavelengths from, in a wide view and a closer one.</li>
+            <li><b>The detector.</b> Its chart is under the 3D view. It reaches from the far ultraviolet to the infrared.</li>
+            <li><b>The switch for the hood&rsquo;s light.</b></li>
+          </ul>
+        </div>
+        <div>
+          <ol class="tips">
+            <li><strong>Switch the power supply off before you touch a tube.</strong> On a real bench 5000 volts is dangerous and a tube that has been lit is hot. The bench will not let you change tubes with the supply on.</li>
+            <li>Change one thing at a time, and know what is lit before you measure. The detector&rsquo;s chart says what it is looking at.</li>
+            <li>Read the lines you can see with the spectroscope. Find the rest with the detector.</li>
+            <li>Do the bench work first if you like, or the calculations first. The page keeps both, and saves your work in your browser as you go.</li>
+            <li>For the unknown tube, remember part 2: two tubes of the same gas give the same lines, at the same wavelengths. Color to the eye is a hint. Measured wavelengths are evidence.</li>
+          </ol>
+        </div>
+      </div>
+
+      <h3>How the page wants its numbers</h3>
+      <table class="entry-table">
+        <thead><tr><th scope="col">What you are entering</th><th scope="col">How to type it</th><th scope="col">Common slips</th></tr></thead>
+        <tbody>
+          <tr><td>The energy of a level</td><td>Only the number in front of &times; 10<sup>&minus;18</sup> J, with its minus sign: <span class="typed">-0.43</span></td><td>Leaving off the minus sign. Moving the decimal point because your calculator showed a different power of ten.</td></tr>
+          <tr><td>The energy change of a fall</td><td>The same way. For a fall it is negative: <span class="typed">-0.32</span></td><td>Subtracting the wrong way round. It is final minus initial.</td></tr>
+          <tr><td>A wavelength you calculated</td><td>In nanometers: <span class="typed">621</span></td><td>Leaving it in meters. Putting a minus sign on it: a wavelength is never negative.</td></tr>
+          <tr><td>A wavelength you measured by eye</td><td>In nanometers, to the nearest tenth: <span class="typed">512.6</span></td><td>Reading only to the whole nanometer. Use the closer view.</td></tr>
+          <tr><td>A jump between levels</td><td>The higher level first, then the lower: 3 &rarr; 2</td><td>Writing them the other way round. The electron falls.</td></tr>
+        </tbody>
+      </table>
+      <p class="prose soft">Keep three or four digits through a calculation and round only at the end. The page checks each entry as you make it and tells you what kind of slip it sees, but it never gives you the number.</p>
+
+      <h3>Words to know</h3>
+      <dl class="words">
+        <div><dt>Wavelength (&lambda;). </dt><dd>The distance from one crest of a light wave to the next.</dd></div>
+        <div><dt>Nanometer (nm). </dt><dd>A billionth of a meter, 10<sup>&minus;9</sup> m.</dd></div>
+        <div><dt>Photon. </dt><dd>One packet of light. Its energy is h c &divide; &lambda;.</dd></div>
+        <div><dt>Spectrum. </dt><dd>Light spread out in order of wavelength.</dd></div>
+        <div><dt>Line. </dt><dd>One wavelength given off (or taken in) by an atom.</dd></div>
+        <div><dt>Energy level. </dt><dd>One of the energies an electron in an atom is allowed to have.</dd></div>
+        <div><dt>Principal quantum number (n). </dt><dd>The number of a level: 1 for the lowest, then 2, 3 and so on.</dd></div>
+        <div><dt>Ground state. </dt><dd>The lowest level, n = 1.</dd></div>
+        <div><dt>Excited state. </dt><dd>Any level above the ground state.</dd></div>
+        <div><dt>Ultraviolet, infrared. </dt><dd>Light with a wavelength shorter than violet, or longer than red.</dd></div>
+        <div><dt>Grating. </dt><dd>A plate of fine, evenly spaced lines that spreads light evenly by wavelength.</dd></div>
+        <div><dt>Spectroscopy. </dt><dd>Finding out what something is, or what it is doing, from its spectrum.</dd></div>
+      </dl>
+    </section>
+
+    <section id="uses" aria-labelledby="uses-title">
+      <h2 id="uses-title"><span class="step" aria-hidden="true">7</span>Where this is used</h2>
+      <p class="prose">What you do in this lab, reading what something is made of from its light, is one of the most widely used ideas in science. Nearly everything known about the universe beyond the solar system was learned this way, and so is a good share of what a hospital laboratory, a steel mill or a police laboratory finds out in a day. Choose a field, or browse them all.</p>
+      <p class="prose soft">Not every use reads the bright lines of single atoms as you will. Molecules have energy levels too (for the stretching of their bonds, for example), and so do atomic nuclei in a magnet. The rule is the same every time: matter gives off and takes in only light whose energy matches a gap between two of its own levels.</p>
+      <ul class="kinds" id="kinds-list"></ul>
+      <div class="chips" id="use-chips" role="group" aria-label="Field"></div>
+      <p class="uses-count" id="uses-count" aria-live="polite"></p>
+      <ul class="uses" id="uses-list"></ul>
+    </section>
+
+    <section id="check" aria-labelledby="check-title">
+      <h2 id="check-title"><span class="step" aria-hidden="true">8</span>Check yourself</h2>
+      <p class="prose">Nothing here is graded or recorded. If an answer surprises you, the part of the review it comes from is worth a second look before you open the lab.</p>
+      <ol class="quiz" id="quiz"></ol>
+      <p class="score" id="score" aria-live="polite"></p>
+    </section>
+
+    <div class="next">
+      <p>Ready? The lab opens on the bench. Light the hydrogen tube first and look at the screen behind the prism.</p>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+  </main>
+
+  <footer class="credit">
+    A review for the lab &ldquo;The Atomic Spectrum of Hydrogen&rdquo;, a simulation based on the experiment of the same name of the Daytona State College Science Department. The atom, the lines and the numbers used for practice on this page are made up and are not those of the lab.
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+  var MINUS = '−';
+  function signed(x, places) { return (x < 0 ? MINUS : '') + Math.abs(x).toFixed(places); }
+  // A number written as 6.21 × 10 to a power, with the power raised.
+  function powerOfTen(x) {
+    var parts = x.toExponential(2).split('e'), raised = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+    var power = String(Math.abs(+parts[1])).split('').map(function (d) { return raised[+d]; }).join('');
+    return parts[0] + ' × 10' + (+parts[1] < 0 ? '⁻' : '') + power;
+  }
+
+  // What a student typed, as a number, or null. Any of the dashes a keyboard offers counts as a minus sign.
+  function parseNumber(text) {
+    var s = String(text == null ? '' : text).trim().replace(/[−‒–—]/g, '-').replace(/\s+/g, '').replace(',', '.');
+    if (!/^[-+]?(\d+\.?\d*|\.\d+)(e[-+]?\d+)?$/i.test(s)) return null;
+    var v = Number(s);
+    return isFinite(v) ? v : null;
+  }
+
+  var EYE_FROM = 380, EYE_TO = 770;
+  var HC_NM = 6.626e-34 * 2.998e8 * 1e9 / 1e-18;      // wavelength in nm = HC_NM / (energy in 10^-18 J)
+
+  // The color of light of one wavelength, as near as a screen can show it.
+  function hue(nm, full) {
+    if (nm < EYE_FROM || nm > EYE_TO) return null;
+    var r = 0, g = 0, b = 0;
+    if (nm < 440) { r = (440 - nm) / 60; b = 1; }
+    else if (nm < 490) { g = (nm - 440) / 50; b = 1; }
+    else if (nm < 510) { g = 1; b = (510 - nm) / 20; }
+    else if (nm < 580) { r = (nm - 510) / 70; g = 1; }
+    else if (nm < 645) { r = 1; g = (645 - nm) / 65; }
+    else r = 1;
+    var f = full ? 1 : (nm < 420 ? 0.35 + 0.65 * (nm - 380) / 40 : (nm > 700 ? 0.35 + 0.65 * (770 - nm) / 70 : 1));
+    function c(v) { return Math.round(255 * Math.pow(Math.max(0, v) * f, 0.8)); }
+    return 'rgb(' + c(r) + ',' + c(g) + ',' + c(b) + ')';
+  }
+  function colorName(nm) {
+    if (nm < 380 || nm > 770) return '';
+    if (nm < 450) return 'violet';
+    if (nm < 495) return 'blue';
+    if (nm < 570) return 'green';
+    if (nm < 590) return 'yellow';
+    if (nm < 625) return 'orange';
+    return 'red';
+  }
+
+  // ---- 1. The wavelength slider -------------------------------------------------------------
+  // The slider runs evenly along a scale on which each step multiplies the wavelength by the same
+  // amount, from 100 nm to 3000 nm, so that the colors the eye sees are not squeezed into a sliver.
+
+  var WAVE_FROM = 100, WAVE_TO = 3000;
+  function waveAt(t) { return WAVE_FROM * Math.pow(WAVE_TO / WAVE_FROM, t); }
+  var REGIONS = [
+    { to: 280, name: 'Ultraviolet (UV-C)', note: 'Stopped by the ozone layer before it reaches the ground. Lamps that give it are used to kill germs.' },
+    { to: 315, name: 'Ultraviolet (UV-B)', note: 'The part of sunlight that burns skin, and that makes vitamin D in it.' },
+    { to: 380, name: 'Ultraviolet (UV-A)', note: 'What a "black light" gives off. It makes white cloth and some minerals glow.' },
+    { to: 770, name: 'Light the eye sees', note: '' },
+    { to: 1400, name: 'Near infrared', note: 'TV remote controls, night-vision cameras and the lasers that carry the internet through glass fibers.' },
+    { to: 3001, name: 'Infrared', note: 'Felt as warmth from a fire or a heat lamp. Many molecules take in light here.' }
+  ];
+
+  function drawBand() {
+    var canvas = $('band'), g = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+    for (var x = 0; x < w; x++) {
+      var nm = waveAt((x + 0.5) / w);
+      g.fillStyle = hue(nm) || (nm < EYE_FROM ? '#3c3654' : '#573733');
+      g.fillRect(x, 0, 1, h);
+    }
+  }
+
+  function showWave() {
+    var nm = waveAt(+$('wave').value / 1000);
+    var shown = nm < 1000 ? Math.round(nm) : Math.round(nm / 10) * 10;
+    var region = REGIONS.filter(function (r) { return shown < r.to; })[0];
+    var color = hue(shown, true), swatch = $('wave-swatch');
+    swatch.style.background = color || '';
+    swatch.textContent = color ? '' : 'not seen';
+    $('wave-nm').textContent = shown.toLocaleString('en-US') + ' nm';
+    $('wave-region').textContent = color ? 'Light the eye sees: ' + colorName(shown) + '.' : region.name + '. ' + region.note;
+    var energy = HC_NM / shown;
+    $('wave-energy').textContent = 'One photon carries ' + energy.toFixed(energy < 0.1 ? 4 : 3) + ' × 10⁻¹⁸ J.';
+    $('wave').setAttribute('aria-valuetext', shown + ' nanometers');
+  }
+
+  // ---- The imaginary atom ---------------------------------------------------------------------
+  // Made up for practice: its levels are not those of hydrogen or of any real element. The same
+  // numbers are in the animated figure.
+
+  var LEVELS = { 1: -0.80, 2: -0.43, 3: -0.11, 4: -0.03 };       // x 10^-18 J
+  var FALLS = [[2, 1], [3, 1], [4, 1], [3, 2], [4, 2], [4, 3]];
+  function changeOf(fall) { return LEVELS[fall[1]] - LEVELS[fall[0]]; }      // final minus initial
+  function waveOf(fall) { return HC_NM / Math.abs(changeOf(fall)); }
+
+  // ---- 2. The three strips ----------------------------------------------------------------------
+
+  function drawStrips() {
+    var seen = FALLS.map(waveOf).filter(function (nm) { return nm >= EYE_FROM && nm <= EYE_TO; });
+    [['strip-band', true, false], ['strip-emit', false, true], ['strip-absorb', true, true]].forEach(function (spec) {
+      var canvas = $(spec[0]), g = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+      function xOf(nm) { return (nm - EYE_FROM) / (EYE_TO - EYE_FROM) * w; }
+      g.fillStyle = '#10141a';
+      g.fillRect(0, 0, w, h);
+      if (spec[1]) {
+        for (var x = 0; x < w; x++) {
+          g.fillStyle = hue(EYE_FROM + (x + 0.5) / w * (EYE_TO - EYE_FROM));
+          g.fillRect(x, 0, 1, h);
+        }
+      }
+      if (spec[2]) {
+        seen.forEach(function (nm) {
+          g.fillStyle = spec[1] ? '#10141a' : hue(nm, true);
+          g.fillRect(Math.round(xOf(nm)) - 2, 0, 4, h);
+        });
+      }
+    });
+  }
+
+  // ---- 3. Practice: work out a fall -----------------------------------------------------------
+
+  function fillLevels() {
+    var body = $('levels-rows');
+    [4, 3, 2, 1].forEach(function (n) {
+      var tr = el('tr');
+      tr.appendChild(el('td', '', n + (n === 1 ? '  (ground state)' : '')));
+      tr.appendChild(el('td', '', signed(LEVELS[n], 2) + ' × 10⁻¹⁸ J'));
+      body.appendChild(tr);
+    });
+  }
+
+  var fallAt = 4;         // which of the six falls is being asked; the worked example was number 3
+  function askFall() {
+    var fall = FALLS[fallAt];
+    $('jump-ask').textContent = 'In the imaginary atom, the electron falls from level ' + fall[0] + ' (' + signed(LEVELS[fall[0]], 2) + ') to level ' +
+      fall[1] + ' (' + signed(LEVELS[fall[1]], 2) + '). Find its energy change and the wavelength of the light given off.';
+    ['jump-de', 'jump-wl'].forEach(function (id) { $(id).value = ''; $(id).removeAttribute('data-state'); });
+    $('jump-say').textContent = '';
+  }
+  function say(node, right, text) {
+    node.textContent = '';
+    var mark = el('b', right ? 'right' : 'wrong', right ? 'Yes. ' : 'Not yet. ');
+    node.appendChild(mark);
+    node.appendChild(document.createTextNode(text));
+  }
+  function regionWord(nm) {
+    return nm < EYE_FROM ? 'ultraviolet, so it cannot be seen' : (nm > EYE_TO ? 'infrared, so it cannot be seen' : 'light you can see (' + colorName(nm) + ')');
+  }
+  function checkFall() {
+    var fall = FALLS[fallAt], change = changeOf(fall), wave = waveOf(fall);
+    var de = parseNumber($('jump-de').value), wl = parseNumber($('jump-wl').value);
+    var deRight = de !== null && Math.abs(de - change) <= 0.006;
+    var wlRight = wl !== null && Math.abs(wl - wave) <= wave * 0.012;
+    $('jump-de').setAttribute('data-state', deRight ? 'right' : 'wrong');
+    $('jump-wl').setAttribute('data-state', wlRight ? 'right' : 'wrong');
+    var node = $('jump-say');
+    if (deRight && wlRight) { say(node, true, 'That wavelength is ' + regionWord(wave) + '.'); return; }
+    if (de === null) { say(node, false, 'Type the energy change as a number, such as ' + MINUS + '0.32.'); return; }
+    if (!deRight && Math.abs(-de - change) <= 0.006) { say(node, false, 'The size of the energy change is right, but not its sign. It is final minus initial, and the electron ends lower than it started.'); return; }
+    if (!deRight) { say(node, false, 'Look again at the energy change: the energy of the level it lands on, minus the energy of the level it leaves.'); return; }
+    if (wl === null) { say(node, false, 'The energy change is right. Now the wavelength, as a number of nanometers.'); return; }
+    if (wl < 0) { say(node, false, 'The energy change is right. A wavelength is never negative: use the size of the energy change.'); return; }
+    if (Math.abs(wl * 1e9 - wave) <= wave * 0.012) { say(node, false, 'The energy change is right. Your wavelength is in meters: multiply by 10⁹ to get nanometers.'); return; }
+    say(node, false, 'The energy change is right. For the wavelength, divide h times c by the size of the energy change (with its 10⁻¹⁸), then change meters to nanometers.');
+  }
+  function showFall() {
+    var fall = FALLS[fallAt], change = changeOf(fall), wave = waveOf(fall), size = Math.abs(change).toFixed(2);
+    var meters = powerOfTen(wave * 1e-9);
+    $('jump-say').textContent = 'ΔE = (' + signed(LEVELS[fall[1]], 2) + ') ' + MINUS + ' (' + signed(LEVELS[fall[0]], 2) + ') = ' + signed(change, 2) +
+      ' × 10⁻¹⁸ J.  λ = (6.626 × 10⁻³⁴ × 2.998 × 10⁸) ÷ (' + size + ' × 10⁻¹⁸) = ' +
+      meters + ' m = ' + (wave >= 1000 ? Math.round(wave / 10) * 10 : Math.round(wave)) + ' nm. That is ' + regionWord(wave) + '.';
+  }
+
+  // ---- 4. Practice: read a line against the scale -----------------------------------------------
+
+  var NS = 'http://www.w3.org/2000/svg';
+  function svgAdd(svg, tag, attrs, text) {
+    var node = document.createElementNS(NS, tag);
+    Object.keys(attrs).forEach(function (k) { node.setAttribute(k, attrs[k]); });
+    if (text != null) node.textContent = text;
+    svg.appendChild(node);
+    return node;
+  }
+  function clear(svg) { while (svg.firstChild) svg.removeChild(svg.firstChild); }
+
+  var lineAt = 512.6, scaleFrom = 510;
+  function newLine() {
+    scaleFrom = 400 + Math.floor(Math.random() * 290);
+    // somewhere in the middle three nanometers of the five on show, at a whole tenth
+    lineAt = Math.round((scaleFrom + 1 + Math.random() * 3) * 10) / 10;
+    drawScale();
+    $('scale-entry').value = '';
+    $('scale-entry').removeAttribute('data-state');
+    $('scale-say').textContent = '';
+  }
+  function drawScale() {
+    var svg = $('scale-svg'), W = 720, base = 118, span = 5, left = 30, right = W - 30;
+    clear(svg);
+    function x(nm) { return left + (nm - scaleFrom) / span * (right - left); }
+    svgAdd(svg, 'rect', { x: x(lineAt) - 3.2, y: 0, width: 6.4, height: base, fill: hue(lineAt, true) });
+    svgAdd(svg, 'line', { x1: 0, x2: W, y1: base, y2: base, stroke: '#cfd4d8', 'stroke-width': 1.6 });
+    for (var k = 0; k <= span * 5; k++) {
+      var nm = scaleFrom + k / 5, whole = k % 5 === 0;
+      svgAdd(svg, 'line', { x1: x(nm), x2: x(nm), y1: base, y2: base + (whole ? 30 : 14), stroke: '#cfd4d8', 'stroke-width': whole ? 2 : 1.2 });
+      if (whole) svgAdd(svg, 'text', { x: x(nm), y: base + 52, 'text-anchor': 'middle', fill: '#dfe3e6', 'font-size': 19, 'font-weight': 600, 'font-family': 'system-ui, sans-serif' }, String(Math.round(nm)));
+    }
+  }
+  function checkLine() {
+    var v = parseNumber($('scale-entry').value), node = $('scale-say'), input = $('scale-entry');
+    if (v === null) { input.setAttribute('data-state', 'wrong'); say(node, false, 'Type a number of nanometers.'); return; }
+    var miss = Math.abs(v - lineAt);
+    if (miss <= 0.11) {
+      input.setAttribute('data-state', 'right');
+      say(node, true, miss < 0.05 ? 'The line is at ' + lineAt.toFixed(1) + ' nm.' : 'Close enough: the line is at ' + lineAt.toFixed(1) + ' nm, and a tenth either way is fair for a reading by eye.');
+      return;
+    }
+    input.setAttribute('data-state', 'wrong');
+    if (!/[.,]\d/.test($('scale-entry').value)) say(node, false, 'Give it to the nearest tenth. Each short mark is 0.2 nm.');
+    else if (Math.abs(Math.round(v) - Math.round(lineAt)) >= 1 && miss >= 0.9) say(node, false, 'Check which numbered mark is just to the left of the line, then count the short marks from there. Each is 0.2 nm.');
+    else say(node, false, 'Count the short marks again from the numbered mark to the left of the line. Each is 0.2 nm, and halfway between two is 0.1 nm.');
+  }
+
+  // ---- 5. The detector: one line in a wide sweep and in a narrow one -----------------------------
+
+  function drawPeak() {
+    var svg = $('peak-svg'), centre = 1242.6, sigma = 0.55;
+    clear(svg);
+    function chart(x0, from, to, title, ticks, places, marker) {
+      var w = 300, h = 150, y0 = 30, y1 = y0 + h;
+      function x(nm) { return x0 + (nm - from) / (to - from) * w; }
+      function y(v) { return y1 - v / 100 * h; }
+      svgAdd(svg, 'text', { x: x0, y: 18, fill: '#17211e', 'font-size': 14, 'font-weight': 600, 'font-family': 'system-ui, sans-serif' }, title);
+      [0, 50, 100].forEach(function (v) {
+        svgAdd(svg, 'line', { x1: x0, x2: x0 + w, y1: y(v), y2: y(v), stroke: '#c7d1cc', 'stroke-width': 1 });
+      });
+      var d = '', steps = 300, step = (to - from) / steps;
+      for (var i = 0; i <= steps; i++) {
+        var lo = from + (i - 0.5) * step, hi = lo + step;
+        // a reading is the highest in its own step, so a narrow line is never stepped over
+        var near = centre >= lo && centre <= hi ? centre : (Math.abs(lo - centre) < Math.abs(hi - centre) ? lo : hi);
+        var z = (near - centre) / sigma, v = 1.2 + 62 * Math.exp(-0.5 * z * z);
+        d += (i ? 'L' : 'M') + x(from + i * step).toFixed(1) + ' ' + y(v).toFixed(1);
+      }
+      svgAdd(svg, 'path', { d: d + 'L' + (x0 + w) + ' ' + y1 + 'L' + x0 + ' ' + y1 + 'Z', fill: 'rgba(23,33,30,0.07)', stroke: 'none' });
+      svgAdd(svg, 'path', { d: d, fill: 'none', stroke: '#17211e', 'stroke-width': 1.5 });
+      ticks.forEach(function (nm) {
+        svgAdd(svg, 'line', { x1: x(nm), x2: x(nm), y1: y1, y2: y1 + 5, stroke: '#4b5854', 'stroke-width': 1 });
+        svgAdd(svg, 'text', { x: x(nm), y: y1 + 19, 'text-anchor': 'middle', fill: '#4b5854', 'font-size': 11.5, 'font-family': 'system-ui, sans-serif' }, nm.toFixed(places));
+      });
+      svgAdd(svg, 'text', { x: x0 + w / 2, y: y1 + 38, 'text-anchor': 'middle', fill: '#4b5854', 'font-size': 11.5, 'font-family': 'system-ui, sans-serif' }, 'wavelength (nm)');
+      if (marker) {
+        svgAdd(svg, 'line', { x1: x(centre), x2: x(centre), y1: y0, y2: y1, stroke: '#1c4c9a', 'stroke-width': 1.6 });
+        svgAdd(svg, 'text', { x: x(centre) + 7, y: y0 + 12, fill: '#1c4c9a', 'font-size': 12.5, 'font-weight': 600, 'font-family': 'system-ui, sans-serif' }, 'marker at ' + centre.toFixed(1) + ' nm');
+      }
+    }
+    chart(40, 1000, 1500, 'A wide sweep: 1000 to 1500 nm', [1000, 1100, 1200, 1300, 1400, 1500], 0, false);
+    chart(390, 1239, 1246, 'A narrow sweep: 1239 to 1246 nm', [1239, 1240, 1241, 1242, 1243, 1244, 1245, 1246], 0, true);
+  }
+
+  // ---- 7. Where this is used -------------------------------------------------------------------------
+
+  var FIELDS = [
+    { key: 'astro', name: 'Astronomy and space', color: '#3a3f9a' },
+    { key: 'physics', name: 'Physics', color: '#1c4c9a' },
+    { key: 'chem', name: 'Chemistry', color: '#1b7a6a' },
+    { key: 'bio', name: 'Biology and medicine', color: '#a83a5b' },
+    { key: 'earth', name: 'Earth and environment', color: '#3f7a2c' },
+    { key: 'forensic', name: 'Forensics, art and history', color: '#8a5a1c' },
+    { key: 'industry', name: 'Industry and everyday life', color: '#5b6470' }
+  ];
+  var KINDS = {
+    emit: ['light given off', 'A glowing gas, flame, spark or plasma gives its own bright lines, as the tubes in this lab do.'],
+    absorb: ['light taken in', 'Light passes through something, and what is missing afterward shows what is there and how much.'],
+    shift: ['lines shifted', 'The lines are in the wrong place by a small amount, and the amount is the measurement.'],
+    glow: ['light taken in, then given off', 'Fluorescence: light of one wavelength goes in, and light of a longer wavelength comes out.'],
+    scatter: ['light scattered', 'A little of the light that bounces off a molecule comes back changed by it.'],
+    radio: ['radio waves', 'The same idea with much smaller energy gaps, so the "light" is radio waves.']
+  };
+  var USES = [
+    // Astronomy and space
+    ['astro', 'absorb', 'What the stars are made of', 'In 1814 Joseph Fraunhofer mapped hundreds of dark lines in sunlight. In 1859 Kirchhoff and Bunsen matched them to elements glowing in their laboratory. In 1925 Cecilia Payne used such lines to show that stars are mostly hydrogen and helium.'],
+    ['astro', 'emit', 'An element found on the Sun first', 'During an eclipse in 1868 a line appeared in the Sun’s light that matched no element then known. It was named helium, after the Greek word for the Sun. Helium was not found on Earth until 1895.'],
+    ['astro', 'absorb', 'How hot a star is', 'Which lines are strong and which are weak depends on temperature. One look at its spectrum sorts a star into a class and gives the temperature of its surface, with no thermometer.'],
+    ['astro', 'shift', 'How fast something is moving', 'Light from something coming toward you arrives with its lines shifted to shorter wavelengths, and from something going away, to longer ones. The size of the shift gives the speed. This is the Doppler effect.'],
+    ['astro', 'shift', 'The expanding universe', 'The lines of distant galaxies are shifted toward the red, and the farther away the galaxy, the larger the shift. In 1929 Edwin Hubble set shifts against distances and showed that the universe is expanding.'],
+    ['astro', 'shift', 'Quasars', 'In 1963 the baffling lines of a star-like object called 3C 273 turned out to be the ordinary lines of hydrogen, shifted about 16 percent toward the red. It was no star but the blazing center of a galaxy more than two billion light-years away.'],
+    ['astro', 'shift', 'Planets around other stars', 'A planet tugs its star to and fro as it orbits, and the star’s lines wobble with it. The first planet of a Sun-like star was found this way in 1995. Thousands have followed.'],
+    ['astro', 'absorb', 'The air of other worlds', 'When a planet passes in front of its star, a little starlight filters through its atmosphere and the gases there leave their marks on it. In 2022 the James Webb Space Telescope found carbon dioxide in the air of a planet 700 light-years away.'],
+    ['astro', 'shift', 'Dark matter', 'In the 1970s Vera Rubin measured the Doppler shifts of glowing gas across spiral galaxies. Their outer parts were circling far too fast for the stars that can be seen to hold them: strong evidence for matter nobody has yet seen.'],
+    ['astro', 'radio', 'A map of the Milky Way', 'Cold hydrogen between the stars gives off a faint radio line with a wavelength of 21 centimeters. It comes from a far smaller energy change than the ones in this lab, and it passes through the dust that blocks ordinary light, so it traces the spiral arms of our galaxy.'],
+    ['astro', 'shift', 'Magnets on the Sun', 'A magnetic field splits a spectral line into several. In 1908 George Ellery Hale saw that splitting in the light of sunspots and showed that they are huge magnetic storms.'],
+    ['astro', 'emit', 'The element that never was', 'Bright green lines from glowing clouds of gas in space matched nothing on Earth. For decades they were credited to a new element, “nebulium”. In 1927 they were traced to ordinary oxygen, in gas far thinner than any laboratory could then make.'],
+    ['astro', 'emit', 'Rocks on Mars', 'The rovers Curiosity and Perseverance fire a laser at a rock several meters away. A speck of it turns to glowing vapor, and a spectrometer reads the lines to say which elements the rock holds: the method of this lab, on another planet.'],
+    ['astro', 'absorb', 'Water on the Moon', 'In 2009 an instrument aboard India’s Chandrayaan-1 mapped the sunlight reflected from the Moon and found the infrared mark of water spread thinly across its surface.'],
+    // Physics
+    ['physics', 'emit', 'Where quantum physics began', 'Nothing in the physics of 1900 could explain why atoms give off only certain wavelengths. Balmer found a pattern in hydrogen’s lines in 1885, Bohr explained it in 1913 with energy levels, and the effort to explain every other atom became quantum mechanics.'],
+    ['physics', 'absorb', 'The length of a second', 'Since 1967 the second has been defined by one energy change in the cesium atom: 9,192,631,770 cycles of the microwaves it takes in. Atomic clocks built on it keep GPS, phone networks and the internet in step.'],
+    ['physics', 'emit', 'The length of a meter', 'From 1960 to 1983 the meter was defined as 1,650,763.73 wavelengths of one line of krypton-86, because a wavelength of light is the same in every laboratory on Earth.'],
+    ['physics', 'emit', 'Lasers', 'A laser makes atoms give off the light of a single energy change, all in step. That is why laser light is one pure color, and why lasers can read barcodes, carry phone calls and cut steel.'],
+    ['physics', 'shift', 'Heavy hydrogen', 'In 1931 Harold Urey found faint companions beside hydrogen’s lines, shifted by a tiny amount. They came from atoms twice as heavy: deuterium, the hydrogen of heavy water. The discovery won a Nobel Prize.'],
+    ['physics', 'shift', 'Testing the laws of nature', 'In 1947 Willis Lamb found that two of hydrogen’s levels, predicted to be exactly equal, differ very slightly. Explaining that led to quantum electrodynamics, the most precisely tested theory in science. Hydrogen’s lines are still used to measure the size of the proton.'],
+    ['physics', 'absorb', 'Antimatter', 'At CERN, physicists trap atoms of antihydrogen and measure their spectrum with a laser. Any difference from hydrogen’s would overturn a basic symmetry of physics. So far the two agree to a few parts in a trillion.'],
+    ['physics', 'emit', 'The temperature of a fusion reactor', 'No probe survives in gas at a hundred million degrees. The light it gives off tells physicists its temperature, how fast it is moving and what impurities are leaking into it.'],
+    ['physics', 'absorb', 'The coldest gas there is', 'Laser light tuned to a wavelength just longer than one of an atom’s lines pushes back on atoms moving toward it. Beams from six sides slow a gas to millionths of a degree above absolute zero. The method won the 1997 Nobel Prize in physics.'],
+    // Chemistry
+    ['chem', 'emit', 'Flame tests and fireworks', 'Heat a salt in a flame and its metal atoms glow with their own colors: strontium red, barium green, copper blue-green, sodium yellow. Fireworks makers pack those salts into their shells.'],
+    ['chem', 'emit', 'New elements', 'Bunsen and Kirchhoff found cesium in 1860 and rubidium in 1861 from lines that no known element gave, and named them for the colors of those lines. Thallium, indium and gallium followed, and in 1898 neon, krypton and xenon were each recognized by their spectra.'],
+    ['chem', 'absorb', 'A trace of metal', 'Atomic absorption and emission spectrometers find metals at a few parts in a billion: lead in drinking water, arsenic in rice, mercury in fish.'],
+    ['chem', 'absorb', 'How much is dissolved', 'The more of a colored substance a solution holds, the more light it takes in. A spectrophotometer turns that into a concentration. It may be the most used instrument in chemistry and biochemistry.'],
+    ['chem', 'absorb', 'The bonds in a molecule', 'Bonds stretch and bend at their own rates and take in infrared light to match. An infrared spectrum shows at a glance whether a compound has, say, a C=O or an O–H group.'],
+    ['chem', 'radio', 'The skeleton of a molecule', 'In a strong magnet, the nuclei of atoms take in radio waves at frequencies that depend on their neighbors. Nuclear magnetic resonance is how chemists work out the structure of a new compound.'],
+    ['chem', 'scatter', 'Through the bottle', 'A little of the laser light scattered by a substance comes back with its wavelength shifted by the vibrations of the molecule. Raman spectrometers use that to name a chemical without opening its container.'],
+    ['chem', 'absorb', 'Reactions caught in the act', 'Flashes of laser light a few millionths of a billionth of a second long can follow bonds as they break and form. The work won the 1999 Nobel Prize in chemistry.'],
+    ['chem', 'emit', 'Lamps', 'Neon signs, sodium street lamps and fluorescent tubes are all glass tubes of gas with a voltage across them, like the tubes in this lab. Each gas gives its own light.'],
+    // Biology and medicine
+    ['bio', 'absorb', 'The clip on your finger', 'A pulse oximeter shines red and infrared light through a fingertip. Blood carrying oxygen and blood without it take in the two differently, and the ratio gives the oxygen level of the blood, heartbeat by heartbeat.'],
+    ['bio', 'absorb', 'How much DNA', 'DNA takes in ultraviolet light most strongly near 260 nm, and proteins near 280 nm. Every molecular biology laboratory measures those two to find how much DNA a sample holds and how clean it is.'],
+    ['bio', 'absorb', 'Blood tests', 'Most of the numbers on a blood test report (glucose, cholesterol, liver enzymes) come from a machine that mixes the sample with a reagent and measures how much light the colored product takes in.'],
+    ['bio', 'radio', 'MRI scans', 'An MRI scanner is nuclear magnetic resonance applied to a person. It reads the radio signal of the hydrogen nuclei in the body’s water and fat and turns it into a picture.'],
+    ['bio', 'glow', 'Proteins that glow', 'A fluorescent molecule takes in light of one color and gives off another. Biologists attach such tags, among them the green fluorescent protein of a jellyfish (Nobel Prize, 2008), to watch single proteins move inside living cells.'],
+    ['bio', 'glow', 'Reading DNA', 'Sequencing machines label the four bases of DNA with dyes that glow in four colors, and read the order of the bases as a string of colored flashes.'],
+    ['bio', 'glow', 'Counting cells', 'A flow cytometer sends cells past a laser one at a time and sorts them by the glow of the tags they carry. It is how immune cells are counted in the care of HIV and leukemia.'],
+    ['bio', 'absorb', 'Photosynthesis', 'Chlorophyll takes in red and blue light and reflects green, which is why leaves are green. Its spectrum shows which light a plant can use.'],
+    ['bio', 'absorb', 'Seeing color', 'The retina has three kinds of cone cells, each with a pigment that takes in a different band of light. Color vision is the brain comparing the three. In color blindness one pigment is missing or shifted.'],
+    ['bio', 'absorb', 'Newborn jaundice', 'A meter pressed to a baby’s skin reads the yellow of bilirubin from the light the skin reflects, with no needle. The treatment is blue light, which bilirubin takes in and which changes it into a form the body can get rid of.'],
+    ['bio', 'absorb', 'Watching the brain work', 'Near-infrared light passes through skin and bone. Sensors on the scalp follow the oxygen in the blood of the brain beneath by the light that comes back.'],
+    ['bio', 'glow', 'Finding the edge of a tumor', 'Before some brain operations the patient drinks a compound that tumor cells turn into a dye. Under blue light the tumor glows pink, and the surgeon can see where it ends.'],
+    // Earth and environment
+    ['earth', 'absorb', 'The ozone layer', 'Ozone takes in ultraviolet light. Instruments that compare two ultraviolet wavelengths of sunlight have measured the ozone overhead since the 1920s, and in 1985 their records from Antarctica revealed the ozone hole.'],
+    ['earth', 'absorb', 'Greenhouse gases', 'Carbon dioxide and methane take in infrared light. That is why they warm the planet, and it is also how they are measured: at Mauna Loa since 1958, and from satellites that map carbon dioxide over the whole Earth.'],
+    ['earth', 'absorb', 'Air pollution from orbit', 'Nitrogen dioxide, sulfur dioxide and ozone each take their own bite out of sunlight reflected from the ground. Satellites turn those bites into daily maps of pollution over every city.'],
+    ['earth', 'absorb', 'Warnings from volcanoes', 'A spectrometer pointed at a volcano’s plume from a safe distance measures its sulfur dioxide. A sharp rise can mean that fresh magma is on its way up.'],
+    ['earth', 'absorb', 'Crops and forests', 'Healthy leaves take in red light and reflect near-infrared light strongly. Satellites compare the two to follow drought, crop yields and the loss of forests week by week.'],
+    ['earth', 'absorb', 'Life in the oceans', 'Tiny floating plants color the sea green with their chlorophyll. Satellites measure the color of the oceans every day to map where life is thriving.'],
+    ['earth', 'emit', 'The northern lights', 'Particles from the Sun strike the thin air a hundred kilometers up, and its atoms and molecules glow like the gas in a discharge tube: oxygen green and red, nitrogen blue and violet.'],
+    ['earth', 'absorb', 'Clean water', 'Field kits and laboratory spectrophotometers measure nitrate, phosphate and chlorine in water by the depth of the color they give with a reagent.'],
+    ['earth', 'absorb', 'Minerals from the air', 'Each mineral reflects sunlight with its own pattern of infrared bands. Imaging spectrometers on aircraft and satellites map ores, clays and soils over whole regions.'],
+    // Forensics, art and history
+    ['forensic', 'absorb', 'Paint, glass and fibers', 'A chip of paint from a hit-and-run is compared, layer by layer, with paint from a suspect’s car by the infrared light each layer takes in. Fibers and glass are matched in similar ways.'],
+    ['forensic', 'scatter', 'Unknown powders', 'Police and customs officers carry handheld spectrometers that can name a drug or an explosive in seconds, often through the bag.'],
+    ['forensic', 'absorb', 'Breath tests', 'The breath analyzers used as evidence measure how much infrared light a sample of breath takes in at the wavelengths that alcohol absorbs.'],
+    ['forensic', 'glow', 'Questioned documents', 'Two inks that look the same in room light can look quite different under ultraviolet or infrared light. Examiners use that to find where a document has been altered.'],
+    ['forensic', 'emit', 'Gunshot residue', 'Firing a gun leaves particles rich in lead, barium and antimony on the hands. Under an electron beam each element gives off X-rays of its own energies, which are the lines of an atom’s innermost electrons.'],
+    ['forensic', 'emit', 'Paintings', 'X-rays make the atoms of a pigment give off X-rays of their own, which name its elements without touching the paint. A pigment that had not been invented when a picture was supposedly painted exposes a forgery.'],
+    ['forensic', 'emit', 'Where a thing came from', 'Obsidian, pottery and metals carry the trace elements of the place they came from. Reading that pattern shows archaeologists how far goods were traded thousands of years ago.'],
+    ['forensic', 'absorb', 'Gemstones', 'Natural, synthetic and treated stones look alike to the eye but take in and give off light differently. Gem laboratories grade diamonds and catch fakes with spectrometers.'],
+    // Industry and everyday life
+    ['industry', 'emit', 'Steel', 'A foundry checks each batch of molten metal before it is poured. A spark makes a sample glow, and in seconds a spectrometer reads from its lines how much carbon, chromium, nickel and a dozen other elements it holds.'],
+    ['industry', 'absorb', 'Recycling', 'On a sorting line each plastic bottle passes under a near-infrared scanner, which tells its plastic from the light it reflects and fires a jet of air to send it to the right bin.'],
+    ['industry', 'absorb', 'Food', 'Near-infrared instruments measure the protein in wheat, the fat in milk and the sugar in fruit in a few seconds without harming the sample, and catch olive oil or honey that has been watered down.'],
+    ['industry', 'absorb', 'Medicines', 'Every batch of a medicine is checked by its spectrum to be the right compound at the right strength. The same check exposes counterfeit pills.'],
+    ['industry', 'emit', 'Computer chips', 'Chips are carved with glowing plasma. The plasma’s lines show which layer it is cutting, and when the lines of one layer fade, the machine knows it has cut through.'],
+    ['industry', 'emit', 'The internet', 'One glass fiber carries dozens of infrared laser beams of slightly different wavelengths at once, each a separate channel. At the far end a grating sorts them out again, as the grating in a spectroscope does.'],
+    ['industry', 'emit', 'Screens and lamps', 'The red, green and blue of a phone screen are chosen by measuring their spectra. A “white” LED is a blue one coated with a material that takes in some of the blue and gives off yellow.'],
+    ['industry', 'absorb', 'Matching a color', 'A paint shop matches a chip from your wall by measuring how much light it reflects at each wavelength, then working out a recipe of pigments.'],
+    ['industry', 'absorb', 'Sunscreen', 'The words “broad spectrum” on a sunscreen are earned in a spectrophotometer: the lotion has to take in ultraviolet light across a set range of wavelengths.'],
+    ['industry', 'absorb', 'Gas leaks and stale air', 'Carbon dioxide monitors in buildings, and the cameras that show a leak of natural gas as a dark plume, both work by the infrared light those gases take in.'],
+    ['industry', 'emit', 'Temperature from a distance', 'A forehead thermometer and a thermal camera read the infrared glow that every warm thing gives off: an unbroken band, not lines. Satellites take the temperature of the sea and of cloud tops the same way.'],
+    ['industry', 'scatter', 'Airport security', 'Scanners at some airports check a sealed bottle of liquid by the light it scatters, without opening it.']
+  ];
+
+  function fieldOf(key) { return FIELDS.filter(function (f) { return f.key === key; })[0]; }
+
+  var chosen = 'all';
+  function showUses() {
+    var list = $('uses-list'), shown = 0;
+    list.textContent = '';
+    USES.forEach(function (use) {
+      if (chosen !== 'all' && use[0] !== chosen) return;
+      shown++;
+      var field = fieldOf(use[0]);
+      var item = el('li', 'use');
+      item.style.setProperty('--c', field.color);
+      item.appendChild(el('h3', '', use[2]));
+      item.appendChild(el('p', '', use[3]));
+      var meta = el('p', 'meta');
+      if (chosen === 'all') meta.appendChild(el('span', 'field', field.name));
+      meta.appendChild(el('span', '', KINDS[use[1]][0]));
+      item.appendChild(meta);
+      list.appendChild(item);
+    });
+    $('uses-count').textContent = chosen === 'all' ? 'All ' + USES.length + ' uses, in ' + FIELDS.length + ' fields.' : fieldOf(chosen).name + ': ' + shown + ' uses.';
+    Array.prototype.forEach.call($('use-chips').children, function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-field') === chosen ? 'true' : 'false'); });
+  }
+  function buildUses() {
+    var chips = $('use-chips');
+    [{ key: 'all', name: 'All fields' }].concat(FIELDS).forEach(function (f) {
+      var count = f.key === 'all' ? USES.length : USES.filter(function (u) { return u[0] === f.key; }).length;
+      var button = el('button', '', f.name);
+      button.type = 'button';
+      button.setAttribute('data-field', f.key);
+      button.appendChild(el('span', 'count', String(count)));
+      button.addEventListener('click', function () { chosen = f.key; showUses(); });
+      chips.appendChild(button);
+    });
+    var kinds = $('kinds-list');
+    Object.keys(KINDS).forEach(function (k) {
+      var li = el('li');
+      li.appendChild(el('b', '', KINDS[k][0].charAt(0).toUpperCase() + KINDS[k][0].slice(1) + '. '));
+      li.appendChild(document.createTextNode(KINDS[k][1]));
+      kinds.appendChild(li);
+    });
+    showUses();
+  }
+
+  // ---- 3. The animated figure sits in a frame: make the frame as tall as the page inside it ----
+
+  // The figure's page says how tall it is whenever that changes (its height depends on its width).
+  // If no word comes, the frame is measured from outside instead.
+
+  var frame = $('demo-frame'), told = false;
+  window.addEventListener('message', function (e) {
+    var data = e.data;
+    if (e.source !== frame.contentWindow || !data || data.figure !== 'levels' || !(data.height > 200)) return;
+    told = true;
+    frame.style.height = Math.ceil(data.height) + 'px';
+  });
+  function fitFrame() {
+    if (told) return;
+    try {
+      var inside = frame.contentDocument;
+      if (!inside || !inside.body) return;
+      var height = Math.ceil(inside.documentElement.scrollHeight);
+      if (height > 200) frame.style.height = height + 'px';
+    } catch (e) { /* the page was opened straight from a folder: the frame keeps its set height */ }
+  }
+  frame.addEventListener('load', function () {
+    try {
+      // the border round the frame takes the color of the page inside it
+      frame.parentNode.style.background = frame.contentWindow.getComputedStyle(frame.contentDocument.body).backgroundColor;
+    } catch (e) { /* as above */ }
+    setTimeout(fitFrame, 300);
+  });
+  window.addEventListener('resize', function () { setTimeout(fitFrame, 100); });
+
+  // ---- 8. Self-check ---------------------------------------------------------------------------------
+
+  var QUESTIONS = [
+    {
+      text: 'Which of these has the shortest wavelength?',
+      options: ['Red light', 'Violet light', 'Infrared light', 'Ultraviolet light'],
+      right: 3,
+      why: 'In order of wavelength, shortest first: ultraviolet, violet, the other colors through red, then infrared.'
+    },
+    {
+      text: 'One photon has a wavelength of 300 nm and another 600 nm. Which carries more energy?',
+      options: ['The 300 nm photon', 'The 600 nm photon', 'They carry the same'],
+      right: 0,
+      why: 'Energy is h c divided by the wavelength, so half the wavelength means twice the energy.'
+    },
+    {
+      text: 'Why does a glowing gas give off only certain wavelengths?',
+      options: ['The glass of its tube filters the others out', 'Its electrons can have only certain energies, so only certain falls are possible', 'It is not hot enough to give the rest'],
+      right: 1,
+      why: 'Each line is one fall between two energy levels. No level between means no light between.'
+    },
+    {
+      text: 'In an imaginary atom an electron falls from a level at −0.20 to a level at −0.65 (both × 10⁻¹⁸ J). What is its energy change?',
+      options: ['+0.45 × 10⁻¹⁸ J', '−0.45 × 10⁻¹⁸ J', '−0.85 × 10⁻¹⁸ J'],
+      right: 1,
+      why: 'Final minus initial: (−0.65) − (−0.20) = −0.45. It is negative because the electron lost energy.'
+    },
+    {
+      text: 'What wavelength of light does that fall give off? (h c = 1.986 × 10⁻²⁵ J m)',
+      options: ['About 441 nm', 'About 894 nm', 'About 4.41 × 10⁻⁷ nm'],
+      right: 0,
+      why: '1.986 × 10⁻²⁵ ÷ 0.45 × 10⁻¹⁸ = 4.41 × 10⁻⁷ m, which is 441 nm. The last answer forgot to change meters to nanometers.'
+    },
+    {
+      text: 'A line stands two short marks to the right of the mark numbered 468. Each short mark is 0.2 nm. Where is the line?',
+      options: ['468.2 nm', '468.4 nm', '470 nm'],
+      right: 1,
+      why: 'Two marks of 0.2 nm each is 0.4 nm past 468.'
+    },
+    {
+      text: 'Why is a grating used for measuring, and not a prism?',
+      options: ['A grating makes brighter colors', 'A grating spreads the wavelengths evenly, so a scale fits them', 'A prism cannot separate colors'],
+      right: 1,
+      why: 'A prism stretches the violet end and crowds the red end. A grating spaces every nanometer the same.'
+    },
+    {
+      text: 'In a wide sweep, the detector shows a thin spike near 1240 nm. What do you do to read its wavelength well?',
+      options: ['Read the number under the spike', 'Sweep a narrow stretch around it and put the marker on the top of the hill', 'Switch on the hood light'],
+      right: 1,
+      why: 'In a wide sweep each step covers several nanometers. A narrow sweep opens the spike into a hill with a top you can mark.'
+    },
+    {
+      text: 'Two tubes glow almost the same color to the eye. How do you find out whether they hold the same gas?',
+      options: ['Compare how bright they are', 'Measure the wavelengths of their lines and see whether they agree', 'It cannot be done'],
+      right: 1,
+      why: 'Every element has its own lines. Two tubes of the same gas give the same lines at the same wavelengths.'
+    },
+    {
+      text: 'You want to put a different tube in the power supply. What comes first?',
+      options: ['Switch the supply off', 'Switch the hood light off', 'Nothing: just swap them'],
+      right: 0,
+      why: 'The supply puts about 5000 volts across the tube, and a tube that has been lit is hot.'
+    },
+    {
+      text: 'Every line in the spectrum of a galaxy is at a slightly longer wavelength than it would be in a laboratory. What does that say?',
+      options: ['The galaxy is made of unknown elements', 'The galaxy is moving away from us', 'The galaxy is very hot'],
+      right: 1,
+      why: 'A shift of all the lines toward longer wavelengths is the Doppler effect of something going away. The pattern of the lines still names the elements.'
+    }
+  ];
+
+  function buildQuiz() {
+    var list = $('quiz'), score = $('score');
+    var answered = 0, first = 0;
+    QUESTIONS.forEach(function (q) {
+      var item = el('li', 'q');
+      var text = el('p', 'q-text', q.text);
+      var options = el('div', 'options');
+      var feedback = el('p', 'feedback');
+      feedback.setAttribute('aria-live', 'polite');
+      var tried = false, done = false;
+      q.options.forEach(function (label, i) {
+        var button = el('button', '', label);
+        button.type = 'button';
+        button.addEventListener('click', function () {
+          if (done) return;
+          var right = i === q.right;
+          button.setAttribute('data-state', right ? 'right' : 'wrong');
+          feedback.textContent = '';
+          feedback.appendChild(el('b', right ? 'right' : 'wrong', right ? 'Yes. ' : 'Not quite. '));
+          feedback.appendChild(document.createTextNode(right ? q.why : 'Try another answer.'));
+          if (right) {
+            done = true;
+            answered++;
+            if (!tried) first++;
+            score.textContent = '';
+            if (answered === QUESTIONS.length) score.appendChild(el('span', 'done', 'All ' + QUESTIONS.length + ' answered, ' + first + ' on the first try.'));
+            else score.textContent = answered + ' of ' + QUESTIONS.length + ' answered.';
+          }
+          tried = true;
+        });
+        options.appendChild(button);
+      });
+      item.appendChild(text);
+      item.appendChild(options);
+      item.appendChild(feedback);
+      list.appendChild(item);
+    });
+  }
+
+  // ---- Start ---------------------------------------------------------------------------------------------
+
+  drawBand();
+  $('wave').addEventListener('input', showWave);
+  showWave();
+  drawStrips();
+  fillLevels();
+  askFall();
+  $('jump-check').addEventListener('click', checkFall);
+  $('jump-show').addEventListener('click', showFall);
+  $('jump-next').addEventListener('click', function () {
+    // every fall but the one worked above, in turn
+    do { fallAt = (fallAt + 1) % FALLS.length; } while (fallAt === 3);
+    askFall();
+  });
+  ['jump-de', 'jump-wl'].forEach(function (id) {
+    $(id).addEventListener('keydown', function (e) { if (e.key === 'Enter') checkFall(); });
+    $(id).addEventListener('input', function () { $(id).removeAttribute('data-state'); });
+  });
+  drawScale();
+  $('scale-check').addEventListener('click', checkLine);
+  $('scale-next').addEventListener('click', newLine);
+  $('scale-entry').addEventListener('keydown', function (e) { if (e.key === 'Enter') checkLine(); });
+  $('scale-entry').addEventListener('input', function () { $('scale-entry').removeAttribute('data-state'); });
+  drawPeak();
+  buildUses();
+  buildQuiz();
+})();
+</script>
+</body>
+</html>

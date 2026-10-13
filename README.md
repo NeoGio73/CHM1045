@@ -17,7 +17,7 @@ Listed in roughly the order the course covers them.
 | Solutions and titrations | [Solutions and Titrations Study Guide](https://neogio73.github.io/CHM1045/solution-stoichiometry-study-guide.html) | Study guide |
 | Solutions and gases | [Solutions and Gases Study Guide](https://neogio73.github.io/CHM1045/solutions-and-gases-study-guide.html) | Study guide |
 | Calorimetry and Hess's law | [Calorimetry and Hess's Law Study Guide](https://neogio73.github.io/CHM1045/calorimetry-and-hess-law-study-guide.html) | Study guide |
-| Atomic spectra and the Bohr model | [The Atomic Spectrum of Hydrogen](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/) | Virtual lab |
+| Atomic spectra and the Bohr model | [The Atomic Spectrum of Hydrogen](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/), with its [prelab review](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/prelab/) | Virtual lab |
 | Molecular shape (VSEPR) | [VSEPR Test Chambers](https://neogio73.github.io/CHM1045/vsepr-chamber-06/?chamber=menu) | Game |
 
 ## Study guides
@@ -75,6 +75,23 @@ A lab on a 3D bench inside a fume hood. Students light a glass tube of hydrogen 
 - **Work is saved in the student's own browser** and is not sent anywhere. The last part prints a report, or saves it as a PDF, to hand in.
 
 The lab needs a browser with WebGL, which covers current versions of Chrome, Edge, Firefox, and Safari. It works on a phone, but a computer is easier.
+
+### Prelab review
+
+The [prelab review](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/prelab/) takes about thirty minutes and is linked from the top of the lab. Nothing in it is graded or recorded.
+
+| Part | What it covers |
+| --- | --- |
+| 1. Light, sorted by wavelength | Wavelength, the colors the eye sees, ultraviolet and infrared, and the energy of a photon, with a slider to explore them |
+| 2. Three kinds of spectrum | An unbroken band, bright lines, and dark lines |
+| 3. Why an atom gives lines | Energy levels and falls between them, shown by an animated machine, with a worked example and a practice calculation |
+| 4. How a spectroscope sorts light | Prism and grating, with practice at reading a scale to a tenth of a nanometer |
+| 5. Light the eye cannot see | How a detector finds a line and how its chart is read |
+| 6. At the bench | What is on the bench, how the page wants numbers typed, and words to know |
+| 7. Where this is used | More than seventy uses of spectroscopy in astronomy, physics, chemistry, biology and medicine, the environment, forensics and art, and industry |
+| 8. Check yourself | Eleven questions |
+
+Everything the prelab practices on is made up: an imaginary atom with four energy levels, and invented lines to read. It gives away none of the lab's answers.
 
 ## VSEPR Test Chambers
 
@@ -134,7 +151,10 @@ CHM1045/
 │   ├── model.js          the checks of what students enter
 │   ├── app.js            page logic
 │   ├── lab.css
-│   └── Build/            the 3D bench
+│   ├── Build/            the 3D bench
+│   └── prelab/
+│       ├── index.html    the prelab review
+│       └── levels.html   its animated figure
 └── vsepr-chamber-06/
     ├── index.html
     ├── js/
