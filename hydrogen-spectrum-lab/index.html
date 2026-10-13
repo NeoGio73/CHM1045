@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Atomic Spectrum of Hydrogen</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2317211e'/%3E%3Crect x='7' y='6' width='2.5' height='20' fill='%237a3df0'/%3E%3Crect x='11.5' y='6' width='2.5' height='20' fill='%233657ff'/%3E%3Crect x='17' y='6' width='2.5' height='20' fill='%2325d6e8'/%3E%3Crect x='24' y='6' width='2.5' height='20' fill='%23ff3b30'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <h1>The Atomic Spectrum of Hydrogen</h1>
+    <p class="unknown-tag">Unknown tube <span id="unknown-code" class="code">&nbsp;</span></p>
+    <p class="print-header" aria-hidden="true"><span id="print-name"></span><span id="print-date"></span></p>
+  </header>
+
+  <section class="part" id="part-bench" aria-labelledby="bench-title">
+    <h2 id="bench-title"><span class="step" aria-hidden="true">1</span>The light of hydrogen</h2>
+    <p class="lede">A glass tube holds a little hydrogen gas. A high voltage across it gives its atoms energy, and they give that energy back as light. Your job is to find out which wavelengths are in that light: the ones you can see, and the ones you cannot.</p>
+
+    <div class="bench-layout">
+      <div class="stage-column">
+        <div class="stage" id="stage">
+          <canvas id="unity-canvas" tabindex="-1" aria-label="3D fume hood holding a tray of gas tubes, a power supply for one tube, a white lamp, a slit, a prism and a white screen, a spectroscope, a detector and a switch for the hood's light"></canvas>
+          <div class="stage-cover" id="stage-cover">
+            <p id="stage-status">Setting up the fume hood</p>
+            <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+          </div>
+        </div>
+        <p class="stage-note" id="stage-note" role="status"></p>
+        <p class="stage-tip">Tip: turn your phone sideways for a bigger bench.</p>
+
+        <div class="stage-controls">
+          <div class="views" role="group" aria-label="Camera view">
+            <button type="button" class="view-button" data-view="hood" aria-pressed="false">Fume hood</button>
+            <button type="button" class="view-button" data-view="bench" aria-pressed="true">Bench</button>
+            <button type="button" class="view-button" data-view="tube" aria-pressed="false">Tube</button>
+            <button type="button" class="view-button" data-view="screen" aria-pressed="false">Prism and screen</button>
+            <button type="button" class="view-button" data-view="tray" aria-pressed="false">Tray</button>
+            <button type="button" class="view-button" data-view="scope" aria-pressed="false">Through the spectroscope</button>
+          </div>
+        </div>
+
+        <div class="scope-controls" id="scope-controls" hidden>
+          <label class="scope-slide">
+            <span class="field-name">Slide along the scale <span class="soft">(or drag the view itself)</span></span>
+            <input type="range" id="scope-slider" min="380" max="760" step="0.1" value="520">
+          </label>
+          <div class="scope-buttons">
+            <button type="button" class="quiet-button" id="scope-left" aria-label="Move toward shorter wavelengths">&larr; violet</button>
+            <button type="button" class="quiet-button" id="scope-right" aria-label="Move toward longer wavelengths">red &rarr;</button>
+            <button type="button" class="quiet-button" id="scope-fine" aria-pressed="false">Closer view</button>
+          </div>
+        </div>
+
+        <div class="switches" role="group" aria-label="The bench">
+          <div class="tube-picker" role="group" aria-label="Tube in the power supply">
+            <span class="field-name">Tube</span>
+            <span id="tube-buttons"></span>
+          </div>
+          <button type="button" class="quiet-button toggle" id="switch-power" aria-pressed="false">Power supply</button>
+          <button type="button" class="quiet-button toggle" id="switch-lamp" aria-pressed="false">White lamp</button>
+          <button type="button" class="quiet-button toggle" id="switch-lights" aria-pressed="true">Hood light</button>
+          <div class="reset-wrap">
+            <button type="button" class="quiet-button" id="reset-bench">Put everything back</button>
+          </div>
+        </div>
+
+        <div class="detector" id="detector">
+          <div class="detector-head">
+            <h3>Detector</h3>
+            <p class="detector-readout" id="detector-readout" role="status">&nbsp;</p>
+          </div>
+          <div class="detector-chart">
+            <canvas id="detector-canvas" width="900" height="260" aria-label="Chart of the detector's reading against wavelength"></canvas>
+          </div>
+          <div class="detector-controls">
+            <button type="button" class="quiet-button" id="detector-in">Zoom in at the marker</button>
+            <button type="button" class="quiet-button" id="detector-out">Zoom out</button>
+            <button type="button" class="quiet-button" id="detector-all">Whole range</button>
+            <span class="detector-nudge" role="group" aria-label="Move the marker">
+              <button type="button" class="quiet-button" id="detector-left" aria-label="Move the marker left">&larr;</button>
+              <button type="button" class="quiet-button" id="detector-right" aria-label="Move the marker right">&rarr;</button>
+            </span>
+          </div>
+          <p class="detector-note">The detector looks at whatever is lit and shows how strong the light is at each wavelength, from the far ultraviolet to the infrared. Click the chart to place the marker, or drag across a stretch of it to sweep that stretch more finely. A real detector on an open bench could not see the shortest ultraviolet, which glass and air take in; this one can.</p>
+        </div>
+      </div>
+
+      <div class="data-column">
+        <p class="prelab-note" id="prelab-note" hidden>New to this? Read the <a href="prelab/">prelab review</a> first.</p>
+        <ol class="procedure">
+          <li><strong>Light the tube.</strong> Click the hydrogen tube in the tray (or its name): it goes into the power supply. Switch the supply on. Always switch it off before you change tubes: it puts 5000 volts across the tube.</li>
+          <li><strong>Prism.</strong> Some of the light passes through the slit and the prism and lands on the white screen. Look at the screen with the hood light on, then off.</li>
+          <li><strong>Spectroscope.</strong> Click the spectroscope to look through it. A grating inside spreads the light along a scale of wavelengths in nanometers. Slide along the scale; use the closer view to read where a line stands, to the nearest tenth.</li>
+          <li><strong>White lamp.</strong> Switch the hydrogen off and the white lamp on, and look again through the spectroscope. Then switch the lamp off.</li>
+          <li><strong>Detector.</strong> The eye sees only from about 380 to 770 nm. The detector, under the bench view, reaches far beyond both ends.</li>
+        </ol>
+
+        <div class="looks" id="looks">
+          <label class="field look-field" id="look-lamp-field">
+            <span class="field-name">Through the spectroscope, the white lamp&rsquo;s light is</span>
+            <select id="look-lamp"></select>
+          </label>
+          <label class="field look-field" id="look-tube-field">
+            <span class="field-name">Hydrogen&rsquo;s light is</span>
+            <select id="look-tube"></select>
+          </label>
+          <label class="field look-field count-field" id="look-count-field">
+            <span class="field-name">Lines of hydrogen I can see, hood light off</span>
+            <input type="text" id="look-count" inputmode="numeric" autocomplete="off" maxlength="2">
+          </label>
+          <p class="msg" id="look-msg" role="status"></p>
+        </div>
+
+        <div class="line-table" id="table-1" role="group" aria-labelledby="table-1-title">
+          <p class="table-title" id="table-1-title">Table 1. The lines of hydrogen <span class="caption-note">(wavelength, nm)</span></p>
+          <p class="table-intro">Fifteen lines are within reach of this bench. Measure each one you can see with the spectroscope, and find the rest with the detector. Any order will do.</p>
+          <ol class="line-grid" id="line-grid"></ol>
+          <p class="msg" id="line-msg" role="status"></p>
+          <p class="table-status" id="line-status" role="status"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="part" id="part-unknown" aria-labelledby="unknown-title">
+    <h2 id="unknown-title"><span class="step" aria-hidden="true">2</span>The unknown tube</h2>
+    <p class="lede">The atoms of each element give their own set of lines, and no two elements give the same set. One tube in the tray is marked with a question mark. It holds one of the other five gases in the tray. Light it, note the color of its glow, and measure four of its brightest lines with the spectroscope. Then find the tube that matches it, and measure the same four lines there.</p>
+
+    <div class="unknown-block" id="unknown-block">
+      <table class="data-table unknown-table" id="table-2">
+        <caption>Table 2. The unknown tube and the tube that matches it</caption>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Unknown tube</th>
+            <th scope="col">The tube that matches: <select id="match" aria-label="The tube that matches the unknown"></select></th>
+          </tr>
+        </thead>
+        <tbody id="unknown-rows"></tbody>
+      </table>
+      <p class="msg" id="unknown-msg" role="status"></p>
+      <label class="field why-field">
+        <span class="field-name">How do you know it is this gas and not one of the others?</span>
+        <textarea id="unknown-why" rows="3"></textarea>
+      </label>
+    </div>
+  </section>
+
+  <section class="part" id="part-levels" aria-labelledby="levels-title">
+    <h2 id="levels-title"><span class="step" aria-hidden="true">3</span>The energy levels of hydrogen</h2>
+    <p class="lede">In 1913 Niels Bohr showed that the lines of hydrogen follow from one simple rule. The electron in a hydrogen atom can have only certain energies, given by</p>
+    <p class="equation"><span class="eq" role="math" aria-label="E n equals minus 2.18 times ten to the minus 18 joules, divided by n squared">E<sub>n</sub> = <span class="frac"><span>&minus;2.18 &times; 10<sup>&minus;18</sup> J</span><span>n<sup>2</sup></span></span></span><span class="eq-name">Eqn 1</span></p>
+    <p class="lede">where n, the principal quantum number, is any whole number from 1 up. Work out the energy of the first ten levels. Write every one with the power of ten kept as 10<sup>&minus;18</sup>, so type only the number in front; one is done for you.</p>
+
+    <div class="levels-layout">
+      <div>
+        <table class="data-table level-table" id="table-3">
+          <caption>Table 3. Energy of the first ten levels</caption>
+          <thead>
+            <tr><th scope="col">n</th><th scope="col">Energy, E<sub>n</sub></th><th scope="col">n</th><th scope="col">Energy, E<sub>n</sub></th></tr>
+          </thead>
+          <tbody id="level-rows"></tbody>
+        </table>
+        <p class="msg" id="level-msg" role="status"></p>
+      </div>
+      <figure class="graph" id="graph">
+        <svg id="graph-svg" viewBox="0 0 520 360" role="img" aria-labelledby="graph-caption"></svg>
+        <figcaption id="graph-caption">Your energy levels. Each value appears here as you enter it in Table 3.</figcaption>
+      </figure>
+    </div>
+    <p class="hint-box">This set of levels belongs to hydrogen alone. The levels of every other element are spaced differently, which is why each gives different lines.</p>
+  </section>
+
+  <section class="part" id="part-jumps" aria-labelledby="jumps-title">
+    <h2 id="jumps-title"><span class="step" aria-hidden="true">4</span>Energy changes and wavelengths</h2>
+    <p class="lede">When the electron moves from one level to another, its energy changes by</p>
+    <p class="equation"><span class="eq" role="math" aria-label="Delta E equals E final minus E initial">&Delta;E = E<sub>final</sub> &minus; E<sub>initial</sub></span><span class="eq-name">Eqn 2</span></p>
+    <p class="equation"><span class="eq" role="math" aria-label="Delta E equals minus 2.18 times ten to the minus 18 joules, times the quantity one over n final squared minus one over n initial squared">&Delta;E = &minus;2.18 &times; 10<sup>&minus;18</sup> J <span class="paren">(</span><span class="frac"><span>1</span><span>n<sub>f</sub><sup>2</sup></span></span> &minus; <span class="frac"><span>1</span><span>n<sub>i</sub><sup>2</sup></span></span><span class="paren">)</span></span><span class="eq-name">Eqn 3</span></p>
+    <p class="lede">When the final level is lower than the initial one (n<sub>f</sub> &lt; n<sub>i</sub>), the electron loses energy and the atom gives it off as one photon of light. The wavelength of that light follows from the size of the energy change, where h is Planck&rsquo;s constant (6.626 &times; 10<sup>&minus;34</sup> J s) and c is the speed of light (2.998 &times; 10<sup>8</sup> m/s):</p>
+    <p class="equation"><span class="eq" role="math" aria-label="lambda in meters equals h times c, divided by the size of Delta E">&lambda; (meters) = <span class="frac"><span>h c</span><span>|&Delta;E|</span></span></span><span class="eq-name">Eqn 4</span></p>
+    <p class="equation"><span class="eq" role="math" aria-label="lambda in nanometers equals lambda in meters times ten to the ninth">&lambda; (nanometers) = &lambda; (meters) &times; 10<sup>9</sup></span><span class="eq-name">Eqn 5</span></p>
+    <p class="lede">For each fall of the electron in Table 4, work out the energy change (again as a number times 10<sup>&minus;18</sup> J) and the wavelength of the light given off.</p>
+
+    <div class="jump-wrap">
+      <table class="data-table jump-table" id="table-4">
+        <caption>Table 4. Energy changes and wavelengths of fifteen jumps</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="corner"><span class="corner-top">from n<sub>higher</sub> &rarr;</span><span class="corner-side">to n<sub>lower</sub> &darr;</span></th>
+            <th scope="col" class="what-col"></th>
+            <th scope="col">6</th><th scope="col">5</th><th scope="col">4</th><th scope="col">3</th><th scope="col">2</th>
+          </tr>
+        </thead>
+        <tbody id="jump-rows"></tbody>
+      </table>
+    </div>
+    <p class="msg" id="jump-msg" role="status"></p>
+  </section>
+
+  <section class="part" id="part-match" aria-labelledby="match-title">
+    <h2 id="match-title"><span class="step" aria-hidden="true">5</span>Which jump gives which line?</h2>
+    <p class="lede">Here are the wavelengths you measured in Table 1, shortest first. Compare them with the wavelengths you worked out in Table 4, and give the jump behind each line. You should be able to match all but four from Table 4. For those four you have the energies of all ten levels in Table 3, and the pattern in the lines you have already matched will narrow the search.</p>
+    <table class="data-table match-table" id="table-5">
+      <caption>Table 5. The jump behind each line of hydrogen</caption>
+      <thead>
+        <tr><th scope="col">Measured wavelength (nm)</th><th scope="col">Jump, n<sub>higher</sub> &rarr; n<sub>lower</sub></th><th scope="col">Measured wavelength (nm)</th><th scope="col">Jump, n<sub>higher</sub> &rarr; n<sub>lower</sub></th></tr>
+      </thead>
+      <tbody id="match-rows"></tbody>
+    </table>
+    <p class="msg" id="match-msg" role="status"></p>
+    <p class="table-status" id="match-status" role="status"></p>
+  </section>
+
+  <section class="part" id="part-questions" aria-labelledby="questions-title">
+    <h2 id="questions-title"><span class="step" aria-hidden="true">6</span>Questions</h2>
+    <ol class="questions">
+      <li class="question" id="q-common">
+        <p class="question-text">In 1885 Johann Balmer could measure only the lines between about 350 and 700 nm. Find those lines in Table 5. What do their jumps all have in common?</p>
+        <div class="inline-answer">
+          <span>They all</span>
+          <select id="common-end" aria-label="Start or end"><option value="">&ndash;</option><option value="start">start</option><option value="end">end</option></select>
+          <span>at level n =</span>
+          <input type="text" id="common-level" inputmode="numeric" autocomplete="off" maxlength="2" aria-label="Level">
+        </div>
+        <p class="msg" id="msg-common" role="status"></p>
+      </li>
+      <li class="question" id="q-longest">
+        <label for="longest">Those lines are called the Balmer series. From your measurements, what is the longest wavelength in the Balmer series? Keep your answer to question 1 in mind.</label>
+        <div class="inline-answer"><input type="text" id="longest" inputmode="decimal" autocomplete="off"><span>nm</span></div>
+        <p class="msg" id="msg-longest" role="status"></p>
+      </li>
+      <li class="question" id="q-limit">
+        <p class="question-text">Now find the shortest wavelength in the Balmer series. Use Eqn 3 to work out the energy change for a fall from each of these very high levels to the level where the Balmer lines end, and then the wavelength of the light. Keep at least six digits in the energy change: the numbers are close together.</p>
+        <table class="data-table limit-table" id="table-6">
+          <thead>
+            <tr><th scope="col">n<sub>higher</sub></th><th scope="col">&Delta;E</th><th scope="col">Wavelength (nm)</th></tr>
+          </thead>
+          <tbody id="limit-rows"></tbody>
+        </table>
+        <p class="msg" id="msg-limit" role="status"></p>
+      </li>
+      <li class="question" id="q-trend">
+        <p class="question-text">What trend do you see in the wavelengths of question 3? Use your graph of the energy levels to explain why it happens.</p>
+        <div class="inline-answer">
+          <span>As the electron falls from higher and higher levels, the wavelength</span>
+          <select id="trend" aria-label="Trend"></select>
+          <span>, about</span>
+          <input type="text" id="limit-value" inputmode="decimal" autocomplete="off" aria-label="The value the wavelengths close in on">
+          <span>nm.</span>
+        </div>
+        <p class="msg" id="msg-trend" role="status"></p>
+        <label class="field why-field">
+          <span class="field-name">Why does this happen? Use your graph.</span>
+          <textarea id="trend-why" rows="4"></textarea>
+        </label>
+      </li>
+    </ol>
+  </section>
+
+  <section class="part" id="part-report" aria-labelledby="report-title">
+    <h2 id="report-title"><span class="step" aria-hidden="true">7</span>Turn in</h2>
+    <div class="report-row">
+      <label class="field name-field"><span class="field-name">Your name</span><input type="text" id="student-name" autocomplete="name"></label>
+      <button type="button" class="primary-button" id="print-report">Print or save as PDF</button>
+    </div>
+    <p class="report-status" id="report-status" role="status"></p>
+    <p class="fine">
+      Your work is saved in this browser as you go.
+      <button type="button" class="link-button" id="new-unknown">Start over with a new unknown</button>
+      <span class="confirm" id="new-confirm" hidden>
+        This erases everything you have recorded and gives you a different unknown tube.
+        <button type="button" class="quiet-button danger" id="new-yes">Erase and start over</button>
+        <button type="button" class="quiet-button" id="new-no">Keep my work</button>
+      </span>
+    </p>
+  </section>
+
+  <footer class="print-footer" aria-hidden="true"><span id="print-checks"></span></footer>
+
+  <footer class="credits">
+    A simulation based on the experiment &ldquo;The Atomic Spectrum of Hydrogen&rdquo; of the Daytona State College Science Department.
+    Fume hood model: <a href="https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f" target="_blank" rel="noopener">&ldquo;Dm3-004-08&rdquo;</a> by foxart3d,
+    used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+    Shown here with the sash raised and with different materials.
+  </footer>
+</main>
+
+<script src="model.js"></script>
+<script src="app.js"></script>
+<script>
+  (function () {
+    var lab = window.SpectrumLab;
+    if (lab.isMock) return;
+
+    var canvas = document.querySelector("#unity-canvas");
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/SpectrumLab.loader.js";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/SpectrumLab.data.unityweb",
+      frameworkUrl: buildUrl + "/SpectrumLab.framework.js.unityweb",
+      codeUrl: buildUrl + "/SpectrumLab.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "The Atomic Spectrum of Hydrogen",
+      productVersion: "0.1.0",
+      showBanner: function (message, type) { lab.unityBanner(message, type); }
+    };
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (progress) { lab.unityProgress(progress); })
+        .then(function (instance) { lab.attachUnity(instance); })
+        .catch(function (error) { lab.unityFailed(error); });
+    };
+    script.onerror = function () { lab.unityFailed("The lab files did not load."); };
+    document.body.appendChild(script);
+  })();
+</script>
+</body>
+</html>
