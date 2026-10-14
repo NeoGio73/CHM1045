@@ -1,6 +1,6 @@
 # CHM 1045: General Chemistry I
 
-Interactive study guides, practice games, and a virtual lab for a college-level General Chemistry I course. Everything runs in a web browser, with nothing to install and no account to create.
+Interactive study guides, practice games, an in-class worksheet, and a virtual lab for a college-level General Chemistry I course. Everything runs in a web browser, with nothing to install and no account to create.
 
 **Students:** these activities are linked from the course in Canvas, and that is the best place to open them, because Canvas shows where each one fits in the week. The list below is here if you want to come back and practice.
 
@@ -14,6 +14,7 @@ Listed in roughly the order the course covers them.
 | Naming compounds and writing formulas | [Hoth Run](https://neogio73.github.io/CHM1045/hoth-run.html) | Game |
 | Moles, molar mass, and Avogadro's number | [Moles and Molar Mass Study Guide](https://neogio73.github.io/CHM1045/mole-and-molar-mass-study-guide.html) | Study guide |
 | Stoichiometry | [Stoichiometry Study Guide](https://neogio73.github.io/CHM1045/stoichiometry-study-guide.html) | Study guide |
+| Reactions in aqueous solutions | [Reactions in Aqueous Solutions Worksheet](https://neogio73.github.io/CHM1045/aqueous-reactions-worksheet.html) | In-class worksheet |
 | Solutions and titrations | [Solutions and Titrations Study Guide](https://neogio73.github.io/CHM1045/solution-stoichiometry-study-guide.html) | Study guide |
 | Solutions and gases | [Solutions and Gases Study Guide](https://neogio73.github.io/CHM1045/solutions-and-gases-study-guide.html) | Study guide |
 | Calorimetry and Hess's law | [Calorimetry and Hess's Law Study Guide](https://neogio73.github.io/CHM1045/calorimetry-and-hess-law-study-guide.html) | Study guide |
@@ -31,6 +32,24 @@ Each guide opens with a roadmap of the topic, then walks through its sections in
 | Solutions and Titrations | Molarity · Dilution · Solution stoichiometry · Mixing two solutions · Titration calculations · Run a titration |
 | Solutions and Gases | Molarity · Dilution · Solution stoichiometry · Mixing two solutions · Ideal gas law · Gas stoichiometry · Solutions and gases · Putting it together |
 | Calorimetry and Hess's Law | Heat and temperature · Heat exchange · Coffee-cup calorimetry · Thermochemical equations · Hess's law · Run an experiment |
+
+## Reactions in Aqueous Solutions Worksheet
+
+A worksheet for the class to work through together in one 60-minute meeting. It has six parts, each with a suggested time, and a timer at the top of the page shows which part the class should be on.
+
+| Part | Topic | What the student does |
+| --- | --- | --- |
+| 1 | Electrolytes | Lights a bulb with five solutes, then sorts compounds into strong, weak, and nonelectrolytes |
+| 2 | Precipitation reactions | Predicts what forms when two solutions are mixed, then builds a molecular, an ionic, and a net ionic equation |
+| 3 | Acid–base reactions | Picks out the strong acids and bases, finds the proton donor, and balances a neutralization |
+| 4 | Oxidation–reduction reactions | Assigns oxidation numbers, predicts from the activity series whether a metal reacts, and balances with half-reactions |
+| 5 | Concentration and pH | Molarity, dilution, ion concentrations, and pH, with sliders for dilution and the pH scale |
+| 6 | Chemical analysis | Identifies an unknown chloride from the mass of a precipitate, and runs a titration to a faint pink endpoint |
+
+- **Every answer is checked on the page.** A hint is always there, and the worked solution opens after a first try. Common slips get a specific pointer, such as a volume left in milliliters or a missed 2:1 ratio.
+- **The numbers are the same for everyone,** so the class can work each problem together. Three activities marked "Bonus" are for anyone who finishes early.
+- **Work is saved in the student's own browser** and is not sent anywhere. The last tab is a summary that prints, or saves as a PDF, to hand in.
+- **For the instructor:** adding `?key` to the address opens every worked solution without a first try, and the "Text size" button enlarges the page for a projector.
 
 ## Names & Formulas Lab
 
@@ -119,13 +138,13 @@ Canvas links point at these exact addresses. Renaming or moving a file breaks it
 
 ### Editing the activities
 
-- **Study guides, Names & Formulas Lab, and Hoth Run** are each a single HTML file with the styles, script, and images inside it. They load nothing from other sites.
+- **Study guides, the worksheet, Names & Formulas Lab, and Hoth Run** are each a single HTML file with the styles, script, and images inside it. They load nothing from other sites.
 - **VSEPR Test Chambers** keeps the content an instructor is likely to change in [`vsepr-chamber-06/js/content.js`](vsepr-chamber-06/js/content.js): the chambers, molecules, questions, and narrator lines. Adding `?chamber=2` through `?chamber=6` to the address opens one chamber directly, and `?chamber=menu` opens the list. With nothing added, chamber 06 opens.
 - **The Atomic Spectrum of Hydrogen** is a finished build of a 3D project that is kept outside this repository. Its folder is replaced as a whole when the lab changes, so edits made to its files here would be lost.
 
 ### Running a copy on your own computer
 
-Download or clone the repository. The study guides, the Names & Formulas Lab, and Hoth Run open straight from the file with a double-click.
+Download or clone the repository. The study guides, the worksheet, the Names & Formulas Lab, and Hoth Run open straight from the file with a double-click.
 
 The VSEPR chambers and The Atomic Spectrum of Hydrogen have to be served by a web server, because browsers will not load their scripts and 3D files from a file on disk. From the repository folder, run:
 
@@ -143,6 +162,7 @@ CHM1045/
 ├── hoth-run.html
 ├── mole-and-molar-mass-study-guide.html
 ├── stoichiometry-study-guide.html
+├── aqueous-reactions-worksheet.html
 ├── solution-stoichiometry-study-guide.html      Solutions and Titrations
 ├── solutions-and-gases-study-guide.html
 ├── calorimetry-and-hess-law-study-guide.html

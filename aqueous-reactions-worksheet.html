@@ -1,0 +1,1199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reactions in Aqueous Solutions Worksheet</title>
+<meta name="description" content="Interactive in-class worksheet for General Chemistry I: electrolytes, precipitation, acid–base and redox reactions, concentration, and chemical analysis.">
+<style>
+:root{
+  --paper:#f5f3ec; --card:#fff; --ink:#19222e; --muted:#566170; --line:#d9d5c7; --line2:#ebe8dd;
+  --aq:#0b6e8a; --aq-soft:#d8eef4;
+  --good:#17703f; --good-soft:#e2f3e8; --bad:#b0281f; --bad-soft:#fbe8e5; --note:#8a4b00; --note-soft:#fcefd7;
+  --pink:#c2256f; --pink-soft:#fbe4ef;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Cambria,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","SF Mono",Menlo,Consolas,monospace;
+  --r:10px; --hue:var(--aq);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{font-size:100%;-webkit-text-size-adjust:100%}
+html.big{font-size:118%} html.huge{font-size:136%}
+body{margin:0;color:var(--ink);font:1rem/1.5 var(--sans);background-color:var(--paper);
+  background-image:linear-gradient(var(--line2) 1px,transparent 1px),linear-gradient(90deg,var(--line2) 1px,transparent 1px);background-size:28px 28px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--aq);outline-offset:2px}
+sub,sup{font-size:.72em;line-height:0}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;z-index:99;background:#fff;padding:.5rem .75rem;border-radius:6px}
+.wrap{max-width:60rem;margin:0 auto;padding:0 1rem}
+
+/* brand */
+.brand{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:1.1rem 0 .8rem}
+.kicker{font:650 .72rem/1.2 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+h1{font:600 1.7rem/1.12 var(--serif);margin:.2rem 0 .25rem;letter-spacing:-.012em}
+.how{margin:0;color:var(--muted);font-size:.92rem;max-width:38rem}
+.tools{display:flex;gap:.4rem;flex-wrap:wrap}
+
+/* buttons */
+.btn{border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;padding:.5rem .95rem;font-weight:600;font-size:.92rem;line-height:1.2}
+.btn:hover{background:#2b3847}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink);background:#fff}
+.btn.small{padding:.34rem .65rem;font-size:.82rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* sticky bar */
+.bar{position:sticky;top:0;z-index:20;background:rgba(245,243,236,.95);backdrop-filter:blur(6px);border-block:1px solid var(--line)}
+.bar-in{display:flex;align-items:center;gap:.5rem;max-width:60rem;margin:0 auto;padding:.4rem 1rem}
+.tabs{display:flex;gap:.25rem;overflow-x:auto;flex:1;scrollbar-width:none;padding:2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{display:flex;align-items:center;gap:.4rem;white-space:nowrap;border:1.5px solid transparent;background:none;border-radius:999px;padding:.3rem .7rem .3rem .32rem;font-size:.86rem;font-weight:600;color:var(--muted)}
+.tab .tn{display:grid;place-items:center;width:1.55rem;height:1.55rem;border-radius:50%;background:#fff;border:1.5px solid var(--line);font:700 .78rem var(--mono);color:var(--ink)}
+.tab .tc{display:none;font:600 .74rem var(--sans);font-variant-numeric:tabular-nums;color:var(--muted)}
+.tab[aria-selected="true"] .tc{display:inline}
+.tab.done .tn{background:var(--good);border-color:var(--good);color:#fff}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:#fff;border-color:var(--ink);color:var(--ink)}
+.tab[aria-selected="true"] .tn{background:var(--ink);border-color:var(--ink);color:#fff}
+.timer{display:flex;align-items:center;gap:.4rem;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:.32rem .7rem;font:600 .84rem var(--mono);white-space:nowrap}
+.timer.on{border-color:var(--ink)}
+.timer .t-pace{font:600 .74rem var(--sans);color:var(--muted)}
+.timer.late .t-pace{color:var(--bad)}
+@media(max-width:760px){.tab .tt,.tab .tc{display:none}.tab{padding:.25rem}.tab[aria-selected="true"] .tt{display:inline}.tab[aria-selected="true"]{padding-right:.7rem}.timer .t-pace{display:none}h1{font-size:1.4rem}}
+
+/* part */
+.panel{padding:1.2rem 0 3rem}
+.part-head{display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;border-top:4px solid var(--hue);background:var(--card);border-radius:0 0 var(--r) var(--r);border-inline:1px solid var(--line);border-bottom:1px solid var(--line);padding:1rem 1.1rem;margin-bottom:1rem}
+.pn{font:600 3rem/0.9 var(--serif);color:var(--hue)}
+.part-head h2{font:600 1.45rem/1.15 var(--serif);margin:0 0 .3rem}
+.lead{margin:0;color:#36414f;max-width:44rem}
+.pmin{font:650 .74rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap;padding-top:.3rem}
+@media(max-width:560px){.part-head{grid-template-columns:auto 1fr}.pmin{grid-column:1/-1;padding:0}}
+.part-nav{display:flex;justify-content:space-between;gap:.5rem;margin-top:1.4rem}
+
+/* activity card */
+.act{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem 1.05rem;margin-bottom:.9rem;scroll-margin-top:4.5rem}
+.act-head{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;margin-bottom:.35rem}
+.act-num{font:700 .82rem var(--mono);color:#fff;background:var(--hue);border-radius:5px;padding:.14rem .42rem}
+.act h3{font:600 1.12rem/1.2 var(--serif);margin:0;flex:1;min-width:10rem}
+.tag{font:650 .68rem var(--sans);letter-spacing:.07em;text-transform:uppercase;border-radius:999px;padding:.16rem .55rem;background:var(--pink-soft);color:var(--pink)}
+.status{font:650 .72rem var(--sans);letter-spacing:.04em;border-radius:999px;padding:.18rem .6rem;background:var(--line2);color:var(--muted);white-space:nowrap}
+.status.s-tried{background:var(--note-soft);color:var(--note)}
+.status.s-correct{background:var(--good-soft);color:var(--good)}
+.status.s-revealed{background:var(--aq-soft);color:var(--aq)}
+.prompt{margin:.2rem 0 .8rem}
+.actions{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.9rem}
+.fb,.hintbox,.solbox{margin-top:.75rem;border-radius:8px;padding:.6rem .8rem;font-size:.95rem;border-left:4px solid}
+.fb.good{background:var(--good-soft);border-color:var(--good)}
+.fb.bad{background:var(--bad-soft);border-color:var(--bad)}
+.fb.note,.hintbox{background:var(--note-soft);border-color:var(--note)}
+.solbox{background:var(--aq-soft);border-color:var(--aq);overflow-x:auto}
+.solbox h4,.hintbox h4{margin:0 0 .25rem;font:700 .72rem var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.solbox p,.solbox ul,.solbox ol{margin:.3rem 0}.solbox ul,.solbox ol{padding-left:1.2rem}
+.chem{font-family:var(--serif);font-size:1.06em}
+.nw{white-space:nowrap}
+.st{font-size:.82em;font-style:italic;color:var(--muted)}
+.eqblock{display:block;font-family:var(--serif);font-size:1.1em;margin:.3rem 0}
+
+/* marks */
+.mark{display:inline-block;min-width:1.3rem;text-align:center;font-weight:800}
+.ok>.mark::before,.ok .nfield>.mark::before{content:"\2713";color:var(--good)}
+.no>.mark::before,.no .nfield>.mark::before{content:"\2717";color:var(--bad)}
+
+/* classify */
+.crow{display:flex;align-items:center;gap:.7rem;padding:.42rem 0;border-bottom:1px dashed var(--line)}
+.crow:last-child{border-bottom:0}
+.crow.stack{flex-wrap:wrap}.crow.stack .clabel{flex-basis:100%}
+.clabel{flex:1;min-width:6.5rem}
+.clabel.chem{font-size:1.16rem}
+.segs{display:inline-flex;flex-wrap:wrap;gap:.3rem}
+.seg{position:relative}
+.seg input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.seg span{display:block;padding:.36rem .72rem;border:1.5px solid var(--line);border-radius:999px;background:#fff;font-size:.88rem;font-weight:600;color:var(--muted);transition:background .12s,color .12s,border-color .12s}
+.seg:hover span{border-color:var(--ink);color:var(--ink)}
+.seg input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
+.seg input:focus-visible+span{outline:3px solid var(--aq);outline-offset:2px}
+.crow.no{background:linear-gradient(90deg,transparent,var(--bad-soft))}
+
+/* multiple choice */
+.opt{display:flex;gap:.65rem;align-items:flex-start;border:1.5px solid var(--line);border-radius:8px;padding:.6rem .75rem;margin-bottom:.4rem;cursor:pointer;background:#fff}
+.opt:hover{border-color:var(--ink)}
+.opt input{margin:.3rem 0 0;accent-color:var(--ink);width:1rem;height:1rem;flex:none}
+.opt-txt{flex:1}
+.opt:has(input:checked){border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.opt.ok{border-color:var(--good);background:var(--good-soft);box-shadow:none}
+.opt.no{border-color:var(--bad);background:var(--bad-soft);box-shadow:none}
+
+/* chips (multi select) */
+.chips{display:flex;flex-wrap:wrap;gap:.45rem}
+.chip{position:relative;display:inline-flex;align-items:center;gap:.25rem;border:1.5px solid var(--line);border-radius:8px;background:#fff;padding:.42rem .7rem;cursor:pointer;font-size:1.08rem}
+.chip input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.chip:hover{border-color:var(--ink)}
+.chip:has(input:checked){background:var(--ink);border-color:var(--ink);color:#fff}
+.chip:has(input:focus-visible){outline:3px solid var(--aq);outline-offset:2px}
+.chip .mark{min-width:0}
+.chip.no{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--ink)!important}
+.chip.ok .mark::before{color:#9ff0c0}
+
+/* numeric */
+.nrow{display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap;padding:.45rem 0;border-bottom:1px dashed var(--line)}
+.nrow:last-child{border-bottom:0}
+.nlabel{flex:1;min-width:12rem}
+.nfield{display:inline-flex;align-items:center;gap:.4rem}
+.numin,.sel{border:1.5px solid #9aa3ae;border-radius:7px;background:#fff;padding:.42rem .55rem;width:8.2rem;font-family:var(--mono);font-size:.98rem}
+.sel{width:auto;font-family:var(--sans)}
+.unit{color:var(--muted);font-weight:600;min-width:1.6rem}
+.nrow.ok .numin,.nrow.ok .sel{border-color:var(--good);background:var(--good-soft)}
+.nrow.no .numin,.nrow.no .sel{border-color:var(--bad);background:var(--bad-soft)}
+
+/* fill-in equations */
+.eq-line{margin:.55rem 0}
+.eq-label{font:650 .74rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:.15rem}
+.eq{display:flex;flex-wrap:wrap;align-items:center;gap:.15rem .1rem;font-size:1.22rem;white-space:normal}
+.eq>span{white-space:pre}
+.coef{width:2.3rem;text-align:center;border:1.5px solid #9aa3ae;border-radius:6px;padding:.25rem 0;font:600 1.05rem var(--mono);background:#fff;margin:0 .15rem 0 .1rem}
+.stsel{border:1.5px solid #9aa3ae;border-radius:6px;padding:.22rem .15rem;font:italic .92rem var(--serif);background:#fff;margin:0 .1rem}
+.coef.ok,.stsel.ok{border-color:var(--good);background:var(--good-soft)}
+.coef.no,.stsel.no{border-color:var(--bad);background:var(--bad-soft)}
+.step{border-top:1px dashed var(--line);margin-top:.8rem;padding-top:.7rem}
+.step:first-child{border-top:0;margin-top:0;padding-top:0}
+.step-h{font-weight:700;margin-bottom:.2rem}.step-h small{font-weight:500;color:var(--muted)}
+.ions{display:flex;flex-wrap:wrap;align-items:center;gap:.3rem;margin-top:.5rem;font-size:1.18rem}
+.ion{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:.3rem .55rem;font-size:1.12rem}
+.ion:hover{border-color:var(--ink)}
+.ion[aria-pressed="true"]{text-decoration:line-through;text-decoration-thickness:2px;color:#8a929c;background:var(--line2);border-style:dashed}
+.ion.no{border-color:var(--bad);background:var(--bad-soft)}
+.ions .sym{color:var(--muted);padding:0 .1rem}
+.net{font-family:var(--serif);font-size:1.3rem;background:var(--good-soft);border-radius:8px;padding:.5rem .8rem;display:inline-block;margin-top:.3rem}
+
+/* labs */
+.lab{display:grid;grid-template-columns:1fr minmax(170px,230px);gap:1.1rem;align-items:start}
+@media(max-width:640px){.lab{grid-template-columns:1fr}.scene-wrap{max-width:210px;margin:0 auto}}
+.pick{margin-bottom:.65rem}
+.pick-label{font:650 .72rem var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.pbtns{display:flex;flex-wrap:wrap;gap:.35rem}
+.pbtn{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:.38rem .65rem;font-size:1rem}
+.pbtn:hover{border-color:var(--ink)}
+.pbtn[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.pbtn.plain{font-size:.9rem;font-weight:600}
+.result{margin-top:.7rem;border-radius:8px;padding:.6rem .8rem;background:var(--line2);font-size:.95rem;min-height:3rem}
+.result.good{background:var(--good-soft)}.result.bad{background:var(--bad-soft)}
+.result p{margin:.2rem 0}
+.scene{display:block;width:100%;height:auto}
+.scene [data-r]{transition:opacity .9s ease,fill .9s ease}
+.scene [data-r="dep"]{transition:opacity .9s ease}
+.scene-cap{text-align:center;font-size:.82rem;color:var(--muted);margin-top:.2rem}
+.labfoot{margin-top:.8rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;font-size:.86rem}
+.meter{font-weight:700;margin-right:.3rem}
+.logchip{border-radius:999px;padding:.12rem .55rem;background:var(--line2);font-size:.82rem}
+.logchip.good{background:var(--good-soft);color:var(--good)}.logchip.bad{background:var(--bad-soft);color:var(--bad)}
+.bub{animation:rise 1.9s linear infinite;animation-delay:var(--d)}
+@keyframes rise{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-56px);opacity:0}}
+.pt{animation:bob 3.4s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes bob{0%,100%{transform:translate(0,0)}33%{transform:translate(2.5px,-3px)}66%{transform:translate(-2px,2.5px)}}
+.drop.fall{animation:fall .45s ease-in}
+@keyframes fall{0%{transform:translateY(0);opacity:1}100%{transform:translateY(58px);opacity:0}}
+.flash{animation:flash .9s ease-out}
+@keyframes flash{0%{fill:#f39cc9}100%{fill:#eaf4f8}}
+@media(prefers-reduced-motion:reduce){.bub,.pt,.drop.fall,.flash{animation:none}.scene [data-r]{transition:none}}
+
+/* explorers */
+.explore{border-style:dashed;background:#fffdf7}
+.readout{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0}
+.ro{border:1px solid var(--line);border-radius:8px;padding:.35rem .65rem;background:#fff;min-width:7rem}
+.ro b{display:block;font:650 .68rem var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.ro span{font:600 1.08rem var(--mono)}
+.ro.keep{border-color:var(--good);background:var(--good-soft)}
+input[type=range]{width:100%;accent-color:var(--ink);margin:.4rem 0}
+.phbar{height:14px;border-radius:7px;background:linear-gradient(90deg,#d7263d 0%,#f46036 14%,#f6ae2d 28%,#c5d86d 42%,#4caf50 50%,#2e9cca 64%,#3b4cc0 80%,#5b2a86 100%)}
+.phticks{display:flex;justify-content:space-between;font:500 .7rem var(--mono);color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:.3rem .9rem;font-size:.86rem;color:var(--muted);margin-top:.3rem}
+.legend i{display:inline-block;width:.8rem;height:.8rem;border-radius:50%;margin-right:.3rem;vertical-align:-.08rem}
+.legend i.cap{width:1.4rem;border-radius:.4rem}
+.widget{border:1px solid var(--line);border-radius:8px;padding:.75rem .85rem;background:#fffdf7;margin-bottom:.9rem}
+.widget .lab{grid-template-columns:1fr 150px;align-items:center}
+@media(max-width:640px){.widget .lab{grid-template-columns:1fr}.widget .scene-wrap{max-width:150px}}
+.widget-h{font:650 .7rem var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+
+/* reference dialog */
+dialog{border:1px solid var(--line);border-radius:12px;padding:0;width:min(54rem,94vw);max-height:90vh;color:var(--ink)}
+dialog::backdrop{background:rgba(25,34,46,.5)}
+.ref-head{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;background:#fff;border-bottom:1px solid var(--line);padding:.7rem 1rem;z-index:1}
+.ref-head h2{font:600 1.2rem var(--serif);margin:0}
+.ref-body{padding:1rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:1rem}
+.ref-card{border:1px solid var(--line);border-radius:8px;padding:.7rem .85rem}
+.ref-card.wide{grid-column:1/-1}
+.ref-card h3{font:700 .74rem var(--sans);letter-spacing:.08em;text-transform:uppercase;margin:0 0 .4rem;color:var(--aq)}
+.ref-card ul,.ref-card ol{margin:.2rem 0;padding-left:1.15rem}.ref-card li{margin:.18rem 0}
+.ref-card p{margin:.3rem 0}
+.series{display:flex;flex-wrap:wrap;gap:.25rem;align-items:center}
+.series span{border:1px solid var(--line);border-radius:6px;padding:.1rem .4rem;font-family:var(--serif)}
+.series span.h{background:var(--ink);color:#fff;border-color:var(--ink)}
+.series em{font-size:.8rem;color:var(--muted);font-style:normal;font-weight:600}
+table.grid{border-collapse:collapse;font-size:.9rem;margin:.3rem 0}
+table.grid th,table.grid td{border:1px solid rgba(0,0,0,.18);padding:.22rem .5rem;text-align:center}
+table.grid th{background:rgba(255,255,255,.6);font-weight:650}
+
+/* summary */
+.sum-top{display:flex;gap:1.2rem;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:1rem}
+.score{font:600 3.2rem/1 var(--serif)}.score small{font-size:1.3rem;color:var(--muted)}
+.sum-meta{flex:1;min-width:14rem}
+.sum-meta label{font:650 .72rem var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:block}
+.sum-meta input{border:1.5px solid #9aa3ae;border-radius:7px;padding:.4rem .55rem;width:100%;max-width:20rem}
+table.sum{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;font-size:.94rem}
+table.sum th,table.sum td{padding:.42rem .7rem;border-bottom:1px solid var(--line2);text-align:left}
+table.sum th{font:650 .7rem var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:#faf9f4}
+table.sum tr.ph td{background:#faf9f4;font-weight:700}
+table.sum td.n{font-family:var(--mono);white-space:nowrap}
+@media print{
+  body{background:#fff}.bar,.brand,.part-nav,.no-print,dialog{display:none!important}
+  .panel{display:none!important}#panel-sum{display:block!important;padding:0}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to worksheet</a>
+
+<div class="wrap">
+  <header class="brand">
+    <div>
+      <div class="kicker">General Chemistry I · In-class worksheet</div>
+      <h1>Reactions in Aqueous Solutions</h1>
+      <p class="how">Work through Parts 1–6 in order. Check each answer as you go — hints are free, and the worked solution unlocks after your first try.</p>
+    </div>
+    <div class="tools">
+      <button class="btn ghost small" id="refBtn" type="button">Reference tables</button>
+      <button class="btn ghost small" id="sizeBtn" type="button" aria-label="Change text size">Text size: A</button>
+      <button class="btn ghost small" id="timerReset" type="button">Reset timer</button>
+    </div>
+  </header>
+</div>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="tabs" id="tabs" role="tablist" aria-label="Worksheet parts"></div>
+    <button class="timer" id="timer" type="button" aria-label="Start 60-minute class timer">
+      <span class="t-ico" aria-hidden="true">&#9654;</span><span class="t-time">00:00</span><span class="t-pace"></span>
+    </button>
+  </div>
+</div>
+
+<main id="main" class="wrap"></main>
+
+<dialog id="ref" aria-labelledby="refTitle">
+  <div class="ref-head"><h2 id="refTitle">Reference tables</h2><button class="btn ghost small" id="refClose" type="button">Close</button></div>
+  <div class="ref-body" id="refBody"></div>
+</dialog>
+
+<noscript><p style="padding:1rem">This worksheet needs JavaScript. Please open it in a current browser.</p></noscript>
+
+<script>
+(function () {
+'use strict';
+
+/* ───────── helpers ───────── */
+const $ = (s, r) => (r || document).querySelector(s);
+const h = (tag, a, ...kids) => {
+  const e = document.createElement(tag);
+  if (a) for (const k in a) {
+    const v = a[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k === 'html') e.innerHTML = v;
+    else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of kids.flat(3)) if (c != null && c !== false) e.append(c);
+  return e;
+};
+/* F: plain formula text → HTML.  Fe(OH)3(s), SO4^2-, ->, <=>  */
+const F1 = s => s
+  .replace(/<=>/g, '⇌').replace(/->/g, '→')
+  .replace(/\^(\d*)([+-])/g, (m, n, sg) => '<sup>' + n + (sg === '-' ? '−' : '+') + '</sup>')
+  .replace(/([A-Za-z)])(\d+)/g, '$1<sub>$2</sub>')
+  .replace(/\((aq|s|l|g)\)/g, '<span class="st">($1)</span>');
+/* each species stays on one line; long equations may wrap between species */
+const F = s => String(s).split(' ').map(t => t ? '<span class="nw">' + F1(t) + '</span>' : '').join(' ');
+/* P: prose with [[formula]] segments */
+const P = s => String(s).replace(/\[\[(.+?)\]\]/g, (m, f) => '<span class="chem">' + F(f) + '</span>');
+const strip = s => String(s).replace(/<[^>]+>/g, '').replace(/\[\[|\]\]/g, '').replace(/\^/g, '');
+const mark = (el, ok) => { el.classList.remove('ok', 'no'); if (ok != null) el.classList.add(ok ? 'ok' : 'no'); };
+
+function parseNum(raw) {
+  let s = String(raw == null ? '' : raw).trim().replace(/[−–—]/g, '-').replace(/\s+/g, '').replace(/,/g, '');
+  s = s.replace(/[×x*]10\^?\(?([+-]?\d+)\)?/i, 'e$1');
+  const m = s.match(/^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?/i);
+  return m ? parseFloat(m[0]) : NaN;
+}
+function parseOx(raw) {
+  let s = String(raw == null ? '' : raw).trim().replace(/[−–—]/g, '-').replace(/\s+/g, '');
+  const m = s.match(/^(\d+)([+-])$/); if (m) s = m[2] + m[1];
+  return /^[+-]?\d+$/.test(s) ? parseInt(s, 10) : NaN;
+}
+const near = (v, t, tol, abs) => abs != null ? Math.abs(v - t) <= abs + 1e-12 : Math.abs(v - t) <= Math.abs(t) * (tol || 0.015);
+
+/* ───────── saved state ───────── */
+const KEY = 'aqueous-reactions-worksheet-v1';
+const KEYED = /[?&#]key\b/i.test(location.search + location.hash);   // instructor view: solutions unlocked
+let S = {name: '', st: {}, v: {}, part: 0, size: 0};
+try { const j = JSON.parse(localStorage.getItem(KEY)); if (j && j.st) S = Object.assign(S, j); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+
+/* ───────── lab chemistry ───────── */
+const CAT = {
+  Ag: {f: 'Ag', z: 1, salt: 'AgNO3'}, Pb: {f: 'Pb', z: 2, salt: 'Pb(NO3)2'},
+  Ba: {f: 'Ba', z: 2, salt: 'Ba(NO3)2'}, Mg: {f: 'Mg', z: 2, salt: 'Mg(NO3)2'}
+};
+const AN = {
+  Cl: {f: 'Cl', z: 1, salt: 'NaCl', alk: 'Na', rule: 'Chlorides, bromides and iodides are soluble — except with [[Ag^+]], [[Hg2^2+]] and [[Pb^2+]].'},
+  I: {f: 'I', z: 1, salt: 'KI', alk: 'K', rule: 'Chlorides, bromides and iodides are soluble — except with [[Ag^+]], [[Hg2^2+]] and [[Pb^2+]].'},
+  SO4: {f: 'SO4', z: 2, salt: 'Na2SO4', alk: 'Na', rule: 'Sulfates are soluble — except with [[Ag^+]], [[Hg2^2+]], [[Pb^2+]], [[Ca^2+]], [[Sr^2+]] and [[Ba^2+]].'},
+  CO3: {f: 'CO3', z: 2, salt: 'Na2CO3', alk: 'Na', rule: 'Carbonates are insoluble — except with Group 1A cations and [[NH4^+]].'}
+};
+const WHITE = {name: 'white', fill: '#fdfdfd', stroke: '#9aa4af'}, PALE = {name: 'pale yellow', fill: '#f2e7a0', stroke: '#bfae4e'}, YEL = {name: 'bright yellow', fill: '#f6c915', stroke: '#b98f00'};
+const PPT = {AgI: PALE, Ag2CO3: PALE, PbI2: YEL};
+function mixEval(ck, ak) {
+  const c = CAT[ck], n = AN[ak], g = c.z === n.z ? c.z : 1, sc = n.z / g, sa = c.z / g;
+  const prod = c.f + (sc > 1 ? sc : '') + n.f + (sa > 1 ? sa : '');
+  const other = n.alk + 'NO3';
+  const react = (ak === 'Cl' || ak === 'I') ? (ck === 'Ag' || ck === 'Pb') : ak === 'SO4' ? ck !== 'Mg' : true;
+  const label = c.salt + ' + ' + n.salt;
+  if (!react) return {react, label, cell: '—',
+    html: '<p><b>No reaction.</b> The possible products, [[' + prod + ']] and [[' + other + ']], are both soluble, so all four ions stay in solution as spectators. There is no net ionic equation.</p><p>' + n.rule + '</p>',
+    scene: {liquid: CLEAR}, cap: 'Clear solution — no change'};
+  const col = PPT[prod] || WHITE;
+  const net = (sc > 1 ? sc : '') + c.f + '^' + (c.z > 1 ? c.z : '') + '+(aq) + ' + (sa > 1 ? sa : '') + n.f + '^' + (n.z > 1 ? n.z : '') + '-(aq) -> ' + prod + '(s)';
+  return {react, label, cell: prod,
+    html: '<p><b>Precipitate: [[' + prod + '(s)]]</b> — ' + col.name + '.</p><p>Net ionic: [[' + net + ']]</p><p>Spectators: [[' + n.alk + '^+]] and [[NO3^-]]. ' + n.rule + '</p>',
+    scene: {liquid: CLEAR, sed: col}, cap: col.name.charAt(0).toUpperCase() + col.name.slice(1) + ' solid settles out'};
+}
+const SERIES = ['Li', 'K', 'Ba', 'Ca', 'Na', 'Mg', 'Al', 'Zn', 'Cr', 'Fe', 'Cd', 'Co', 'Ni', 'Sn', 'Pb', 'H', 'Cu', 'Hg', 'Ag', 'Pt', 'Au'];
+const CLEAR = '#dcedf3', GREEN = '#cbe6bf', BLUE = '#63b0e4';
+const METAL = {
+  Mg: {col: '#d3d8de', ion: CLEAR}, Zn: {col: '#a9b3bf', ion: CLEAR}, Fe: {col: '#767e89', ion: GREEN},
+  Cu: {col: '#c0693a', ion: BLUE}, Ag: {col: '#e6e9ee', ion: CLEAR}
+};
+const SOLN = {
+  Zn: {salt: 'Zn(NO3)2', z: 2, liq: CLEAR, dep: '#8a94a1', see: 'a gray coating of zinc forms on the strip'},
+  Fe: {salt: 'FeSO4', z: 2, liq: GREEN, dep: '#555c66', see: 'dark gray iron deposits on the strip and the pale green color fades'},
+  H: {salt: 'HCl', z: 1, liq: CLEAR, dep: null, see: 'bubbles of [[H2]] gas stream off the metal as it dissolves'},
+  Cu: {salt: 'CuSO4', z: 2, liq: BLUE, dep: '#a94f27', see: 'reddish-brown copper coats the strip and the blue color fades'},
+  Ag: {salt: 'AgNO3', z: 1, liq: CLEAR, dep: '#f2f4f7', see: 'silvery crystals of silver grow on the strip'}
+};
+function dipEval(mk, sk) {
+  const so = SOLN[sk], me = METAL[mk], label = mk + ' in ' + so.salt;
+  if (mk === sk) return {skip: 'That solution already contains ions of the same metal — there is nothing to displace. Pick a different pair.'};
+  const react = SERIES.indexOf(mk) < SERIES.indexOf(sk);
+  const ion = sk === 'H' ? 'H^+' : sk + '^' + (so.z > 1 ? so.z : '') + '+';
+  const base = {liquid: so.liq, metal: me.col};
+  if (!react) return {react, label, cell: '—',
+    html: '<p><b>No reaction.</b> ' + mk + ' is <em>below</em> ' + (sk === 'H' ? 'hydrogen' : sk) + ' in the activity series, so [[' + ion + ']] cannot oxidize ' + mk + '(s).</p>',
+    scene: base, cap: 'Nothing happens'};
+  const net = sk === 'H' ? mk + '(s) + 2H^+(aq) -> ' + mk + '^2+(aq) + H2(g)'
+    : so.z === 2 ? mk + '(s) + ' + sk + '^2+(aq) -> ' + mk + '^2+(aq) + ' + sk + '(s)'
+    : mk + '(s) + 2' + sk + '^+(aq) -> ' + mk + '^2+(aq) + 2' + sk + '(s)';
+  const extra = me.ion === BLUE ? ', and the solution turns blue as [[Cu^2+]] forms' : (me.ion === GREEN && sk !== 'Fe') ? ', and the solution turns pale green as [[Fe^2+]] forms' : '';
+  return {react, label, cell: 'reacts',
+    html: '<p><b>Reaction.</b> ' + mk + ' is <em>above</em> ' + (sk === 'H' ? 'hydrogen' : sk) + ' in the activity series.</p><p>Net ionic: [[' + net + ']]</p><p>Oxidized: ' + mk + ' (0 → +2). Reduced: ' + (sk === 'H' ? 'H' : sk) + ' (+' + so.z + ' → 0). You would see ' + so.see + extra + '.</p>',
+    scene: Object.assign({}, base, {liquid: me.ion, dep: so.dep, bubbles: sk === 'H'}), cap: sk === 'H' ? 'Gas bubbles form' : 'A new metal plates out'};
+}
+function gridTable(rows, cols, rl, cl, fn) {
+  return '<table class="grid"><tr><th></th>' + cols.map(c => '<th>' + F(cl(c)) + '</th>').join('') + '</tr>' +
+    rows.map(r => '<tr><th>' + F(rl(r)) + '</th>' + cols.map(c => { const e = fn(r, c); return '<td>' + (e.skip ? '' : F(e.cell)) + '</td>'; }).join('') + '</tr>').join('') + '</table>';
+}
+const LABS = {
+  mix: {
+    strip: false, go: 'Mix them', predict: [{k: 1, t: 'A precipitate forms'}, {k: 0, t: 'No reaction'}],
+    groups: [{label: 'Solution A', keys: Object.keys(CAT), f: k => CAT[k].salt}, {label: 'Solution B', keys: Object.keys(AN), f: k => AN[k].salt}],
+    eval: mixEval, idle: {liquid: CLEAR}, idleCap: 'Two clear solutions',
+    sol: () => '<p>Every outcome on this bench (a formula is the precipitate; — means no reaction):</p>' + gridTable(Object.keys(CAT), Object.keys(AN), k => CAT[k].salt, k => AN[k].salt, mixEval) +
+      P('<p>Only the cation from A and the anion from B can form a new solid; the other pairing is always [[NaNO3]] or [[KNO3]], which is soluble.</p>')
+  },
+  dip: {
+    strip: true, go: 'Dip the strip', predict: [{k: 1, t: 'A reaction occurs'}, {k: 0, t: 'No reaction'}],
+    groups: [{label: 'Metal strip', keys: Object.keys(METAL), f: k => k}, {label: 'Solution', keys: Object.keys(SOLN), f: k => SOLN[k].salt}],
+    eval: dipEval, idle: {liquid: CLEAR, metal: '#c8cdd4'}, idleCap: 'Choose a metal and a solution',
+    sol: () => '<p>A metal is oxidized by the ions of any element <em>below</em> it in the activity series: Mg &gt; Zn &gt; Fe &gt; H &gt; Cu &gt; Ag.</p>' + gridTable(Object.keys(METAL), Object.keys(SOLN), k => k + '(s)', k => SOLN[k].salt, dipEval)
+  }
+};
+
+/* ───────── worksheet content ───────── */
+const SWN = [{k: 's', t: 'Strong'}, {k: 'w', t: 'Weak'}, {k: 'n', t: 'Non'}];
+const SI = [{k: 's', t: 'Soluble'}, {k: 'i', t: 'Insoluble'}];
+const RTYPE = ['Combination', 'Decomposition', 'Displacement', 'Disproportionation', 'Combustion'].map(t => ({k: t, t}));
+const PARTS = [
+{ n: 1, title: 'Electrolytes', short: 'Electrolytes', min: 6, hue: '#9a5b00',
+  lead: 'An electrolyte dissolves in water to give a solution that conducts electricity. A <b>strong</b> electrolyte exists entirely as ions; a <b>weak</b> electrolyte is mostly intact molecules in equilibrium with a few ions; a <b>nonelectrolyte</b> produces no ions at all.',
+  acts: [
+    {id: '1.0', type: 'explore', widget: 'conduct', title: 'Will it light the bulb?', prompt: 'Tap a solute to dissolve it. Watch the bulb, and look at which particles are in the beaker.'},
+    {id: '1.1', type: 'classify', title: 'Strong, weak, or non?', prompt: 'Classify each solute by what it does in water.', options: SWN,
+     hint: 'Ask in order: Is it <b>ionic</b> (a metal or [[NH4^+]] with an anion) and soluble? → strong. Is it a <b>strong acid</b> (Reference tables)? → strong. Is it a weak acid or weak base? → weak. Any other molecular compound → nonelectrolyte.',
+     rows: [
+      {f: 'KBr', a: 's', why: 'Soluble ionic compound — dissociates completely.'},
+      {f: 'HNO3', a: 's', why: 'One of the seven strong acids — ionizes completely.'},
+      {f: 'HF', a: 'w', why: 'An acid that is not on the strong-acid list, so it is a weak acid.'},
+      {f: 'C6H12O6', a: 'n', why: 'Molecular, and neither an acid nor a base.'},
+      {f: 'Ba(OH)2', a: 's', why: 'A strong base (heavy Group 2A hydroxide).'},
+      {f: 'NH3', a: 'w', why: 'A weak base: only a small fraction forms [[NH4^+]] and [[OH^-]].'},
+      {f: 'CH3OH', a: 'n', why: 'Molecular. The –OH is covalently bonded; it is not a hydroxide ion.'},
+      {f: '(NH4)2SO4', a: 's', why: 'Ionic even without a metal: [[NH4^+]] and [[SO4^2-]] ions. Soluble, so strong.'}]},
+    {id: '1.2', type: 'mc', title: 'What is actually in the beaker?', prompt: 'Which statement best describes a 0.10 M solution of acetic acid, [[HC2H3O2]]?',
+     hint: 'Is acetic acid on the list of strong acids? What does the bulb do for a weak acid?',
+     sol: '<p>Acetic acid is a weak acid, so it is a weak electrolyte:</p><span class="eqblock">[[HC2H3O2(aq) <=> H^+(aq) + C2H3O2^-(aq)]]</span><p>The double arrow means both directions occur. At equilibrium most of the acid is present as intact molecules.</p>',
+     options: [
+      {t: 'Nearly all of it exists as [[H^+]] and [[C2H3O2^-]] ions.', fb: 'That describes a <em>strong</em> acid. Acetic acid is not one of the seven strong acids.'},
+      {t: 'Most of it stays as intact [[HC2H3O2]] molecules, in equilibrium with a small number of [[H^+]] and [[C2H3O2^-]] ions.', ok: 1, fb: 'Yes — a weak electrolyte. That is why its ionization is written with a double arrow, ⇌.'},
+      {t: 'None of it ionizes, so the solution does not conduct at all.', fb: 'A little of it does ionize — the bulb glows dimly. Zero ions would make it a nonelectrolyte.'},
+      {t: 'It breaks apart into separate C, H, and O atoms.', fb: 'Dissolving never breaks a molecule into atoms. An acid can only lose its ionizable [[H^+]].'}]}
+  ]},
+{ n: 2, title: 'Precipitation reactions', short: 'Precipitation', min: 12, hue: '#0b6e8a',
+  lead: 'When two ionic solutions are mixed, the cations trade anions. If one of the new combinations is <b>insoluble</b>, it leaves the solution as a precipitate. Any ion that is dissolved on both sides of the equation is a <b>spectator</b> and cancels out of the net ionic equation.',
+  acts: [
+    {id: '2.1', type: 'classify', title: 'Soluble or insoluble?', prompt: 'Use the solubility guidelines (open <b>Reference tables</b> if you need them).', options: SI,
+     hint: 'Check the "always soluble" ions first: Group 1A cations, [[NH4^+]], [[NO3^-]], [[C2H3O2^-]], [[ClO3^-]]. If one is present, you are done.',
+     rows: [
+      {f: 'Pb(NO3)2', a: 's', why: 'All nitrates are soluble — no exceptions.'},
+      {f: 'AgBr', a: 'i', why: 'Bromides are soluble except with [[Ag^+]], [[Hg2^2+]] and [[Pb^2+]].'},
+      {f: '(NH4)2CO3', a: 's', why: 'Most carbonates are insoluble, but ammonium compounds are always soluble.'},
+      {f: 'BaSO4', a: 'i', why: 'Sulfates are soluble except with [[Ag^+]], [[Hg2^2+]], [[Pb^2+]], [[Ca^2+]], [[Sr^2+]] and [[Ba^2+]].'},
+      {f: 'Fe(OH)3', a: 'i', why: 'Hydroxides are insoluble except with Group 1A cations and [[Ba^2+]].'},
+      {f: 'Na2S', a: 's', why: 'Most sulfides are insoluble, but Group 1A compounds are always soluble.'}]},
+    {id: '2.2', type: 'predictlab', lab: 'mix', title: 'Mixing bench: predict, then pour',
+     prompt: 'Pick one solution from each row, <b>predict</b> what happens, then mix. Get <b>4 predictions right</b>, including at least one pair that gives <b>no reaction</b>.',
+     hint: 'Swap partners: the cation from A pairs with the anion from B. Check that new compound against the solubility guidelines. The other new pairing is always a Group 1A nitrate, which is soluble.'},
+    {id: '2.3', type: 'netionic', title: 'Molecular → ionic → net ionic',
+     prompt: 'Aqueous iron(III) chloride is mixed with aqueous sodium hydroxide. Build all three equations.',
+     hint: 'Step 1: [[Fe^3+]] needs three [[OH^-]]. Which product do the solubility guidelines call insoluble? Step 2: a spectator ion looks exactly the same on both sides of the arrow.',
+     molecular: '{1}FeCl3(aq) + {3}NaOH(aq) -> {1}Fe(OH)3{st:s} + {3}NaCl{st:aq}',
+     ionic: [{t: 'Fe^3+(aq)'}, '+', {t: '3Cl^-(aq)', s: 1}, '+', {t: '3Na^+(aq)', s: 1}, '+', {t: '3OH^-(aq)'}, '->', {t: 'Fe(OH)3(s)'}, '+', {t: '3Na^+(aq)', s: 1}, '+', {t: '3Cl^-(aq)', s: 1}],
+     net: 'Fe^3+(aq) + 3OH^-(aq) -> Fe(OH)3(s)',
+     sol: '<p>Molecular: [[FeCl3(aq) + 3NaOH(aq) -> Fe(OH)3(s) + 3NaCl(aq)]]</p><p>Ionic: [[Fe^3+ + 3Cl^- + 3Na^+ + 3OH^- -> Fe(OH)3(s) + 3Na^+ + 3Cl^-]]</p><p>[[Na^+]] and [[Cl^-]] are unchanged on both sides, so they cancel.</p><p>Net ionic: [[Fe^3+(aq) + 3OH^-(aq) -> Fe(OH)3(s)]]</p>'},
+    {id: '2.4', type: 'mc', title: 'Pick the net ionic equation', prompt: 'Aqueous [[Na2CO3]] and aqueous [[CaCl2]] are mixed. Which is the net ionic equation?',
+     hint: 'Trade partners to get the two possible products, decide which one is insoluble, then cancel everything that is still dissolved on both sides.',
+     sol: '<p>Molecular: [[Na2CO3(aq) + CaCl2(aq) -> CaCO3(s) + 2NaCl(aq)]]</p><p>Ionic: [[2Na^+ + CO3^2- + Ca^2+ + 2Cl^- -> CaCO3(s) + 2Na^+ + 2Cl^-]]</p><p>Cancel the spectators [[Na^+]] and [[Cl^-]]: [[Ca^2+(aq) + CO3^2-(aq) -> CaCO3(s)]]</p>',
+     options: [
+      {t: '[[Na2CO3(aq) + CaCl2(aq) -> CaCO3(s) + 2NaCl(aq)]]', fb: 'That is balanced, but it is the <em>molecular</em> equation. Split the strong electrolytes into ions and cancel the spectators.'},
+      {t: '[[2Na^+(aq) + 2Cl^-(aq) -> 2NaCl(s)]]', fb: 'NaCl is soluble (Group 1A), so it does not precipitate. [[Na^+]] and [[Cl^-]] are the spectators here.'},
+      {t: '[[Ca^2+(aq) + CO3^2-(aq) -> CaCO3(s)]]', ok: 1, fb: 'Right. Carbonates are insoluble except with Group 1A cations and [[NH4^+]]; [[Na^+]] and [[Cl^-]] are spectators.'},
+      {t: 'No reaction — every ion is a spectator.', fb: 'Check [[CaCO3]] against the guidelines: carbonates are insoluble unless the cation is Group 1A or [[NH4^+]].'}]}
+  ]},
+{ n: 3, title: 'Acid–base reactions', short: 'Acids & bases', min: 8, hue: '#c2256f',
+  lead: 'A <b>Brønsted acid</b> donates a proton ([[H^+]]); a <b>Brønsted base</b> accepts one. Strong acids and strong bases are strong electrolytes. In a neutralization, acid + base → water + a salt.',
+  acts: [
+    {id: '3.1', type: 'multi', title: 'Find the strong ones', prompt: 'Tap <b>every strong acid and every strong base</b>. Leave the weak ones unselected.',
+     hint: 'There are only seven strong acids to memorize. Strong bases are the hydroxides of Group 1A and of heavy Group 2A (Ca, Sr, Ba).',
+     chips: [
+      {f: 'HBr', ok: 1, why: 'strong acid'}, {f: 'HF', why: 'weak acid'}, {f: 'KOH', ok: 1, why: 'strong base (Group 1A hydroxide)'},
+      {f: 'NH3', why: 'weak base'}, {f: 'HNO3', ok: 1, why: 'strong acid'}, {f: 'HNO2', why: 'weak acid — nitrous, not nitric'},
+      {f: 'Sr(OH)2', ok: 1, why: 'strong base (heavy Group 2A hydroxide)'}, {f: 'H3PO4', why: 'weak acid'},
+      {f: 'HClO4', ok: 1, why: 'strong acid'}, {f: 'HC2H3O2', why: 'weak acid'}]},
+    {id: '3.2', type: 'classify', stack: true, title: 'Who donates the proton?', prompt: 'Look only at the <b>reactants</b> (left side) of each equation.',
+     hint: 'Compare each reactant with what it becomes. The species that <em>loses</em> an H (and one unit of positive charge) is the acid; the one that <em>gains</em> it is the base.',
+     after: '<p>Notice that water is the <b>acid</b> in (a) and the <b>base</b> in (b). (a) [[H2O]] gives a proton to [[NH3]] and becomes [[OH^-]]. (b) [[HF]] gives a proton to [[H2O]], forming [[H3O^+]].</p>',
+     rows: [
+      {l: '(a) [[NH3(aq) + H2O(l) <=> NH4^+(aq) + OH^-(aq)]] — the Brønsted <b>acid</b> is', o: [{k: 'NH3', t: '[[NH3]]'}, {k: 'H2O', t: '[[H2O]]'}], a: 'H2O', why: '[[H2O]] loses [[H^+]] to become [[OH^-]].'},
+      {l: '(a) … and the Brønsted <b>base</b> is', o: [{k: 'NH3', t: '[[NH3]]'}, {k: 'H2O', t: '[[H2O]]'}], a: 'NH3', why: '[[NH3]] accepts [[H^+]] to become [[NH4^+]].'},
+      {l: '(b) [[HF(aq) + H2O(l) <=> H3O^+(aq) + F^-(aq)]] — the Brønsted <b>acid</b> is', o: [{k: 'HF', t: '[[HF]]'}, {k: 'H2O', t: '[[H2O]]'}], a: 'HF', why: '[[HF]] loses [[H^+]] to become [[F^-]].'},
+      {l: '(b) … and the Brønsted <b>base</b> is', o: [{k: 'HF', t: '[[HF]]'}, {k: 'H2O', t: '[[H2O]]'}], a: 'H2O', why: '[[H2O]] accepts [[H^+]] to become [[H3O^+]].'}]},
+    {id: '3.3', type: 'fill', title: 'Balance a neutralization', prompt: 'Nitric acid is neutralized by barium hydroxide. Enter the smallest whole-number coefficients.',
+     hint: '[[Ba(OH)2]] is dibasic: each formula unit supplies two [[OH^-]], so it needs two [[H^+]].',
+     lines: [{t: '{2}HNO3(aq) + {1}Ba(OH)2(aq) -> {1}Ba(NO3)2(aq) + {2}H2O(l)'}],
+     sol: '<p>[[2HNO3(aq) + Ba(OH)2(aq) -> Ba(NO3)2(aq) + 2H2O(l)]]</p><p>All of the strong electrolytes split into ions, [[Ba^2+]] and [[NO3^-]] cancel, and the net ionic equation is the same as for any strong acid with any strong base: [[H^+(aq) + OH^-(aq) -> H2O(l)]]</p>'},
+    {id: '3.4', type: 'mc', title: 'A weak acid meets a strong base', prompt: 'Hydrofluoric acid reacts with sodium hydroxide: [[HF(aq) + NaOH(aq) -> H2O(l) + NaF(aq)]]. Which is the net ionic equation?',
+     hint: 'Only <em>strong</em> electrolytes are written as separate ions. Is HF a strong acid?',
+     sol: '<p>HF is a weak acid, so it stays written as a molecule. NaOH and NaF are strong electrolytes.</p><p>Ionic: [[HF(aq) + Na^+(aq) + OH^-(aq) -> H2O(l) + Na^+(aq) + F^-(aq)]]</p><p>Cancel [[Na^+]]: [[HF(aq) + OH^-(aq) -> H2O(l) + F^-(aq)]]</p>',
+     options: [
+      {t: '[[H^+(aq) + OH^-(aq) -> H2O(l)]]', fb: 'That is the net ionic equation for a <em>strong</em> acid with a strong base. HF is weak, so it is not written as [[H^+]] + [[F^-]].'},
+      {t: '[[HF(aq) + OH^-(aq) -> H2O(l) + F^-(aq)]]', ok: 1, fb: 'Yes. HF is a weak electrolyte and stays molecular; only [[Na^+]] is a spectator.'},
+      {t: '[[H^+(aq) + F^-(aq) + Na^+(aq) + OH^-(aq) -> H2O(l) + Na^+(aq) + F^-(aq)]]', fb: 'This splits HF into ions, but HF is a weak acid — it exists mostly as molecules. It also still contains a spectator.'},
+      {t: '[[Na^+(aq) + F^-(aq) -> NaF(s)]]', fb: 'NaF is soluble (Group 1A), so it is not a precipitate. The product that drives this reaction is water.'}]}
+  ]},
+{ n: 4, title: 'Oxidation–reduction reactions', short: 'Redox', min: 12, hue: '#a84a22',
+  lead: 'Redox reactions transfer electrons. <b>Oxidation</b> is loss of electrons and <b>reduction</b> is gain — the two always happen together. Oxidation numbers keep track of who lost and who gained.',
+  acts: [
+    {id: '4.1', type: 'num', title: 'Assign oxidation numbers', prompt: 'Give the oxidation number of the highlighted element. Include the sign (for example, +4 or −2).',
+     hint: 'Assign the reliable elements first (Group 1A = +1, H = +1, O = −2), then solve for the unknown so that everything sums to the overall charge.',
+     sol: '<ul><li>[[K2Cr2O7]]: 2(+1) + 2x + 7(−2) = 0 → x = <b>+6</b></li><li>[[SO3^2-]]: x + 3(−2) = −2 → x = <b>+4</b></li><li>[[NH4^+]]: x + 4(+1) = +1 → x = <b>−3</b></li><li>[[H2O2]]: 2(+1) + 2x = 0 → x = <b>−1</b> (H outranks O, so O is not −2 in a peroxide)</li><li>[[ClO4^-]]: x + 4(−2) = −1 → x = <b>+7</b></li></ul>',
+     parts: [
+      {tag: 'a', l: '(a) <b>Cr</b> in [[K2Cr2O7]]', ans: 6, abs: 0, ox: 1, traps: [{v: 12, msg: 'That is the total for both Cr atoms — divide by 2.'}, {v: -6, msg: 'Right size, wrong sign.'}]},
+      {tag: 'b', l: '(b) <b>S</b> in [[SO3^2-]]', ans: 4, abs: 0, ox: 1, traps: [{v: 6, msg: 'The numbers must sum to the ion’s charge, −2, not to zero.'}]},
+      {tag: 'c', l: '(c) <b>N</b> in [[NH4^+]]', ans: -3, abs: 0, ox: 1, traps: [{v: 3, msg: 'Right size, wrong sign: x + 4(+1) = +1.'}, {v: -4, msg: 'The numbers must sum to +1, the charge on the ion.'}]},
+      {tag: 'd', l: '(d) <b>O</b> in [[H2O2]]', ans: -1, abs: 0, ox: 1, traps: [{v: -2, msg: 'That is oxygen’s usual value, but H (+1) has priority: 2(+1) + 2x = 0.'}]},
+      {tag: 'e', l: '(e) <b>Cl</b> in [[ClO4^-]]', ans: 7, abs: 0, ox: 1, traps: [{v: 8, msg: 'The numbers must sum to −1, not zero.'}, {v: -1, msg: 'Chlorine is only −1 when nothing higher on the priority list (here, O) forces it to be something else.'}]}]},
+    {id: '4.2', type: 'classify', title: 'Who is oxidized? Who is the agent?', prompt: 'Magnesium ribbon is dropped into hydrochloric acid: [[Mg(s) + 2HCl(aq) -> MgCl2(aq) + H2(g)]]',
+     hint: 'Assign oxidation numbers to Mg, H and Cl on both sides. The element whose number goes <em>up</em> is oxidized. The oxidizing agent is the reactant that gets <em>reduced</em>.',
+     after: '<p>Mg goes 0 → +2: it loses two electrons, so it is oxidized, and it is the <b>reducing agent</b>. H goes +1 → 0: it gains electrons and is reduced, so HCl (the source of [[H^+]]) is the <b>oxidizing agent</b>. Cl stays −1 throughout; it is a spectator.</p>',
+     rows: [
+      {l: 'Element <b>oxidized</b>', o: [{k: 'Mg', t: 'Mg'}, {k: 'H', t: 'H'}, {k: 'Cl', t: 'Cl'}], a: 'Mg', why: 'Mg: 0 → +2.'},
+      {l: 'Element <b>reduced</b>', o: [{k: 'Mg', t: 'Mg'}, {k: 'H', t: 'H'}, {k: 'Cl', t: 'Cl'}], a: 'H', why: 'H: +1 → 0.'},
+      {l: '<b>Oxidizing</b> agent', o: [{k: 'Mg', t: 'Mg'}, {k: 'HCl', t: 'HCl'}, {k: 'MgCl2', t: '[[MgCl2]]'}, {k: 'H2', t: '[[H2]]'}], a: 'HCl', why: 'The reactant that is reduced.'},
+      {l: '<b>Reducing</b> agent', o: [{k: 'Mg', t: 'Mg'}, {k: 'HCl', t: 'HCl'}, {k: 'MgCl2', t: '[[MgCl2]]'}, {k: 'H2', t: '[[H2]]'}], a: 'Mg', why: 'The reactant that is oxidized.'}]},
+    {id: '4.3', type: 'predictlab', lab: 'dip', title: 'Activity series: will the metal react?',
+     prompt: 'Choose a metal strip and a solution, <b>predict</b>, then dip. Get <b>4 predictions right</b>, including at least one <b>no reaction</b>. Order of activity here: Mg &gt; Zn &gt; Fe &gt; H &gt; Cu &gt; Ag.',
+     hint: 'Find the solid metal and the dissolved cation in the activity series. If the solid metal is <em>higher</em>, it is oxidized and the reaction goes. If it is lower, nothing happens.'},
+    {id: '4.4', type: 'fill', title: 'Balance with half-reactions', prompt: 'Aluminum metal is placed in a solution containing [[Cu^2+]]. The electrons lost must equal the electrons gained.',
+     hint: 'Al loses 3 e⁻, [[Cu^2+]] gains 2 e⁻. The smallest number both divide into is 6: multiply the oxidation by 2 and the reduction by 3.',
+     lines: [
+      {l: 'Oxidation half-reaction', t: 'Al(s) -> Al^3+(aq) + {e:3}e^-'},
+      {l: 'Reduction half-reaction', t: 'Cu^2+(aq) + {e:2}e^- -> Cu(s)'},
+      {l: 'Balanced equation', t: '{2}Al(s) + {3}Cu^2+(aq) -> {2}Al^3+(aq) + {3}Cu(s)'},
+      {l: 'Total electrons transferred in the balanced equation', t: '{e:6}e^-'}],
+     sol: '<p>2 × [ [[Al(s) -> Al^3+(aq) + 3e^-]] ] gives 6 e⁻ lost.<br>3 × [ [[Cu^2+(aq) + 2e^- -> Cu(s)]] ] gives 6 e⁻ gained.</p><p>Add and cancel the electrons: [[2Al(s) + 3Cu^2+(aq) -> 2Al^3+(aq) + 3Cu(s)]]</p><p>Charge check: left 3(+2) = +6; right 2(+3) = +6.</p>'},
+    {id: '4.5', type: 'classify', stack: true, bonus: true, title: 'Name that redox reaction', prompt: 'Classify each reaction.', options: RTYPE,
+     hint: 'One reactant → several products is decomposition. Several reactants → one product is combination. A fuel + [[O2]] is combustion. If the <em>same</em> element is both oxidized and reduced, it is disproportionation.',
+     rows: [
+      {l: '[[2Al(s) + 3Br2(l) -> 2AlBr3(s)]]', a: 'Combination', why: 'Two elements form one compound.'},
+      {l: '[[2KClO3(s) -> 2KCl(s) + 3O2(g)]]', a: 'Decomposition', why: 'One compound breaks into two substances.'},
+      {l: '[[Zn(s) + 2AgNO3(aq) -> Zn(NO3)2(aq) + 2Ag(s)]]', a: 'Displacement', why: 'Zn replaces Ag in the dissolved salt.'},
+      {l: '[[Cl2(g) + 2OH^-(aq) -> Cl^-(aq) + ClO^-(aq) + H2O(l)]]', a: 'Disproportionation', why: 'Cl goes from 0 to both −1 and +1.'},
+      {l: '[[C3H8(g) + 5O2(g) -> 3CO2(g) + 4H2O(l)]]', a: 'Combustion', why: 'A fuel burns in [[O2]].'}]}
+  ]},
+{ n: 5, title: 'Concentration and pH', short: 'Concentration', min: 12, hue: '#3b4cc0',
+  lead: '<b>Molarity</b> (M) is moles of solute per liter of solution. Diluting adds solvent but never changes the moles of solute, so M<sub>c</sub>V<sub>c</sub> = M<sub>d</sub>V<sub>d</sub>. <b>pH</b> is a compact way to report the hydronium ion concentration.',
+  acts: [
+    {id: '5.1', type: 'num', title: 'Molarity', prompt: 'A student dissolves <b>14.6 g of NaCl</b> (58.44 g/mol) in enough water to make <b>500.0 mL</b> of solution.',
+     hint: 'grams → moles first. Then M = mol ÷ L (convert 500.0 mL to liters). For (b), mol = M × L.',
+     sol: '<p>mol NaCl = 14.6 g ÷ 58.44 g/mol = 0.250 mol</p><p>(a) M = 0.250 mol ÷ 0.5000 L = <b>0.500 M</b></p><p>(b) mol = 0.500 M × 0.0250 L = <b>0.0125 mol</b></p>',
+     parts: [
+      {tag: 'a', l: '(a) Molarity of the solution', u: 'M', ans: 0.4997, traps: [{v: 0.2498, msg: 'That is the number of moles. Now divide by the volume in liters.'}, {v: 0.0292, msg: 'You divided grams by mL. Convert grams to moles and mL to L first.'}, {v: 29.2, msg: 'That is grams per liter. Convert grams to moles.'}, {v: 4.997e-4, msg: 'Convert 500.0 mL to liters before dividing.'}, {v: 0.1249, msg: 'Molarity is moles ÷ liters — you multiplied.'}]},
+      {tag: 'b', l: '(b) Moles of NaCl in a 25.0 mL sample of this solution', u: 'mol', ans: 0.01249, tol: 0.02, traps: [{v: 12.49, msg: 'That is millimoles (M × mL). The box asks for moles.'}, {v: 20, msg: 'mol = M × L. You divided.'}]}]},
+    {id: '5.2', type: 'num', widget: 'dilute', title: 'Dilution', prompt: 'What volume of <b>6.00 M</b> [[HNO3]] stock solution is needed to prepare <b>500.0 mL</b> of <b>0.150 M</b> [[HNO3]]?',
+     hint: 'M<sub>c</sub> × V<sub>c</sub> = M<sub>d</sub> × V<sub>d</sub>. You know three of the four. The answer must be much smaller than 500 mL.',
+     sol: '<p>(6.00 M)(V<sub>c</sub>) = (0.150 M)(500.0 mL)</p><p>V<sub>c</sub> = (0.150 × 500.0) ÷ 6.00 = <b>12.5 mL</b></p><p>Pipet 12.5 mL of stock into a 500-mL volumetric flask and dilute to the mark.</p>',
+     parts: [{tag: '', l: 'Volume of stock solution', u: 'mL', ans: 12.5, traps: [{v: 20000, msg: 'You need <em>less</em> than 500 mL of the concentrated stock, not more. Solve for V<sub>c</sub>.'}, {v: 0.0125, msg: 'That is the volume in liters. The box asks for mL.'}]}]},
+    {id: '5.3', type: 'num', title: 'Ion concentrations', prompt: 'Soluble ionic compounds dissociate completely. Use the subscripts in the formula.',
+     hint: 'Write the dissociation: [[MgCl2 -> Mg^2+ + 2Cl^-]]. One mole of compound gives two moles of [[Cl^-]]. For (c), work backward.',
+     sol: '<p>(a) [[MgCl2 -> Mg^2+ + 2Cl^-]], so [Cl⁻] = 2 × 0.250 = <b>0.500 M</b></p><p>(b) [[Na3PO4 -> 3Na^+ + PO4^3-]], so [Na⁺] = 3 × 0.150 = <b>0.450 M</b></p><p>(c) [[K2SO4 -> 2K^+ + SO4^2-]], so [K<sub>2</sub>SO<sub>4</sub>] = 0.300 ÷ 2 = <b>0.150 M</b></p>',
+     parts: [
+      {tag: 'a', l: '(a) [[[Cl^-]]] in 0.250 M [[MgCl2]]', u: 'M', ans: 0.5, traps: [{v: 0.25, msg: 'Each [[MgCl2]] releases two [[Cl^-]].'}, {v: 0.125, msg: 'Multiply by the subscript, do not divide.'}]},
+      {tag: 'b', l: '(b) [[[Na^+]]] in 0.150 M [[Na3PO4]]', u: 'M', ans: 0.45, traps: [{v: 0.15, msg: 'Each [[Na3PO4]] releases three [[Na^+]].'}, {v: 0.05, msg: 'Multiply by the subscript, do not divide.'}]},
+      {tag: 'c', l: '(c) [[[K2SO4]]] in a solution where [[[K^+]]] = 0.300 M', u: 'M', ans: 0.15, traps: [{v: 0.6, msg: 'An ion’s concentration can never be less than its parent compound’s. Divide by 2.'}, {v: 0.3, msg: 'Two [[K^+]] come from each [[K2SO4]].'}]}]},
+    {id: '5.4', type: 'num', widget: 'ph', title: 'pH', prompt: 'pH = −log[H<sub>3</sub>O<sup>+</sup>] and [H<sub>3</sub>O<sup>+</sup>] = 10<sup>−pH</sup>.',
+     hint: 'For (b), use the 10<sup>x</sup> key with x = −9.25. Type scientific notation as 5.6e-10 or 5.6x10^-10. For (c), each pH unit is a factor of 10.',
+     sol: '<p>(a) pH = −log(2.5 × 10<sup>−4</sup>) = <b>3.60</b></p><p>(b) [H<sub>3</sub>O<sup>+</sup>] = 10<sup>−9.25</sup> = <b>5.6 × 10<sup>−10</sup> M</b></p><p>(c) The pH values differ by 3 units, so the ratio is 10<sup>3</sup> = <b>1000</b>.</p>',
+     parts: [
+      {tag: 'a', l: '(a) pH when [H<sub>3</sub>O<sup>+</sup>] = 2.5 × 10<sup>−4</sup> M', ans: 3.602, abs: 0.015, sci: 1, traps: [{v: -3.602, msg: 'pH = <em>negative</em> log. Flip the sign.'}, {v: 8.29, msg: 'Use log (base 10), not ln.'}]},
+      {tag: 'b', l: '(b) [H<sub>3</sub>O<sup>+</sup>] when pH = 9.25', u: 'M', ans: 5.623e-10, tol: 0.03, sci: 1, ph: 'e.g. 1.2e-5', traps: [{v: 1.778e9, msg: 'Use 10 to the <em>negative</em> pH.'}, {v: 0.966, msg: 'That is log(9.25). You need the antilog: 10<sup>−9.25</sup>.'}]},
+      {tag: 'c', l: '(c) How many times greater is [H<sub>3</sub>O<sup>+</sup>] at pH 2.0 than at pH 5.0?', u: '×', ans: 1000, tol: 0.001, sci: 1, traps: [{v: 3, msg: 'Three pH units apart means a factor of 10 × 10 × 10.'}, {v: 2.5, msg: 'pH is a log scale — do not take the ratio of the pH values.'}, {v: 30, msg: 'Each unit is a factor of 10, so multiply the tens together: 10<sup>3</sup>.'}]}]},
+    {id: '5.5', type: 'num', bonus: true, title: 'Serial dilution', prompt: 'Starting with a <b>1.50 M</b> stock solution, 10.00 mL is diluted to 100.00 mL. Then 10.00 mL of <em>that</em> solution is diluted to 100.00 mL, and the process is repeated once more (three dilutions in all).',
+     hint: 'Each step multiplies the concentration by 10.00/100.00 = 0.1000.',
+     sol: '<p>1.50 M × 0.1000 × 0.1000 × 0.1000 = <b>1.50 × 10<sup>−3</sup> M</b></p>',
+     parts: [{tag: '', l: 'Concentration of the final solution', u: 'M', ans: 0.0015, sci: 1, ph: 'e.g. 1.2e-5', traps: [{v: 0.15, msg: 'That is after one dilution. There are three.'}, {v: 0.015, msg: 'That is after two dilutions. There are three.'}, {v: 0.5, msg: 'The dilutions multiply; do not divide by 3.'}]}]}
+  ]},
+{ n: 6, title: 'Chemical analysis', short: 'Analysis', min: 10, hue: '#6d3fb5',
+  lead: '<b>Gravimetric analysis</b> measures a mass; a <b>titration</b> measures a volume. Either way, a balanced equation turns the measurement into a number for the unknown.',
+  acts: [
+    {id: '6.1', type: 'num', title: 'Gravimetric analysis: identify the chloride', prompt: 'A <b>0.6240-g</b> sample of an ionic compound containing chloride ions and an unknown metal is dissolved in water and treated with excess [[AgNO3]]. <b>1.1996 g</b> of AgCl (143.32 g/mol) precipitates. Atomic mass of Cl = 35.45.<br><span style="color:var(--muted)">Percent Cl by mass: LiCl 83.63% · [[CaCl2]] 63.89% · NaCl 60.66% · KCl 47.55%</span>',
+     hint: 'All of the chloride in the sample ends up in the AgCl. Fraction of AgCl that is Cl = 35.45 ÷ 143.32. Then divide the mass of Cl by the mass of the <em>original sample</em>.',
+     sol: '<p>%Cl in AgCl = 35.45 ÷ 143.32 = 24.73%</p><p>(a) mass Cl = 0.2473 × 1.1996 g = <b>0.2967 g</b></p><p>(b) %Cl in sample = 0.2967 g ÷ 0.6240 g × 100 = <b>47.55%</b></p><p>(c) That matches <b>KCl</b>.</p>',
+     parts: [
+      {tag: 'a', l: '(a) Mass of Cl in the precipitate', u: 'g', ans: 0.2967, tol: 0.01, traps: [{v: 1.1996, msg: 'That is the mass of AgCl. Only 35.45/143.32 of it is chlorine.'}, {v: 0.2473, tol: 0.004, msg: 'That is the <em>fraction</em> of AgCl that is Cl. Multiply it by 1.1996 g.'}]},
+      {tag: 'b', l: '(b) Percent Cl by mass in the original sample', u: '%', ans: 47.55, abs: 0.35, traps: [{v: 24.73, msg: 'That is the percent Cl in AgCl. Use it to get grams of Cl, then divide by the 0.6240-g sample.'}, {v: 192.2, msg: 'You divided the precipitate mass by the sample mass. Use the mass of Cl, not the mass of AgCl.'}, {v: 0.4755, msg: 'Right value as a fraction — multiply by 100 for percent.'}]},
+      {tag: 'c', l: '(c) The compound is', choices: ['LiCl', 'CaCl₂', 'NaCl', 'KCl'], ans: 'KCl'}]},
+    {id: '6.2', type: 'titration', title: 'Virtual titration',
+     prompt: 'The flask holds <b>25.00 mL</b> of HCl of unknown concentration plus phenolphthalein. The buret holds <b>0.1000 M NaOH</b>. Add base until you reach the first faint pink that <em>stays</em>, read the buret, and calculate the concentration of the acid.',
+     hint: 'Add 5 mL at a time until you see pink flashes, then switch to 0.1 mL portions. At the endpoint, moles of NaOH added = moles of HCl in the flask (they react 1:1).',
+     sol: '<p>The endpoint is at <b>21.90 mL</b>.</p><p>mmol NaOH = 0.1000 M × 21.90 mL = 2.190 mmol = mmol HCl (1:1)</p><p>[HCl] = 2.190 mmol ÷ 25.00 mL = <b>0.0876 M</b></p>'},
+    {id: '6.3', type: 'num', title: 'Titrating a diprotic acid', prompt: 'What volume of <b>0.150 M KOH</b> is needed to completely neutralize <b>20.0 mL</b> of <b>0.120 M</b> [[H2SO4]]?',
+     hint: 'Write the balanced equation first: [[2KOH + H2SO4 -> K2SO4 + 2H2O]]. Work in millimoles (M × mL).',
+     sol: '<p>[[2KOH(aq) + H2SO4(aq) -> K2SO4(aq) + 2H2O(l)]]</p><p>mmol [[H2SO4]] = 0.120 M × 20.0 mL = 2.40 mmol</p><p>mmol KOH = 2.40 × 2 = 4.80 mmol</p><p>V = 4.80 mmol ÷ 0.150 M = <b>32.0 mL</b></p>',
+     parts: [{tag: '', l: 'Volume of KOH solution', u: 'mL', ans: 32, traps: [{v: 16, msg: '[[H2SO4]] is diprotic: it takes <em>two</em> KOH for every [[H2SO4]].'}, {v: 8, msg: 'The mole ratio is 2 KOH : 1 [[H2SO4]] — double, do not halve.'}, {v: 0.032, msg: 'That is liters. The box asks for mL.'}]}]},
+    {id: '6.4', type: 'num', bonus: true, title: 'Molar mass from a titration', prompt: 'A <b>0.2688-g</b> sample of a monoprotic acid is dissolved in water and titrated with <b>0.1040 M NaOH</b>. It takes <b>21.16 mL</b> of base to reach the endpoint.',
+     hint: 'Monoprotic means 1:1, so mol acid = mol NaOH = M × L. Molar mass = grams ÷ moles.',
+     sol: '<p>mol NaOH = 0.02116 L × 0.1040 mol/L = 2.201 × 10<sup>−3</sup> mol = mol acid</p><p>molar mass = 0.2688 g ÷ 2.201 × 10<sup>−3</sup> mol = <b>122.1 g/mol</b></p>',
+     parts: [{tag: '', l: 'Molar mass of the acid', u: 'g/mol', ans: 122.15, tol: 0.012, traps: [{v: 0.0022006, msg: 'That is the number of moles of acid. Divide the sample mass by it.'}, {v: 0.12215, msg: 'Convert 21.16 mL to liters before multiplying by molarity.'}, {v: 244.3, msg: 'The acid is monoprotic, so the ratio is 1:1.'}]}]}
+  ]}
+];
+const ENDS = PARTS.reduce((a, p) => (a.push((a[a.length - 1] || 0) + p.min), a), []);
+
+/* ───────── scenes & widgets ───────── */
+let uid = 0;
+function makeScene(withStrip) {
+  const id = 'clip' + (++uid);
+  let dots = '', bub = '';
+  for (let i = 0; i < 30; i++) dots += '<circle cx="' + (91 + (i * 37) % 19) + '" cy="' + (85 + (i * 53) % 59) + '" r="' + (2.2 + i % 3) + '"/>';
+  for (let i = 0; i < 7; i++) bub += '<circle class="bub" style="--d:' + (-i * 0.27).toFixed(2) + 's" cx="' + (82 + (i * 11) % 37) + '" cy="140" r="' + (2 + i % 2) + '"/>';
+  const wrap = h('div', {class: 'scene-wrap', html:
+    '<svg viewBox="26 0 148 182" class="scene" role="img" aria-label="Beaker">' +
+    '<defs><clipPath id="' + id + '"><path d="M43 46V160Q43 173 56 173H144Q157 173 157 160V46Z"/></clipPath></defs>' +
+    (withStrip ? '<rect data-r="metal" x="90" y="8" width="20" height="138" rx="2" fill="#c8cdd4" stroke="rgba(0,0,0,.4)"/>' : '') +
+    '<g clip-path="url(#' + id + ')">' +
+    '<rect data-r="liquid" x="40" y="80" width="120" height="96" fill="' + CLEAR + '" opacity="' + (withStrip ? '.62' : '.9') + '"/>' +
+    '<rect data-r="cloud" x="40" y="80" width="120" height="96" fill="#fff" opacity="0"/>' +
+    '<path data-r="sed" d="M40 176V157Q66 141 96 151Q128 139 160 154V176Z" fill="#fff" stroke="#9aa4af" stroke-width="1.5" opacity="0"/></g>' +
+    (withStrip ? '<g data-r="dep" opacity="0" stroke="rgba(0,0,0,.25)" stroke-width=".6">' + dots + '</g><g data-r="bubbles" opacity="0" fill="#fff" stroke="#6f9bad">' + bub + '</g>' : '') +
+    '<line x1="44" y1="80" x2="156" y2="80" stroke="rgba(11,110,138,.45)" stroke-width="1.5"/>' +
+    '<path d="M37 44H47M43 45V160Q43 173 56 173H144Q157 173 157 160V45M153 44H163" fill="none" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round"/></svg>'});
+  const cap = h('div', {class: 'scene-cap'});
+  wrap.append(cap);
+  const q = r => wrap.querySelector('[data-r="' + r + '"]');
+  let timer = null;
+  return {node: wrap,
+    set(o, text, animate) {
+      clearTimeout(timer);
+      q('liquid').setAttribute('fill', o.liquid || CLEAR);
+      if (q('metal') && o.metal) q('metal').setAttribute('fill', o.metal);
+      const sed = q('sed'), cloud = q('cloud');
+      if (o.sed) {
+        sed.setAttribute('fill', o.sed.fill); sed.setAttribute('stroke', o.sed.stroke); cloud.setAttribute('fill', o.sed.fill);
+        if (animate) { cloud.setAttribute('opacity', '.75'); timer = setTimeout(() => { cloud.setAttribute('opacity', '.4'); sed.setAttribute('opacity', '1'); }, 700); }
+        else { cloud.setAttribute('opacity', '.4'); sed.setAttribute('opacity', '1'); }
+      } else { sed.setAttribute('opacity', '0'); cloud.setAttribute('opacity', '0'); }
+      if (q('dep')) { if (o.dep) q('dep').setAttribute('fill', o.dep); q('dep').setAttribute('opacity', o.dep ? '1' : '0'); q('bubbles').setAttribute('opacity', o.bubbles ? '1' : '0'); }
+      cap.textContent = text || '';
+    }};
+}
+
+const WIDGETS = {
+  conduct() {
+    const SOL = [
+      {f: 'NaCl', level: 1, kind: 'Strong electrolyte', bulb: 'bright', cat: 'Na^+', an: 'Cl^-', eq: 'NaCl(s) -> Na^+(aq) + Cl^-(aq)', note: 'A soluble ionic compound <b>dissociates</b> completely. Plenty of mobile ions carry charge between the electrodes.'},
+      {f: 'HCl', level: 1, kind: 'Strong electrolyte', bulb: 'bright', cat: 'H^+', an: 'Cl^-', eq: 'HCl(g) -> H^+(aq) + Cl^-(aq)', note: 'HCl is molecular, but it is a strong acid: it <b>ionizes</b> completely in water.'},
+      {f: 'HC2H3O2', level: .4, kind: 'Weak electrolyte', bulb: 'dim', mol: 'HC2H3O2', cat: 'H^+', an: 'C2H3O2^-', eq: 'HC2H3O2(aq) <=> H^+(aq) + C2H3O2^-(aq)', note: 'A weak acid: most molecules stay intact and only a few ionize. Few ions, dim bulb.'},
+      {f: 'NH3', level: .4, kind: 'Weak electrolyte', bulb: 'dim', mol: 'NH3', cat: 'NH4^+', an: 'OH^-', eq: 'NH3(aq) + H2O(l) <=> NH4^+(aq) + OH^-(aq)', note: 'A weak base: only a small fraction of the molecules take a proton from water.'},
+      {f: 'C12H22O11', level: 0, kind: 'Nonelectrolyte', bulb: 'dark', mol: 'C12H22O11', eq: 'C12H22O11(s) -> C12H22O11(aq)', note: 'Sucrose molecules stay intact when they dissolve. No ions means no current.'}
+    ];
+    const ION = [[112, 146], [152, 142], [208, 150], [170, 162], [112, 180], [208, 184], [150, 186], [172, 206], [112, 214], [206, 216]];
+    const MOL = [[112, 150], [160, 146], [208, 158], [160, 180], [112, 202], [206, 206]];
+    const CC = '#d9562b', AC = '#2b78b8', MC = '#7f8a97';
+    const fig = h('div', {class: 'scene-wrap', html:
+      '<svg viewBox="78 0 164 236" class="scene" role="img" aria-label="Conductivity tester: two electrodes in a beaker, wired to a light bulb">' +
+      '<defs><radialGradient id="glowg"><stop offset="0" stop-color="#ffd84a" stop-opacity=".95"/><stop offset="1" stop-color="#ffd84a" stop-opacity="0"/></radialGradient></defs>' +
+      '<circle data-r="glow" cx="160" cy="30" r="34" fill="url(#glowg)" opacity="0"/>' +
+      '<path d="M132 104V66H156V53M188 104V92M188 82V66H164V53" fill="none" stroke="#4b5563" stroke-width="2"/>' +
+      '<path d="M181 92H195" stroke="#4b5563" stroke-width="2"/><path d="M184 82H192" stroke="#4b5563" stroke-width="4"/>' +
+      '<circle data-r="glass" cx="160" cy="30" r="15" fill="#eeece4" stroke="#4b5563" stroke-width="2"/>' +
+      '<path d="M154 35q3-11 6 0q3-11 6 0" fill="none" stroke="#4b5563" stroke-width="1.4"/>' +
+      '<rect x="153" y="44" width="14" height="9" rx="2" fill="#4b5563"/>' +
+      '<rect x="96" y="124" width="128" height="103" rx="10" fill="' + CLEAR + '"/>' +
+      '<rect x="127" y="100" width="10" height="108" rx="2" fill="#6b7480"/><rect x="183" y="100" width="10" height="108" rx="2" fill="#6b7480"/>' +
+      '<g data-r="pts"></g>' +
+      '<path d="M88 94H98M94 95V214Q94 228 108 228H212Q226 228 226 214V95M222 94H232" fill="none" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round"/></svg>'});
+    const q = r => fig.querySelector('[data-r="' + r + '"]');
+    const info = h('div', {class: 'result', 'aria-live': 'polite'});
+    const ion = (p, col, sign, i) => '<g class="pt" style="--d:' + (-i * 0.6).toFixed(1) + 's"><circle cx="' + p[0] + '" cy="' + p[1] + '" r="8.5" fill="' + col + '"/><text x="' + p[0] + '" y="' + (p[1] + 4) + '" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">' + sign + '</text></g>';
+    const mol = (p, i) => '<g class="pt" style="--d:' + (-i * 0.8).toFixed(1) + 's"><rect x="' + (p[0] - 12) + '" y="' + (p[1] - 7) + '" width="24" height="14" rx="7" fill="' + MC + '"/></g>';
+    const btns = SOL.map((s, i) => h('button', {type: 'button', class: 'pbtn chem', 'aria-pressed': 'false', html: F(s.f), onclick: () => show(i)}));
+    function show(i) {
+      const s = SOL[i]; let g = '';
+      btns.forEach((b, j) => b.setAttribute('aria-pressed', j === i ? 'true' : 'false'));
+      if (s.level === 1) ION.forEach((p, k) => g += ion(p, k % 2 ? AC : CC, k % 2 ? '−' : '+', k));
+      else if (s.level === 0) MOL.forEach((p, k) => g += mol(p, k));
+      else { [0, 1, 2, 4, 5].forEach((k, n) => g += mol(MOL[k], n)); g += ion(ION[6], CC, '+', 1) + ion(ION[7], AC, '−', 3); }
+      q('pts').innerHTML = g;
+      q('glow').setAttribute('opacity', s.level);
+      q('glass').setAttribute('fill', s.level === 1 ? '#ffe27a' : s.level ? '#f4eabb' : '#e3e1d8');
+      info.innerHTML = '<p><b>' + s.kind + '</b> — the bulb is ' + s.bulb + '.</p><span class="eqblock">' + F(s.eq) + '</span><p>' + s.note + '</p><div class="legend">' +
+        (s.cat ? '<span><i style="background:' + CC + '"></i>' + F(s.cat) + '</span><span><i style="background:' + AC + '"></i>' + F(s.an) + '</span>' : '') +
+        (s.mol ? '<span><i class="cap" style="background:' + MC + '"></i>intact ' + F(s.mol) + ' molecule</span>' : '') + '</div>';
+    }
+    const node = h('div', {class: 'lab'}, h('div', null, h('div', {class: 'pick'}, h('div', {class: 'pick-label'}, 'Solute'), h('div', {class: 'pbtns'}, btns)), info), fig);
+    show(0);
+    return node;
+  },
+  dilute() {
+    const N = 22, pts = [];
+    for (let i = 0; i < N; i++) pts.push([56 + ((i * 47 + 13) % 88), ((i * 61 + 7) % 97) / 100]);
+    const fig = h('div', {class: 'scene-wrap', html:
+      '<svg viewBox="20 0 160 212" class="scene" role="img" aria-label="Graduated container showing the solution being diluted">' +
+      '<rect data-r="lq" x="52" y="170" width="96" height="18" fill="#3b4cc0"/><g data-r="dots" fill="#101a66"></g>' +
+      [200, 400, 600, 800, 1000].map(v => '<path d="M148 ' + (188 - v * 0.17) + 'h7" stroke="#4b5563"/><text x="158" y="' + (191.5 - v * 0.17) + '" font-size="8.5" fill="#566170">' + v + '</text>').join('') +
+      '<path d="M50 12V180Q50 190 60 190H140Q150 190 150 180V12" fill="none" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round"/></svg>'});
+    const lq = fig.querySelector('[data-r="lq"]'), dots = fig.querySelector('[data-r="dots"]');
+    const rV = h('span'), rM = h('span');
+    const slider = h('input', {type: 'range', min: '100', max: '1000', step: '50', value: '100', 'aria-label': 'Total volume after adding water, in mL'});
+    const draw = () => {
+      const V = +slider.value, M = 200 / V, ht = V * 0.17;
+      lq.setAttribute('y', 188 - ht); lq.setAttribute('height', ht); lq.setAttribute('opacity', (0.12 + 0.4 * M).toFixed(2));
+      dots.innerHTML = pts.map(p => '<circle cx="' + p[0] + '" cy="' + (186 - p[1] * (ht - 5)).toFixed(1) + '" r="2.3"/>').join('');
+      rV.textContent = V + ' mL'; rM.textContent = M.toFixed(3) + ' M';
+    };
+    slider.addEventListener('input', draw); draw();
+    return h('div', {class: 'widget'}, h('div', {class: 'widget-h'}, 'Explore first: add water to 100 mL of a 2.00 M solution'),
+      h('div', {class: 'lab'}, h('div', null, slider,
+        h('div', {class: 'readout'}, h('div', {class: 'ro'}, h('b', null, 'Volume'), rV), h('div', {class: 'ro'}, h('b', null, 'Molarity'), rM), h('div', {class: 'ro keep'}, h('b', null, 'Moles of solute'), h('span', null, '0.200 mol'))),
+        h('p', {style: 'margin:.3rem 0 0;color:var(--muted);font-size:.9rem'}, 'The dots are solute particles. Water spreads them out, but their number never changes — that is why M × V stays constant.')), fig));
+  },
+  ph() {
+    const FL = [[1.0, 'stomach acid'], [2.0, 'lemon juice'], [3.0, 'vinegar'], [3.5, 'orange juice'], [5.5, 'rainwater'], [6.5, 'milk'], [7.0, 'pure water'], [7.4, 'blood'], [10.6, 'milk of magnesia'], [11.5, 'household ammonia']];
+    const rP = h('span'), rH = h('span'), rK = h('span'), rF = h('span');
+    const slider = h('input', {type: 'range', min: '0', max: '14', step: '0.1', value: '7', 'aria-label': 'pH'});
+    const draw = () => {
+      const pH = +slider.value, ex = Math.floor(-pH + 1e-9), mant = Math.pow(10, -pH - ex);
+      rP.textContent = pH.toFixed(1);
+      rH.innerHTML = mant.toFixed(1) + ' × 10<sup>' + (ex < 0 ? '−' + (-ex) : ex) + '</sup> M';
+      rK.textContent = pH < 6.95 ? 'acidic' : pH > 7.05 ? 'basic' : 'neutral';
+      let best = null; FL.forEach(f => { const d = Math.abs(f[0] - pH); if (d <= 0.3 && (!best || d < best[2])) best = [f[0], f[1], d]; });
+      rF.textContent = best ? best[1] + ' (' + best[0].toFixed(1) + ')' : '—';
+    };
+    slider.addEventListener('input', draw); draw();
+    return h('div', {class: 'widget'}, h('div', {class: 'widget-h'}, 'Explore first: slide along the pH scale'),
+      h('div', {class: 'phbar'}), slider, h('div', {class: 'phticks'}, [0, 2, 4, 6, 8, 10, 12, 14].map(n => h('span', null, String(n)))),
+      h('div', {class: 'readout'}, h('div', {class: 'ro'}, h('b', null, 'pH'), rP), h('div', {class: 'ro'}, h('b', {html: '[H<sub>3</sub>O<sup>+</sup>]'}), rH), h('div', {class: 'ro'}, h('b', null, 'Solution is'), rK), h('div', {class: 'ro'}, h('b', null, 'About the pH of'), rF)));
+  }
+};
+
+/* ───────── activity types ───────── */
+function makeFill(lines) {
+  const fields = [];
+  const node = h('div', {class: 'fill'}, lines.map((ln, li) => {
+    const eq = h('div', {class: 'eq chem'});
+    ln.t.split(/(\{[^}]+\})/).forEach(tok => {
+      const m = /^\{(?:(e|st):)?([^}]+)\}$/.exec(tok);
+      if (!m) { if (tok) eq.append(h('span', {html: F(tok)})); return; }
+      let el;
+      if (m[1] === 'st') {
+        el = h('select', {class: 'stsel', 'aria-label': 'physical state'}, h('option', {value: ''}, '( ? )'), ['aq', 's', 'l', 'g'].map(s => h('option', {value: s}, '(' + s + ')')));
+        fields.push({el, kind: 'st', a: m[2], li});
+      } else {
+        el = h('input', {class: 'coef', type: 'text', inputmode: 'numeric', maxlength: '2', autocomplete: 'off', 'aria-label': m[1] ? 'number of electrons' : 'coefficient'});
+        fields.push({el, kind: m[1] ? 'num' : 'coef', a: +m[2], li});
+      }
+      el.addEventListener('input', () => mark(el));
+      eq.append(el);
+    });
+    return h('div', {class: 'eq-line'}, ln.l ? h('div', {class: 'eq-label', html: P(ln.l)}) : null, eq);
+  }));
+  const read = f => { const v = f.el.value.trim(); if (f.kind === 'st') return v; if (v === '') return f.kind === 'coef' ? 1 : NaN; return /^\d+$/.test(v) ? +v : NaN; };
+  return {node, fields,
+    get: () => fields.map(f => f.el.value),
+    set: v => fields.forEach((f, i) => { if (v && v[i] != null) f.el.value = v[i]; }),
+    lock: () => fields.forEach(f => { f.el.disabled = true; }),
+    check() {
+      if (fields.every(f => f.el.value.trim() === '')) return {incomplete: true, msg: 'Fill in the blanks first.'};
+      if (fields.some(f => f.kind !== 'coef' && f.el.value.trim() === '')) return {incomplete: true, msg: 'Fill in every box. (A coefficient left blank counts as 1.)'};
+      let wrong = 0, multiple = false;
+      const by = {};
+      fields.forEach(f => (by[f.li] = by[f.li] || []).push(f));
+      Object.keys(by).forEach(k => {
+        const cs = by[k].filter(f => f.kind === 'coef');
+        if (cs.length > 1) { const r = read(cs[0]) / cs[0].a; if (r > 1 && Number.isInteger(r) && cs.every(f => read(f) === f.a * r)) multiple = true; }
+      });
+      fields.forEach(f => { const ok = read(f) === f.a; mark(f.el, ok); if (!ok) wrong++; });
+      if (!wrong) return {ok: true, msg: 'Balanced — atoms and charge both check out.'};
+      if (multiple) return {ok: false, msg: 'The atoms balance, but use the <em>smallest</em> whole-number coefficients.'};
+      return {ok: false, msg: wrong + (wrong === 1 ? ' box needs' : ' boxes need') + ' another look (outlined in red).'};
+    }};
+}
+
+const TYPES = {
+  explore() { return {body: null}; },
+
+  classify(act) {
+    const optsOf = r => r.o || act.options;
+    const rows = act.rows.map((r, i) => h('div', {class: 'crow' + (act.stack ? ' stack' : ''), role: 'radiogroup', 'aria-label': strip(r.f || r.l)},
+      h('span', {class: 'clabel' + (r.f ? ' chem' : ''), html: r.f ? F(r.f) : P(r.l)}),
+      h('span', {class: 'segs'}, optsOf(r).map(o => h('label', {class: 'seg'},
+        h('input', {type: 'radio', name: 'c' + act.id + '_' + i, value: o.k, onchange: () => mark(rows[i])}), h('span', {html: P(o.t)})))),
+      h('span', {class: 'mark', 'aria-hidden': 'true'})));
+    const val = i => { const c = rows[i].querySelector('input:checked'); return c ? c.value : ''; };
+    return {body: h('div', {class: 'classify'}, rows),
+      get: () => rows.map((_, i) => val(i)),
+      set: v => rows.forEach((row, i) => row.querySelectorAll('input').forEach(inp => { inp.checked = !!v && inp.value === v[i]; })),
+      check() {
+        const vals = rows.map((_, i) => val(i));
+        if (vals.includes('')) return {incomplete: true, msg: 'Make a choice on every row first.'};
+        let n = 0;
+        rows.forEach((row, i) => { const ok = vals[i] === act.rows[i].a; n += ok; mark(row, ok); });
+        return n === rows.length ? {ok: true, msg: 'All ' + n + ' correct.' + (act.after ? ' ' + P(act.after) : '')} : {ok: false, msg: n + ' of ' + rows.length + ' correct. Recheck the rows marked ✗.'};
+      },
+      sol: () => '<ul>' + act.rows.map(r => '<li>' + (r.f ? '<span class="chem">' + F(r.f) + '</span>' : P(r.l)) + ' — <b>' + P(optsOf(r).find(o => o.k === r.a).t) + '</b>. ' + P(r.why) + '</li>').join('') + '</ul>' + (act.after ? P(act.after) : '')};
+  },
+
+  mc(act) {
+    const opts = act.options.map((o, i) => h('label', {class: 'opt'},
+      h('input', {type: 'radio', name: 'm' + act.id, value: i, onchange: () => opts.forEach(x => mark(x))}),
+      h('span', {class: 'opt-txt', html: P(o.t)}), h('span', {class: 'mark', 'aria-hidden': 'true'})));
+    const body = h('div', {class: 'mc', role: 'radiogroup', 'aria-label': 'Answer choices'}, opts);
+    const cur = () => { const c = body.querySelector('input:checked'); return c ? +c.value : -1; };
+    return {body, get: cur, set: v => { if (v >= 0 && opts[v]) opts[v].querySelector('input').checked = true; },
+      check() {
+        const i = cur(); if (i < 0) return {incomplete: true, msg: 'Choose an answer first.'};
+        opts.forEach(x => mark(x)); mark(opts[i], !!act.options[i].ok);
+        return {ok: !!act.options[i].ok, msg: P(act.options[i].fb)};
+      },
+      sol: () => '<p>Answer: ' + P(act.options.find(o => o.ok).t) + '</p>' + P(act.sol || '')};
+  },
+
+  multi(act) {
+    const chips = act.chips.map((c, i) => h('label', {class: 'chip'}, h('input', {type: 'checkbox', onchange: () => mark(chips[i])}), h('span', {class: 'chem', html: F(c.f)}), h('span', {class: 'mark', 'aria-hidden': 'true'})));
+    const sel = () => chips.map(c => c.firstChild.checked);
+    return {body: h('div', {class: 'chips', role: 'group', 'aria-label': 'Select all that apply'}, chips),
+      get: sel, set: v => chips.forEach((c, i) => { c.firstChild.checked = !!(v && v[i]); }),
+      check() {
+        const s = sel(); if (!s.some(Boolean)) return {incomplete: true, msg: 'Select at least one.'};
+        let wrong = 0, missed = 0;
+        chips.forEach((c, i) => { const ok = !!act.chips[i].ok; if (s[i]) { mark(c, ok); if (!ok) wrong++; } else { mark(c); if (ok) missed++; } });
+        if (!wrong && !missed) return {ok: true, msg: 'Exactly right — all five strong ones, and nothing extra.'};
+        return {ok: false, msg: [wrong ? wrong + ' of your picks ' + (wrong === 1 ? 'is' : 'are') + ' weak (marked ✗)' : '', missed ? missed + ' strong one' + (missed === 1 ? ' is' : 's are') + ' still missing' : ''].filter(Boolean).join(', and ') + '.'};
+      },
+      sol: () => '<ul>' + act.chips.map(c => '<li><span class="chem">' + F(c.f) + '</span> — ' + (c.ok ? '<b>' + c.why + '</b>' : c.why) + '</li>').join('') + '</ul>'};
+  },
+
+  num(act) {
+    const rows = act.parts.map((p, i) => {
+      const id = 'n' + act.id + '_' + i;
+      const inp = p.choices
+        ? h('select', {class: 'sel', id}, h('option', {value: ''}, 'choose…'), p.choices.map(c => h('option', {value: c}, c)))
+        : h('input', {class: 'numin', id, type: 'text', inputmode: (p.sci || p.ox) ? 'text' : 'decimal', autocomplete: 'off', spellcheck: 'false', placeholder: p.ph || ''});
+      const row = h('div', {class: 'nrow'}, h('label', {class: 'nlabel', for: id, html: P(p.l)}),
+        h('span', {class: 'nfield'}, inp, p.u ? h('span', {class: 'unit', html: P(p.u)}) : null, h('span', {class: 'mark', 'aria-hidden': 'true'})));
+      inp.addEventListener('input', () => mark(row));
+      return row;
+    });
+    const field = i => rows[i].querySelector('input,select');
+    return {body: h('div', {class: 'nums'}, rows),
+      get: () => rows.map((_, i) => field(i).value), set: v => rows.forEach((_, i) => { if (v && v[i] != null) field(i).value = v[i]; }),
+      check() {
+        const res = act.parts.map((p, i) => {
+          const raw = field(i).value;
+          if (p.choices) return raw ? {ok: raw === p.ans} : {blank: 1};
+          const v = (p.ox ? parseOx : parseNum)(raw);
+          if (isNaN(v)) return {blank: 1};
+          if (near(v, p.ans, p.tol, p.abs)) return {ok: true};
+          const t = (p.traps || []).find(t => near(v, t.v, t.tol || 0.02, p.ox ? 0 : null));
+          return {ok: false, msg: t ? t.msg : ''};
+        });
+        if (res.some(r => r.blank)) return {incomplete: true, msg: 'Enter ' + (act.parts.length > 1 ? 'an answer for every part' : 'a number') + ' first.'};
+        res.forEach((r, i) => mark(rows[i], r.ok));
+        if (res.every(r => r.ok)) return {ok: true, msg: 'Correct.'};
+        return {ok: false, msg: res.map((r, i) => r.ok ? '' : (act.parts[i].tag ? '<b>(' + act.parts[i].tag + ')</b> ' : '') + (r.msg ? P(r.msg) : 'Not yet — check your setup and units.')).filter(Boolean).join('<br>')};
+      },
+      sol: () => P(act.sol || '')};
+  },
+
+  fill(act) {
+    const f = makeFill(act.lines);
+    return {body: f.node, get: f.get, set: f.set, check: f.check, sol: () => P(act.sol || '')};
+  },
+
+  netionic(act) {
+    let stage = 1;
+    const f1 = makeFill([{t: act.molecular}]);
+    const ions = [];
+    const row = h('div', {class: 'ions chem'}, act.ionic.map(tok => {
+      if (typeof tok === 'string') return h('span', {class: 'sym', html: tok === '->' ? '→' : '+'});
+      const b = h('button', {type: 'button', class: 'ion', 'aria-pressed': 'false', html: F(tok.t), onclick: () => { if (stage !== 2) return; b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); mark(b); }});
+      ions.push({b, s: !!tok.s}); return b;
+    }));
+    const s2 = h('div', {class: 'step', hidden: true}, h('div', {class: 'step-h', html: 'Step 2 · Ionic equation <small>— tap every <b>spectator ion</b> to cross it out.</small>'}), row);
+    const s3 = h('div', {class: 'step', hidden: true}, h('div', {class: 'step-h'}, 'Step 3 · Net ionic equation'), h('div', {class: 'net', html: F(act.net)}));
+    const body = h('div', null, h('div', {class: 'step'}, h('div', {class: 'step-h', html: 'Step 1 · Molecular equation <small>— balance it and choose each product’s state.</small>'}), f1.node), s2, s3);
+    const go = n => { stage = n; if (n >= 2) { f1.lock(); s2.hidden = false; } if (n >= 3) { s3.hidden = false; ions.forEach(x => { x.b.disabled = true; }); } };
+    return {body,
+      get: () => ({f: f1.get(), stage, x: ions.map(x => x.b.getAttribute('aria-pressed') === 'true')}),
+      set(v) { if (!v) return; f1.set(v.f); (v.x || []).forEach((p, i) => ions[i] && ions[i].b.setAttribute('aria-pressed', p ? 'true' : 'false')); go(v.stage || 1); },
+      check() {
+        if (stage === 1) {
+          const r = f1.check(); if (r.incomplete || !r.ok) return r;
+          go(2); return {partial: true, msg: 'Step 1 is right: the equation is balanced and ' + P('[[Fe(OH)3]]') + ' is the precipitate. Now cancel the spectators in step 2.'};
+        }
+        if (stage === 2) {
+          if (!ions.some(x => x.b.getAttribute('aria-pressed') === 'true')) return {incomplete: true, msg: 'Tap the spectator ions in step 2 to cross them out.'};
+          let bad = 0;
+          ions.forEach(x => { const on = x.b.getAttribute('aria-pressed') === 'true'; if (on !== x.s) { bad++; mark(x.b, false); } else mark(x.b); });
+          if (bad) return {ok: false, msg: 'Not quite. A spectator appears as the <em>same dissolved ion</em> on both sides, and it must be cancelled on both sides. Anything that ends up in the solid is not a spectator.'};
+          go(3);
+        }
+        return {ok: true, msg: 'What is left is the net ionic equation — the only chemistry that actually happens.'};
+      },
+      sol: () => P(act.sol)};
+  },
+
+  predictlab(act, api) {
+    const cfg = LABS[act.lab], pick = [null, null]; let pred = null, log = [];
+    const scene = makeScene(cfg.strip);
+    const result = h('div', {class: 'result', 'aria-live': 'polite', html: '<p style="color:var(--muted)">Make your picks and a prediction, then press “' + cfg.go + '”.</p>'});
+    const foot = h('div', {class: 'labfoot'});
+    const goBtn = h('button', {type: 'button', class: 'btn', disabled: true, onclick: run}, cfg.go);
+    const mkGroup = (label, items, onpick, plain) => {
+      const btns = items.map(it => h('button', {type: 'button', class: 'pbtn' + (plain ? ' plain' : ' chem'), 'aria-pressed': 'false', html: plain ? it.t : F(it.t),
+        onclick: () => { btns.forEach(b => b.setAttribute('aria-pressed', b === btns[items.indexOf(it)] ? 'true' : 'false')); onpick(it.k); }}));
+      return {node: h('div', {class: 'pick'}, h('div', {class: 'pick-label'}, label), h('div', {class: 'pbtns'}, btns)), clear: () => btns.forEach(b => b.setAttribute('aria-pressed', 'false'))};
+    };
+    const idle = () => {
+      const o = Object.assign({}, cfg.idle);
+      if (cfg.strip) { if (pick[0]) o.metal = METAL[pick[0]].col; if (pick[1]) o.liquid = SOLN[pick[1]].liq; }
+      scene.set(o, cfg.idleCap);
+    };
+    const changed = () => { goBtn.disabled = !(pick[0] && pick[1] && pred != null); idle(); };
+    const g = cfg.groups.map((gr, gi) => mkGroup(gr.label, gr.keys.map(k => ({k, t: gr.f(k)})), k => { pick[gi] = k; changed(); }));
+    const gp = mkGroup('Your prediction', cfg.predict, k => { pred = k; changed(); }, true);
+    const score = () => ({right: log.filter(x => x.ok).length, none: log.some(x => x.ok && !x.react)});
+    function drawFoot() {
+      const s = score();
+      foot.textContent = '';
+      foot.append(h('span', {class: 'meter'}, 'Correct predictions: ' + Math.min(s.right, 4) + ' / 4'), h('span', {class: 'logchip ' + (s.none ? 'good' : '')}, s.none ? '✓ no-reaction pair found' : 'still needed: a no-reaction pair'));
+      log.forEach(x => foot.append(h('span', {class: 'logchip ' + (x.ok ? 'good' : 'bad'), html: (x.ok ? '✓ ' : '✗ ') + F(x.label)})));
+    }
+    function run() {
+      const ev = cfg.eval(pick[0], pick[1]);
+      if (ev.skip) { result.className = 'result'; result.innerHTML = '<p>' + ev.skip + '</p>'; return; }
+      const key = pick[0] + '|' + pick[1], ok = (pred === 1) === ev.react;
+      scene.set(ev.scene, ev.cap, true);
+      const seen = log.some(x => x.key === key);
+      if (!seen) { log.push({key, ok, react: ev.react, label: ev.label}); api.touch(); }
+      result.className = 'result ' + (ok ? 'good' : 'bad');
+      result.innerHTML = '<p><b>' + (ok ? '✓ Your prediction was right.' : '✗ Not what you predicted.') + '</b>' + (seen ? ' <span style="color:var(--muted)">(You already tested this pair, so it does not count again.)</span>' : '') + '</p>' + P(ev.html);
+      drawFoot();
+      const s = score();
+      if (s.right >= 4 && s.none) api.done('Bench complete: 4 correct predictions, including a no-reaction pair.');
+      pred = null; gp.clear(); goBtn.disabled = true;
+    }
+    idle(); drawFoot();
+    const body = h('div', null, h('div', {class: 'lab'}, h('div', null, g[0].node, g[1].node, gp.node, goBtn, result), scene.node), foot);
+    return {body, get: () => log, set: v => { if (Array.isArray(v)) { log = v; drawFoot(); } }, sol: cfg.sol};
+  },
+
+  titration(act) {
+    const VEQ = 2190; let v = 0;           // hundredths of a mL
+    let ticks = '';
+    for (let t = 0; t <= 50; t += 5) ticks += '<path d="M127 ' + (20 + 3.5 * t) + 'h' + (t % 10 ? 4 : 7) + '" stroke="#4b5563"/>' + (t % 10 ? '' : '<text x="137" y="' + (23 + 3.5 * t) + '" font-size="8" fill="#566170">' + t + '</text>');
+    const fig = h('div', {class: 'scene-wrap', html:
+      '<svg viewBox="14 0 176 326" class="scene" role="img" aria-label="Buret of sodium hydroxide above a flask of acid">' +
+      '<defs><clipPath id="flaskclip"><path d="M108 226V250L67 302Q62 310 72 310H168Q178 310 173 302L132 250V226Z"/></clipPath></defs>' +
+      '<rect x="22" y="314" width="160" height="7" rx="2" fill="#8d96a3"/><rect x="38" y="8" width="6" height="308" fill="#8d96a3"/><rect x="42" y="64" width="72" height="6" fill="#8d96a3"/><rect x="62" y="311" width="116" height="4" fill="#fff" stroke="#c9ced6"/>' +
+      '<rect x="113" y="12" width="14" height="184" fill="#fff" stroke="#4b5563" stroke-width="1.5"/><rect data-r="blq" x="114.2" y="20" width="11.6" height="175" fill="#a9d3e6"/>' + ticks +
+      '<path d="M116 196L118.4 216H121.6L124 196Z" fill="#fff" stroke="#4b5563" stroke-width="1.5"/><rect x="105" y="200" width="30" height="5" rx="2" fill="#19222e"/>' +
+      '<circle class="drop" data-r="drop" cx="120" cy="220" r="2.8" fill="#6fb3d1" opacity="0"/>' +
+      '<g clip-path="url(#flaskclip)"><rect data-r="flq" x="56" y="278" width="128" height="36" fill="#eaf4f8"/></g>' +
+      '<path d="M108 226V250L67 302Q62 310 72 310H168Q178 310 173 302L132 250V226" fill="none" stroke="#4b5563" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></svg>'});
+    const q = r => fig.querySelector('[data-r="' + r + '"]');
+    const rV = h('span', null, '0.00 mL'), status = h('div', {class: 'result', 'aria-live': 'polite'});
+    const addBtns = [[500, '+ 5 mL'], [100, '+ 1 mL'], [10, '+ 0.1 mL']].map(([d, t]) => h('button', {type: 'button', class: 'pbtn plain', onclick: () => add(d)}, t));
+    const draw = (animate) => {
+      const mL = v / 100, over = v - VEQ;
+      q('blq').setAttribute('y', 20 + 3.5 * mL); q('blq').setAttribute('height', Math.max(0, 175 - 3.5 * mL));
+      const flq = q('flq'); flq.classList.remove('flash');
+      let fill = '#eaf4f8', msg, cls = 'result';
+      if (v === 0) msg = 'Buret filled to 0.00 mL with 0.1000 M NaOH. The acid in the flask is colorless.';
+      else if (over < -150) msg = 'Still colorless. Keep adding.';
+      else if (over < 0) { msg = 'A pink flash appears where the base lands, then fades as you swirl. <b>You are close — switch to 0.1 mL.</b>'; if (animate) { void flq.getBoundingClientRect(); flq.classList.add('flash'); } }
+      else if (over <= 20) { fill = '#f9cfe3'; cls = 'result good'; msg = '<b>Faint pink that stays.</b> This is the endpoint — read the buret and do the calculation below.'; }
+      else { fill = over > 150 ? '#d6337f' : '#ea6fa8'; cls = 'result bad'; msg = '<b>Dark pink: you overshot the endpoint.</b> Refill the buret and approach it in 0.1 mL portions.'; }
+      flq.setAttribute('fill', fill);
+      rV.textContent = mL.toFixed(2) + ' mL'; status.className = cls; status.innerHTML = '<p>' + msg + '</p>';
+      addBtns.forEach((b, i) => { b.disabled = v + [500, 100, 10][i] > 5000; });
+    };
+    function add(d) {
+      v += d;
+      const drop = q('drop'); drop.classList.remove('fall'); void drop.getBoundingClientRect(); drop.classList.add('fall');
+      draw(true);
+    }
+    const inV = h('input', {class: 'numin', id: 'tv', type: 'text', inputmode: 'decimal', autocomplete: 'off'});
+    const inM = h('input', {class: 'numin', id: 'tm', type: 'text', inputmode: 'decimal', autocomplete: 'off'});
+    const rowV = h('div', {class: 'nrow'}, h('label', {class: 'nlabel', for: 'tv'}, 'Volume of NaOH delivered at the endpoint'), h('span', {class: 'nfield'}, inV, h('span', {class: 'unit'}, 'mL'), h('span', {class: 'mark'})));
+    const rowM = h('div', {class: 'nrow'}, h('label', {class: 'nlabel', for: 'tm'}, 'Concentration of the HCl solution'), h('span', {class: 'nfield'}, inM, h('span', {class: 'unit'}, 'M'), h('span', {class: 'mark'})));
+    inV.addEventListener('input', () => mark(rowV)); inM.addEventListener('input', () => mark(rowM));
+    draw();
+    const body = h('div', null, h('div', {class: 'lab'},
+      h('div', null, h('div', {class: 'pick'}, h('div', {class: 'pick-label'}, 'Add NaOH from the buret'), h('div', {class: 'pbtns'}, addBtns, h('button', {type: 'button', class: 'pbtn plain', onclick: () => { v = 0; draw(); }}, 'Refill & restart'))),
+        h('div', {class: 'readout'}, h('div', {class: 'ro'}, h('b', null, 'Buret reading'), rV)), status, h('div', {style: 'margin-top:.8rem'}, rowV, rowM)), fig));
+    return {body,
+      get: () => ({v, a: inV.value, m: inM.value}), set(s) { if (!s) return; v = s.v || 0; inV.value = s.a || ''; inM.value = s.m || ''; draw(); },
+      check() {
+        if (v === 0) return {incomplete: true, msg: 'Run the titration first: add NaOH until the flask turns faint pink.'};
+        const a = parseNum(inV.value), m = parseNum(inM.value);
+        if (isNaN(a) || isNaN(m)) return {incomplete: true, msg: 'Enter both the endpoint volume and the concentration.'};
+        const aok = a >= 21.85 && a <= 22.15, mok = near(m, 0.0876, 0.013);
+        mark(rowV, aok); mark(rowM, aok && mok);
+        if (aok && mok) return {ok: true, msg: 'Correct: 0.1000 M × ' + a.toFixed(2) + ' mL ÷ 25.00 mL ≈ 0.088 M HCl.'};
+        const out = [];
+        if (!aok) out.push(a > 22.15 ? 'That volume is past the endpoint (the flask is dark pink there). Refill and stop at the <em>first</em> faint pink that stays.' : a < 1 ? 'Enter the endpoint volume in mL, as read from the buret.' : 'At that volume the flask is still colorless — the endpoint comes later.');
+        else if (near(m, 0.1142, 0.02)) out.push('You swapped the volumes. mmol NaOH = 0.1000 M × (mL of NaOH); then divide by the 25.00 mL of acid.');
+        else if (near(m, 2.19, 0.02) || near(m, 0.00219, 0.02)) out.push('That is the amount of NaOH (and of HCl). Divide by the volume of acid, 25.00 mL, to get molarity.');
+        else out.push('The volume is right. Now: mmol NaOH = M × mL, which equals mmol HCl; divide by 25.00 mL.');
+        return {ok: false, msg: out.join('<br>')};
+      },
+      sol: () => P(act.sol)};
+  }
+};
+
+/* ───────── build the page ───────── */
+const main = $('#main'), tabsEl = $('#tabs');
+const ACTS = [];          // graded activities
+let tabBtns = [];
+const STATUS = {'': 'To do', tried: 'In progress', correct: '✓ Correct', revealed: 'Solution viewed'};
+const getSt = id => S.st[id] || (S.st[id] = {s: '', n: 0});
+
+function buildAct(part, act) {
+  const graded = act.type !== 'explore', st = graded ? getSt(act.id) : null;
+  const card = h('section', {class: 'act' + (graded ? '' : ' explore'), id: 'act-' + act.id, 'aria-labelledby': 'h-' + act.id});
+  const status = graded ? h('span', {class: 'status'}) : null;
+  const fb = h('div', {class: 'fb', role: 'status', hidden: true});
+  const hintBox = h('div', {class: 'hintbox', hidden: true}), solBox = h('div', {class: 'solbox', hidden: true});
+  const paint = () => { if (!graded) return; status.textContent = STATUS[st.s]; status.className = 'status s-' + (st.s || 'todo'); refreshTabs(); };
+  const say = (kind, html) => { fb.hidden = false; fb.className = 'fb ' + kind; fb.innerHTML = html; };
+  let solBtn = null;
+  const unlock = () => { if (solBtn) { solBtn.disabled = false; solBtn.title = ''; } };
+  const api = {
+    touch() { if (st.s !== 'correct' && st.s !== 'revealed') { st.n++; if (!st.s) st.s = 'tried'; } unlock(); paint(); persist(); },
+    done(msg) { if (st.s !== 'revealed') st.s = 'correct'; say('good', msg); unlock(); paint(); persist(); }
+  };
+  const ctl = TYPES[act.type](act, api);
+  const persist = () => { if (ctl.get) S.v[act.id] = ctl.get(); save(); };
+  card.append(h('div', {class: 'act-head'},
+    graded ? h('span', {class: 'act-num'}, act.id) : h('span', {class: 'tag'}, 'Explore'),
+    h('h3', {id: 'h-' + act.id}, act.title), act.bonus ? h('span', {class: 'tag'}, 'Bonus · if time') : null, status));
+  const prompt = h('div', {class: 'prompt', html: P(act.prompt)});
+  if (act.widget && graded) card.append(WIDGETS[act.widget](), prompt);
+  else { card.append(prompt); if (act.widget) card.append(WIDGETS[act.widget]()); }
+  if (ctl.body) card.append(ctl.body);
+  if (graded) {
+    ACTS.push({part, act});
+    const actions = h('div', {class: 'actions'});
+    if (ctl.check) actions.append(h('button', {type: 'button', class: 'btn', onclick: () => {
+      const r = ctl.check();
+      if (r.incomplete) { say('note', r.msg); return; }
+      if (r.partial) { say('good', r.msg); persist(); return; }
+      if (st.s !== 'correct' && st.s !== 'revealed') st.n++;
+      if (r.ok) { if (st.s !== 'revealed') st.s = 'correct'; say('good', '<b>✓</b> ' + r.msg); }
+      else { if (!st.s) st.s = 'tried'; say('bad', '<b>✗</b> ' + r.msg); }
+      unlock(); paint(); persist();
+    }}, 'Check'));
+    if (act.hint) actions.append(h('button', {type: 'button', class: 'btn ghost', 'aria-expanded': 'false', onclick: e => {
+      hintBox.hidden = !hintBox.hidden; e.currentTarget.setAttribute('aria-expanded', String(!hintBox.hidden));
+      if (!hintBox.innerHTML) hintBox.innerHTML = '<h4>Hint</h4>' + P(act.hint);
+    }}, 'Hint'));
+    solBtn = h('button', {type: 'button', class: 'btn ghost', 'aria-expanded': 'false', onclick: e => {
+      solBox.hidden = !solBox.hidden; e.currentTarget.setAttribute('aria-expanded', String(!solBox.hidden));
+      if (!solBox.innerHTML) solBox.innerHTML = '<h4>Worked solution</h4>' + ctl.sol();
+      if (!solBox.hidden && st.s !== 'correct' && st.s !== 'revealed') { st.s = 'revealed'; paint(); save(); }
+    }}, 'Show solution');
+    if (!KEYED && !st.s) { solBtn.disabled = true; solBtn.title = 'Try it once first'; }
+    actions.append(solBtn);
+    card.append(actions, fb, hintBox, solBox);
+    if (ctl.set && S.v[act.id] != null) { try { ctl.set(S.v[act.id]); } catch (e) {} }
+    card.addEventListener('change', persist);
+    paint();
+  }
+  return card;
+}
+
+const panels = [];
+PARTS.forEach((p, i) => {
+  const panel = h('div', {class: 'panel', id: 'panel-' + i, role: 'tabpanel', 'aria-labelledby': 'tab-' + i, style: '--hue:' + p.hue, hidden: true});
+  panel.append(h('div', {class: 'part-head'}, h('div', {class: 'pn', 'aria-hidden': 'true'}, String(p.n)),
+    h('div', null, h('h2', {tabindex: '-1'}, 'Part ' + p.n + ' · ' + p.title), h('p', {class: 'lead', html: P(p.lead)})),
+    h('div', {class: 'pmin'}, 'about ' + p.min + ' min')));
+  p.acts.forEach(a => panel.append(buildAct(p, a)));
+  const nav = h('div', {class: 'part-nav'});
+  nav.append(i > 0 ? h('button', {type: 'button', class: 'btn ghost', onclick: () => show(i - 1)}, '← Part ' + i) : h('span'));
+  nav.append(h('button', {type: 'button', class: 'btn', onclick: () => show(i + 1)}, i < PARTS.length - 1 ? 'Part ' + (i + 2) + ': ' + PARTS[i + 1].short + ' →' : 'See your summary →'));
+  panel.append(nav);
+  main.append(panel); panels.push(panel);
+  tabsEl.append(h('button', {type: 'button', class: 'tab', role: 'tab', id: 'tab-' + i, 'aria-controls': 'panel-' + i, onclick: () => show(i)},
+    h('span', {class: 'tn'}, String(p.n)), h('span', {class: 'tt'}, p.short), h('span', {class: 'tc'})));
+});
+
+/* summary panel */
+const sumBody = h('div');
+const sumPanel = h('div', {class: 'panel', id: 'panel-sum', role: 'tabpanel', 'aria-labelledby': 'tab-sum', hidden: true},
+  h('div', {class: 'part-head', style: '--hue:var(--ink)'}, h('div', {class: 'pn', 'aria-hidden': 'true'}, 'Σ'),
+    h('div', null, h('h2', {tabindex: '-1'}, 'Your summary'), h('p', {class: 'lead'}, 'A record of what you completed today. Print it or save it as a PDF if your instructor asks you to submit it on Canvas.')), h('div', {class: 'pmin'})),
+  sumBody);
+main.append(sumPanel); panels.push(sumPanel);
+tabsEl.append(h('button', {type: 'button', class: 'tab', role: 'tab', id: 'tab-sum', 'aria-controls': 'panel-sum', onclick: () => show(PARTS.length)}, h('span', {class: 'tn'}, 'Σ'), h('span', {class: 'tt'}, 'Summary')));
+tabBtns = Array.from(tabsEl.children);
+
+function refreshTabs() {
+  PARTS.forEach((p, i) => {
+    const g = p.acts.filter(a => a.type !== 'explore' && !a.bonus), done = g.filter(a => { const s = (S.st[a.id] || {}).s; return s === 'correct' || s === 'revealed'; }).length;
+    if (!tabBtns[i]) return;
+    tabBtns[i].querySelector('.tc').textContent = done + '/' + g.length;
+    tabBtns[i].classList.toggle('done', done === g.length);
+  });
+}
+function renderSummary() {
+  let core = 0, coreOk = 0, bonus = 0, bonusOk = 0;
+  const tb = h('tbody');
+  PARTS.forEach(p => {
+    tb.append(h('tr', {class: 'ph'}, h('td', {colspan: '4'}, 'Part ' + p.n + ' · ' + p.title)));
+    p.acts.forEach(a => {
+      if (a.type === 'explore') return;
+      const st = S.st[a.id] || {s: '', n: 0};
+      if (a.bonus) { bonus++; if (st.s === 'correct') bonusOk++; } else { core++; if (st.s === 'correct') coreOk++; }
+      tb.append(h('tr', null, h('td', {class: 'n'}, a.id), h('td', null, a.title + (a.bonus ? ' (bonus)' : '')),
+        h('td', null, h('span', {class: 'status s-' + (st.s || 'todo')}, st.s ? STATUS[st.s] : 'Not attempted')), h('td', {class: 'n'}, st.n ? String(st.n) : '—')));
+    });
+  });
+  const name = h('input', {type: 'text', id: 'stuName', value: S.name || '', autocomplete: 'name', oninput: e => { S.name = e.target.value; save(); }});
+  let armed = false;
+  const reset = h('button', {type: 'button', class: 'btn ghost small', onclick: () => {
+    if (!armed) { armed = true; reset.textContent = 'Click again to erase all answers'; setTimeout(() => { armed = false; reset.textContent = 'Start over'; }, 4000); return; }
+    try { localStorage.removeItem(KEY); } catch (e) {} location.reload();
+  }}, 'Start over');
+  sumBody.textContent = '';
+  sumBody.append(
+    h('div', {class: 'sum-top'}, h('div', {class: 'score', html: coreOk + '<small> / ' + core + ' correct</small>'}),
+      h('div', {class: 'sum-meta'}, h('label', {for: 'stuName'}, 'Name'), name,
+        h('div', {style: 'margin-top:.4rem;color:var(--muted);font-size:.9rem'}, 'Bonus: ' + bonusOk + ' / ' + bonus + ' · ' + new Date().toLocaleString())),
+      h('div', {class: 'no-print', style: 'display:flex;gap:.4rem;flex-wrap:wrap'}, h('button', {type: 'button', class: 'btn', onclick: () => window.print()}, 'Print / save as PDF'), reset)),
+    h('table', {class: 'sum'}, h('thead', null, h('tr', null, h('th', null, '#'), h('th', null, 'Activity'), h('th', null, 'Result'), h('th', null, 'Tries'))), tb));
+}
+function show(i, quiet) {
+  i = Math.max(0, Math.min(panels.length - 1, i));
+  panels.forEach((p, j) => { p.hidden = j !== i; });
+  tabBtns.forEach((b, j) => { b.setAttribute('aria-selected', j === i ? 'true' : 'false'); b.tabIndex = j === i ? 0 : -1; });
+  if (i === PARTS.length) renderSummary();
+  S.part = i; save();
+  if (!quiet) {
+    const bar = $('.bar'); const y = bar.getBoundingClientRect().top + window.scrollY;
+    if (window.scrollY > y) window.scrollTo(0, y);
+    tabBtns[i].scrollIntoView({block: 'nearest', inline: 'center'});
+    const hd = panels[i].querySelector('h2'); if (hd) hd.focus({preventScroll: true});
+  }
+}
+tabsEl.addEventListener('keydown', e => {
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+  const n = (S.part + (e.key === 'ArrowRight' ? 1 : -1) + panels.length) % panels.length;
+  show(n, true); tabBtns[n].focus();
+});
+
+/* reference tables */
+$('#refBody').innerHTML = P(
+  '<div class="ref-card"><h3>Strong acids</h3><p>[[HCl]], [[HBr]], [[HI]], [[HNO3]], [[HClO3]], [[HClO4]], [[H2SO4]]</p><p style="color:var(--muted);font-size:.9rem">Only the first ionization of [[H2SO4]] is complete. Every other acid you meet in this course is weak.</p></div>' +
+  '<div class="ref-card"><h3>Strong bases</h3><p>Group 1A hydroxides: [[LiOH]], [[NaOH]], [[KOH]], [[RbOH]], [[CsOH]]</p><p>Heavy Group 2A hydroxides: [[Ca(OH)2]], [[Sr(OH)2]], [[Ba(OH)2]]</p></div>' +
+  '<div class="ref-card"><h3>Soluble compounds</h3><ul><li>Group 1A cations and [[NH4^+]] — always</li><li>[[NO3^-]], [[C2H3O2^-]], [[ClO3^-]] — always</li><li>[[Cl^-]], [[Br^-]], [[I^-]] — <b>except</b> with [[Ag^+]], [[Hg2^2+]], [[Pb^2+]]</li><li>[[SO4^2-]] — <b>except</b> with [[Ag^+]], [[Hg2^2+]], [[Pb^2+]], [[Ca^2+]], [[Sr^2+]], [[Ba^2+]]</li></ul></div>' +
+  '<div class="ref-card"><h3>Insoluble compounds</h3><ul><li>[[CO3^2-]], [[PO4^3-]], [[CrO4^2-]], [[S^2-]] — <b>except</b> with Group 1A cations and [[NH4^+]]</li><li>[[OH^-]] — <b>except</b> with Group 1A cations and [[Ba^2+]]</li></ul></div>' +
+  '<div class="ref-card"><h3>Oxidation numbers</h3><ol><li>An element by itself: 0</li><li>The numbers sum to the overall charge</li><li>Then assign in this order of priority:<br>F = −1 · Group 1A = +1, Group 2A = +2 · H = +1 · O = −2 · other Group 7A = −1</li></ol><p style="color:var(--muted);font-size:.9rem">Exceptions come from higher-priority elements: H is −1 in metal hydrides; O is −1 in peroxides.</p></div>' +
+  '<div class="ref-card"><h3>Equations</h3><p>M = mol solute ÷ L solution  ·  mol = M × L</p><p>M<sub>c</sub> × V<sub>c</sub> = M<sub>d</sub> × V<sub>d</sub></p><p>pH = −log[H<sub>3</sub>O<sup>+</sup>]  ·  [H<sub>3</sub>O<sup>+</sup>] = 10<sup>−pH</sup></p><p>mmol = M × mL</p></div>' +
+  '<div class="ref-card wide"><h3>Activity series</h3><div class="series"><em>most easily oxidized</em>' + SERIES.map(e => '<span' + (e === 'H' ? ' class="h"' : '') + '>' + (e === 'H' ? 'H<sub>2</sub>' : e) + '</span>').join('') + '<em>least</em></div><p style="color:var(--muted);font-size:.9rem;margin-top:.5rem">A metal is oxidized by the ions of any element to its right. Metals to the left of hydrogen react with acids to release [[H2]] gas.</p></div>');
+const ref = $('#ref');
+$('#refBtn').addEventListener('click', () => { if (ref.showModal) ref.showModal(); else ref.setAttribute('open', ''); });
+$('#refClose').addEventListener('click', () => { if (ref.close) ref.close(); else ref.removeAttribute('open'); });
+ref.addEventListener('click', e => { if (e.target === ref && ref.close) ref.close(); });
+
+/* text size */
+const SIZES = ['', 'big', 'huge'], SIZE_LABEL = ['A', 'A+', 'A++'];
+const applySize = () => { document.documentElement.className = SIZES[S.size || 0]; $('#sizeBtn').textContent = 'Text size: ' + SIZE_LABEL[S.size || 0]; };
+$('#sizeBtn').addEventListener('click', () => { S.size = ((S.size || 0) + 1) % 3; applySize(); save(); });
+applySize();
+
+/* class timer */
+const timerEl = $('#timer'); let run = false, base = 0, t0 = 0, iv = null;
+const elapsed = () => base + (run ? Date.now() - t0 : 0);
+function drawTimer() {
+  const s = Math.floor(elapsed() / 1000), mm = Math.floor(s / 60), ss = s % 60, min = s / 60;
+  timerEl.querySelector('.t-time').textContent = String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
+  timerEl.querySelector('.t-ico').innerHTML = run ? '&#10074;&#10074;' : '&#9654;';
+  const k = ENDS.findIndex(e => min < e);
+  timerEl.querySelector('.t-pace').textContent = !s ? 'class timer' : k < 0 ? 'time — wrap up' : 'pace: Part ' + (k + 1);
+  timerEl.classList.toggle('on', run); timerEl.classList.toggle('late', k < 0 && s > 0);
+  timerEl.setAttribute('aria-label', (run ? 'Pause' : 'Start') + ' class timer, ' + mm + ' minutes elapsed');
+}
+timerEl.addEventListener('click', () => {
+  if (run) { base = elapsed(); run = false; clearInterval(iv); } else { t0 = Date.now(); run = true; iv = setInterval(drawTimer, 1000); }
+  drawTimer();
+});
+$('#timerReset').addEventListener('click', () => { run = false; base = 0; clearInterval(iv); drawTimer(); });
+drawTimer();
+
+refreshTabs();
+show(S.part || 0, true);
+})();
+</script>
+</body>
+</html>
