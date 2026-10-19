@@ -18,6 +18,7 @@ Listed in roughly the order the course covers them.
 | Solutions and titrations | [Solutions and Titrations Study Guide](https://neogio73.github.io/CHM1045/solution-stoichiometry-study-guide.html) | Study guide |
 | Solutions and gases | [Solutions and Gases Study Guide](https://neogio73.github.io/CHM1045/solutions-and-gases-study-guide.html) | Study guide |
 | Calorimetry and Hess's law | [Calorimetry and Hess's Law Study Guide](https://neogio73.github.io/CHM1045/calorimetry-and-hess-law-study-guide.html) | Study guide |
+| Thermochemistry (Ch. 10) | [Heat of Fusion](https://neogio73.github.io/CHM1045/heat-of-fusion/) | Game (3D, WebGL) |
 | Atomic spectra and the Bohr model | [The Atomic Spectrum of Hydrogen](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/), with its [prelab review](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/prelab/) | Virtual lab |
 | Molecular shape (VSEPR) | [VSEPR Test Chambers](https://neogio73.github.io/CHM1045/vsepr-chamber-06/?chamber=menu) | Game |
 
