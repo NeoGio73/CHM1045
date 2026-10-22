@@ -20,6 +20,7 @@ Listed in roughly the order the course covers them.
 | Calorimetry and Hess's law | [Calorimetry and Hess's Law Study Guide](https://neogio73.github.io/CHM1045/calorimetry-and-hess-law-study-guide.html) | Study guide |
 | Thermochemistry (Ch. 10) | [Heat of Fusion](https://neogio73.github.io/CHM1045/heat-of-fusion/) | Game (3D, WebGL) |
 | Atomic spectra and the Bohr model | [The Atomic Spectrum of Hydrogen](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/), with its [prelab review](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/prelab/) | Virtual lab |
+| Chemical bonding, Lewis structures, and formal charge (Ch. 6) | [Escape from Lewis Manor](https://neogio73.github.io/CHM1045/lewis-manor/) | Game (Halloween) |
 | Molecular shape (VSEPR) | [VSEPR Test Chambers](https://neogio73.github.io/CHM1045/vsepr-chamber-06/?chamber=menu) | Game |
 
 ## Study guides
@@ -113,6 +114,28 @@ The [prelab review](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/pre
 
 Everything the prelab practices on is made up: an imaginary atom with four energy levels, and invented lines to read. It gives away none of the lab's answers.
 
+## Escape from Lewis Manor
+
+A Halloween escape-room game for Chapter 6, Chemical Bonding I. You play a chemistry student locked in a haunted manor at night. Walk the hall with the arrow keys (or the on-screen buttons on a phone), and enter a room with the up arrow. Each room's puzzles break one of the seven wax seals on the front door.
+
+| Room | Topic | Points |
+| --- | --- | --- |
+| I. The Foyer | The octet rule | 1 |
+| II. The Bone Library | Bonds and bond length | 1 |
+| III. The Séance Parlor | Electronegativity and polarity | 1 |
+| IV. The Crypt | Drawing Lewis structures | 1 |
+| V. The Hall of Mirrors | Formal charge | 1 |
+| VI. The Phantom Gallery | Resonance | 1 |
+| VII. The Tower | Exceptions to the octet rule | 2 |
+
+Each room has three candles. A wrong answer blows one out, and losing all three restarts the room with new questions. The questions change every time. Your browser remembers which seals you have broken, so you can stop and come back with Continue.
+
+Breaking all seven seals ends with a Certificate of Escape: your name, the date, each room's points out of 8, and a verification code. Download it and upload it to the Lewis Manor assignment in Canvas. If you stop early, the Certificate button in the corner gives a Record of Progress for the seals you have broken.
+
+**Instructors:** the "Instructor: check a certificate code" link on the title screen confirms a code. Type the student's name exactly as printed and the code; a valid code shows the score and date it was issued. An edited certificate will not match.
+
+The game has sound, so turn it on. It contains mild, cartoon-style jump scares.
+
 ## VSEPR Test Chambers
 
 A 3D game for molecular geometry. In each chamber you build molecules one electron domain at a time, then name the molecular shape and choose the bond angle. Blue adds a bond with its atom and orange adds a lone pair. Drag to look at the molecule from any side.
@@ -140,12 +163,13 @@ Canvas links point at these exact addresses. Renaming or moving a file breaks it
 ### Editing the activities
 
 - **Study guides, the worksheet, Names & Formulas Lab, and Hoth Run** are each a single HTML file with the styles, script, and images inside it. They load nothing from other sites.
+- **Escape from Lewis Manor** is also a single file, [`lewis-manor/index.html`](lewis-manor/index.html), with its art and sound made in code. It loads its three fonts from Google Fonts and falls back to built-in fonts without them.
 - **VSEPR Test Chambers** keeps the content an instructor is likely to change in [`vsepr-chamber-06/js/content.js`](vsepr-chamber-06/js/content.js): the chambers, molecules, questions, and narrator lines. Adding `?chamber=2` through `?chamber=6` to the address opens one chamber directly, and `?chamber=menu` opens the list. With nothing added, chamber 06 opens.
 - **The Atomic Spectrum of Hydrogen** is a finished build of a 3D project that is kept outside this repository. Its folder is replaced as a whole when the lab changes, so edits made to its files here would be lost.
 
 ### Running a copy on your own computer
 
-Download or clone the repository. The study guides, the worksheet, the Names & Formulas Lab, and Hoth Run open straight from the file with a double-click.
+Download or clone the repository. The study guides, the worksheet, the Names & Formulas Lab, Hoth Run, and Escape from Lewis Manor open straight from the file with a double-click.
 
 The VSEPR chambers and The Atomic Spectrum of Hydrogen have to be served by a web server, because browsers will not load their scripts and 3D files from a file on disk. From the repository folder, run:
 
@@ -167,6 +191,8 @@ CHM1045/
 ├── solution-stoichiometry-study-guide.html      Solutions and Titrations
 ├── solutions-and-gases-study-guide.html
 ├── calorimetry-and-hess-law-study-guide.html
+├── lewis-manor/
+│   └── index.html        Escape from Lewis Manor
 ├── hydrogen-spectrum-lab/
 │   ├── index.html        the lab page
 │   ├── model.js          the checks of what students enter
