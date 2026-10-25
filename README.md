@@ -17,6 +17,7 @@ Listed in roughly the order the course covers them.
 | Reactions in aqueous solutions | [Reactions in Aqueous Solutions Worksheet](https://neogio73.github.io/CHM1045/aqueous-reactions-worksheet.html) | In-class worksheet |
 | Solutions and titrations | [Solutions and Titrations Study Guide](https://neogio73.github.io/CHM1045/solution-stoichiometry-study-guide.html) | Study guide |
 | Solutions and gases | [Solutions and Gases Study Guide](https://neogio73.github.io/CHM1045/solutions-and-gases-study-guide.html) | Study guide |
+| Gases | [Gases Study Guide](https://neogio73.github.io/CHM1045/gases-study-guide.html) | Study guide |
 | Calorimetry and Hess's law | [Calorimetry and Hess's Law Study Guide](https://neogio73.github.io/CHM1045/calorimetry-and-hess-law-study-guide.html) | Study guide |
 | Thermochemistry (Ch. 10) | [Heat of Fusion](https://neogio73.github.io/CHM1045/heat-of-fusion/) | Game (3D, WebGL) |
 | Atomic spectra and the Bohr model | [The Atomic Spectrum of Hydrogen](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/), with its [prelab review](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/prelab/) | Virtual lab |
@@ -33,6 +34,7 @@ Each guide opens with a roadmap of the topic, then walks through its sections in
 | Stoichiometry | Mole to mole · Mass to mass · Density · Limiting reactant · Percent yield · Putting it together |
 | Solutions and Titrations | Molarity · Dilution · Solution stoichiometry · Mixing two solutions · Titration calculations · Run a titration |
 | Solutions and Gases | Molarity · Dilution · Solution stoichiometry · Mixing two solutions · Ideal gas law · Gas stoichiometry · Solutions and gases · Putting it together |
+| Gases | Pressure · Boyle's law · Charles's law · Gay-Lussac's and Avogadro's laws · Combined gas law · Ideal gas law · Density and molar mass · Dalton's law · Gas stoichiometry · Kinetic molecular theory · Real gases · Mixed practice |
 | Calorimetry and Hess's Law | Heat and temperature · Heat exchange · Coffee-cup calorimetry · Thermochemical equations · Hess's law · Run an experiment |
 
 ## Reactions in Aqueous Solutions Worksheet
