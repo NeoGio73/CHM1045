@@ -1,0 +1,462 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>body{margin:0}[hidden]{display:none!important}</style></head><body>
+<title>VSEPR Geometry Explorer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: reference table grouped by electron-group count; each geometry row carries its own rotatable model + example picker */
+:root{
+  --bg:#f4f6f7; --surface:#ffffff; --surface-2:#eaeff1; --ink:#16212a; --muted:#56646f; --line:#d3dbe0;
+  --accent:#0d6b86; --accent-ink:#ffffff; --lp:#7a56c9; --polar:#b4471f; --polar-bg:#fbe9e1; --np:#1f6f4a; --np-bg:#e0f2e8; --dep:#7a5a00; --dep-bg:#f8eecd;
+  --viewer:#e9eef1;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10171c; --surface:#172129; --surface-2:#1e2b34; --ink:#e4ecf0; --muted:#9db0bc; --line:#2c3b46;
+  --accent:#5cc3df; --accent-ink:#06222b; --lp:#b89cff; --polar:#ff9a72; --polar-bg:#3b2219; --np:#7ed9a8; --np-bg:#17342a; --dep:#f0cf6e; --dep-bg:#3a3017;
+  --viewer:#0c1216; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#10171c; --surface:#172129; --surface-2:#1e2b34; --ink:#e4ecf0; --muted:#9db0bc; --line:#2c3b46;
+  --accent:#5cc3df; --accent-ink:#06222b; --lp:#b89cff; --polar:#ff9a72; --polar-bg:#3b2219; --np:#7ed9a8; --np-bg:#17342a; --dep:#f0cf6e; --dep-bg:#3a3017;
+  --viewer:#0c1216; color-scheme:dark;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.wrap{max-width:1360px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.45rem;font-weight:700}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+sub,sup{font-size:.7em;line-height:0}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+header{display:flex;flex-direction:column;gap:10px;max-width:72ch}
+header p{color:var(--muted);font-size:1.08rem}
+
+.primer{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.primer section{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.primer ol,.primer ul{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px}
+.primer li::marker{color:var(--accent);font-weight:700}
+.rep{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-family:var(--f-mono);font-size:.82rem}
+.rep span{background:var(--surface-2);padding:3px 8px;border-radius:6px}
+.rep b{color:var(--muted);font-weight:500}
+.muted{color:var(--muted)}
+
+.toolbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.toolbar label{display:flex;align-items:center;gap:7px;font-weight:600;cursor:pointer;font-size:.95rem}
+.toolbar input{accent-color:var(--accent);width:17px;height:17px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-left:auto;font-size:.85rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:12px;height:12px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.25)}
+.legend .lpkey{width:16px;height:10px;border-radius:50%;background:var(--lp);opacity:.6;border:0}
+
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:1080px}
+thead th{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.07em;text-transform:uppercase;text-align:left;color:var(--muted);font-weight:500;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--surface)}
+td{padding:16px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.grp td{background:var(--surface-2);padding:14px;border-bottom:1px solid var(--line)}
+.grphead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 26px}
+.grphead .n{font-family:var(--f-display);font-size:1.35rem;font-weight:700;display:flex;align-items:baseline;gap:8px}
+.grphead .n b{font-size:2rem;color:var(--accent);line-height:1}
+.kv{display:flex;flex-direction:column}
+.kv small{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.kv span{font-weight:700}
+.grphead p{flex-basis:100%;color:var(--muted);font-size:.95rem;max-width:90ch}
+.geo h3{font-size:1.2rem}
+.axe{font-family:var(--f-mono);font-size:.85rem;background:var(--surface-2);padding:2px 7px;border-radius:5px;display:inline-block;margin:6px 0 8px}
+.geo p{font-size:.94rem;color:var(--muted);max-width:42ch}
+.num{font-family:var(--f-display);font-size:1.6rem;font-weight:700;font-variant-numeric:tabular-nums}
+.num.lp{color:var(--lp)}
+.ang{font-weight:600;font-variant-numeric:tabular-nums}
+.ang small{display:block;font-weight:400;color:var(--muted);font-size:.88rem}
+.pill{display:inline-block;font-size:.8rem;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.pill.p{background:var(--polar-bg);color:var(--polar)}
+.pill.np{background:var(--np-bg);color:var(--np)}
+.pill.dep{background:var(--dep-bg);color:var(--dep)}
+.polnote{font-size:.88rem;color:var(--muted);margin-top:6px;max-width:28ch}
+
+.model{width:310px;display:flex;flex-direction:column;gap:8px}
+.model .ctrl{display:flex;gap:6px}
+.model select{flex:1;min-width:0;font:inherit;font-weight:600;padding:6px 8px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.model button{font:inherit;font-size:.82rem;font-weight:600;padding:6px 10px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer}
+.model button:hover{border-color:var(--accent)}
+select:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.view{position:relative;background:var(--viewer);border-radius:8px;overflow:hidden}
+.view canvas{display:block;width:100%;height:240px;cursor:grab;touch-action:none}
+.view canvas:active{cursor:grabbing}
+.view .hint{position:absolute;left:8px;bottom:6px;font-size:.72rem;color:var(--muted);pointer-events:none}
+.exinfo{font-size:.9rem;display:flex;flex-direction:column;gap:5px}
+.exinfo .t{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.exinfo .fx{font-family:var(--f-display);font-weight:700;font-size:1.15rem}
+.exinfo .facts{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;font-size:.86rem}
+.exinfo .facts dt{color:var(--muted)}
+.exinfo .facts dd{margin:0;font-weight:600}
+.exinfo p{color:var(--muted);font-size:.86rem}
+
+.notes{display:flex;flex-direction:column;gap:10px;max-width:90ch;font-size:.93rem;color:var(--muted)}
+.notes ol{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+
+@media (max-width:880px){
+  table{min-width:0}
+  thead{display:none}
+  tr.row{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;padding:16px 14px;border-bottom:1px solid var(--line)}
+  tr.row td{padding:0;border:0;min-width:0}
+  tr.row td[data-l]::before{content:attr(data-l);display:block;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+  tr.row td.geo,tr.row td.mcell{grid-column:1/-1}
+  tr.grp{display:block}tr.grp td{display:block}
+  .model{width:100%}
+  .tablebox{overflow-x:visible}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">General Chemistry I · Molecular shape</span>
+    <h1>VSEPR Geometry Explorer</h1>
+    <p>Valence Shell Electron Pair Repulsion theory predicts the 3D shape of a molecule from one idea: electron groups around a central atom push each other as far apart as possible. Drag any model to rotate it, and use the menu above each model to switch between example molecules.</p>
+  </header>
+
+  <div class="primer">
+    <section>
+      <h2>Predicting a shape</h2>
+      <ol>
+        <li>Draw the Lewis structure and identify the central atom.</li>
+        <li>Count the electron groups (the steric number) on the central atom: each bonded atom counts as one, and each lone pair counts as one.</li>
+        <li>Use that count to find the <b>electron geometry</b> (2 = linear, 3 = trigonal planar, 4 = tetrahedral, 5 = trigonal bipyramidal, 6 = octahedral).</li>
+        <li>Note how many groups are lone pairs. The <b>molecular geometry</b> describes only where the atoms are, so it is named by ignoring the lone pairs.</li>
+        <li>Adjust the angles: lone pairs squeeze bond angles below the ideal values.</li>
+      </ol>
+    </section>
+    <section>
+      <h2>What counts as one group</h2>
+      <ul>
+        <li>A single, double, or triple bond: <b>one group each</b>. Multiple bonds do not add groups.</li>
+        <li>A lone pair on the central atom: one group.</li>
+        <li>A single unpaired electron (radicals such as NO<sub>2</sub>) is also treated as one group, a weaker one.</li>
+        <li>Lone pairs on <i>terminal</i> atoms do not affect the shape and are not drawn here.</li>
+      </ul>
+      <p class="muted">AXE notation: A = central atom, X = bonded atoms, E = lone pairs. AX<sub>2</sub>E<sub>2</sub> means 2 atoms and 2 lone pairs on the central atom.</p>
+    </section>
+    <section>
+      <h2>Why angles shrink</h2>
+      <p>Lone pairs are held by only one nucleus, so they spread out and take more room than bonding pairs. Repulsion strength:</p>
+      <div class="rep"><span>lone pair–lone pair</span><b>&gt;</b><span>lone pair–bond pair</span><b>&gt;</b><span>bond pair–bond pair</span></div>
+      <p>Multiple bonds also repel a bit more than single bonds (H<sub>2</sub>CO: H–C–H is 116.5°, not 120°).</p>
+      <p class="muted">In 5-group molecules, lone pairs go to <b>equatorial</b> positions (fewer 90° neighbors). In 6-group molecules, two lone pairs sit <b>opposite</b> each other.</p>
+    </section>
+    <section>
+      <h2>Polarity from shape</h2>
+      <ul>
+        <li>A molecule is polar when its bond dipoles do not cancel, giving a net dipole moment.</li>
+        <li>Symmetric shapes (linear, trigonal planar, tetrahedral, trigonal bipyramidal, octahedral, square planar, AX<sub>2</sub>E<sub>3</sub> linear) are <b>nonpolar if all terminal atoms are identical</b>.</li>
+        <li>Shapes with lone pairs that break the symmetry (bent, trigonal pyramidal, seesaw, T-shaped, square pyramidal) are <b>polar</b>.</li>
+        <li>Mixing different terminal atoms (CH<sub>2</sub>Cl<sub>2</sub>, HCN) makes a symmetric shape polar.</li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="toolbar" role="group" aria-label="Model display options">
+    <label><input type="checkbox" id="optLP" checked> Show lone pairs</label>
+    <label><input type="checkbox" id="optAng" checked> Show bond angles</label>
+    <label><input type="checkbox" id="optSpin" checked> Auto-rotate</label>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr>
+        <th>Molecular geometry</th><th>Bonded atoms</th><th>Lone pairs</th><th>Bond angle(s)</th><th>Polarity</th><th>3D model &amp; examples</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="notes">
+    <h2 style="color:var(--ink)">Notes</h2>
+    <ol>
+      <li><b>Measured angles</b> are typical experimental (mostly gas-phase) values. Different textbooks may list values that differ by a degree or so.</li>
+      <li><b>Hybridization.</b> The labels sp<sup>3</sup>d and sp<sup>3</sup>d<sup>2</sup> for 5 and 6 electron groups are the standard general chemistry convention. More advanced bonding models show that d orbitals contribute very little in molecules like PCl<sub>5</sub> and SF<sub>6</sub>, so treat these labels as bookkeeping that matches the geometry.</li>
+      <li><b>Expanded octets.</b> Central atoms with 5 or 6 electron groups come from period 3 or below (P, S, Cl, Se, Br, I, Xe…). Period 2 atoms (C, N, O, F) never exceed 4 groups.</li>
+      <li><b>Resonance.</b> In ions and molecules with resonance (CO<sub>3</sub><sup>2−</sup>, NO<sub>3</sub><sup>−</sup>, SO<sub>2</sub>, O<sub>3</sub>…), the models draw a solid bond plus a faint second bond to represent the averaged bond order. Resonance never changes the number of electron groups.</li>
+      <li><b>Models.</b> Bond lengths are scaled from sums of covalent radii, shortened for double and triple bonds, so relative sizes are realistic but approximate. Atom colors follow the standard CPK convention. Lone pairs (purple lobes) are drawn on the central atom only.</li>
+    </ol>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+/* ---------- formula formatting ---------- */
+const SUB="₀₁₂₃₄₅₆₇₈₉", SUP={"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","+":"⁺","-":"⁻"};
+function fHTML(s){const [b,c]=s.split("^");return b.replace(/(\d+)/g,"<sub>$1</sub>")+(c?"<sup>"+c.replace("-","−")+"</sup>":"");}
+function fTXT(s){const [b,c]=s.split("^");return b.replace(/\d/g,d=>SUB[d])+(c?c.split("").map(ch=>SUP[ch]||ch).join(""):"");}
+
+/* ---------- element data (covalent radius pm, CPK color) ---------- */
+const EL={H:[31,"#ffffff","Hydrogen"],Be:[96,"#c2ff00","Beryllium"],B:[84,"#ffb5b5","Boron"],C:[76,"#505050","Carbon"],N:[71,"#3050f8","Nitrogen"],O:[66,"#ff0d0d","Oxygen"],F:[57,"#90e050","Fluorine"],P:[107,"#ff8000","Phosphorus"],S:[105,"#ffd630","Sulfur"],Cl:[102,"#1ff01f","Chlorine"],As:[119,"#bd80e3","Arsenic"],Se:[120,"#ffa100","Selenium"],Br:[120,"#a62929","Bromine"],Kr:[116,"#5cb8d1","Krypton"],Sb:[139,"#9e63b5","Antimony"],Te:[138,"#d47a00","Tellurium"],I:[139,"#940094","Iodine"],Xe:[140,"#429eb0","Xenon"]};
+
+/* ---------- geometry builders: return bond dirs (b), lone pair dirs (l), arc pairs ---------- */
+const R=Math.PI/180, sin=Math.sin, cos=Math.cos;
+const GEO={
+ linear:()=>({b:[[1,0,0],[-1,0,0]],l:[],arcs:[[0,1]]}),
+ trigonal:()=>({b:[[0,1,0],[cos(210*R),sin(210*R),0],[cos(330*R),sin(330*R),0]],l:[],arcs:[[1,2]]}),
+ bent3:(a=117)=>{const h=a/2*R;return{b:[[sin(h),-cos(h),0],[-sin(h),-cos(h),0]],l:[[0,1,0]],arcs:[[0,1]]};},
+ tetra:()=>{const t=109.47*R;return{b:[[0,1,0],...[90,210,330].map(p=>[sin(t)*cos(p*R),cos(t),sin(t)*sin(p*R)])],l:[],arcs:[[0,1]]};},
+ pyramid:(a=107)=>{const c2=(2*cos(a*R)+1)/3,al=Math.acos(Math.sqrt(c2));return{b:[90,210,330].map(p=>[sin(al)*cos(p*R),-cos(al),sin(al)*sin(p*R)]),l:[[0,1,0]],arcs:[[0,1]]};},
+ bent4:(a=104.5)=>{const h=a/2*R,g=57*R;return{b:[[sin(h),-cos(h),0],[-sin(h),-cos(h),0]],l:[[0,cos(g),sin(g)],[0,cos(g),-sin(g)]],arcs:[[0,1]]};},
+ tbp:()=>({b:[[0,1,0],[0,-1,0],...[0,120,240].map(p=>[cos(p*R),0,sin(p*R)])],l:[],arcs:[[0,2],[2,3]]}),
+ seesaw:(a=[173,102])=>{const d=(180-a[0])/2*R,e=a[1]/2*R;return{b:[[-sin(d),cos(d),0],[-sin(d),-cos(d),0],[-cos(e),0,sin(e)],[-cos(e),0,-sin(e)]],l:[[1,0,0]],arcs:[[0,1],[2,3]]};},
+ tshape:(a=87.5)=>{const d=(90-a)*R;return{b:[[-sin(d),cos(d),0],[-sin(d),-cos(d),0],[-1,0,0]],l:[[cos(60*R),0,sin(60*R)],[cos(60*R),0,-sin(60*R)]],arcs:[[0,2]]};},
+ linear5:()=>({b:[[0,1,0],[0,-1,0]],l:[0,120,240].map(p=>[cos(p*R),0,sin(p*R)]),arcs:[[0,1]]}),
+ octa:()=>({b:[[0,1,0],[0,-1,0],[1,0,0],[-1,0,0],[0,0,1],[0,0,-1]],l:[],arcs:[[0,2]]}),
+ sqpyr:(a=85)=>{const t=a*R;return{b:[[0,1,0],...[45,135,225,315].map(p=>[sin(t)*cos(p*R),cos(t),sin(t)*sin(p*R)])],l:[[0,-1,0]],arcs:[[0,1]]};},
+ sqplanar:()=>({b:[[1,0,0],[0,0,1],[-1,0,0],[0,0,-1]],l:[[0,1,0],[0,-1,0]],arcs:[[0,1]]})
+};
+
+/* ---------- table data ---------- */
+const DATA=[
+{n:2,eg:"Linear",hyb:"sp",ideal:"180°",desc:"Two electron groups sit on opposite sides of the central atom. Only one molecular geometry is possible.",rows:[
+ {geo:"linear",axe:"AX<sub>2</sub>",b:2,lp:0,mg:"Linear",ang:"180°",angN:"",pol:"dep",polT:"Nonpolar if both atoms are identical; polar if different",note:"The two bonded atoms and the central atom lie on a straight line.",ex:[
+  {f:"CO2",nm:"Carbon dioxide",c:"C",t:["O","O"],bo:[2,2],ma:"180°",p:"Nonpolar",n:"Each C=O double bond counts as one electron group. The two C=O bond dipoles are equal and point in opposite directions, so they cancel."},
+  {f:"BeCl2",nm:"Beryllium chloride (gas)",c:"Be",t:["Cl","Cl"],bo:[1,1],ma:"180°",p:"Nonpolar",n:"Be has only two bonding pairs (4 electrons), an incomplete octet. Linear as an isolated gas-phase molecule; solid BeCl₂ is a chain polymer."},
+  {f:"HCN",nm:"Hydrogen cyanide",c:"C",t:["H","N"],bo:[1,3],ma:"180°",p:"Polar",n:"The C≡N triple bond is one electron group. The shape is linear, but the two terminal atoms differ, so the bond dipoles do not cancel."},
+  {f:"CS2",nm:"Carbon disulfide",c:"C",t:["S","S"],bo:[2,2],ma:"180°",p:"Nonpolar",n:"Same Lewis pattern as CO₂ (S is in the same group as O), so same shape and same cancellation of dipoles."}]}]},
+{n:3,eg:"Trigonal planar",hyb:"sp²",ideal:"120°",desc:"Three electron groups point to the corners of an equilateral triangle, all in one plane.",rows:[
+ {geo:"trigonal",axe:"AX<sub>3</sub>",b:3,lp:0,mg:"Trigonal planar",ang:"120°",pol:"dep",polT:"Nonpolar if all three atoms are identical",note:"The central atom and all three bonded atoms lie in the same flat plane.",ex:[
+  {f:"BF3",nm:"Boron trifluoride",c:"B",t:["F","F","F"],bo:[1,1,1],ma:"120°",p:"Nonpolar",n:"B has only 6 electrons around it (incomplete octet), so there are exactly 3 groups and no lone pair. The three B–F dipoles cancel."},
+  {f:"SO3",nm:"Sulfur trioxide",c:"S",t:["O","O","O"],bo:[1.33,1.33,1.33],ma:"120°",p:"Nonpolar",n:"Resonance makes all three S–O bonds identical. Each bond is still one electron group, so 3 groups, no lone pairs on S."},
+  {f:"CO3^2-",nm:"Carbonate ion",c:"C",t:["O","O","O"],bo:[1.33,1.33,1.33],ma:"120°",p:"Nonpolar",n:"Three equivalent resonance structures; average C–O bond order 1⅓. Symmetric, so no net dipole (it is an ion, but the charge is spread evenly)."},
+  {f:"NO3^-",nm:"Nitrate ion",c:"N",t:["O","O","O"],bo:[1.33,1.33,1.33],ma:"120°",p:"Nonpolar",n:"Isoelectronic with carbonate (same number of electrons), so the same shape and resonance pattern."},
+  {f:"H2CO",nm:"Formaldehyde",c:"C",t:["O","H","H"],bo:[2,1,1],ma:"H–C–H 116.5°, H–C–O 121.8°",al:["116.5°"],p:"Polar",n:"Still trigonal planar, but the C=O double bond repels more than the C–H bonds, squeezing H–C–H below 120°. Different terminal atoms make it polar."}]},
+ {geo:"bent3",axe:"AX<sub>2</sub>E",b:2,lp:1,mg:"Bent (angular)",ang:"&lt;120°",angN:"about 115–119°",pol:"p",polT:"Always polar",note:"One corner of the triangle is a lone pair. The lone pair pushes the two bonds slightly closer together.",ex:[
+  {f:"SO2",nm:"Sulfur dioxide",c:"S",t:["O","O"],bo:[1.5,1.5],ba:119.5,ma:"119.5°",p:"Polar",n:"Two resonance structures give two equivalent S–O bonds. S keeps one lone pair, which gives the molecule its bent shape and a net dipole."},
+  {f:"O3",nm:"Ozone",c:"O",t:["O","O"],bo:[1.5,1.5],ba:116.8,ma:"116.8°",p:"Polar",n:"All three atoms are oxygen, yet ozone is polar: the central O carries a lone pair and a formal positive charge, so electron density is uneven."},
+  {f:"NO2^-",nm:"Nitrite ion",c:"N",t:["O","O"],bo:[1.5,1.5],ba:115.4,ma:"≈115°",p:"Polar",n:"Isoelectronic with O₃. Resonance averages the two N–O bonds; the lone pair on N bends the ion."}]}]},
+{n:4,eg:"Tetrahedral",hyb:"sp³",ideal:"109.5°",desc:"Four electron groups point to the corners of a tetrahedron. Flat drawings on paper suggest 90°, but the real 3D angle is 109.5°. Notice the trend as lone pairs replace bonds: CH₄ 109.5° → NH₃ 107° → H₂O 104.5°.",rows:[
+ {geo:"tetra",axe:"AX<sub>4</sub>",b:4,lp:0,mg:"Tetrahedral",ang:"109.5°",pol:"dep",polT:"Nonpolar if all four atoms are identical",note:"The most common shape in organic chemistry: every carbon with four single bonds is tetrahedral.",ex:[
+  {f:"CH4",nm:"Methane",c:"C",t:["H","H","H","H"],bo:[1,1,1,1],ma:"109.5°",p:"Nonpolar",n:"The model shape. Four identical C–H bonds point to the corners of a tetrahedron; dipoles cancel."},
+  {f:"CCl4",nm:"Carbon tetrachloride",c:"C",t:["Cl","Cl","Cl","Cl"],bo:[1,1,1,1],ma:"109.5°",p:"Nonpolar",n:"Each C–Cl bond is polar, but the four bond dipoles cancel by symmetry. Polar bonds do not always make a polar molecule."},
+  {f:"NH4^+",nm:"Ammonium ion",c:"N",t:["H","H","H","H"],bo:[1,1,1,1],ma:"109.5°",p:"Nonpolar",n:"NH₃ plus H⁺: the former lone pair becomes the fourth N–H bond, so trigonal pyramidal NH₃ becomes tetrahedral NH₄⁺."},
+  {f:"SO4^2-",nm:"Sulfate ion",c:"S",t:["O","O","O","O"],bo:[1.5,1.5,1.5,1.5],ma:"109.5°",p:"Nonpolar",n:"Whether drawn with all single bonds or with two S=O double bonds (lowest formal charges), S has four groups and no lone pairs."},
+  {f:"CH2Cl2",nm:"Dichloromethane",c:"C",t:["Cl","Cl","H","H"],bo:[1,1,1,1],ma:"Cl–C–Cl ≈112°",al:["112°"],p:"Polar",n:"Tetrahedral, but two different kinds of terminal atom. The C–Cl dipoles are not cancelled by the C–H bonds, so the molecule is polar."}]},
+ {geo:"pyramid",axe:"AX<sub>3</sub>E",b:3,lp:1,mg:"Trigonal pyramidal",ang:"&lt;109.5°",angN:"about 107° in NH₃",pol:"p",polT:"Always polar",note:"Picture a tetrahedron with one corner taken by an invisible lone pair. The three atoms form a pyramid with the central atom at the top.",ex:[
+  {f:"NH3",nm:"Ammonia",c:"N",t:["H","H","H"],ba:106.7,bo:[1,1,1],ma:"106.7°",p:"Polar",n:"Lone pair–bond pair repulsion closes the H–N–H angle from 109.5° to about 107°. The lone pair also makes NH₃ a base."},
+  {f:"NF3",nm:"Nitrogen trifluoride",c:"N",t:["F","F","F"],ba:102.4,bo:[1,1,1],ma:"102.4°",p:"Polar",n:"Smaller angle than NH₃: the electronegative F atoms pull bonding electrons away from N, so the bond pairs take up less space near N."},
+  {f:"PCl3",nm:"Phosphorus trichloride",c:"P",t:["Cl","Cl","Cl"],ba:100.3,bo:[1,1,1],ma:"100.3°",p:"Polar",n:"A larger central atom from period 3 often gives angles well below 109.5°."},
+  {f:"PH3",nm:"Phosphine",c:"P",t:["H","H","H"],ba:93.5,bo:[1,1,1],ma:"93.5°",p:"Polar",n:"Same group as NH₃ but the angle is close to 90°. A classic case where the simple VSEPR estimate (≈107°) is too large for heavier atoms."},
+  {f:"H3O^+",nm:"Hydronium ion",c:"O",t:["H","H","H"],ba:111,bo:[1,1,1],ma:"slightly less than 109.5° (varies with surroundings)",al:["<109.5°"],p:"Polar",n:"H₂O plus H⁺. Oxygen keeps one lone pair, so hydronium is trigonal pyramidal, isoelectronic with NH₃."}]},
+ {geo:"bent4",axe:"AX<sub>2</sub>E<sub>2</sub>",b:2,lp:2,mg:"Bent (angular)",ang:"&lt;109.5°",angN:"about 104.5° in H₂O",pol:"p",polT:"Always polar",note:"Two corners of the tetrahedron are lone pairs. Two lone pairs squeeze the bonds more than one lone pair does.",ex:[
+  {f:"H2O",nm:"Water",c:"O",t:["H","H"],ba:104.5,bo:[1,1],ma:"104.5°",p:"Polar",n:"Electron geometry is tetrahedral; molecular geometry is bent. The bent shape is why water is polar and forms hydrogen bonds."},
+  {f:"H2S",nm:"Hydrogen sulfide",c:"S",t:["H","H"],ba:92.1,bo:[1,1],ma:"92.1°",p:"Polar",n:"Same pattern as H₂O, but the larger S atom gives an angle near 90°."},
+  {f:"OF2",nm:"Oxygen difluoride",c:"O",t:["F","F"],ba:103.1,bo:[1,1],ma:"103.1°",p:"Polar",n:"Two O–F bonds and two lone pairs on O. Slightly smaller angle than water."},
+  {f:"SCl2",nm:"Sulfur dichloride",c:"S",t:["Cl","Cl"],ba:102.8,bo:[1,1],ma:"≈103°",p:"Polar",n:"Two bonding groups and two lone pairs on sulfur."}]}]},
+{n:5,eg:"Trigonal bipyramidal",hyb:"sp³d",ideal:"90°, 120°, 180°",desc:"Two kinds of position: two axial (top and bottom, 180° apart) and three equatorial (around the middle, 120° apart). Axial groups have three 90° neighbors; equatorial groups have only two, so lone pairs always choose equatorial positions.",rows:[
+ {geo:"tbp",axe:"AX<sub>5</sub>",b:5,lp:0,mg:"Trigonal bipyramidal",ang:"90°, 120°, 180°",angN:"axial–equatorial 90°, equatorial–equatorial 120°, axial–axial 180°",pol:"dep",polT:"Nonpolar if all five atoms are identical",note:"Two triangular pyramids sharing a base. Axial and equatorial positions are not equivalent; axial bonds are slightly longer.",ex:[
+  {f:"PCl5",nm:"Phosphorus pentachloride",c:"P",t:["Cl","Cl","Cl","Cl","Cl"],bo:[1,1,1,1,1],ma:"90°, 120°, 180°",p:"Nonpolar",n:"P has 10 electrons around it (expanded octet), possible because P is in period 3."},
+  {f:"PF5",nm:"Phosphorus pentafluoride",c:"P",t:["F","F","F","F","F"],bo:[1,1,1,1,1],ma:"90°, 120°, 180°",p:"Nonpolar",n:"Same shape as PCl₅. The axial P–F bonds (158 pm) are longer than the equatorial ones (153 pm)."},
+  {f:"AsF5",nm:"Arsenic pentafluoride",c:"As",t:["F","F","F","F","F"],bo:[1,1,1,1,1],ma:"90°, 120°, 180°",p:"Nonpolar",n:"Arsenic is in the same group as phosphorus, so it forms the same shape."},
+  {f:"SbCl5",nm:"Antimony pentachloride",c:"Sb",t:["Cl","Cl","Cl","Cl","Cl"],bo:[1,1,1,1,1],ma:"90°, 120°, 180°",p:"Nonpolar",n:"Another group 15 example with five bonding groups."}]},
+ {geo:"seesaw",axe:"AX<sub>4</sub>E",b:4,lp:1,mg:"Seesaw (distorted tetrahedron)",ang:"&lt;90°, &lt;120°, &lt;180°",angN:"SF₄: axial–axial 173°, equatorial–equatorial 102°",pol:"p",polT:"Always polar",note:"The lone pair takes an equatorial position. Tip the model on its side and it looks like a playground seesaw.",ex:[
+  {f:"SF4",nm:"Sulfur tetrafluoride",c:"S",t:["F","F","F","F"],bo:[1,1,1,1],ba:[173.1,101.6],ma:"F(ax)–S–F(ax) 173.1°, F(eq)–S–F(eq) 101.6°",p:"Polar",n:"Four bonds plus one lone pair on S. The lone pair bends the axial F atoms away from it and squeezes the equatorial angle from 120° to about 102°."},
+  {f:"SeF4",nm:"Selenium tetrafluoride",c:"Se",t:["F","F","F","F"],bo:[1,1,1,1],ba:[169.2,100.6],ma:"169.2°, 100.6°",p:"Polar",n:"Se is in the same group as S, so SeF₄ matches SF₄."},
+  {f:"XeO2F2",nm:"Xenon dioxydifluoride",c:"Xe",t:["F","F","O","O"],bo:[1,1,2,2],ba:[174.7,105.7],ma:"F–Xe–F 174.7°, O–Xe–O 105.7°",al:["174.7°","105.7°"],p:"Polar",n:"The two Xe=O double bonds take equatorial positions next to the lone pair; the F atoms are axial."}]},
+ {geo:"tshape",axe:"AX<sub>3</sub>E<sub>2</sub>",b:3,lp:2,mg:"T-shaped",ang:"&lt;90°",angN:"about 87.5° in ClF₃",pol:"p",polT:"Always polar",note:"Both lone pairs sit in equatorial positions. The three atoms and the central atom form the letter T.",ex:[
+  {f:"ClF3",nm:"Chlorine trifluoride",c:"Cl",t:["F","F","F"],bo:[1,1,1],ba:87.5,ma:"F(ax)–Cl–F(eq) 87.5°",p:"Polar",n:"Three bonds and two lone pairs on Cl. The lone pairs bend the axial F atoms slightly toward the equatorial F."},
+  {f:"BrF3",nm:"Bromine trifluoride",c:"Br",t:["F","F","F"],bo:[1,1,1],ba:86.2,ma:"86.2°",p:"Polar",n:"Same pattern as ClF₃ with a larger halogen at the center."},
+  {f:"ICl3",nm:"Iodine trichloride (gas monomer)",c:"I",t:["Cl","Cl","Cl"],bo:[1,1,1],ba:86,ma:"slightly less than 90°",al:["<90°"],p:"Polar",n:"Predicted T-shaped as a single molecule. In the solid, two ICl₃ units join into a planar I₂Cl₆ dimer."}]},
+ {geo:"linear5",axe:"AX<sub>2</sub>E<sub>3</sub>",b:2,lp:3,mg:"Linear",ang:"180°",pol:"np",polT:"Nonpolar (with identical atoms)",note:"All three lone pairs sit around the equator, 120° apart. The two atoms are left exactly opposite each other, so the shape is linear.",ex:[
+  {f:"XeF2",nm:"Xenon difluoride",c:"Xe",t:["F","F"],bo:[1,1],ma:"180°",p:"Nonpolar",n:"A noble-gas compound. Xe has 2 bonds and 3 lone pairs (5 groups). The lone pairs cancel each other's effect and the F–Xe–F dipoles cancel."},
+  {f:"I3^-",nm:"Triiodide ion",c:"I",t:["I","I"],bo:[1,1],ma:"180°",p:"Nonpolar",n:"The central I carries 3 lone pairs and the negative charge. Found in iodine/iodide solutions such as the starch–iodine test."},
+  {f:"ICl2^-",nm:"Dichloroiodate ion",c:"I",t:["Cl","Cl"],bo:[1,1],ma:"180°",p:"Nonpolar",n:"Same electron count around I as in I₃⁻, so the same linear shape."},
+  {f:"KrF2",nm:"Krypton difluoride",c:"Kr",t:["F","F"],bo:[1,1],ma:"180°",p:"Nonpolar",n:"Krypton analogue of XeF₂."}]}]},
+{n:6,eg:"Octahedral",hyb:"sp³d²",ideal:"90°, 180°",desc:"Six electron groups point to the corners of an octahedron (along the ±x, ±y and ±z axes). All six positions are equivalent, so the first lone pair can go anywhere; a second lone pair goes directly opposite the first.",rows:[
+ {geo:"octa",axe:"AX<sub>6</sub>",b:6,lp:0,mg:"Octahedral",ang:"90°, 180°",angN:"adjacent 90°, opposite 180°",pol:"dep",polT:"Nonpolar if all six atoms are identical",note:"Eight triangular faces. Every bond makes 90° with four neighbors and 180° with the one opposite.",ex:[
+  {f:"SF6",nm:"Sulfur hexafluoride",c:"S",t:["F","F","F","F","F","F"],bo:[1,1,1,1,1,1],ma:"90°, 180°",p:"Nonpolar",n:"S has 12 electrons around it (expanded octet). Very symmetric and unreactive; used as an electrical insulating gas."},
+  {f:"SeF6",nm:"Selenium hexafluoride",c:"Se",t:["F","F","F","F","F","F"],bo:[1,1,1,1,1,1],ma:"90°, 180°",p:"Nonpolar",n:"Same group as S, same octahedral shape."},
+  {f:"PF6^-",nm:"Hexafluorophosphate ion",c:"P",t:["F","F","F","F","F","F"],bo:[1,1,1,1,1,1],ma:"90°, 180°",p:"Nonpolar",n:"PF₅ plus F⁻ gives six bonding groups on P."},
+  {f:"TeF6",nm:"Tellurium hexafluoride",c:"Te",t:["F","F","F","F","F","F"],bo:[1,1,1,1,1,1],ma:"90°, 180°",p:"Nonpolar",n:"Group 16 again, with a larger central atom."}]},
+ {geo:"sqpyr",axe:"AX<sub>5</sub>E",b:5,lp:1,mg:"Square pyramidal",ang:"&lt;90°",angN:"about 85° in BrF₅",pol:"p",polT:"Always polar",note:"Four atoms form a square base and one sits on top. The lone pair is beneath the base and pushes the four basal atoms upward.",ex:[
+  {f:"BrF5",nm:"Bromine pentafluoride",c:"Br",t:["F","F","F","F","F"],bo:[1,1,1,1,1],ba:84.8,ma:"F(apical)–Br–F(basal) 84.8°",p:"Polar",n:"Five bonds and one lone pair on Br. The lone pair pushes the basal F atoms up, so the angle is below 90°."},
+  {f:"IF5",nm:"Iodine pentafluoride",c:"I",t:["F","F","F","F","F"],bo:[1,1,1,1,1],ba:81.9,ma:"81.9°",p:"Polar",n:"Same shape as BrF₅ with an even larger central atom."},
+  {f:"ClF5",nm:"Chlorine pentafluoride",c:"Cl",t:["F","F","F","F","F"],bo:[1,1,1,1,1],ba:86,ma:"≈86°",p:"Polar",n:"Lightest member of the series; Cl still has room for six electron groups because it is in period 3."}]},
+ {geo:"sqplanar",axe:"AX<sub>4</sub>E<sub>2</sub>",b:4,lp:2,mg:"Square planar",ang:"90°, 180°",pol:"np",polT:"Nonpolar (with identical atoms)",note:"The two lone pairs sit opposite each other (180°) to minimize lone pair–lone pair repulsion, leaving the four atoms in a flat square.",ex:[
+  {f:"XeF4",nm:"Xenon tetrafluoride",c:"Xe",t:["F","F","F","F"],bo:[1,1,1,1],ma:"90°",p:"Nonpolar",n:"Four bonds and two lone pairs on Xe. The lone pairs are above and below the plane, so all dipoles cancel."},
+  {f:"ICl4^-",nm:"Tetrachloroiodate ion",c:"I",t:["Cl","Cl","Cl","Cl"],bo:[1,1,1,1],ma:"90°",p:"Nonpolar",n:"Isoelectronic arrangement to XeF₄ around the central atom: 4 bonds + 2 lone pairs."},
+  {f:"BrF4^-",nm:"Tetrafluorobromate ion",c:"Br",t:["F","F","F","F"],bo:[1,1,1,1],ma:"90°",p:"Nonpolar",n:"Another 4-bond, 2-lone-pair halogen ion with the square planar shape."}]}]}
+];
+
+/* ---------- build table ---------- */
+const tbody=document.getElementById("tbody");
+const POLLAB={p:"Polar",np:"Nonpolar",dep:"Depends on atoms"};
+const viewers=[];
+DATA.forEach(g=>{
+  const gr=document.createElement("tr");gr.className="grp";
+  gr.innerHTML=`<td colspan="6"><div class="grphead">
+    <div class="n"><b>${g.n}</b> electron groups</div>
+    <div class="kv"><small>Electron geometry</small><span>${g.eg}</span></div>
+    <div class="kv"><small>Ideal angle(s)</small><span>${g.ideal}</span></div>
+    <div class="kv"><small>Hybridization</small><span>${g.hyb}</span></div>
+    <div class="kv"><small>Molecular geometries</small><span>${g.rows.length}</span></div>
+    <p>${g.desc}</p></div></td>`;
+  tbody.appendChild(gr);
+  g.rows.forEach(r=>{
+    const tr=document.createElement("tr");tr.className="row";
+    const id="sel-"+r.geo;
+    tr.innerHTML=`<td class="geo"><h3>${r.mg}</h3><span class="axe">${r.axe}</span><p>${r.note}</p></td>
+     <td data-l="Bonded atoms"><span class="num">${r.b}</span></td>
+     <td data-l="Lone pairs"><span class="num lp">${r.lp}</span></td>
+     <td data-l="Bond angle(s)"><div class="ang">${r.ang}${r.angN?`<small>${r.angN}</small>`:""}</div></td>
+     <td data-l="Polarity"><span class="pill ${r.pol}">${POLLAB[r.pol]}</span><div class="polnote">${r.polT}</div></td>
+     <td class="mcell"><div class="model">
+       <div class="ctrl">
+         <select id="${id}" aria-label="Example molecule for ${r.mg}">${r.ex.map((e,i)=>`<option value="${i}">${fTXT(e.f)} · ${e.nm}</option>`).join("")}</select>
+         <button type="button" class="reset">Reset view</button></div>
+       <div class="view"><canvas aria-label="Rotatable 3D model"></canvas><span class="hint">Drag to rotate</span></div>
+       <div class="exinfo"></div></div></td>`;
+    tbody.appendChild(tr);
+    viewers.push({row:r,group:g,tr});
+  });
+});
+
+/* legend */
+const used=new Set();DATA.forEach(g=>g.rows.forEach(r=>r.ex.forEach(e=>{used.add(e.c);e.t.forEach(t=>used.add(t));})));
+const order=Object.keys(EL).filter(k=>used.has(k));
+document.getElementById("legend").innerHTML=order.map(k=>`<span><i style="background:${EL[k][1]}"></i>${k}</span>`).join("")+`<span><i class="lpkey"></i>Lone pair</span>`;
+
+/* ---------- three.js ---------- */
+const opt={lp:true,ang:true,spin:true};
+let renderer=null;
+try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0x000000,0);}catch(e){renderer=null;}
+let css={};function readCSS(){const s=getComputedStyle(document.documentElement);css={accent:s.getPropertyValue("--accent").trim(),ink:s.getPropertyValue("--ink").trim(),bg:s.getPropertyValue("--viewer").trim(),lp:s.getPropertyValue("--lp").trim()};viewers.forEach(v=>v.dirty=true);}
+readCSS();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{readCSS();viewers.forEach(v=>v.lpMat&&v.lpMat.color.set(css.lp));});
+new MutationObserver(()=>{readCSS();viewers.forEach(v=>v.lpMat&&v.lpMat.color.set(css.lp));}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+const sphereG=new THREE.SphereGeometry(1,32,24), cylG=new THREE.CylinderGeometry(1,1,1,20);
+const matCache={};function mat(col,op){const k=col+(op||1);if(!matCache[k])matCache[k]=new THREE.MeshStandardMaterial({color:col,roughness:.38,metalness:.05,transparent:!!op,opacity:op||1,depthWrite:!op});return matCache[k];}
+const atomR=el=>0.12+EL[el][0]*0.0024;
+function bondLen(a,b,o){const f=o>=3?.78:o>=2?.87:o>1?.92:1;return (EL[a][0]+EL[b][0])/100*f;}
+function cyl(p1,p2,r,m){const d=new THREE.Vector3().subVectors(p2,p1),L=d.length();const c=new THREE.Mesh(cylG,m);c.scale.set(r,L,r);c.position.copy(p1).addScaledVector(d,.5);c.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());return c;}
+function halfBond(grp,p1,p2,c1,c2,r,op){const mid=p1.clone().lerp(p2,.5);grp.add(cyl(p1,mid,r,mat(c1,op)));grp.add(cyl(mid,p2,r,mat(c2,op)));}
+function perpOf(d){const ref=Math.abs(d.z)<.9?new THREE.Vector3(0,0,1):new THREE.Vector3(1,0,0);return new THREE.Vector3().crossVectors(d,ref).normalize();}
+
+function buildMolecule(v,ex){
+  const r=v.row, scene=v.scene;
+  if(v.mol)scene.remove(v.mol);
+  const mol=new THREE.Group(), lpG=new THREE.Group(), arcG=new THREE.Group();
+  const geo=GEO[r.geo](ex.ba);
+  const cEl=ex.c, rc=atomR(cEl), O=new THREE.Vector3();
+  const cc=EL[cEl][1];
+  mol.add(Object.assign(new THREE.Mesh(sphereG,mat(cc)),{}) ).children[0].scale.setScalar(rc);
+  const ends=[];let maxL=0,minL=9;
+  geo.b.forEach((d,i)=>{
+    const dir=new THREE.Vector3(...d).normalize(), t=ex.t[i], o=ex.bo[i]||1, L=bondLen(cEl,t,o);
+    maxL=Math.max(maxL,L);minL=Math.min(minL,L);
+    const p=dir.clone().multiplyScalar(L);ends.push(dir);
+    const a=new THREE.Mesh(sphereG,mat(EL[t][1]));a.scale.setScalar(atomR(t));a.position.copy(p);mol.add(a);
+    const tc=EL[t][1], n=Math.floor(o), frac=o-n>0.01;
+    const pp=perpOf(dir);
+    if(n===1&&!frac){halfBond(mol,O,p,cc,tc,.085);}
+    else if(n===1&&frac){halfBond(mol,O,p,cc,tc,.08);const s=pp.clone().multiplyScalar(.14);halfBond(mol,O.clone().add(s),p.clone().add(s),cc,tc,.04,.35);}
+    else{const sp=n===2?[-.075,.075]:[-.12,0,.12];sp.forEach(k=>{const s=pp.clone().multiplyScalar(k);halfBond(mol,O.clone().add(s),p.clone().add(s),cc,tc,.05);});}
+  });
+  /* lone pairs */
+  if(!v.lpMat){v.lpMat=new THREE.MeshStandardMaterial({color:css.lp,roughness:.6,transparent:true,opacity:.42,depthWrite:false});}
+  const dotM=mat("#3a2470");
+  geo.l.forEach(d=>{
+    const dir=new THREE.Vector3(...d).normalize(), q=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),dir);
+    const lobe=new THREE.Mesh(sphereG,v.lpMat);lobe.scale.set(.24,.42,.24);lobe.quaternion.copy(q);lobe.position.copy(dir).multiplyScalar(rc+.34);lpG.add(lobe);
+    const pp=perpOf(dir);[-1,1].forEach(k=>{const e=new THREE.Mesh(sphereG,dotM);e.scale.setScalar(.045);e.position.copy(dir).multiplyScalar(rc+.40).addScaledVector(pp,.08*k);lpG.add(e);});
+  });
+  /* angle arcs */
+  const labels=[];
+  const lbl=ex.al||(ex.ba!==undefined?(Array.isArray(ex.ba)?ex.ba.map(x=>x+"°"):[ex.ba+"°"]):null)||defaultLabels(r.geo);
+  geo.arcs.forEach((pr,k)=>{
+    const u=ends[pr[0]],w=ends[pr[1]],rad=Math.max(rc+.25,minL*.58);
+    const pts=[];const ang=u.angleTo(w);
+    let axis=new THREE.Vector3().crossVectors(u,w);
+    if(axis.length()<1e-3){axis=perpOf(u);if(r.geo==="linear5")axis=new THREE.Vector3(0,0,1);}
+    axis.normalize();
+    for(let s=0;s<=40;s++){pts.push(u.clone().applyAxisAngle(axis,ang*s/40).multiplyScalar(rad));}
+    const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:css.accent,depthTest:false,transparent:true}));
+    line.renderOrder=5;arcG.add(line);v.arcMats=(v.arcMats||[]);v.arcMats.push(line.material);
+    const mid=u.clone().applyAxisAngle(axis,ang/2).multiplyScalar(rad+.34);
+    labels.push({p:mid,t:lbl[k]||""});
+  });
+  mol.add(lpG);mol.add(arcG);
+  lpG.visible=opt.lp;arcG.visible=opt.ang;
+  v.lpG=lpG;v.arcG=arcG;v.labels=labels;v.mol=mol;scene.add(mol);
+  v.fitDist=(maxL+.7)*3.3;
+  if(!v.userMoved)placeCam(v);
+  v.dirty=true;
+}
+function defaultLabels(g){return {linear:["180°"],trigonal:["120°"],tetra:["109.5°"],tbp:["90°","120°"],linear5:["180°"],octa:["90°"],sqplanar:["90°"]}[g]||[""];}
+function placeCam(v){const d=v.fitDist;v.camera.position.set(.42*d,.38*d,.82*d);v.camera.lookAt(0,0,0);v.controls.target.set(0,0,0);v.controls.update();}
+
+function fillInfo(v,ex){
+  const info=v.tr.querySelector(".exinfo");
+  const pc=ex.p==="Polar"?"p":"np";
+  info.innerHTML=`<div class="t"><span class="fx">${fHTML(ex.f)}</span><span>${ex.nm}</span></div>
+   <dl class="facts"><dt>Central atom</dt><dd>${EL[ex.c][2]} (${ex.c})</dd>
+   <dt>Groups on ${ex.c}</dt><dd>${v.row.b} bonded + ${v.row.lp} lone pair${v.row.lp===1?"":"s"} = ${v.group.n}</dd>
+   <dt>Measured angle</dt><dd>${ex.ma}</dd>
+   <dt>Polarity</dt><dd><span class="pill ${pc}">${ex.p}</span></dd></dl>
+   <p>${ex.n}</p>`;
+}
+
+viewers.forEach(v=>{
+  const ex0=v.row.ex[0];
+  fillInfo(v,ex0);
+  const canvas=v.tr.querySelector("canvas");v.canvas=canvas;v.ctx=canvas.getContext("2d");
+  const sel=v.tr.querySelector("select");
+  if(!renderer){canvas.parentElement.innerHTML='<p style="padding:20px;font-size:.9rem">3D models need WebGL, which this browser has turned off.</p>';sel.addEventListener("change",()=>fillInfo(v,v.row.ex[+sel.value]));return;}
+  v.scene=new THREE.Scene();
+  v.scene.add(new THREE.HemisphereLight(0xffffff,0x6b7a88,.75));
+  const dl=new THREE.DirectionalLight(0xffffff,.85);dl.position.set(3,5,6);v.scene.add(dl);
+  const dl2=new THREE.DirectionalLight(0xffffff,.3);dl2.position.set(-4,-2,-3);v.scene.add(dl2);
+  v.camera=new THREE.PerspectiveCamera(32,1.3,.1,100);
+  v.controls=new THREE.OrbitControls(v.camera,canvas);
+  v.controls.enableZoom=false;v.controls.enablePan=false;v.controls.enableDamping=true;v.controls.dampingFactor=.12;
+  v.controls.autoRotate=opt.spin;v.controls.autoRotateSpeed=1.6;
+  v.controls.addEventListener("start",()=>{v.userMoved=true;v.controls.autoRotate=false;});
+  v.controls.addEventListener("change",()=>v.dirty=true);
+  buildMolecule(v,ex0);
+  sel.addEventListener("change",()=>{const ex=v.row.ex[+sel.value];v.arcMats=[];buildMolecule(v,ex);fillInfo(v,ex);});
+  v.tr.querySelector(".reset").addEventListener("click",()=>{v.userMoved=false;v.controls.autoRotate=opt.spin;placeCam(v);v.dirty=true;});
+  v.visible=false;
+});
+const io=new IntersectionObserver(es=>es.forEach(e=>{const v=viewers.find(x=>x.canvas===e.target);if(v){v.visible=e.isIntersecting;v.dirty=true;}}),{rootMargin:"100px"});
+viewers.forEach(v=>v.canvas&&renderer&&io.observe(v.canvas));
+
+document.getElementById("optLP").addEventListener("change",e=>{opt.lp=e.target.checked;viewers.forEach(v=>{if(v.lpG){v.lpG.visible=opt.lp;v.dirty=true;}});});
+document.getElementById("optAng").addEventListener("change",e=>{opt.ang=e.target.checked;viewers.forEach(v=>{if(v.arcG){v.arcG.visible=opt.ang;v.dirty=true;}});});
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const spinBox=document.getElementById("optSpin");if(reduce){spinBox.checked=false;opt.spin=false;viewers.forEach(v=>v.controls&&(v.controls.autoRotate=false));}
+spinBox.addEventListener("change",e=>{opt.spin=e.target.checked;viewers.forEach(v=>{if(v.controls&&!v.userMoved)v.controls.autoRotate=opt.spin;v.dirty=true;});});
+
+const tmp=new THREE.Vector3();
+function draw(v){
+  const dpr=Math.min(window.devicePixelRatio||1,2),w=Math.round(v.canvas.clientWidth*dpr),h=Math.round(v.canvas.clientHeight*dpr);
+  if(!w||!h)return;
+  if(v.canvas.width!==w||v.canvas.height!==h){v.canvas.width=w;v.canvas.height=h;}
+  v.camera.aspect=w/h;v.camera.updateProjectionMatrix();
+  if(v.arcMats)v.arcMats.forEach(m=>m.color.set(css.accent));
+  renderer.setPixelRatio(1);renderer.setSize(w,h,false);renderer.render(v.scene,v.camera);
+  const c=v.ctx;c.clearRect(0,0,w,h);c.drawImage(renderer.domElement,0,0);
+  if(opt.ang&&v.labels){
+    c.font=`600 ${13*dpr}px "Source Sans 3", system-ui, sans-serif`;c.textAlign="center";c.textBaseline="middle";
+    v.labels.forEach(l=>{tmp.copy(l.p).applyMatrix4(v.mol.matrixWorld).project(v.camera);const x=(tmp.x+1)/2*w,y=(1-tmp.y)/2*h;
+      c.lineWidth=4*dpr;c.strokeStyle=css.bg;c.strokeText(l.t,x,y);c.fillStyle=css.accent;c.fillText(l.t,x,y);});
+  }
+}
+function loop(){
+  viewers.forEach(v=>{if(!v.controls||!v.visible)return;const moving=v.controls.autoRotate;v.controls.update();if(moving||v.dirty){draw(v);v.dirty=false;}});
+  requestAnimationFrame(loop);
+}
+if(renderer){addEventListener("resize",()=>viewers.forEach(v=>v.dirty=true));requestAnimationFrame(loop);}
+})();
+</script>
+</body></html>

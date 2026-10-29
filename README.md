@@ -22,6 +22,7 @@ Listed in roughly the order the course covers them.
 | Thermochemistry (Ch. 10) | [Heat of Fusion](https://neogio73.github.io/CHM1045/heat-of-fusion/) | Game (3D, WebGL) |
 | Atomic spectra and the Bohr model | [The Atomic Spectrum of Hydrogen](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/), with its [prelab review](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/prelab/) | Virtual lab |
 | Chemical bonding, Lewis structures, and formal charge (Ch. 6) | [Escape from Lewis Manor](https://neogio73.github.io/CHM1045/lewis-manor/) | Game (Halloween) |
+| Molecular shape (VSEPR) | [VSEPR Geometry Explorer](https://neogio73.github.io/CHM1045/vsepr-geometry-explorer.html) | Reference table (3D) |
 | Molecular shape (VSEPR) | [VSEPR Test Chambers](https://neogio73.github.io/CHM1045/vsepr-chamber-06/?chamber=menu) | Game |
 
 ## Study guides
@@ -138,6 +139,16 @@ Breaking all seven seals ends with a Certificate of Escape: your name, the date,
 
 The game has sound, so turn it on. It contains mild, cartoon-style jump scares.
 
+## VSEPR Geometry Explorer
+
+A reference table for every VSEPR shape from 2 to 6 electron groups: all 13 molecular geometries. Each row gives the AXE notation, the number of bonded atoms and lone pairs, the ideal and real bond angles, the polarity, and a note on why the shape looks the way it does. A heading for each electron-group count gives the electron geometry, ideal angles, and hybridization. A short primer at the top covers predicting a shape, what counts as one electron group, why lone pairs shrink angles, and how to tell polarity from shape.
+
+- **Every row has a 3D model** to drag and rotate, with lone pairs drawn as purple lobes and the bond angle marked on the model.
+- **A menu above each model switches between example molecules,** 49 in all, such as H₂O, H₂S, OF₂, and SCl₂ for the bent shape. Each example lists its central atom, its electron groups, its measured bond angle, and whether it is polar.
+- **Switches at the top** turn the lone pairs, angle labels, and rotation on or off.
+
+Nothing on the page is graded or recorded. The models need a browser with WebGL.
+
 ## VSEPR Test Chambers
 
 A 3D game for molecular geometry. In each chamber you build molecules one electron domain at a time, then name the molecular shape and choose the bond angle. Blue adds a bond with its atom and orange adds a lone pair. Drag to look at the molecule from any side.
@@ -165,13 +176,14 @@ Canvas links point at these exact addresses. Renaming or moving a file breaks it
 ### Editing the activities
 
 - **Study guides, the worksheet, Names & Formulas Lab, and Hoth Run** are each a single HTML file with the styles, script, and images inside it. They load nothing from other sites.
+- **VSEPR Geometry Explorer** is a single file, [`vsepr-geometry-explorer.html`](vsepr-geometry-explorer.html). Its table and example molecules are in the `DATA` list near the top of its script. It loads three.js from a public CDN and its fonts from Google Fonts.
 - **Escape from Lewis Manor** is also a single file, [`lewis-manor/index.html`](lewis-manor/index.html), with its art and sound made in code. It loads its three fonts from Google Fonts and falls back to built-in fonts without them.
 - **VSEPR Test Chambers** keeps the content an instructor is likely to change in [`vsepr-chamber-06/js/content.js`](vsepr-chamber-06/js/content.js): the chambers, molecules, questions, and narrator lines. Adding `?chamber=2` through `?chamber=6` to the address opens one chamber directly, and `?chamber=menu` opens the list. With nothing added, chamber 06 opens.
 - **The Atomic Spectrum of Hydrogen** is a finished build of a 3D project that is kept outside this repository. Its folder is replaced as a whole when the lab changes, so edits made to its files here would be lost.
 
 ### Running a copy on your own computer
 
-Download or clone the repository. The study guides, the worksheet, the Names & Formulas Lab, Hoth Run, and Escape from Lewis Manor open straight from the file with a double-click.
+Download or clone the repository. The study guides, the worksheet, the Names & Formulas Lab, Hoth Run, Escape from Lewis Manor, and the VSEPR Geometry Explorer open straight from the file with a double-click.
 
 The VSEPR chambers and The Atomic Spectrum of Hydrogen have to be served by a web server, because browsers will not load their scripts and 3D files from a file on disk. From the repository folder, run:
 
@@ -193,6 +205,7 @@ CHM1045/
 ├── solution-stoichiometry-study-guide.html      Solutions and Titrations
 ├── solutions-and-gases-study-guide.html
 ├── calorimetry-and-hess-law-study-guide.html
+├── vsepr-geometry-explorer.html
 ├── lewis-manor/
 │   └── index.html        Escape from Lewis Manor
 ├── hydrogen-spectrum-lab/
@@ -225,6 +238,6 @@ This covers the chemistry content and the code written for the course. It does n
 
 - The Names & Formulas Lab uses [OpenStax Chemistry 2e, section 2.7](https://openstax.org/books/chemistry-2e/pages/2-7-chemical-nomenclature) as its reference for naming conventions.
 - The Atomic Spectrum of Hydrogen is a simulation based on the experiment of the same name of the Daytona State College Science Department. Its fume hood is the model ["Dm3-004-08"](https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f) by foxart3d, used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) and shown with the sash raised and with different materials.
-- VSEPR Test Chambers is drawn with [three.js](https://threejs.org/).
+- VSEPR Test Chambers and the VSEPR Geometry Explorer are drawn with [three.js](https://threejs.org/).
 - Hoth Run is an unofficial fan-made game for classroom use. Star Wars names and designs belong to Lucasfilm Ltd.
 - VSEPR Test Chambers is an unofficial fan-made game for classroom use. Portal names, characters, and designs belong to Valve Corporation.
