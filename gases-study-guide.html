@@ -547,6 +547,7 @@ const sb = (s, i) => s + '<sub>' + i + '</sub>';
 const vP = t => '<span class="vP">' + t + '</span>', vV = t => '<span class="vV">' + t + '</span>', vT = t => '<span class="vT">' + t + '</span>', vN = t => '<span class="vN">' + t + '</span>';
 const an = word => (/^(8|11|18)/.test(String(word)) || /^[aeiou]/i.test(String(word)) ? 'an' : 'a');
 const degC = t => minus(String(t)) + ' °C';
+const deg0 = x => minus(Number(x).toFixed(0).replace(/^-0$/, '0'));   // a °C value to whole degrees, never “−0”
 const kelv = t => (t + T0).toFixed(2) + ' K';
 
 /* ---------- given values for practice: the number used is exactly the number shown ---------- */
@@ -558,16 +559,20 @@ const gN = () => g3(pick([rint(105, 995) / 1000, rint(100, 500) / 100]));
 // two different values of the same kind, at least 15% apart
 function two(gen){ const a = gen(); let b, guard = 0; do { b = gen(); guard++; } while(guard < 50 && Math.abs(b.v - a.v) < 0.15 * Math.abs(a.v)); return [a, b]; }
 function twoT(lo, hi){ const a = gT(lo, hi); let b, guard = 0; do { b = gT(lo, hi); guard++; } while(guard < 50 && Math.abs(b.c - a.c) < 20); return [a, b]; }
-// a calculated practice problem: wrong-answer messages that land too close to the right answer are dropped
+// a calculated practice problem: wrong-answer messages that land too close to the right answer are dropped,
+// and slipInside marks a problem where a slip would be marked right (the practice engine then draws again)
 function numQ(o){
   const tol = o.tol != null ? o.tol : Math.abs(o.a) * (o.rel != null ? o.rel : 0.02), out = [];
   (o.traps || []).forEach(t => { if(!isFinite(t[0]) || Math.abs(t[0] - o.a) <= 1.3 * tol) return;
     if(!out.some(x => Math.abs(x[0] - t[0]) <= 0.02 * Math.abs(t[0]))) out.push(t); });
-  return Object.assign({k: 'num', rel: 0.02, show: numH(o.a, 3), sci: isSci(o.a)}, o, {traps: out});
+  const inside = (o.traps || []).some(t => isFinite(t[0]) && Math.abs(t[0] - o.a) <= tol + 1e-9 && Math.abs(t[0] - o.a) > Math.max(1e-9, 1e-7 * Math.abs(o.a)));
+  return Object.assign({k: 'num', rel: 0.02, show: numH(o.a, 3), sci: isSci(o.a)}, o, {traps: out, slipInside: inside});
 }
 // how close a temperature answer in °C has to be: 1% of the kelvin value, and never less than 1.5 degrees
 const tolC = Tk => Math.max(1.5, Math.round(Tk) / 100);
 // pressure in atm, with the conversion written out when it is needed
+// true when RT/P is more than 3% away from 22.41 L/mol, so the STP shortcut cannot pass for the right answer
+const awayFromSTP = (Tk, Patm) => Math.abs(R * Tk / Patm - VM_STP) > 0.03 * VM_STP;
 function atmOf(p, u){ const a = pConv(p.v, u, 'atm'); return {v: a, h: u === 'atm' ? p.h : sig(a, 4), line: u === 'atm' ? '' : E(p.h + ' ' + u, '×', fr('1 atm', PUH[u]), '=', sig(a, 4) + ' atm')}; }
 
 if(typeof module !== 'undefined' && module.exports){
@@ -644,7 +649,8 @@ function drawQuestion(id){
   if(!S.bag.length){ S.bag = shuffle(BANK[id].map((x, i) => i)); if(S.bag.length > 1 && S.bag[S.bag.length - 1] === S.last){ S.bag.unshift(S.bag.pop()); } }
   S.last = S.bag.pop();
   const item = BANK[id][S.last];
-  const Q = typeof item === 'function' ? item() : Object.assign({}, item);
+  let Q = typeof item === 'function' ? item() : Object.assign({}, item);
+  for(let guard = 0; Q.slipInside && guard < 40; guard++) Q = item();   // a slip inside the tolerance would pass as right: draw again
   if(Q.k === 'mc') Q.opts = shuffle([Q.c].concat(Q.w));
   if(Q.k === 'order'){ let o; let guard = 0; do { o = shuffle(Q.items); guard++; } while(guard < 20 && orderOK(o)); Q.cur = o; }
   S.Q = Q; S.misses = 0; S.done = false; S.hint = false; S.killed = [];
@@ -731,7 +737,7 @@ function mountQuiz(el, id){
       if(Math.abs(v - Q.a) <= tol + 1e-9){ finish(true); return; }
       S.misses++;
       let msg = Q.hint || 'Check the setup and try again.';
-      if(Q.traps){ const t = Q.traps.find(tr => Math.abs(v - tr[0]) <= Math.max(1e-9, Math.abs(tr[0]) * 0.011)); if(t) msg = t[1]; }
+      if(Q.traps){ const t = Q.traps.find(tr => Math.abs(v - tr[0]) <= Math.max(Q.unit === '°C' ? 0.6 : 1e-9, Math.abs(tr[0]) * 0.011)); if(t) msg = t[1]; }
       if(S.misses >= 3){ finish(false); return; }
       const keep = inp.value; S.fb = ['bad', '<p><b>Not yet.</b> ' + msg + '</p>']; paint(false);
       const again = $('.pin', box); again.value = keep; again.classList.add('no'); again.focus({preventScroll: true}); again.select();
@@ -1374,11 +1380,11 @@ SECTIONS.push({id: 'charles', n: 3, label: 'Charles’s law', title: 'Charles’
       traps: [[V1.v * T[1].c / T[0].c, 'You used the Celsius temperatures. Add 273.15 to each one first.'], [V1.v * T[0].k / T[1].k, 'You multiplied by T₁/T₂. Volume and temperature move in the same direction: the gas gets ' + (T[1].c > T[0].c ? 'warmer, so it expands.' : 'colder, so it shrinks.')]],
       why: E(sb('V', 2), '=', sb('V', 1), '×', fr(sb('T', 2), sb('T', 1)), '=', V1.h + ' ' + w, '×', fr(T[1].kh, T[0].kh), '=', '<b>' + numH(a, 3) + ' ' + w + '</b>')}); };
   const solveT = () => { const w = vu(), T = twoT(-30, 150), V1 = gV(w), V2 = g3(V1.v * T[1].k / T[0].k), Tk = T[0].k * V2.v / V1.v, a = Tk - T0;
-    return numQ({q: 'A gas occupies ' + V1.h + ' ' + w + ' at ' + T[0].h + '. At constant pressure, to what temperature in °C must it be ' + (V2.v > V1.v ? 'heated' : 'cooled') + ' for its volume to become ' + V2.h + ' ' + w + '?', a: a, tol: tolC(Tk), unit: '°C', show: minus(a.toFixed(0)),
+    return numQ({q: 'A gas occupies ' + V1.h + ' ' + w + ' at ' + T[0].h + '. At constant pressure, to what temperature in °C must it be ' + (V2.v > V1.v ? 'heated' : 'cooled') + ' for its volume to become ' + V2.h + ' ' + w + '?', a: a, tol: tolC(Tk), unit: '°C', show: deg0(a),
       hint: 'Find T₂ in kelvins first, then subtract 273.15.',
       setup: [sb('T', 1) + ' = ' + T[0].kh + '.', sb('T', 2) + ' = ' + sb('T', 1) + ' × ' + sb('V', 2) + '/' + sb('V', 1) + ', in kelvins.', 'Subtract 273.15 to get °C.'],
       traps: [[Tk, 'That is the temperature in kelvins. Subtract 273.15 to get °C.'], [T[0].c * V2.v / V1.v, 'You used the Celsius temperature in the ratio. Convert ' + T[0].h + ' to kelvins first.'], [T[0].k * V1.v / V2.v - T0, 'You multiplied by V₁/V₂. ' + (V2.v > V1.v ? 'A larger volume needs a higher temperature.' : 'A smaller volume needs a lower temperature.')]],
-      why: E(sb('T', 2), '=', T[0].kh, '×', fr(V2.h + ' ' + w, V1.h + ' ' + w), '=', Tk.toFixed(1) + ' K') + ' ' + E(Tk.toFixed(1) + ' K', '−', '273.15', '=', '<b>' + minus(a.toFixed(0)) + ' °C</b>')}); };
+      why: E(sb('T', 2), '=', T[0].kh, '×', fr(V2.h + ' ' + w, V1.h + ' ' + w), '=', Tk.toFixed(1) + ' K') + ' ' + E(Tk.toFixed(1) + ' K', '−', '273.15', '=', '<b>' + deg0(a) + ' °C</b>')}); };
   BANK.charles = [
     solveV, solveT, solveV, solveT,
     () => { const t = rint(-80, 250); return numQ({q: 'Convert ' + degC(t) + ' to kelvins.', a: t + T0, tol: 0.3, unit: 'K', show: (t + T0).toFixed(2), hint: 'K = °C + 273.15.', traps: [[t - T0, 'Add 273.15, do not subtract it.']], why: degC(t) + ' + 273.15 = ' + (t + T0).toFixed(2) + ' K.'}); },
@@ -1388,9 +1394,9 @@ SECTIONS.push({id: 'charles', n: 3, label: 'Charles’s law', title: 'Charles’
         setup: [sb('T', 1) + ' = ' + kelv(t) + ', ' + sb('T', 2) + ' = 77.15 K.', sb('V', 2) + ' = ' + sb('V', 1) + ' × ' + sb('T', 2) + '/' + sb('T', 1) + '.'], traps: [[V1.v * (t + T0) / 77.15, 'You multiplied by T₁/T₂. The gas gets colder, so it shrinks.']],
         why: E(sb('V', 2), '=', V1.h + ' L', '×', fr('77.15 K', kelv(t)), '=', '<b>' + numH(a, 3) + ' L</b>')}); },
     () => { const t = pick([0, 20, 25, 27, 50]), f = pick([[2, 'double'], [3, 'triple'], [0.5, 'fall to half']]), a = f[0] * (t + T0) - T0;
-      return numQ({q: 'A gas is at ' + t + ' °C. At constant pressure, to what temperature in °C must it be brought for its volume to ' + f[1] + '?', a: a, tol: tolC(a + T0), unit: '°C', show: minus(a.toFixed(0)), hint: 'The kelvin temperature must ' + f[1] + ', not the Celsius temperature.',
+      return numQ({q: 'A gas is at ' + t + ' °C. At constant pressure, to what temperature in °C must it be brought for its volume to ' + f[1] + '?', a: a, tol: tolC(a + T0), unit: '°C', show: deg0(a), hint: 'The kelvin temperature must ' + f[1] + ', not the Celsius temperature.',
         setup: [sb('T', 1) + ' = ' + kelv(t) + '.', 'Multiply the kelvin temperature by ' + f[0] + '.', 'Subtract 273.15.'], traps: [[t * f[0], 'You changed the Celsius temperature by that factor. Volume is proportional to the kelvin temperature.'], [f[0] * (t + T0), 'That is the temperature in kelvins. Subtract 273.15.']],
-        why: f[0] + ' × ' + kelv(t) + ' = ' + sig(f[0] * (t + T0), 4) + ' K, which is ' + minus(a.toFixed(0)) + ' °C.'}); },
+        why: f[0] + ' × ' + kelv(t) + ' = ' + sig(f[0] * (t + T0), 4) + ' K, which is ' + deg0(a) + ' °C.'}); },
     {k: 'mc', q: 'Which temperature must be used in Charles’s law?', c: 'The kelvin temperature', w: ['The Celsius temperature', 'The Fahrenheit temperature', 'Any scale, as long as both temperatures use it'], why: 'Volume is proportional to temperature only when temperature is measured from absolute zero. Ratios of Celsius or Fahrenheit temperatures have no physical meaning.'},
     {k: 'mc', q: 'A graph of volume against Celsius temperature for a gas at constant pressure is extended back to zero volume. Where does it meet the temperature axis?', c: 'At −273.15 °C', w: ['At 0 °C', 'At −100 °C', 'It depends on which gas is used'], why: 'The line for any gas, at any pressure, points to −273.15 °C. This is absolute zero, 0 K.'},
     {k: 'mc', q: 'A gas at constant pressure is warmed from 20 °C to 40 °C. Its volume', c: 'increases by about 7%', w: ['doubles', 'increases by 20%', 'does not change'], hint: 'Work out the ratio of the kelvin temperatures.', why: '313.15 K ÷ 293.15 K = 1.068. The Celsius reading has doubled, but the kelvin temperature has gone up by only 6.8%.'},
@@ -1470,10 +1476,10 @@ SECTIONS.push({id: 'gay', n: 4, label: 'Gay-Lussac’s and Avogadro’s laws', t
       traps: [[P1.v * T[1].c / T[0].c, 'You used the Celsius temperatures. Add 273.15 to each one first.'], [P1.v * T[0].k / T[1].k, 'You multiplied by T₁/T₂. Pressure and temperature move in the same direction.']],
       why: E(sb('P', 2), '=', P1.h + ' ' + u, '×', fr(T[1].kh, T[0].kh), '=', '<b>' + numH(a, 3) + ' ' + u + '</b>')}); };
   const glT = () => { const u = pu(), T = twoT(-20, 200), P1 = gP(u), P2 = g3(P1.v * T[1].k / T[0].k), Tk = T[0].k * P2.v / P1.v, a = Tk - T0;
-    return numQ({q: 'A gas in a rigid container has a pressure of ' + P1.h + ' ' + u + ' at ' + T[0].h + '. At what temperature in °C will its pressure be ' + P2.h + ' ' + u + '?', a: a, tol: tolC(Tk), unit: '°C', show: minus(a.toFixed(0)), hint: 'Find T₂ in kelvins, then subtract 273.15.',
+    return numQ({q: 'A gas in a rigid container has a pressure of ' + P1.h + ' ' + u + ' at ' + T[0].h + '. At what temperature in °C will its pressure be ' + P2.h + ' ' + u + '?', a: a, tol: tolC(Tk), unit: '°C', show: deg0(a), hint: 'Find T₂ in kelvins, then subtract 273.15.',
       setup: [sb('T', 1) + ' = ' + T[0].kh + '.', sb('T', 2) + ' = ' + sb('T', 1) + ' × ' + sb('P', 2) + '/' + sb('P', 1) + ', in kelvins.', 'Subtract 273.15.'],
       traps: [[Tk, 'That is the temperature in kelvins. Subtract 273.15 to get °C.'], [T[0].c * P2.v / P1.v, 'You used the Celsius temperature in the ratio. Convert to kelvins first.']],
-      why: E(sb('T', 2), '=', T[0].kh, '×', fr(P2.h + ' ' + u, P1.h + ' ' + u), '=', Tk.toFixed(1) + ' K') + ' ' + E(Tk.toFixed(1) + ' K', '−', '273.15', '=', '<b>' + minus(a.toFixed(0)) + ' °C</b>')}); };
+      why: E(sb('T', 2), '=', T[0].kh, '×', fr(P2.h + ' ' + u, P1.h + ' ' + u), '=', Tk.toFixed(1) + ' K') + ' ' + E(Tk.toFixed(1) + ' K', '−', '273.15', '=', '<b>' + deg0(a) + ' °C</b>')}); };
   const tire = () => { const P1 = g3(pick([30, 32, 35, 36]) + 14.7), t1 = pick([5, 10, 15, 20]), t2 = t1 + pick([20, 25, 30, 35]), a = P1.v * (t2 + T0) / (t1 + T0);
     return numQ({q: 'The air in a car tire has an absolute pressure of ' + P1.h + ' psi on a morning when the temperature is ' + t1 + ' °C. After a long drive the air in the tire is at ' + t2 + ' °C. Assume the volume of the tire does not change. What is the new pressure in psi?', a: a, unit: 'psi', hint: 'Constant volume: P₁/T₁ = P₂/T₂, in kelvins.',
       setup: [sb('T', 1) + ' = ' + kelv(t1) + ', ' + sb('T', 2) + ' = ' + kelv(t2) + '.', sb('P', 2) + ' = ' + sb('P', 1) + ' × ' + sb('T', 2) + '/' + sb('T', 1) + '.'], traps: [[P1.v * t2 / t1, 'You used the Celsius temperatures. Add 273.15 to each one first.']],
@@ -1562,7 +1568,7 @@ SECTIONS.push({id: 'comb', n: 5, label: 'Combined gas law', title: 'The combined
         '<p class="small" style="margin:8px 0 0">Pressure factor ' + sig(vals.p1.v / vals.p2.v, 3) + ' (' + (vals.p2.v < vals.p1.v ? 'lower pressure, larger volume' : vals.p2.v > vals.p1.v ? 'higher pressure, smaller volume' : 'no change') + '). Temperature factor ' + sig(T2 / T1, 3) + ' (' + (T2 > T1 ? 'warmer, larger volume' : T2 < T1 ? 'colder, smaller volume' : 'no change') + ').</p>'; }
       else if(S.solve === 'P2'){ const T2 = vals.t2.v + T0, a = vals.p1.v * vals.v1.v / vals.v2.v * T2 / T1; h += E(sb('P', 2), '=', vals.p1.h + ' atm', '×', fr(vals.v1.h + ' L', vals.v2.h + ' L'), '×', fr(T2.toFixed(2) + ' K', T1h), '=', '<b>' + numH(a, 3) + ' atm</b>') +
         '<p class="small" style="margin:8px 0 0">Volume factor ' + sig(vals.v1.v / vals.v2.v, 3) + ' (' + (vals.v2.v < vals.v1.v ? 'smaller volume, higher pressure' : vals.v2.v > vals.v1.v ? 'larger volume, lower pressure' : 'no change') + '). Temperature factor ' + sig(T2 / T1, 3) + ' (' + (T2 > T1 ? 'warmer, higher pressure' : T2 < T1 ? 'colder, lower pressure' : 'no change') + ').</p>'; }
-      else { const a = T1 * vals.p2.v / vals.p1.v * vals.v2.v / vals.v1.v; h += E(sb('T', 2), '=', T1h, '×', fr(vals.p2.h + ' atm', vals.p1.h + ' atm'), '×', fr(vals.v2.h + ' L', vals.v1.h + ' L'), '=', sig(a, 4) + ' K') + ' ' + E(sig(a, 4) + ' K', '−', '273.15', '=', '<b>' + minus((a - T0).toFixed(0)) + ' °C</b>'); }
+      else { const a = T1 * vals.p2.v / vals.p1.v * vals.v2.v / vals.v1.v; h += E(sb('T', 2), '=', T1h, '×', fr(vals.p2.h + ' atm', vals.p1.h + ' atm'), '×', fr(vals.v2.h + ' L', vals.v1.h + ' L'), '=', sig(a, 4) + ' K') + ' ' + E(sig(a, 4) + ' K', '−', '273.15', '=', '<b>' + deg0(a - T0) + ' °C</b>'); }
       $('#cb-out').innerHTML = h; };
     wire($('section', view), S, which => { if(which === 'fix') drawLaw(); drawSolve(); syncPressed(view, S); });
     mountStepper($('#cb-step'), {id: 'cbworked', track: [['List', 'before and after'], ['Kelvins', 'convert both'], ['Rearrange', 'for V₂'], ['Substitute', 'and calculate'], ['Check', 'each factor']], steps: [
@@ -1590,10 +1596,10 @@ SECTIONS.push({id: 'comb', n: 5, label: 'Combined gas law', title: 'The combined
   // the final temperature is chosen first, so that the answer is always a temperature a gas could really have
   const cT = () => { const P = two(() => gP('atm')), T1 = gT(0, 100); let t2, guard = 0; do { t2 = rint(-50, 300); guard++; } while(guard < 50 && Math.abs(t2 - T1.c) < 25);
     const Va = gV('L'), Vb = g3(Va.v * P[0].v / P[1].v * (t2 + T0) / T1.k), V = [Va, Vb], Tk = T1.k * P[1].v / P[0].v * V[1].v / V[0].v, a = Tk - T0;
-    return numQ({q: 'A gas occupies ' + V[0].h + ' L at ' + P[0].h + ' atm and ' + T1.h + '. What is its temperature in °C when it occupies ' + V[1].h + ' L at ' + P[1].h + ' atm?', a: a, tol: tolC(Tk), unit: '°C', show: minus(a.toFixed(0)), hint: 'Solve for T₂ in kelvins, then subtract 273.15.',
+    return numQ({q: 'A gas occupies ' + V[0].h + ' L at ' + P[0].h + ' atm and ' + T1.h + '. What is its temperature in °C when it occupies ' + V[1].h + ' L at ' + P[1].h + ' atm?', a: a, tol: tolC(Tk), unit: '°C', show: deg0(a), hint: 'Solve for T₂ in kelvins, then subtract 273.15.',
       setup: [sb('T', 1) + ' = ' + T1.kh + '.', sb('T', 2) + ' = ' + sb('T', 1) + ' × ' + sb('P', 2) + '/' + sb('P', 1) + ' × ' + sb('V', 2) + '/' + sb('V', 1) + '.', 'Subtract 273.15.'],
       traps: [[Tk, 'That is the temperature in kelvins. Subtract 273.15 to get °C.'], [T1.c * P[1].v / P[0].v * V[1].v / V[0].v, 'You used the Celsius temperature in the calculation. Convert ' + T1.h + ' to kelvins first.']],
-      why: E(sb('T', 2), '=', T1.kh, '×', fr(P[1].h + ' atm', P[0].h + ' atm'), '×', fr(V[1].h + ' L', V[0].h + ' L'), '=', sig(Tk, 4) + ' K') + ' ' + E(sig(Tk, 4) + ' K', '−', '273.15', '=', '<b>' + minus(a.toFixed(0)) + ' °C</b>')}); };
+      why: E(sb('T', 2), '=', T1.kh, '×', fr(P[1].h + ' atm', P[0].h + ' atm'), '×', fr(V[1].h + ' L', V[0].h + ' L'), '=', sig(Tk, 4) + ' K') + ' ' + E(sig(Tk, 4) + ' K', '−', '273.15', '=', '<b>' + deg0(a) + ' °C</b>')}); };
   const toSTP = () => { const V1 = gV('mL'), P1 = g3(rint(700, 790)), T1 = gT(15, 35), a = V1.v * P1.v / 760 * T0 / T1.k;
     return numQ({q: 'A gas sample has a volume of ' + V1.h + ' mL at ' + P1.h + ' torr and ' + T1.h + '. What would its volume be at STP (0 °C and 760 torr)?', a: a, unit: 'mL', hint: 'STP supplies the “after” values: P₂ = 760 torr and T₂ = 273.15 K.',
       setup: [sb('T', 1) + ' = ' + T1.kh + ', ' + sb('T', 2) + ' = 273.15 K.', sb('V', 2) + ' = ' + sb('V', 1) + ' × ' + sb('P', 1) + '/' + sb('P', 2) + ' × ' + sb('T', 2) + '/' + sb('T', 1) + '.'],
@@ -1677,7 +1683,7 @@ SECTIONS.push({id: 'ideal', n: 6, label: 'Ideal gas law', title: 'The ideal gas 
         : k === 'V' ? E(vV('V'), '=', fr('nRT', 'P'), '=', fr('(' + nh + ')(' + Rh + ')(' + Th + ')', Ph), '=', '<b>' + sig(V, 3) + ' L</b>')
         : k === 'n' ? E(vN('n'), '=', fr('PV', 'RT'), '=', fr('(' + Ph + ')(' + Vh + ')', '(' + Rh + ')(' + Th + ')'), '=', '<b>' + sig(n, 3) + ' mol</b>')
         : E(vT('T'), '=', fr('PV', 'nR'), '=', fr('(' + Ph + ')(' + Vh + ')', '(' + nh + ')(' + Rh + ')'), '=', '<b>' + sig(T, 3) + ' K</b>');
-      $('#id-out').innerHTML = '<h4>Solving for ' + ({P: 'pressure', V: 'volume', n: 'moles', T: 'temperature'})[k] + '</h4>' + line + (k === 'T' ? '<p class="small" style="margin:8px 0 0">That is ' + minus((T - T0).toFixed(0)) + ' °C.</p>' : '<p class="small" style="margin:8px 0 0">The temperature is ' + minus((T - T0).toFixed(0)) + ' °C. Every unit cancels except the one you are solving for.</p>'); };
+      $('#id-out').innerHTML = '<h4>Solving for ' + ({P: 'pressure', V: 'volume', n: 'moles', T: 'temperature'})[k] + '</h4>' + line + (k === 'T' ? '<p class="small" style="margin:8px 0 0">That is ' + deg0(T - T0) + ' °C.</p>' : '<p class="small" style="margin:8px 0 0">The temperature is ' + deg0(T - T0) + ' °C. Every unit cancels except the one you are solving for.</p>'); };
     const drawR = () => { const c = R_CHOICE[S.ru];
       $('#id-R').innerHTML = '<div class="lanes"><div class="lane"><h4>Use this R</h4><p class="eqbig" style="margin:0 0 4px">R = ' + c.R + ' ' + fr(c.u.split('/')[0], 'mol·K') + '</p><p class="small" style="margin:0">' + c.note + '</p></div>' +
         '<div class="lane"><h4>Everything else must match</h4><ul class="facts"><li>' + vP('P') + ' in ' + (S.ru === 'torr' ? 'torr (or mmHg)' : S.ru) + '</li><li>' + vV('V') + ' in liters</li><li>' + vN('n') + ' in moles</li><li>' + vT('T') + ' in kelvins</li></ul></div>' +
@@ -1717,7 +1723,7 @@ const RF = '0.08206 ' + fr('L·atm', 'mol·K');
   const iT = () => { const n = gN(), V = gV('L'), T0g = gT(-50, 300), P = g3(n.v * R * T0g.k / V.v), Tk = P.v * V.v / (n.v * R), inC = RNG() < 0.5 && Tk > 120, a = inC ? Tk - T0 : Tk;
     return numQ(Object.assign({q: cap(an(V.h)) + ' ' + V.h + ' L container holds ' + n.h + ' mol of gas at ' + P.h + ' atm. What is the temperature of the gas in ' + (inC ? '°C' : 'kelvins') + '?', a: a, unit: inC ? '°C' : 'K', hint: 'T = PV/nR gives kelvins.',
       setup: ['T = PV/nR.'].concat(inC ? ['Subtract 273.15 to change kelvins to °C.'] : []), traps: [[inC ? Tk : Tk - T0, inC ? 'That is the temperature in kelvins. Subtract 273.15.' : 'The question asks for kelvins. Do not subtract 273.15.'], [n.v * R / (P.v * V.v), 'Your fraction is upside down: T = PV ÷ nR.']],
-      why: E('T', '=', fr('PV', 'nR'), '=', fr('(' + P.h + ' atm)(' + V.h + ' L)', '(' + n.h + ' mol)(' + RF + ')'), '=', (inC ? sig(Tk, 4) + ' K' : '<b>' + numH(Tk, 3) + ' K</b>')) + (inC ? ' ' + E(sig(Tk, 4) + ' K', '−', '273.15', '=', '<b>' + minus(a.toFixed(0)) + ' °C</b>') : '')}, inC ? {tol: tolC(Tk), show: minus(a.toFixed(0))} : {})); };
+      why: E('T', '=', fr('PV', 'nR'), '=', fr('(' + P.h + ' atm)(' + V.h + ' L)', '(' + n.h + ' mol)(' + RF + ')'), '=', (inC ? sig(Tk, 4) + ' K' : '<b>' + numH(Tk, 3) + ' K</b>')) + (inC ? ' ' + E(sig(Tk, 4) + ' K', '−', '273.15', '=', '<b>' + deg0(a) + ' °C</b>') : '')}, inC ? {tol: tolC(Tk), show: deg0(a)} : {})); };
   const massV = () => { const f = pick(['O2', 'N2', 'CO2', 'He', 'CH4', 'Ar', 'NH3']), M = molarMass(f), m = g3(pick([rint(100, 999) / 100, rint(100, 600) / 10])), n = m.v / M, u = pressU(), P = gP(u), T = gT(0, 100), pa = atmOf(P, u), a = n * R * T.k / pa.v;
     return numQ({q: 'What volume does ' + m.h + ' g of ' + gasM(f) + ' occupy at ' + T.h + ' and ' + P.h + ' ' + u + '?', a: a, unit: 'L', hint: 'Grams to moles first, then V = nRT/P.',
       setup: ['Moles: ' + m.h + ' g ÷ ' + M.toFixed(2) + ' g/mol.', 'T = ' + T.kh + '.'].concat(u === 'atm' ? [] : ['Pressure in atm: ' + sig(pa.v, 4) + ' atm.']).concat(['V = nRT/P.']),
@@ -1802,12 +1808,16 @@ SECTIONS.push({id: 'dens', n: 7, label: 'Density and molar mass', title: 'Densit
 /* ---------- practice: density and molar mass ---------- */
 (function(){
   const pool = ['H2', 'He', 'CH4', 'NH3', 'Ne', 'N2', 'O2', 'Ar', 'CO2', 'Cl2', 'SO2', 'Kr', 'Xe', 'SF6'];
-  const dQ = () => { const f = pick(pool), M = molarMass(f), u = pick(['atm', 'atm', 'torr']), P = gP(u), T = gT(f === 'SO2' ? 20 : -10, 120), pa = atmOf(P, u), a = pa.v * M / (R * T.k);
+  const dQ = () => { const f = pick(pool), M = molarMass(f); let u, P, T, pa, guard = 0;
+    do { u = pick(['atm', 'atm', 'torr']); P = gP(u); T = gT(f === 'SO2' ? 20 : -10, 120); pa = atmOf(P, u); } while(guard++ < 50 && !awayFromSTP(T.k, pa.v));
+    const a = pa.v * M / (R * T.k);
     return numQ({q: 'What is the density, in g/L, of ' + gasM(f) + ' at ' + P.h + ' ' + u + ' and ' + T.h + '?', a: a, unit: 'g/L', hint: 'd = PM/RT, with P in atm and T in kelvins.',
       setup: ['Molar mass of ' + formulaHTML(f) + ': ' + M.toFixed(2) + ' g/mol.', 'T = ' + T.kh + '.'].concat(u === 'atm' ? [] : ['Pressure in atm: ' + sig(pa.v, 4) + ' atm.']).concat(['d = PM/RT.']),
       traps: [[pa.v * M / (R * T.c), 'You used the Celsius temperature. T must be in kelvins.'], [M / VM_STP, 'You used 22.41 L/mol. That works only at STP, and this gas is not at STP.'], [R * T.k / (pa.v * M), 'Your fraction is upside down: d = PM ÷ RT.']].concat(u === 'atm' ? [] : [[P.v * M / (R * T.k), 'You left the pressure in ' + u + '. Convert it to atm.']]),
       why: (pa.line ? pa.line + ' ' : '') + E('d', '=', fr('PM', 'RT'), '=', fr('(' + pa.h + ' atm)(' + M.toFixed(2) + ' g/mol)', '(' + RF + ')(' + T.kh + ')'), '=', '<b>' + numH(a, 3) + ' g/L</b>')}); };
-  const mFromD = () => { const f = pick(pool), Mt = molarMass(f), P = gP('atm'), T = gT(f === 'SO2' ? 20 : 0, 100), d = g3(P.v * Mt / (R * T.k)), a = d.v * R * T.k / P.v;
+  const mFromD = () => { const f = pick(pool), Mt = molarMass(f); let P, T, guard = 0;
+    do { P = gP('atm'); T = gT(f === 'SO2' ? 20 : 0, 100); } while(guard++ < 50 && !awayFromSTP(T.k, P.v));
+    const d = g3(P.v * Mt / (R * T.k)), a = d.v * R * T.k / P.v;
     return numQ({q: 'An unknown gas has a density of ' + d.h + ' g/L at ' + P.h + ' atm and ' + T.h + '. What is its molar mass?', a: a, unit: 'g/mol', hint: 'M = dRT/P, with T in kelvins.',
       setup: ['T = ' + T.kh + '.', 'M = dRT/P.'], traps: [[d.v * R * T.c / P.v, 'You used the Celsius temperature. T must be in kelvins.'], [d.v * VM_STP, 'You used 22.41 L/mol. That works only at STP.'], [P.v / (d.v * R * T.k), 'Your fraction is upside down: M = dRT ÷ P.']],
       why: E('M', '=', fr('dRT', 'P'), '=', fr('(' + d.h + ' g/L)(' + RF + ')(' + T.kh + ')', P.h + ' atm'), '=', '<b>' + numH(a, 3) + ' g/mol</b>') + ' That is close to ' + gasName(f) + ', ' + formulaHTML(f) + ' (' + Mt.toFixed(2) + ' g/mol).'}); };
@@ -2032,11 +2042,11 @@ SECTIONS.push({id: 'stoich', n: 9, label: 'Gas stoichiometry', title: 'Gases in 
         : '<div class="lanes wide"><div class="lane"><h4>1. Liters of gas to moles</h4>' + E('n', '=', fr('PV', 'RT'), '=', fr('(' + P.h + ' atm)(' + A.h + ' L)', '(0.08206)(' + Th + ')'), '=', sig(r.ng, 4) + ' mol ' + gh) + '</div>' +
           '<div class="lane"><h4>2. Mole ratio</h4>' + E(sig(r.ng, 4) + ' mol ' + gh, '×', fr(a[1] + ' mol ' + ah, g[1] + ' mol ' + gh), '=', sig(r.na, 4) + ' mol ' + ah) + '</div>' +
           '<div class="lane"><h4>3. Moles to grams</h4>' + E(sig(r.na, 4) + ' mol ' + ah, '×', fr(r.Ma.toFixed(2) + ' g', '1 mol ' + ah), '=', '<b>' + numH(r.ans, 3) + ' g ' + ah + '</b>') + '</div></div>'; };
-    const drawVol = () => { const X = GASRX[S.grx], v = +S.gv, base = X.sp[0];
+    const drawVol = () => { const X = GASRX[S.grx], v = +S.gv, base = X.sp[0], vSum = prod => X.sp.filter((s, i) => (i >= 2) === prod).reduce((t, s) => t + v * s[1] / base[1], 0), vr = vSum(false), vp = vSum(true);
       $('#st-gvv').textContent = v.toFixed(1) + ' L';
       $('#st-vol').innerHTML = '<p class="eqbig" style="margin:10px 0 6px">' + eqH(X.eq) + '</p><div class="scroll"><table class="tbl"><thead><tr><th>Gas</th><th class="n">Coefficient</th><th class="n">Volume<span class="wide-only"> at the same T and P</span></th></tr></thead><tbody>' +
         X.sp.map((s, i) => '<tr><td style="white-space:nowrap"><b>' + formulaHTML(s[0]) + '</b> <span class="small">' + (i < 2 ? 'used up' : 'formed') + '</span></td><td class="n">' + s[1] + '</td><td class="n">' + v.toFixed(1) + ' L × ' + s[1] + '/' + base[1] + ' = <b>' + sig(v * s[1] / base[1], 3) + ' L</b></td></tr>').join('') + '</tbody></table></div>' +
-        '<p class="small" style="margin:10px 0 0">Volumes of gases do not have to add up. Here ' + sig(X.sp.filter((s, i) => i < 2).reduce((t, s) => t + v * s[1] / base[1], 0), 3) + ' L of reactants give ' + sig(X.sp.filter((s, i) => i >= 2).reduce((t, s) => t + v * s[1] / base[1], 0), 3) + ' L of products, because the number of moles of gas changes in the reaction.' + (X.sp.some(s => s[0] === 'H2O') ? ' Water counts as a gas here because the temperature is taken to be above 100 °C.' : '') + '</p>'; };
+        '<p class="small" style="margin:10px 0 0">Volumes of gases do not have to add up. Here ' + sig(vr, 3) + ' L of reactants give ' + sig(vp, 3) + ' L of products, because the number of moles of gas ' + (Math.abs(vr - vp) < 1e-9 ? 'does not change in this reaction.' : 'changes in the reaction.') + (X.sp.some(s => s[0] === 'H2O') ? ' Water counts as a gas here because the temperature is taken to be above 100 °C.' : '') + '</p>'; };
     wire($('section', view), S, which => { if(which === 'dir'){ S.amt = S.dir === 'g2L' ? '5.00' : '2.50'; $('#st-amt').value = S.amt; } drawCalc(); drawVol(); syncPressed(view, S); });
     mountStepper($('#st-step'), {id: 'stworked', track: [['Plan', 'the route'], ['Gas to moles', 'n = PV/RT'], ['Mole ratio', 'from the equation'], ['Moles to grams', '× molar mass'], ['Check', 'does it make sense?']], steps: [
       {at: 0, form: 'L N₂ → mol N₂ → mol NaN₃ → g', t: 'Plan the route', d: 'You know a volume of gas and want a mass of solid. Go from liters of N<sub>2</sub> to moles of N<sub>2</sub>, across the equation to moles of NaN<sub>3</sub>, then to grams.'},
@@ -2050,12 +2060,16 @@ SECTIONS.push({id: 'stoich', n: 9, label: 'Gas stoichiometry', title: 'Gases in 
 /* ---------- practice: gas stoichiometry ---------- */
 (function(){
   const keys = Object.keys(RXNS);
-  const g2L = () => { const k = pick(keys), X = RXNS[k], m = g3(pick([rint(100, 999) / 100, rint(100, 400) / 10])), T = gT(15, 40), u = pick(['atm', 'atm', 'torr']), P = u === 'atm' ? g3(rint(90, 130) / 100) : g3(rint(720, 790)), pa = atmOf(P, u), r = gasStoich(k, 'g2L', m.v, T.c, pa.v), ah = formulaHTML(X.a[0]), gh = formulaHTML(X.g[0]);
+  const g2L = () => { const k = pick(keys), X = RXNS[k], m = g3(pick([rint(100, 999) / 100, rint(100, 400) / 10])); let T, u, P, pa, guard = 0;
+    do { T = gT(15, 40); u = pick(['atm', 'atm', 'torr']); P = u === 'atm' ? g3(rint(90, 130) / 100) : g3(rint(720, 790)); pa = atmOf(P, u); } while(guard++ < 50 && !awayFromSTP(T.k, pa.v));
+    const r = gasStoich(k, 'g2L', m.v, T.c, pa.v), ah = formulaHTML(X.a[0]), gh = formulaHTML(X.g[0]);
     return numQ({q: 'What volume of ' + gasName(X.g[0]) + ', measured at ' + T.h + ' and ' + P.h + ' ' + u + ', is produced when ' + m.h + ' g of ' + X.a[2] + ' reacts completely?<br>' + eqH(X.eq), a: r.ans, unit: 'L ' + gh, hint: 'Grams of ' + ah + ' → moles of ' + ah + ' → moles of ' + gh + ' → liters, using V = nRT/P.',
       setup: ['Moles of ' + ah + ': ' + m.h + ' g ÷ ' + r.Ma.toFixed(2) + ' g/mol.', 'Mole ratio: ' + X.g[1] + ' mol ' + gh + ' for every ' + X.a[1] + ' mol ' + ah + '.', 'T = ' + T.kh + (u === 'atm' ? '' : ', P = ' + sig(pa.v, 4) + ' atm') + '. V = nRT/P.'],
       traps: [[r.na * R * r.T / pa.v, 'You skipped the mole ratio. The equation gives ' + X.g[1] + ' mol ' + gh + ' for every ' + X.a[1] + ' mol ' + ah + '.'], [r.na * X.a[1] / X.g[1] * R * r.T / pa.v, 'Your mole ratio is upside down. Put moles of ' + gh + ' on top.'], [r.ng * VM_STP, 'You used 22.41 L/mol. The gas is not at STP, so use V = nRT/P.'], [r.ng * R * T.c / pa.v, 'You used the Celsius temperature in the gas step.'], [m.v / molarMass(X.g[0]) * R * r.T / pa.v, 'You treated the ' + m.h + ' g as a mass of the gas. It is a mass of ' + X.a[2] + ': divide it by ' + r.Ma.toFixed(2) + ' g/mol, then use the mole ratio.']],
       why: E(m.h + ' g', '×', fr('1 mol ' + ah, r.Ma.toFixed(2) + ' g'), '×', fr(X.g[1] + ' mol ' + gh, X.a[1] + ' mol ' + ah), '=', sig(r.ng, 4) + ' mol ' + gh) + ' ' + (pa.line ? pa.line + ' ' : '') + E('V', '=', fr('(' + sig(r.ng, 4) + ' mol)(' + RF + ')(' + T.kh + ')', pa.h + ' atm'), '=', '<b>' + numH(r.ans, 3) + ' L</b>')}); };
-  const L2g = () => { const k = pick(keys), X = RXNS[k], V = g3(pick([rint(100, 999) / 100, rint(100, 500) / 10])), T = gT(15, 40), P = g3(rint(90, 130) / 100), r = gasStoich(k, 'L2g', V.v, T.c, P.v), ah = formulaHTML(X.a[0]), gh = formulaHTML(X.g[0]);
+  const L2g = () => { const k = pick(keys), X = RXNS[k], V = g3(pick([rint(100, 999) / 100, rint(100, 500) / 10])); let T, P, guard = 0;
+    do { T = gT(15, 40); P = g3(rint(90, 130) / 100); } while(guard++ < 50 && !awayFromSTP(T.k, P.v));
+    const r = gasStoich(k, 'L2g', V.v, T.c, P.v), ah = formulaHTML(X.a[0]), gh = formulaHTML(X.g[0]);
     return numQ({q: 'How many grams of ' + X.a[2] + ' must react to produce ' + V.h + ' L of ' + gasName(X.g[0]) + ', measured at ' + T.h + ' and ' + P.h + ' atm?<br>' + eqH(X.eq), a: r.ans, unit: 'g ' + ah, hint: 'Liters of ' + gh + ' → moles of ' + gh + ' (n = PV/RT) → moles of ' + ah + ' → grams.',
       setup: ['T = ' + T.kh + '. n = PV/RT gives moles of ' + gh + '.', 'Mole ratio: ' + X.a[1] + ' mol ' + ah + ' for every ' + X.g[1] + ' mol ' + gh + '.', 'Multiply by the molar mass of ' + ah + ', ' + r.Ma.toFixed(2) + ' g/mol.'],
       traps: [[r.ng * r.Ma, 'You skipped the mole ratio. The equation needs ' + X.a[1] + ' mol ' + ah + ' for every ' + X.g[1] + ' mol ' + gh + '.'], [r.ng * X.g[1] / X.a[1] * r.Ma, 'Your mole ratio is upside down. Put moles of ' + ah + ' on top.'], [V.v / VM_STP * X.a[1] / X.g[1] * r.Ma, 'You used 22.41 L/mol. The gas is not at STP, so use n = PV/RT.'], [r.na, 'That is the number of moles of ' + ah + '. Multiply by its molar mass to get grams.']],

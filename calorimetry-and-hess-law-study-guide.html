@@ -271,6 +271,8 @@ const H_NEUT = -55.8;             // strong acid + strong base, kJ per mole of w
 // Specific heats in J/(g·°C), as text.
 const SUBST = [['water','4.184'],['aluminum','0.897'],['iron','0.449'],['copper','0.385'],['silver','0.235'],
                ['gold','0.129'],['ethanol','2.44'],['glass','0.840'],['granite','0.790'],['titanium','0.523']];
+// Highest temperature used for a substance in Section 1: ethanol boils at 78.4 °C and water at 100 °C.
+const TMAX = {ethanol:75, water:95};
 const METALS = [['aluminum','0.897'],['titanium','0.523'],['iron','0.449'],['copper','0.385'],['silver','0.235'],['lead','0.129']];
 // Strong acid + strong base pairs: [acid, base, salt].
 const NEUT = [['HCl','NaOH','NaCl'],['HNO3','NaOH','NaNO3'],['HCl','KOH','KCl'],['HNO3','KOH','KNO3']];
@@ -278,6 +280,9 @@ const NEUT = [['HCl','NaOH','NaCl'],['HNO3','NaOH','NaNO3'],['HCl','KOH','KCl'],
 const SALTS = [['NH4NO3','ammonium nitrate',25.7],['KNO3','potassium nitrate',34.9],['NH4Cl','ammonium chloride',14.8],
                ['CaCl2','calcium chloride',-81.3],['NaOH','sodium hydroxide',-44.5],['KCl','potassium chloride',17.2],
                ['LiCl','lithium chloride',-37.0],['KOH','potassium hydroxide',-57.6]];
+// Solubility of KNO3 in g per 100 g of water at 0, 10, 20 and 30 °C (CRC). It is the only salt here that can reach its limit.
+const KNO3_SOL = [13.3,20.9,31.6,45.8];
+const kno3Sol = T => { const x=Math.max(0,Math.min(30,T))/10, i=Math.min(2,Math.floor(x)); return KNO3_SOL[i]+(KNO3_SOL[i+1]-KNO3_SOL[i])*(x-i); };
 // Thermochemical equations. dH is in kJ for the equation as written.
 const TQ = [
   {ctx:'Methane, the main component of natural gas, burns in oxygen.',
@@ -447,8 +452,8 @@ const solWrap = (items, note) => '<div class="solution"><h3>Worked solution</h3>
 const mmLines = list => '<b>Molar mass'+(list.length>1?'es':'')+'.</b> '+list.map(([f,cls])=>tag(f,cls)+': '+breakdown(f)).join('<br>');
 const DT='ΔT', DH='ΔH';
 
-// Coefficients, including halves: 0.5 shows as ½ and 1.5 as 3/2.
-const coefTxt = c => Number.isInteger(c) ? String(c) : c===0.5 ? '½' : (c*2)+'/2';
+// Coefficients, including halves and quarters: 0.5 shows as ½, 1.5 as 3/2, 0.25 as ¼ and 1.25 as 5/4.
+const coefTxt = c => Number.isInteger(c) ? String(c) : c===0.5 ? '½' : c===0.25 ? '¼' : c===0.75 ? '¾' : Number.isInteger(c*2) ? (c*2)+'/2' : (c*4)+'/4';
 function eqSide(arr, hl){
   return arr.map(e=>'<span class="sp'+(hl && hl[e[1]] ? ' '+hl[e[1]] : '')+'">'+(e[0]!==1 ? '<span class="coef">'+coefTxt(e[0])+'</span>' : '')+F(e[1])+(e[2] ? '<span class="st">('+e[2]+')</span>' : '')+'</span>').join('<span class="plus">+</span>');
 }
@@ -474,7 +479,7 @@ function makeHeat(prev){
     const m=g3(10,500), mn=Number(m);
     const mag=rint(100,600)/10;
     const Ti = heating ? rint(150,300)/10 : rint(600,950)/10, Tf = heating ? Ti+mag : Ti-mag;
-    if(Tf<5) continue;
+    if(Tf<5 || Math.max(Ti,Tf)>(TMAX[name]||100)) continue;
     const TiS=Ti.toFixed(1), TfS=Tf.toFixed(1), dT=Number((Number(TfS)-Number(TiS)).toFixed(1));
     const qTrue=mn*c*dT;                                   // joules, with its sign
     // For problems that give the heat, it is rounded to 3 significant figures.
@@ -482,6 +487,7 @@ function makeHeat(prev){
     const givesQ = type==='m' || type==='c' || type==='dT' || type==='Tf';
     if(givesQ && !qS) continue;
     const qJ = givesQ ? (heating?1:-1)*Number(qS)*(big?1000:1) : qTrue;
+    const qJS = givesQ && !big ? (heating?'':'−')+qS : fx(qJ,0);   // q in joules as given, so the working reproduces the answer
     const verb = heating ? 'absorbs' : 'releases';
     const qText=qS+' '+qU, spec='(specific heat '+cs+' '+CU+')';
     const E=[]; const add=(value,msg)=>E.push({value,msg});
@@ -508,8 +514,8 @@ function makeHeat(prev){
       add(-ans, 'A mass cannot be negative. q and '+DT+' have the same sign, so the signs cancel.');
       rearr=row(q('m')+EQOP+frac('q','c × '+DT));
       sol=['<b>Temperature change.</b> '+DT+' = '+TfS+' °C − '+TiS+' °C = '+fx(dT,1)+' °C',
-           '<b>Heat in joules.</b> q = '+fx(qJ,0)+' J'+(heating?'':' (negative, because heat is released)'),
-           '<b>Mass.</b> m = q ÷ (c × '+DT+') = '+fx(qJ,0)+' J ÷ ('+cs+' '+CU+' × '+fx(dT,1)+' °C) = <b>'+sig(ans,3)+' g</b>'];
+           '<b>Heat in joules.</b> q = '+qJS+' J'+(heating?'':' (negative, because heat is released)'),
+           '<b>Mass.</b> m = q ÷ (c × '+DT+') = '+qJS+' J ÷ ('+cs+' '+CU+' × '+fx(dT,1)+' °C) = <b>'+sig(ans,3)+' g</b>'];
     } else if(type==='c'){
       unk='c'; ans=qJ/(mn*dT); unit=CU; label='Specific heat';
       question='A '+m+' g sample of an unknown metal '+verb+' '+qText+' of heat, and its temperature changes from '+TiS+' °C to '+TfS+' °C. What is the specific heat of the metal?';
@@ -519,21 +525,21 @@ function makeHeat(prev){
       add(Math.abs(qJ/(mn*Number(TfS))), 'It looks like the final temperature was used. Use the change in temperature: '+DT+' = final − initial.');
       rearr=row(q('c')+EQOP+frac('q','m × '+DT));
       sol=['<b>Temperature change.</b> '+DT+' = '+TfS+' °C − '+TiS+' °C = '+fx(dT,1)+' °C',
-           '<b>Heat in joules.</b> q = '+fx(qJ,0)+' J'+(heating?'':' (negative, because heat is released)'),
-           '<b>Specific heat.</b> c = q ÷ (m × '+DT+') = '+fx(qJ,0)+' J ÷ ('+m+' g × '+fx(dT,1)+' °C) = <b>'+sig(ans,3)+' '+CU+'</b>'];
+           '<b>Heat in joules.</b> q = '+qJS+' J'+(heating?'':' (negative, because heat is released)'),
+           '<b>Specific heat.</b> c = q ÷ (m × '+DT+') = '+qJS+' J ÷ ('+m+' g × '+fx(dT,1)+' °C) = <b>'+sig(ans,3)+' '+CU+'</b>'];
     } else {
       const d=qJ/(mn*c);
       unk='dT';
       rearr=row(q(DT)+EQOP+frac('q','m × c'));
-      const base=['<b>Heat in joules.</b> q = '+fx(qJ,0)+' J'+(heating?'':' (negative, because heat is released)'),
-                  '<b>Temperature change.</b> '+DT+' = q ÷ (m × c) = '+fx(qJ,0)+' J ÷ ('+m+' g × '+cs+' '+CU+') = '+sig(d,4)+' °C'];
+      const base=['<b>Heat in joules.</b> q = '+qJS+' J'+(heating?'':' (negative, because heat is released)'),
+                  '<b>Temperature change.</b> '+DT+' = q ÷ (m × c) = '+qJS+' J ÷ ('+m+' g × '+cs+' '+CU+') = '+sig(d,4)+' °C'];
       if(type==='dT'){
         ans=d; unit='°C'; label='Temperature change, '+DT;
         question='A '+m+' g sample of '+name+' '+spec+' '+verb+' '+qText+' of heat. What is the temperature change, '+DT+', of the sample?';
         add(-ans, heating ? 'The sample absorbed heat, so its temperature goes up and '+DT+' is positive.' : 'The sample released heat, so its temperature goes down and '+DT+' is negative.');
         if(big) add(ans/1000, KJ);
         add(qJ/mn, 'The specific heat is missing. '+DT+' = q ÷ (m × c).');
-        base[1]='<b>Temperature change.</b> '+DT+' = q ÷ (m × c) = '+fx(qJ,0)+' J ÷ ('+m+' g × '+cs+' '+CU+') = <b>'+sig(d,3)+' °C</b>';
+        base[1]='<b>Temperature change.</b> '+DT+' = q ÷ (m × c) = '+qJS+' J ÷ ('+m+' g × '+cs+' '+CU+') = <b>'+sig(d,3)+' °C</b>';
         sol=base;
       } else {
         ans=Number(TiS)+d; unit='°C'; label='Final temperature'; sf=null; tolAbs=0.15; show=fx(ans,1)+' °C';
@@ -548,7 +554,7 @@ function makeHeat(prev){
     }
     const tUnk = type==='Tf';
     const cells=mode=>cellRow(
-      gcell(mode,'q','q','heat in joules, with its sign','J',fx(qJ,0),unk==='q')+
+      gcell(mode,'q','q','heat in joules, with its sign','J',qJS,unk==='q')+
       gcell(mode,'m','m','mass in grams','g',m,unk==='m')+
       gcell(mode,'c','c','specific heat',CU,cs,unk==='c')+
       gcell(mode,DT,'dT','temperature change, final minus initial','°C',fx(dT,1),unk==='dT'));
@@ -563,7 +569,7 @@ function makeHeat(prev){
       if(bad('c')) return 'Check the specific heat. Use the value given in the problem.';
       return '';
     };
-    const part={type:'num', label, unit, answer:ans, sf, tolAbs, tolRel: sf ? undefined : 0, errors:clean(E,ans,sf ? 0 : 0.3), show:show||sig(ans,3)+' '+unit,
+    const part={type:'num', label, unit, answer:ans, sf, tolAbs, tolRel: sf ? undefined : 0, errAbs: sf ? 0 : 0.15, errors:clean(E,ans,sf ? 0 : 0.3), show:show||sig(ans,3)+' '+unit,
       generic:'Not yet. Sort the values into q = m × c × '+DT+', with '+DT+' = final − initial and q in joules, then solve for the unknown.'};
     return {kind:'heat', type, sub:name, ctx:'Heating or cooling a sample of '+(type==='c' ? 'an unknown metal' : name)+'.', eqHTML:'', am:null, question, parts:[part],
       guided: lab('Sort the values into the equation. Give q in joules with its sign, and '+DT+' as final minus initial.')+EQ_Q+cells('live')+lab('Then solve for the unknown')+rearr+extra,
@@ -637,7 +643,7 @@ function makeExchange(prev){
         ], roundNote(sf))};
     }
     // Find the final temperature.
-    const part={type:'num', label:'Final temperature', unit:'°C', answer:Tf, sf:null, tolRel:0, tolAbs:0.15, show:fx(Tf,1)+' °C',
+    const part={type:'num', label:'Final temperature', unit:'°C', answer:Tf, sf:null, tolRel:0, tolAbs:0.15, errAbs:0.15, show:fx(Tf,1)+' °C',
       errors:clean([
         {value:(Tm+Tw)/2, msg:'That is the plain average of the two temperatures. The water holds much more heat per degree than the metal, so the final temperature ends up closer to the water.'},
         {value:(Mm*Tm+Mw*Tw)/(Mm+Mw), msg:'That weights the temperatures by mass only. Each mass has to be multiplied by its specific heat as well.'},
@@ -674,8 +680,9 @@ function makeExchange(prev){
 const ASSUME=' Assume the solution has a density of 1.00 g/mL and a specific heat of 4.184 '+CU+', and that no heat is lost to the cup.';
 const ASSUME_S=' Assume the solution has a specific heat of 4.184 '+CU+' and that no heat is lost to the cup.';
 function makeCoffee(prev){
+  let keep=null;                    // a predict problem that is drawn again stays a predict problem
   for(let t=0;;t++){
-    const r0=Math.random(), type = r0<0.45 ? 'neut' : r0<0.80 ? 'diss' : 'predict';
+    const r0=Math.random(), type = keep || (r0<0.45 ? 'neut' : r0<0.80 ? 'diss' : 'predict');
     const TiS=(rint(1900,2500)/100).toFixed(2), Ti=Number(TiS);
     if(type==='neut'){
       const pr=pick(NEUT); if(t<50 && prev && prev.key===pr[0]+pr[1]) continue;
@@ -747,6 +754,7 @@ function makeCoffee(prev){
     const ms=g3(2,12), mw=pick(['50.0','75.0','100.0','150.0']), Ms=Number(ms), Mw=Number(mw), mass=Ms+Mw, n=Ms/MM;
     const TfS=(Ti+(-n*H*1000)/(mass*CW)).toFixed(2), Tf=Number(TfS), dT=Number((Tf-Ti).toFixed(2));
     if(Math.abs(dT)<1.5 || Tf<2) continue;
+    if(f==='KNO3' && 100*Ms/Mw>0.9*kno3Sol(Tf)) continue;   // all of the KNO3 must still dissolve at the final temperature
     const rxn={r:[[1,f,'s']], p:[[1,f,'aq']]}, warm=dT>0;
     if(type==='diss'){
       const qs=mass*CW*dT, dH=-qs/n/1000, sf=Math.min(3,sfOfDelta(dT));
@@ -804,7 +812,9 @@ function makeCoffee(prev){
     }
     // Predict the final temperature from a known enthalpy of solution.
     const Hs=dHtext(H.toFixed(1)), qr=n*H*1000, d=-qr/(mass*CW), ans=Ti+d;
-    const part={type:'num', label:'Final temperature', unit:'°C', answer:ans, sf:null, tolRel:0, tolAbs:0.15, show:fx(ans,1)+' °C',
+    // using the water alone for the mass must land clearly outside the tolerance and keep its message
+    if(Math.abs(qr/(Mw*CW)-qr/(mass*CW))<=Math.max(0.3,0.02*Math.abs(ans))){ keep='predict'; continue; }
+    const part={type:'num', label:'Final temperature', unit:'°C', answer:ans, sf:null, tolRel:0, tolAbs:0.15, errAbs:0.15, show:fx(ans,1)+' °C',
       errors:clean([
         {value:Ti-d, msg:H>0 ? DH+' is positive, so dissolving absorbs heat from the solution. The temperature goes down, not up.' : DH+' is negative, so dissolving releases heat into the solution. The temperature goes up, not down.'},
         {value:d, msg:'That is the temperature change. The final temperature is the starting temperature plus the change.'},
@@ -1883,7 +1893,7 @@ function paintSteps(){
   else if(cur==='base') out=['25.0','50.0'].map(v=>B('base','Measure '+v+' mL',v)).join('');
   else if(cur==='scoop'){
     const ms=S.scoops||0;
-    out=(ms<10 ? B('scoop','Add a scoop') : '')+(ms>=2 ? B('useSalt','Use '+S.d.msLive+' g',null,true) : '');
+    out=(ms+2.2<=10 ? B('scoop','Add a scoop') : '')+(ms>=2 ? B('useSalt','Use '+S.d.msLive+' g',null,true) : '');
   }
   else if(cur==='start') out=B('start','Start recording',null,true);
   else if(cur==='mix') out=B('mix', L.exp==='metal' ? 'Transfer the metal' : L.exp==='neut' ? 'Pour in the base' : 'Add the solid', null, true);
