@@ -229,6 +229,9 @@ const SOLUTES = {NaCl:'sodium chloride', KCl:'potassium chloride', NaOH:'sodium 
                  KOH:'potassium hydroxide', NH4Cl:'ammonium chloride', Na2CO3:'sodium carbonate', KI:'potassium iodide'};
 // Solutes for the dilution section.
 const DILUTES = ['HCl','HNO3','H2SO4','NaOH','NH3','NaCl','CuSO4','KCl','KNO3'];
+// Highest molarity used for a solute, kept below saturation at 20-25 °C (CRC solubilities). Others have no limit here.
+const MAXM = {CuSO4:1.2, KNO3:2.5, KCl:3.5, NaCl:5.0, NaHCO3:1.0, Na2SO4:1.5, Na2CO3:1.8, Na3PO4:0.8, 'Ba(OH)2':0.15};
+const maxM = f => MAXM[f] || 1e9;
 const FLASKS = ['100.0','250.0','500.0'];
 
 // Reaction banks. r = reactants, p = products, each as [coefficient, formula, state].
@@ -354,13 +357,14 @@ function composition(f){
   }
   return out;
 }
-// Molar mass rounded to two decimals, the way students will use it.
+// Molar mass rounded to two decimals, the way students will use it. Below 10 g/mol keep three (H 1.008, H2 2.016).
 function molarMass(f){
   let s=0; for(const [e,n] of parseFormula(f)) s += Number(AM[e])*n;
-  return Math.round(s*100+1e-7)/100;
+  return s<10 ? Math.round(s*1000+1e-7)/1000 : Math.round(s*100+1e-7)/100;
 }
+const mmStr = M => M.toFixed(M<10 ? 3 : 2);
 function breakdown(f){
-  const parts=composition(f), M=molarMass(f).toFixed(2);
+  const parts=composition(f), M=mmStr(molarMass(f));
   if(parts.length===1 && parts[0][1]===1) return M+' g/mol';
   return parts.map(([e,n])=> n>1 ? n+'('+AM[e]+')' : AM[e]).join(' + ')+' = '+M+' g/mol';
 }
@@ -419,9 +423,9 @@ const F_M = row(q('molarity (M)')+EQOP+frac('moles of solute','liters of solutio
 function makeMolarity(prev){
   for(let t=0;;t++){
     const f=pick(Object.keys(SOLUTES)); if(t<50 && prev && prev.solute===f) continue;
-    const MM=molarMass(f), MMs=MM.toFixed(2), name=SOLUTES[f], fs=tag(f,'sa');
+    const MM=molarMass(f), MMs=mmStr(MM), name=SOLUTES[f], fs=tag(f,'sa');
     const type=pick(['Mmol','Mg','Mg','mol','g','g','mL']);
-    const Mt=g3(0.1,2.5), Mn=Number(Mt);
+    const Mt=g3(0.1,Math.min(2.5,maxM(f))), Mn=Number(Mt);
     const V=Math.random()<0.5 ? pick(FLASKS) : g3(25,950), Vn=Number(V), VL=Vn/1000, VLs=toL(V);
     const stepL = m => row(q(V+' mL')+EQOP+q(bl(m,'L','volume in liters',true)+' L'));
     const LMSG='Check the volume in liters. Divide the milliliters by 1000.';
@@ -533,7 +537,7 @@ function makeDilution(prev){
     const f=pick(DILUTES); if(t<50 && prev && prev.solute===f) continue;
     const fs=tag(f,'sa');
     const type=pick(['V1','V1','M2','V2','water']);
-    const m1=g3(1,12), m1n=Number(m1);
+    const m1=g3(1,Math.min(12,maxM(f))), m1n=Number(m1);
     let v1,v2,m2, unk;
     if(type==='V1'){
       m2=fmt3(m1n/(2.5+Math.random()*30)); if(!m2 || Number(m2)<0.05) continue;
@@ -764,14 +768,14 @@ function chainHTML(S, mode){
     out=q(f.v+' '+x('mL'))+XOP+frac('1 '+x('L'),'1000 '+x('mL'))+
         XOP+frac(val('mA','molarity of '+S.A.f,f.M,true)+' '+x('mol '+a),'1 '+x('L'));
   } else if(f.type==='g'){
-    out=q(f.x+' '+x('g '+a))+XOP+frac('1 '+x('mol '+a), val('MA','molar mass of '+S.A.f,S.A.M.toFixed(2),true)+' '+x('g '+a));
+    out=q(f.x+' '+x('g '+a))+XOP+frac('1 '+x('mol '+a), val('MA','molar mass of '+S.A.f,mmStr(S.A.M),true)+' '+x('g '+a));
   } else {
     out=q((full ? sig(c.nA,k) : 'n')+' '+x('mol '+a));
   }
   const keepB = t.type==='M' || gasOut;
   out+=XOP+frac(val('b','coefficient of '+S.B.f,S.B.c)+' '+(keepB ? 'mol '+b : x('mol '+b)),
                 val('a','coefficient of '+S.A.f,S.A.c)+' '+x('mol '+a));
-  if(t.type==='g')  out+=XOP+frac(val('MB','molar mass of '+S.B.f,S.B.M.toFixed(2),true)+' g '+b, '1 '+x('mol '+b));
+  if(t.type==='g')  out+=XOP+frac(val('MB','molar mass of '+S.B.f,mmStr(S.B.M),true)+' g '+b, '1 '+x('mol '+b));
   if(t.type==='mL') out+=XOP+frac('1 '+x('L'), val('mB','molarity of '+S.B.f,t.M,true)+' '+x('mol '+b))+XOP+frac('1000 mL','1 '+x('L'));
   if(t.type==='M')  out+=XOP+frac('1', val('LB','liters of '+S.B.f+' solution',toL(t.v),true)+' L');
   const end = gasOut ? (full ? sig(c.nB,k) : '?')+' mol '+b : (full ? sig(c.ans,S.sf) : '?')+' '+unitOf(S);
@@ -806,12 +810,12 @@ function chainBlanks(S){
   const B={b:{want:S.B.c,tol:1e-9}, a:{want:S.A.c,tol:1e-9}}, f=S.from, t=S.to, c=chainCalc(S);
   if(f.type==='sol') B.mA={want:Number(f.M),tol:0.002};
   if(f.type==='g')   B.MA={want:S.A.M,tol:0.005};
-  if(f.type==='gas'){ B.PA={want:c.gi.Patm,tol:0.003}; B.VA={want:c.gi.VL,tol:0.002}; B.TA={want:c.gi.TK,tol:0.002}; B.nA={want:c.nA,tol:0.01}; }
+  if(f.type==='gas'){ B.PA={want:c.gi.Patm,tol:0.006}; B.VA={want:c.gi.VL,tol:0.002}; B.TA={want:c.gi.TK,tol:0.002}; B.nA={want:c.nA,tol:0.01}; }
   if(t.type==='g')  B.MB={want:S.B.M,tol:0.005};
   if(t.type==='mL') B.mB={want:Number(t.M),tol:0.002};
   if(t.type==='M')  B.LB={want:Number(t.v)/1000,tol:0.002};
   if(isGasOut(t)){ B.nB={want:c.nB,tol:0.01}; B.TB={want:c.go.TK,tol:0.002}; }
-  if(t.type==='gasV') B.PB={want:c.go.Patm,tol:0.003};
+  if(t.type==='gasV') B.PB={want:c.go.Patm,tol:0.006};
   if(t.type==='gasP') B.VB={want:c.go.VL,tol:0.002};
   return B;
 }
@@ -851,13 +855,13 @@ function stepLines(S){
     out.push('<b>Milliliters to liters.</b> '+f.v+' mL ÷ 1000 = '+toL(f.v)+' L');
     out.push('<b>Liters to moles.</b> '+toL(f.v)+' L × '+f.M+' mol/L = '+sig(c.nA,k)+' mol '+fa);
   } else if(f.type==='g'){
-    out.push('<b>Grams to moles.</b> '+f.x+' g '+fa+' ÷ '+S.A.M.toFixed(2)+' g/mol = '+sig(c.nA,k)+' mol '+fa);
+    out.push('<b>Grams to moles.</b> '+f.x+' g '+fa+' ÷ '+mmStr(S.A.M)+' g/mol = '+sig(c.nA,k)+' mol '+fa);
   } else {
     out.push('<b>Convert the units for '+fa+'.</b> '+convLines(f).join('<br>'));
     out.push('<b>Moles of '+fa+'.</b> n = PV ÷ RT = ('+atmText(f)+' atm × '+literText(f)+' L) ÷ (0.08206 × '+kelvin(f)+' K) = '+sig(c.nA,k)+' mol '+fa);
   }
   out.push('<b>Mole ratio.</b> '+sig(c.nA,k)+' mol '+fa+' × ('+S.B.c+' mol '+fb+' ÷ '+S.A.c+' mol '+fa+') = '+sig(c.nB,k)+' mol '+fb);
-  if(t.type==='g') out.push('<b>Moles to grams.</b> '+sig(c.nB,k)+' mol '+fb+' × '+S.B.M.toFixed(2)+' g/mol = '+done(c.ans,'g '+fb));
+  if(t.type==='g') out.push('<b>Moles to grams.</b> '+sig(c.nB,k)+' mol '+fb+' × '+mmStr(S.B.M)+' g/mol = '+done(c.ans,'g '+fb));
   if(t.type==='mL'){
     out.push('<b>Moles to liters.</b> '+sig(c.nB,k)+' mol '+fb+' ÷ '+t.M+' mol/L = '+sig(c.LB,k)+' L');
     out.push('<b>Liters to milliliters.</b> '+sig(c.LB,k)+' L × 1000 = '+done(c.ans,'mL '+fb));
@@ -905,8 +909,8 @@ function makeSolStoich(prev){
     const solA=A.role==='r' && A.st==='aq', solB=B.role==='r' && B.st==='aq';
     if(!solA && !solB) continue;
     if(t<200 && A.c===B.c) continue;
-    const from = solA ? {type:'sol', v:g3(10,150), M:g3(0.1,1.5)} : {type:'g', x:g3(0.5,15)};
-    const to = solB ? {type:'mL', M:g3(0.1,1.5)} : {type:'g'};
+    const from = solA ? {type:'sol', v:g3(10,150), M:g3(0.1,Math.min(1.5,maxM(A.f)))} : {type:'g', x:g3(0.5,15)};
+    const to = solB ? {type:'mL', M:g3(0.1,Math.min(1.5,maxM(B.f)))} : {type:'g'};
     const S=mkChain(A,B,from,to,3);
     if(to.type==='mL' && (S.ans<2 || S.ans>900)) continue;
     if(to.type==='g' && S.ans<0.02) continue;
@@ -927,7 +931,7 @@ function makeMix(prev){
     const rxn=pick(PRX); if(t<200 && prev && prev.rxn===rxn) continue;
     const R=spc(rxn.r,'r'), Pd=spc(rxn.p,'p').find(s=>s.st==='s');
     const i=Math.random()<0.5 ? 0 : 1, j=1-i;
-    R[i].v=g3(10,100); R[i].Mo=g3(0.1,1.0); R[j].Mo=g3(0.1,1.0);
+    R[i].v=g3(10,100); R[i].Mo=g3(0.1,Math.min(1.0,maxM(R[i].f))); R[j].Mo=g3(0.1,Math.min(1.0,maxM(R[j].f)));
     const ni=Number(R[i].v)/1000*Number(R[i].Mo);
     const fct=Math.random()<0.5 ? 0.45+Math.random()*0.40 : 1.2+Math.random()*1.0;
     const vj=fmt3(ni*R[j].c/R[i].c/Number(R[j].Mo)*1000*fct);
@@ -984,7 +988,7 @@ function makeMix(prev){
     const F_PCT=row(q('percent yield')+EQOP+'<span class="grp">'+frac('actual yield','theoretical yield')+XOP+q('100')+'</span>');
     const rule=txt('The smaller amount of '+fp+' is the theoretical yield, and the reactant that gives it is limiting.');
     const line=r=>toL(r.v)+' L × '+r.Mo+' mol/L = '+sig(r.n,4)+' mol '+tag(r.f,'sa');
-    const pline=r=>sig(r.n,4)+' mol '+tag(r.f,'sa')+' × ('+Pd.c+' mol '+fp+' ÷ '+r.c+' mol '+tag(r.f,'sa')+') × '+Pd.M.toFixed(2)+' g/mol = '+sig(r.y,4)+' g '+fp;
+    const pline=r=>sig(r.n,4)+' mol '+tag(r.f,'sa')+' × ('+Pd.c+' mol '+fp+' ÷ '+r.c+' mol '+tag(r.f,'sa')+') × '+mmStr(Pd.M)+' g/mol = '+sig(r.y,4)+' g '+fp;
     return {kind:'mix', rxn, ctx:rxn.ctx, hl, am:[Pd.f], parts, R, Pd, L, E, actual, pct,
       question:'A student mixes '+R[0].v+' mL of '+R[0].Mo+' M '+tag(R[0].f,'sa')+' with '+R[1].v+' mL of '+R[1].Mo+' M '+tag(R[1].f,'sa')+'. After filtering and drying, '+actual+' g of '+fp+' is collected.',
       guided: lab('Take each solution to moles, then to grams of product. Fill in the blanks.')+trail(R[0],0,'live')+trail(R[1],1,'live')+rule+F_PCT,
@@ -1006,7 +1010,7 @@ const EQ_GAS = row(q('P × V = n × R × T')+q('with R = 0.08206 L·atm/(mol·K)
 function makeGasLaw(prev){
   for(let t=0;;t++){
     const f=pick(Object.keys(GASES)); if(t<50 && prev && prev.gas===f) continue;
-    const MM=molarMass(f), MMs=MM.toFixed(2), name=GASES[f], fs=tag(f,'sa');
+    const MM=molarMass(f), MMs=mmStr(MM), name=GASES[f], fs=tag(f,'sa');
     const type=pick(['V','Vg','P','n','T','g','MM']);
     const g=Object.assign(randCond(), randVol());
     const gv=gasVals(g), TK=gv.TK, TC=Number(g.T), Pa=gv.Patm, VL=gv.VL, RT=R_GAS*TK;
@@ -1101,7 +1105,7 @@ function makeGasLaw(prev){
       gcell(mode,'V','V','volume in liters','L',literText(g),unk==='V')+
       gcell(mode,'n','n','moles of gas','mol',nStr||sig(nn,4),unk==='n')+
       gcell(mode,'T','T','temperature in kelvins','K',kelvin(g),unk==='T'));
-    const want={P:{want:Pa,tol:0.003}, V:{want:VL,tol:0.002}, n:{want:nn,tol:0.01}, T:{want:TK,tol:0.002}}, blanks={};
+    const want={P:{want:Pa,tol:0.006}, V:{want:VL,tol:0.002}, n:{want:nn,tol:0.01}, T:{want:TK,tol:0.002}}, blanks={};
     Object.keys(want).forEach(k=>{ if(k!==unk) blanks[k]=want[k]; });
     const blankMsg=got=>{
       const bad=k=>got[k] && !got[k].empty && !got[k].good;
@@ -1129,21 +1133,24 @@ function makeGasStoich(prev){
     const rxn=pick(GRX); if(t<200 && prev && prev.rxn===rxn) continue;
     const cand=spc(rxn.r,'r').concat(spc(rxn.p,'p')).filter(s=>s.st==='s'||s.st==='g');
     const A=pick(cand), B=pick(cand.filter(s=>s!==A));
-    if(A.st!=='g' && B.st!=='g') continue;
+    const gas = s => s.st==='g' && s.f!=='SO3';   // SO3 condenses below 45 °C, so it is only ever weighed
+    if(!gas(A) && !gas(B)) continue;
     if(t<200 && A.c===B.c) continue;
     let from, to, same=false;
-    if(A.st==='g' && (B.st!=='g' || Math.random()<0.8)) from=Object.assign({type:'gas'}, randCond(), randVol());
+    if(gas(A) && (!gas(B) || Math.random()<0.8)) from=Object.assign({type:'gas'}, randCond(), randVol());
     else from={type:'g', x:g3(0.5,25)};
-    if(B.st!=='g') to={type:'g'};
+    if(!gas(B)) to={type:'g'};
     else if(from.type==='gas'){
       if(Math.random()<0.6){ to={type:'gasV', T:from.T, P:from.P, Pu:from.Pu, stp:from.stp}; same=true; } else to={type:'g'};
     }
     else if(A.role==='r' && B.role==='p' && Math.random()<0.3) to={type:'gasP', T:randT(), V:g3(0.5,10), Vu:'L'};
     else to=Object.assign({type:'gasV'}, randCond());
     const S=mkChain(A,B,from,to,3); S.same=same;
+    // SO2 liquefies above about 1.5 atm near 0 °C, so keep it below that.
+    if((A.f==='SO2' && from.type==='gas' && gasVals(from).Patm>1.5) || (B.f==='SO2' && to.type==='gasV' && gasVals(to).Patm>1.5)) continue;
     if(to.type==='g' && (S.ans<0.05 || S.ans>900)) continue;
     if(to.type==='gasV' && (S.ans<0.05 || S.ans>400)) continue;
-    if(to.type==='gasP' && (S.ans<0.1 || S.ans>40)) continue;
+    if(to.type==='gasP' && (S.ans<0.1 || S.ans>4)) continue;
     const G=fromText(S,'sa'), fb=tag(B.f,'sb');
     const excess=rxn.r.length>1 ? ' Assume the other reactant is in excess.' : '';
     let question;
@@ -1177,19 +1184,19 @@ function makeSolGas(prev){
     const fs=c=>tag(So.f,c), fg=c=>tag(G.f,c);
     let S, question;
     if(dir==='solV'){
-      S=mkChain(So,G,{type:'sol', v:g3(10,150), M:g3(0.1,2)}, Object.assign({type:'gasV'},cond), 3);
+      S=mkChain(So,G,{type:'sol', v:g3(10,150), M:g3(0.1,Math.min(2,maxM(So.f)))}, Object.assign({type:'gasV'},cond), 3);
       if(S.ans<0.02 || S.ans>100) continue;
       const Q='liters of '+fg('sb')+' gas, measured at '+condText(cond)+',';
       question = made ? 'How many '+Q+' can form from '+fromText(S,'sa')+'?'+excess
                       : 'How many '+Q+' are needed to react completely with '+fromText(S,'sa')+'?';
     } else if(dir==='solP'){
       const to={type:'gasP', T:cond.T, V:g3(0.25,5), Vu:'L'};
-      S=mkChain(So,G,{type:'sol', v:g3(10,150), M:g3(0.1,2)}, to, 3);
-      if(S.ans<0.1 || S.ans>30) continue;
+      S=mkChain(So,G,{type:'sol', v:g3(10,150), M:g3(0.1,Math.min(2,maxM(So.f)))}, to, 3);
+      if(S.ans<0.1 || S.ans>4) continue;
       question='What pressure, in atm, does the '+fg('sb')+' gas reach if '+fromText(S,'sa')+' reacts completely and the gas is collected in a '+to.V+' L container at '+to.T+' °C?'+excess;
     } else if(dir==='gasmL'){
       const vol=Math.random()<0.5 ? {V:g3(0.2,5), Vu:'L'} : {V:g3(50,900), Vu:'mL'};
-      S=mkChain(G,So,Object.assign({type:'gas'},cond,vol), {type:'mL', M:g3(0.1,2)}, 3);
+      S=mkChain(G,So,Object.assign({type:'gas'},cond,vol), {type:'mL', M:g3(0.1,Math.min(2,maxM(So.f)))}, 3);
       if(S.ans<2 || S.ans>900) continue;
       const Q='milliliters of '+S.to.M+' M '+fs('sb');
       question = made ? 'How many '+Q+' must react to produce '+fromText(S,'sa')+'?'+excess
@@ -1197,7 +1204,7 @@ function makeSolGas(prev){
     } else {
       // The gas volume is chosen so that the solution has a sensible molarity.
       const v=g3(10,150), gv=gasVals(cond);
-      const nG=Number(v)/1000*Number(g3(0.1,2))*G.c/So.c, VL=nG*R_GAS*gv.TK/gv.Patm;
+      const nG=Number(v)/1000*Number(g3(0.1,Math.min(2,maxM(So.f))))*G.c/So.c, VL=nG*R_GAS*gv.TK/gv.Patm;
       const vol = VL<1 ? {V:fmt3(VL*1000), Vu:'mL'} : {V:fmt3(VL), Vu:'L'};
       if(!vol.V) continue;
       S=mkChain(G,So,Object.assign({type:'gas'},cond,vol), {type:'M', v}, 3);
@@ -1231,11 +1238,11 @@ function makeCapstone(prev){
     if(pct<50 || pct>97) continue;
     const fp=tag(G.f,'sb'), TC=Number(g.T);
     const vErr=[{value:E.yn*RTP, msg:'That is the volume the other reactant could make, but it would run out of its partner first. The reactant that makes fewer moles of gas limits the reaction.'}];
+    vErr.push({value:act, msg:'That is the actual volume collected. The theoretical yield comes from the limiting reactant.'});
     if(TC>0) vErr.push({value:Vt*TC/gv.TK, msg:T_MSG});
     if(g.Pu!=='atm') vErr.push({value:Vt/PCONV[g.Pu], msg:pMsg(g)});
     if(notSTP(g)) vErr.push({value:L.yn*22.414, msg:STP_MSG});
     vErr.push({value:L.yn, msg:'That is the moles of '+fp+'. Use V = nRT ÷ P to turn the moles into liters.'});
-    vErr.push({value:act, msg:'That is the actual volume collected. The theoretical yield comes from the limiting reactant.'});
     const tail=' Convert each reactant to moles, then work out how many moles of '+F(G.f)+' each could make. The one that makes less is limiting.';
     const parts=[
       {type:'choice', label:'Which reactant is limiting?', options:R.map(r=>r.f), answer:L.f, show:F(L.f)+' is limiting',
@@ -1260,7 +1267,7 @@ function makeCapstone(prev){
       row(q('V')+EQOP+frac('n × R × T','P')+q('with R = 0.08206 L·atm/(mol·K)'))+
       cellRow(gcell(m,'T','TB','temperature in kelvins','K','',false)+gcell(m,'P','PB','pressure in atm','atm','',false));
     const F_PCT=row(q('percent yield')+EQOP+'<span class="grp">'+frac('actual volume','theoretical volume')+XOP+q('100')+'</span>');
-    const blanks={TB:{want:gv.TK,tol:0.002}, PB:{want:gv.Patm,tol:0.003}};
+    const blanks={TB:{want:gv.TK,tol:0.002}, PB:{want:gv.Patm,tol:0.006}};
     R.forEach((r,idx)=>{ blanks['n'+idx]={want:r.n,tol:0.01}; blanks['y'+idx]={want:r.yn,tol:0.01}; });
     const blankMsg=got=>{
       const bad=k=>got[k] && !got[k].empty && !got[k].good;
@@ -1273,7 +1280,7 @@ function makeCapstone(prev){
       if(bad('PB')) return pBlank(g);
       return '';
     };
-    const nline=r=> r===So ? r.amt+' g ÷ '+r.M.toFixed(2)+' g/mol = '+sig(r.n,4)+' mol '+tag(r.f,'sa')
+    const nline=r=> r===So ? r.amt+' g ÷ '+mmStr(r.M)+' g/mol = '+sig(r.n,4)+' mol '+tag(r.f,'sa')
                            : toL(r.v)+' L × '+r.Mo+' mol/L = '+sig(r.n,4)+' mol '+tag(r.f,'sa');
     const yline=r=>sig(r.n,4)+' mol '+tag(r.f,'sa')+' × ('+G.c+' mol '+fp+' ÷ '+r.c+' mol '+tag(r.f,'sa')+') = '+sig(r.yn,4)+' mol '+fp;
     return {kind:'capstone', rxn, ctx:rxn.ctx, hl, am:[So.f], parts, R, G, L, E, actual, pct, Vt,

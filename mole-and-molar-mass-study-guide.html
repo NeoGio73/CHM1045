@@ -287,13 +287,13 @@ const SUBS = [
   {f:'CaCl2', name:'calcium chloride', kind:'ion', note:'is used to melt ice on roads'},
   {f:'Al2O3', name:'aluminum oxide', kind:'ion', note:'is the hard compound in sandpaper'},
   {f:'Fe2O3', name:'iron(III) oxide', kind:'ion', note:'is rust'},
-  {f:'Na2CO3', name:'sodium carbonate', kind:'ion', note:'is washing soda'},
+  {f:'Na2CO3', name:'sodium carbonate', kind:'ion', note:'is soda ash; washing soda is its decahydrate'},
   {f:'NaHCO3', name:'sodium hydrogen carbonate', kind:'ion', note:'is baking soda'},
   {f:'KNO3', name:'potassium nitrate', kind:'ion', note:'is used in fertilizers'},
   {f:'Na2SO4', name:'sodium sulfate', kind:'ion', note:'is used in detergents'},
-  {f:'K3PO4', name:'potassium phosphate', kind:'ion', note:'is used in fertilizers'},
+  {f:'K3PO4', name:'potassium phosphate', kind:'ion', note:'is a strongly basic salt, related to the potassium phosphates used in fertilizers'},
   {f:'CuSO4', name:'copper(II) sulfate', kind:'ion', note:'is used to control algae'},
-  {f:'AgNO3', name:'silver nitrate', kind:'ion', note:'was used in photographic film'},
+  {f:'AgNO3', name:'silver nitrate', kind:'ion', note:'is used to make the silver halides in photographic film'},
   {f:'BaCl2', name:'barium chloride', kind:'ion', note:'is a white salt'},
   {f:'K2Cr2O7', name:'potassium dichromate', kind:'ion', note:'is a bright orange salt'},
   {f:'NH4NO3', name:'ammonium nitrate', kind:'ion', note:'is a common fertilizer'},
@@ -305,7 +305,7 @@ const SUBS = [
   {f:'Ca3(PO4)2', name:'calcium phosphate', kind:'ion', note:'is the main mineral in bones'},
   {f:'Al2(SO4)3', name:'aluminum sulfate', kind:'ion', note:'is used to purify drinking water'},
   {f:'(NH4)2SO4', name:'ammonium sulfate', kind:'ion', note:'is a common fertilizer'},
-  {f:'(NH4)3PO4', name:'ammonium phosphate', kind:'ion', note:'is a common fertilizer'}
+  {f:'(NH4)3PO4', name:'ammonium phosphate', kind:'ion', note:'is unstable at room temperature; the related ammonium phosphates NH<sub>4</sub>H<sub>2</sub>PO<sub>4</sub> and (NH<sub>4</sub>)<sub>2</sub>HPO<sub>4</sub> are common fertilizers'}
 ];
 const sub = f => SUBS.find(s=>s.f===f);
 // Ions to count in section 5: n ions in each formula unit.
@@ -334,11 +334,12 @@ function composition(f){
   }
   return out;
 }
-// Molar mass rounded to two decimals, the way students will use it.
+// Molar mass rounded to two decimals, the way students will use it. Below 10 g/mol keep three (H 1.008, H2 2.016).
 function molarMass(f){
   let s=0; for(const [e,n] of parseFormula(f)) s += Number(AM[e])*n;
-  return Math.round(s*100+1e-7)/100;
+  return s<10 ? Math.round(s*1000+1e-7)/1000 : Math.round(s*100+1e-7)/100;
 }
+const mmStr = M => M.toFixed(M<10 ? 3 : 2);
 // What a student gets by counting each element once.
 function naiveMass(f){
   let s=0; for(const [e] of composition(f)) s += Number(AM[e]);
@@ -350,7 +351,7 @@ function noParenMass(f){
   return molarMass(f.replace(/\(([^()]+)\)\d*/g,'$1'));
 }
 function breakdown(f){
-  const parts=composition(f), M=molarMass(f).toFixed(2);
+  const parts=composition(f), M=mmStr(molarMass(f));
   if(parts.length===1 && parts[0][1]===1) return M+' g/mol';
   return parts.map(([e,n])=> n>1 ? n+'('+AM[e]+')' : AM[e]).join(' + ')+' = '+M+' g/mol';
 }
@@ -426,7 +427,7 @@ function makeMolarMass(prev){
     const s=pick(Math.random()<0.5 ? hard : pool); if(t<50 && prev && prev.f===s.f) continue;
     const comp=composition(s.f), M=molarMass(s.f), fs=tag(s.f,'sa');
     const naive=naiveMass(s.f), nop=noParenMass(s.f);
-    const paren=s.f.indexOf('(')>=0, repeat=parseFormula(s.f).length!==comp.length;
+    const paren=s.f.indexOf('(')>=0, repeat=parseFormula(s.f).length!==comp.length, reps=comp.filter(([e])=>parseFormula(s.f).filter(x=>x[0]===e).length>1).map(([e])=>e);
     const errors=[{value:naive, msg:'It looks like each element was counted only once. Multiply each atomic mass by the number of atoms of that element in the formula.'}];
     if(nop) errors.push({value:nop, msg:'The subscript outside the parentheses multiplies every atom inside them. Recount the atoms.'});
     // One element off by one atom.
@@ -457,7 +458,7 @@ function makeMolarMass(prev){
       parts:[part], blanks, blankMsg,
       guided:lab('Step 1: count the atoms of each element. Step 2: multiply by the atomic mass.')+table('live')+lab('Step 3: add the subtotals.'),
       hints:[lab('Hint 1')+txt('The molar mass of a compound is the sum of the atomic masses of all the atoms in its formula.'+
-               (paren ? ' A subscript outside parentheses multiplies everything inside them.' : repeat ? ' One element appears in two places in this formula. Count both.' : ' A subscript counts the atoms of the element just before it.')),
+               (paren ? ' A subscript outside parentheses multiplies everything inside them.' : repeat ? (reps.length>1 ? ' '+reps.slice(0,-1).join(', ')+' and '+reps[reps.length-1]+' each appear in two places in this formula. Count both places.' : ' One element appears in two places in this formula. Count both.') : ' A subscript counts the atoms of the element just before it.')),
              lab('Hint 2: the atoms in one '+ent1(s))+txt(countText)+table('ph')],
       solution:solWrap(['<b>Count the atoms</b> in one '+ent1(s)+' of '+fs+': '+countText+'.',
         '<b>Multiply and add.</b>'+table('show'),
@@ -473,7 +474,7 @@ function makeMolarMass(prev){
 const ONE = {v:1, s:'1'};
 // Molar mass factor. toMol: grams to moles. cls colors the formula. key names the blank.
 function fMM(f, toMol, cls, key, isElement){
-  const M=molarMass(f), o={v:M, s:M.toFixed(2), k:key, lab:(isElement ? 'atomic mass of ' : 'molar mass of ')+f, tol:0.005, w:true};
+  const M=molarMass(f), o={v:M, s:mmStr(M), k:key, lab:(isElement ? 'atomic mass of ' : 'molar mass of ')+f, tol:0.005, w:true};
   const ug='g '+tag(f,cls), um='mol '+tag(f,cls), word=isElement ? 'atomic mass' : 'molar mass';
   return toMol
     ? {kind:'MM', f, top:ONE, tu:um, bot:o, bu:ug, name:'Grams to moles', after:'number of moles of '+F(f),
@@ -521,14 +522,17 @@ function chainProblem(o){
   o.factors.forEach(f=>{ v*=f.top.v/f.bot.v; partial.push(v); });
   C.ans=v;
   const ans=v, errors=[];
-  // Stopped before the last step.
-  o.factors.forEach((f,i)=>{ if(i<n-1) errors.push({value:partial[i], msg:'That is the '+f.after+'. The question asks for something else, so keep going: '+o.factors[i+1].name.toLowerCase()+'.'}); });
   // One factor upside down, or left out.
-  o.factors.forEach(f=>{
+  const slipsOf = f => {
     const r=f.top.v/f.bot.v;
     if(r!==1) errors.push({value:ans/(r*r), msg:f.inv});
     if(n>1 && f.skip && r!==1) errors.push({value:ans/r, msg:f.skip});
-  });
+  };
+  // Formula-subscript slips go first: when two slips give the same number, clean() keeps the first, more specific one.
+  o.factors.filter(f=>f.kind==='sub').forEach(slipsOf);
+  // Stopped before the last step.
+  o.factors.forEach((f,i)=>{ if(i<n-1) errors.push({value:partial[i], msg:'That is the '+f.after+'. The question asks for something else, so keep going: '+o.factors[i+1].name.toLowerCase()+'.'}); });
+  o.factors.filter(f=>f.kind!=='sub').forEach(slipsOf);
   // A molar mass that counts each element once, or ignores parentheses.
   o.factors.forEach(f=>{
     if(f.kind!=='MM') return;
@@ -552,7 +556,7 @@ function chainProblem(o){
         if(Math.abs(nv-M)>0.005 && near(g,nv)) return 'Check the molar mass of '+F(f.f)+'. Each element was counted only once. Multiply each atomic mass by the number of atoms in the formula.';
         if(np && Math.abs(np-M)>0.005 && near(g,np)) return 'Check the molar mass of '+F(f.f)+'. The subscript outside the parentheses multiplies every atom inside them.';
         return composition(f.f).length===1 && composition(f.f)[0][1]===1
-          ? 'Check the atomic mass of '+F(f.f)+'. Use the value from the list above, rounded to two decimal places.'
+          ? 'Check the atomic mass of '+F(f.f)+'. Use the value from the list above.'
           : 'Check the molar mass of '+F(f.f)+'. Add the atomic masses for every atom in the formula.';
       }
       if(f.kind==='NA'){
@@ -703,7 +707,7 @@ function makeInside(prev, kind){
     if(type==='N2Ne'){
       const N=count3(Number(g3(0.05,9))*NA);
       return chainProblem(Object.assign(base,{sci:true, question:'How many '+en+' atoms are in '+N.s+' '+E+' of '+nm(s)+'?',
-        start:{v:N.v, s:N.s, u:up}, factors:[fSub(k,uae,up,true,en+' atoms',W)], unit:uae,
+        start:{v:N.v, s:N.s, u:up}, factors:[fSub(k,uae,W+' '+fs,true,en+' atoms',W)], unit:uae,
         route:[node(E+' '+F(s.f),'a'), ratioStep, node('atoms '+e,'b')],
         hint:'No moles are needed here. Each '+W+' contains '+k+' '+e+' atom'+(k>1?'s':'')+', so count '+k+' for every '+W+'.',
         errors:[{value:N.v*k/NA, msg:'Avogadro’s number is not needed here. You already have a count of '+E+', and the question asks for a count of atoms.'},
@@ -750,7 +754,7 @@ function makeInside(prev, kind){
       card:card(s,'sa','one formula unit contains '+I.n+' '+I.name+' ions, '+I.ion),
       question:'How many '+I.name+' ions ('+is+') are in '+m+' g of '+nm(s)+'?',
       start:{v:Number(m), s:m, u:ug}, factors:[fMM(s.f,true,'sa','MM'), fSub(I.n,umi,um,true,I.name+' ions','formula unit'), fNA(umi,ui,true,'ions','NA')], unit:ui,
-      route:[node('g '+F(s.f),'a'), step('÷ molar mass'), node('mol '+F(s.f),'a'), ratioStep, node('mol '+I.ion,'b'), step('× Avogadro’s number'), node(I.ion+' ions','b')],
+      route:[node('g '+F(s.f),'a'), step('÷ molar mass'), node('mol '+F(s.f),'a'), step('× ions in the formula',true), node('mol '+I.ion,'b'), step('× Avogadro’s number'), node(I.ion+' ions','b')],
       hint:'Three steps: grams of compound to moles of compound, then the formula to get moles of '+I.name+' ions, then Avogadro’s number to get the number of ions.',
       generic:'Not yet. Convert grams to moles of '+F(s.f)+', multiply by the number of '+I.name+' ions in the formula, then multiply by Avogadro’s number.'}));
   }

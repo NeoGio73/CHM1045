@@ -334,13 +334,14 @@ function composition(f){
   }
   return out;
 }
-// Molar mass rounded to two decimals, the way students will use it.
+// Molar mass rounded to two decimals, the way students will use it. Below 10 g/mol keep three (H 1.008, H2 2.016).
 function molarMass(f){
   let s=0; for(const [e,n] of parseFormula(f)) s += Number(AM[e])*n;
-  return Math.round(s*100+1e-7)/100;
+  return s<10 ? Math.round(s*1000+1e-7)/1000 : Math.round(s*100+1e-7)/100;
 }
+const mmStr = M => M.toFixed(M<10 ? 3 : 2);
 function breakdown(f){
-  const parts=composition(f), M=molarMass(f).toFixed(2);
+  const parts=composition(f), M=mmStr(molarMass(f));
   if(parts.length===1 && parts[0][1]===1) return M+' g/mol';
   return parts.map(([e,n])=> n>1 ? n+'('+AM[e]+')' : AM[e]).join(' + ')+' = '+M+' g/mol';
 }
@@ -491,10 +492,10 @@ function chainHTML(S, mode){
   let out = (!full && S.startHTML) ? '<span class="qty">'+S.startHTML+'</span>'
           : '<span class="qty">'+S.x+' '+c(U+' '+a)+'</span>';
   if(U==='mL')  out+=XOP+frac(val('dA','density of '+S.A.f,S.A.d,true)+' '+c('g '+a), '1 '+c('mL '+a));
-  if(U!=='mol') out+=XOP+frac('1 '+c('mol '+a), val('MA','molar mass of '+S.A.f,S.A.M.toFixed(2),true)+' '+c('g '+a));
+  if(U!=='mol') out+=XOP+frac('1 '+c('mol '+a), val('MA','molar mass of '+S.A.f,mmStr(S.A.M),true)+' '+c('g '+a));
   out+=XOP+frac(val('b','coefficient of '+S.B.f,S.B.c)+' '+(V==='mol' ? 'mol '+b : c('mol '+b)),
                 val('a','coefficient of '+S.A.f,S.A.c)+' '+c('mol '+a));
-  if(V!=='mol') out+=XOP+frac(val('MB','molar mass of '+S.B.f,S.B.M.toFixed(2),true)+' '+(V==='g' ? 'g '+b : c('g '+b)), '1 '+c('mol '+b));
+  if(V!=='mol') out+=XOP+frac(val('MB','molar mass of '+S.B.f,mmStr(S.B.M),true)+' '+(V==='g' ? 'g '+b : c('g '+b)), '1 '+c('mol '+b));
   if(V==='mL')  out+=XOP+frac('1 mL '+b, val('dB','density of '+S.B.f,S.B.d,true)+' '+c('g '+b));
   out+=EQOP+'<span class="qty'+(full?' ans-final':'')+'">'+(full ? sig(S.ans,3) : '?')+' '+V+' '+b+'</span>';
   return '<div class="chain">'+out+'</div>';
@@ -534,9 +535,9 @@ function stepLines(S){
   const fin=(v,unit,isEnd)=> isEnd ? '<b>'+sig(v,3)+' '+unit+'</b>' : sig(v,4)+' '+unit;
   let cur=S.x;
   if(S.unit==='mL'){ out.push('<b>Volume to mass.</b> '+cur+' mL '+fa+' × '+S.A.d+' g/mL = '+sig(c.gA,4)+' g '+fa); cur=sig(c.gA,4); }
-  if(S.unit!=='mol'){ out.push('<b>Grams to moles.</b> '+cur+' g '+fa+' ÷ '+S.A.M.toFixed(2)+' g/mol = '+sig(c.nA,4)+' mol '+fa); cur=sig(c.nA,4); }
+  if(S.unit!=='mol'){ out.push('<b>Grams to moles.</b> '+cur+' g '+fa+' ÷ '+mmStr(S.A.M)+' g/mol = '+sig(c.nA,4)+' mol '+fa); cur=sig(c.nA,4); }
   out.push('<b>Mole ratio.</b> '+cur+' mol '+fa+' × ('+S.B.c+' mol '+fb+' ÷ '+S.A.c+' mol '+fa+') = '+fin(c.nB,'mol '+fb,V==='mol'));
-  if(V!=='mol') out.push('<b>Moles to grams.</b> '+sig(c.nB,4)+' mol '+fb+' × '+S.B.M.toFixed(2)+' g/mol = '+fin(c.gB,'g '+fb,V==='g'));
+  if(V!=='mol') out.push('<b>Moles to grams.</b> '+sig(c.nB,4)+' mol '+fb+' × '+mmStr(S.B.M)+' g/mol = '+fin(c.gB,'g '+fb,V==='g'));
   if(V==='mL')  out.push('<b>Mass to volume.</b> '+sig(c.gB,4)+' g '+fb+' ÷ '+S.B.d+' g/mL = '+fin(c.ans,'mL '+fb,true));
   return out;
 }
@@ -632,7 +633,7 @@ function trailBlankMsg(R, Pd, got){
   }
   return '';
 }
-const prodLine = (r,Pd) => (r.liq ? sig(r.g,4) : r.amt)+' g '+tag(r.f,'sa')+' ÷ '+r.M.toFixed(2)+' g/mol × ('+Pd.c+' mol '+tag(Pd.f,'sb')+' ÷ '+r.c+' mol '+tag(r.f,'sa')+') × '+Pd.M.toFixed(2)+' g/mol = '+sig(r.y,4)+' g '+tag(Pd.f,'sb');
+const prodLine = (r,Pd) => (r.liq ? sig(r.g,4) : r.amt)+' g '+tag(r.f,'sa')+' ÷ '+mmStr(r.M)+' g/mol × ('+Pd.c+' mol '+tag(Pd.f,'sb')+' ÷ '+r.c+' mol '+tag(r.f,'sa')+') × '+mmStr(Pd.M)+' g/mol = '+sig(r.y,4)+' g '+tag(Pd.f,'sb');
 
 function limitingChoice(R, L, E, Pd, byAmount){
   return {type:'choice', label:'Which reactant is limiting?', options:R.map(r=>r.f), answer:R[L].f,
@@ -661,6 +662,7 @@ function makeLimiting(prevRxn){
     if((E.y-L.y)/L.y < 0.08) continue;
     const used=L.n*E.c/L.c*E.M, left=E.g-used;
     if(left/E.g < 0.10) continue;
+    if(Math.abs(left-used) < 0.06*E.g) continue;   // so the mass that reacts is never graded as the mass left over
     const dp=decimals(E.amt), fp=tag(Pd.f,'sb');
     const parts=[
       limitingChoice(R, ev.L, ev.E, Pd, r=>r.g),
@@ -689,7 +691,7 @@ function makeLimiting(prevRxn){
       mmLines(R.map(r=>[r.f,'sa']).concat([[Pd.f,'sb']])),
       '<b>Product from each reactant.</b><br>'+prodLine(R[0],Pd)+'<br>'+prodLine(R[1],Pd),
       '<b>Limiting reactant.</b> '+F(L.f)+' makes less '+fp+', so <b>'+F(L.f)+' is limiting</b> and '+F(E.f)+' is in excess. Theoretical yield: <b>'+sig(L.y,3)+' g '+fp+'</b>',
-      '<b>Excess reactant used.</b> '+L.amt+' g '+F(L.f)+' ÷ '+L.M.toFixed(2)+' g/mol × ('+E.c+' mol '+F(E.f)+' ÷ '+L.c+' mol '+F(L.f)+') × '+E.M.toFixed(2)+' g/mol = '+sig(used,4)+' g '+F(E.f),
+      '<b>Excess reactant used.</b> '+L.amt+' g '+F(L.f)+' ÷ '+mmStr(L.M)+' g/mol × ('+E.c+' mol '+F(E.f)+' ÷ '+L.c+' mol '+F(L.f)+') × '+mmStr(E.M)+' g/mol = '+sig(used,4)+' g '+F(E.f),
       '<b>Excess left over.</b> '+E.amt+' g − '+sig(used,4)+' g = <b>'+left.toFixed(dp)+' g '+F(E.f)+'</b>'
     ], '<p class="note">For the subtraction, the answer keeps the same number of decimal places as the starting mass.</p>');
     return {kind:'limiting', rxn, hl, am:R.map(r=>r.f).concat([Pd.f]), parts, solution,
