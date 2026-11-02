@@ -86,6 +86,23 @@
     .worked h3 { margin-top: 0; }
     .worked ol { margin: 6px 0 4px; padding-left: 1.3em; }
     .worked li { margin-bottom: 6px; }
+    /* Dimensional analysis: each factor in parentheses, fractions stacked, cancelled units struck through. */
+    .da-label { margin: 12px 0 2px; font-weight: 600; font-size: 0.95rem; }
+    .da-label:first-of-type { margin-top: 6px; }
+    .da-note { margin: 0 0 4px; color: var(--ink-soft); font-size: 0.92rem; }
+    .da { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 8px; margin: 4px 0 8px; font-variant-numeric: tabular-nums; }
+    .pf {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 3px 10px; border-left: 1.6px solid var(--ink-soft); border-right: 1.6px solid var(--ink-soft);
+      border-radius: 14px / 50%; line-height: 1.35; white-space: nowrap;
+    }
+    .pf .t { padding: 0 3px 3px; border-bottom: 1.5px solid currentColor; }
+    .pf .b { padding: 3px 3px 0; }
+    .x { text-decoration: line-through; text-decoration-color: var(--flag); text-decoration-thickness: 1.6px; }
+    .op { color: var(--ink-soft); font-size: 1.05rem; }
+    .res { display: inline-flex; align-items: center; gap: 8px; }
+    .ans { padding: 3px 9px; border-radius: 6px; background: var(--good-wash); border: 1px solid #bfe0c9; font-weight: 700; white-space: nowrap; }
+    .sub { margin: 4px 0 8px; font-variant-numeric: tabular-nums; }
     .tips, .steps { max-width: 72ch; margin: 0 0 12px; padding-left: 1.3em; }
     .tips li, .steps li { margin-bottom: 9px; }
 
@@ -487,11 +504,8 @@
       <p class="prose">To make a solution of a chosen molarity, work out the moles it must hold, then turn moles into grams with the molar mass. For NaOH the molar mass is 22.99 + 16.00 + 1.008 = <strong>40.00 g/mol</strong>.</p>
       <div class="worked">
         <h3>Worked example: 750 mL of 0.15 M NaOH</h3>
-        <ol>
-          <li>Volume in liters: 750 mL ÷ 1000 = 0.750 L</li>
-          <li>Moles needed: 0.15 mol/L × 0.750 L = 0.1125 mol NaOH</li>
-          <li>Mass: 0.1125 mol × 40.00 g/mol = <strong>4.5 g NaOH</strong></li>
-        </ol>
+        <div id="w-naoh"></div>
+        <p class="da-note">Read it left to right: milliliters to liters, liters to moles (the molarity), moles to grams (the molar mass). Every unit struck through appears once on top and once underneath, so it cancels, and only g NaOH is left.</p>
         The molarity was only given as “0.15”, two significant figures, so about 4.5 g is the right answer, and a rough balance is good enough to weigh it. Part 4 explains why an exact mass would be wasted effort.
       </div>
 
@@ -605,9 +619,12 @@
       <p class="prose">Never let the liquid fall below the 50.00 mL line: below it there is no scale. If a titration still needs more, the handout’s way is to stop above the line, take a reading, refill the buret, take a new initial reading, and carry on. Each filling gives its own volume by difference, and the two are added.</p>
       <div class="worked">
         <h3>Worked example: two fillings</h3>
-        First filling: initial 0.53 mL, final 49.62 mL → 49.62 − 0.53 = 49.09 mL<br>
-        Second filling: initial 0.31 mL, final 7.85 mL → 7.85 − 0.31 = 7.54 mL<br>
-        Total: 49.09 + 7.54 = <strong>56.63 mL</strong>
+        <p class="da-label">First filling (initial 0.53 mL, final 49.62 mL)</p>
+        <p class="sub">49.62 mL − 0.53 mL = 49.09 mL</p>
+        <p class="da-label">Second filling (initial 0.31 mL, final 7.85 mL)</p>
+        <p class="sub">7.85 mL − 0.31 mL = 7.54 mL</p>
+        <p class="da-label">Total</p>
+        <p class="sub">49.09 mL + 7.54 mL = <span class="ans">56.63 mL</span></p>
       </div>
     </section>
 
@@ -679,12 +696,7 @@
       <div class="worked">
         <h3>Worked example</h3>
         A student weighs 0.5137 g of KHP, dissolves it, and titrates it to a pale pink. The buret read 0.42 mL at the start and 26.18 mL at the end.
-        <ol>
-          <li>Volume of NaOH: 26.18 − 0.42 = 25.76 mL = 0.02576 L</li>
-          <li>Moles of KHP: 0.5137 g ÷ 204.22 g/mol = 0.002515 mol KHP (2.515 × 10⁻³ mol)</li>
-          <li>Moles of NaOH: 0.002515 mol KHP × (1 mol NaOH / 1 mol KHP) = 0.002515 mol NaOH</li>
-          <li>Molarity: 0.002515 mol ÷ 0.02576 L = <strong>0.09765 M NaOH</strong></li>
-        </ol>
+        <div id="w-khp"></div>
         Four significant figures: the mass has four, the volume has four. Keep all the digits in your calculator from step to step and round only the answer.
       </div>
       <div class="callout">
@@ -702,7 +714,8 @@
       </div>
 
       <h3>Aim for the same mass next time</h3>
-      <p class="prose">Once one titration has worked, the handout suggests weighing about the same mass of KHP for the next. The volume needed grows in step with the mass, so you can predict it and run fast up to a milliliter or so short of it. In the worked example, 0.5137 g took 25.76 mL; a 0.5310 g sample of KHP would need about 25.76 × (0.5310 ÷ 0.5137) = 26.63 mL.</p>
+      <p class="prose">Once one titration has worked, the handout suggests weighing about the same mass of KHP for the next. The volume needed grows in step with the mass, so you can predict it and run fast up to a milliliter or so short of it. In the worked example, 0.5137 g took 25.76 mL, so a 0.5310 g sample of KHP would need about:</p>
+      <div id="w-predict"></div>
     </section>
 
     <!-- ============================== 8 ============================== -->
@@ -724,20 +737,12 @@
       <div class="worked">
         <h3>Worked example: acid X</h3>
         A student titrates 0.2468 g of a made-up acid X with the 0.09765 M NaOH from part 7. The buret read 0.85 mL at the start and 19.47 mL at the green end point.
-        <ol>
-          <li>Volume of NaOH: 19.47 − 0.85 = 18.62 mL = 0.01862 L</li>
-          <li>Moles of NaOH: 0.09765 mol/L × 0.01862 L = 0.001818 mol NaOH</li>
-          <li>Moles of acid (1 : 1): 0.001818 mol acid</li>
-          <li>Molar mass: 0.2468 g ÷ 0.001818 mol = <strong>135.7 g/mol</strong></li>
-        </ol>
+        <div id="w-acid"></div>
       </div>
       <div class="worked">
         <h3>Worked example: with two fillings</h3>
         0.6131 g of another made-up acid needed the 56.63 mL of part 5’s two-filling example, of 0.1046 M NaOH.
-        <ol>
-          <li>Moles of NaOH: 0.1046 mol/L × 0.05663 L = 0.005923 mol NaOH = mol acid</li>
-          <li>Molar mass: 0.6131 g ÷ 0.005923 mol = <strong>103.5 g/mol</strong></li>
-        </ol>
+        <div id="w-two"></div>
       </div>
 
       <div class="practice" id="pc">
@@ -755,7 +760,8 @@
       <h2 id="equiv-title"><span class="step" aria-hidden="true">9</span>Acids with more than one acidic H</h2>
       <p class="prose">Some acids have two or three acidic hydrogens. Such an acid is <strong>diprotic</strong> or <strong>triprotic</strong>, and NaOH takes every one of them. Tartaric acid, the acid of grapes (not used in the lab), is diprotic, written H₂C₄H₄O₆. One molecule uses up two OH⁻:</p>
       <p class="rxn">H₂C₄H₄O₆(aq) + 2 NaOH(aq) → Na₂C₄H₄O₆(aq) + 2 H₂O(l)</p>
-      <p class="prose">If you titrate tartaric acid and calculate as if it reacted one to one, you count every acidic hydrogen as a whole molecule. You find twice as many “moles” as there really are, and so a molar mass half the true one: 150.09 ÷ 2 = 75.05 g/mol instead of 150.09 g/mol.</p>
+      <p class="prose">If you titrate tartaric acid and calculate as if it reacted one to one, you count every acidic hydrogen as a whole molecule. You find twice as many “moles” as there really are, and so a molar mass half the true one: 75.05 g/mol instead of 150.09 g/mol. Written out, each mole of the acid carries two moles of acidic H:</p>
+      <div id="w-tart" style="margin-left:1rem"></div>
       <p class="prose">That one-to-one number has a name: the <strong>equivalent mass</strong>, the mass of acid that supplies one mole of acidic hydrogen.</p>
       <div class="equation" role="math" aria-label="equivalent mass equals molar mass divided by the number of acidic hydrogens">
         <span class="eq">equivalent mass = <span class="frac"><span>molar mass</span><span>number of acidic H</span></span></span>
@@ -920,6 +926,56 @@
 
   var KHP = 204.22, NAOH = 40.00;
 
+  // ---------- Dimensional analysis, written out ----------
+  // A term is a quantity ("0.5137 ~g KHP~") or a fraction (["1 ~mol KHP~", "204.22 ~g KHP~"]).
+  // Text between ~ marks is a unit that cancels and is drawn struck through.
+  function unitHtml(text) { return text.replace(/~([^~]+)~/g, '<span class="x">$1</span>'); }
+  function unitPlain(text) { return text.replace(/~/g, ''); }
+  function da(terms, result) {
+    var html = [], plain = [];
+    terms.forEach(function (t, i) {
+      if (i) { html.push('<span class="op" aria-hidden="true">×</span>'); plain.push('times'); }
+      if (Array.isArray(t)) {
+        html.push('<span class="pf"><span class="t">' + unitHtml(t[0]) + '</span><span class="b">' + unitHtml(t[1]) + '</span></span>');
+        plain.push(unitPlain(t[0]) + ' over ' + unitPlain(t[1]));
+      } else {
+        html.push('<span class="pf"><span>' + unitHtml(t) + '</span></span>');
+        plain.push(unitPlain(t));
+      }
+    });
+    html.push('<span class="res"><span class="op" aria-hidden="true">=</span><span class="ans">' + result + '</span></span>');
+    return '<div class="da" role="math" aria-label="' + plain.join(' ') + ' equals ' + result.replace(/<[^>]+>/g, '') + '">' + html.join('') + '</div>';
+  }
+  function label(text) { return '<p class="da-label">' + text + '</p>'; }
+  function toLiters(ml) { return da([fx(ml, 2) + ' ~mL~', ['1 L', '1000 ~mL~']], sig(ml / 1000, 4) + ' L'); }
+
+  // The worked examples on the page, drawn into their placeholders.
+  var WORKED = {
+    'w-naoh': label('Start from the volume, and line up conversion factors so that each unit you do not want cancels') +
+      da(['750 ~mL~', ['1 ~L~', '1000 ~mL~'], ['0.15 ~mol NaOH~', '1 ~L~'], ['40.00 g NaOH', '1 ~mol NaOH~']], '4.5 g NaOH'),
+    'w-khp': label('1. Volume of NaOH, by difference, then in liters') +
+      '<p class="sub">26.18 mL − 0.42 mL = 25.76 mL</p>' + toLiters(25.76) +
+      label('2. Moles of NaOH, from the mass of KHP') +
+      da(['0.5137 ~g KHP~', ['1 ~mol KHP~', '204.22 ~g KHP~'], ['1 mol NaOH', '1 ~mol KHP~']], '0.002515 mol NaOH') +
+      '<p class="da-note">The middle factor is the molar mass turned upside down; the last is the 1 : 1 ratio from the balanced equation.</p>' +
+      label('3. Molarity: moles divided by liters') +
+      da([['0.002515 mol NaOH', '0.02576 L']], '0.09765 M NaOH'),
+    'w-predict': da(['0.5310 ~g KHP~', ['25.76 mL NaOH', '0.5137 ~g KHP~']], '26.63 mL NaOH'),
+    'w-acid': label('1. Volume of NaOH, by difference, then in liters') +
+      '<p class="sub">19.47 mL − 0.85 mL = 18.62 mL</p>' + toLiters(18.62) +
+      label('2. Moles of acid, from the volume of NaOH') +
+      da(['0.01862 ~L~', ['0.09765 ~mol NaOH~', '1 ~L~'], ['1 mol acid', '1 ~mol NaOH~']], '0.001818 mol acid') +
+      '<p class="da-note">The molarity, written as a fraction, is the factor that turns liters into moles.</p>' +
+      label('3. Molar mass: grams divided by moles') +
+      da([['0.2468 g acid', '0.001818 mol acid']], '135.7 g/mol'),
+    'w-two': label('1. Moles of acid') +
+      da(['0.05663 ~L~', ['0.1046 ~mol NaOH~', '1 ~L~'], ['1 mol acid', '1 ~mol NaOH~']], '0.005923 mol acid') +
+      label('2. Molar mass') +
+      da([['0.6131 g acid', '0.005923 mol acid']], '103.5 g/mol'),
+    'w-tart': da([['150.09 g', '1 ~mol acid~'], ['1 ~mol acid~', '2 mol H⁺']], '75.05 g per mol H⁺')
+  };
+  Object.keys(WORKED).forEach(function (id) { var node = $(id); if (node) node.innerHTML = WORKED[id]; });
+
   // ---------- A practice box: numbers made fresh, typed answers checked, the working shown ----------
 
   function practice(id, spec) {
@@ -985,7 +1041,11 @@
         traps: function (p) { return [{ v: p.mol, say: 'That is the moles. Multiply by 40.00 g/mol to get grams.' }, { v: p.mol / NAOH, say: 'Multiply moles by the molar mass; don’t divide.' }]; } }
     ],
     working: function (p) {
-      return '<p>' + p.V + ' mL ÷ 1000 = ' + (p.V / 1000) + ' L</p><p>' + p.M + ' mol/L × ' + (p.V / 1000) + ' L = ' + sig(p.mol, 3) + ' mol NaOH</p><p>' + sig(p.mol, 3) + ' mol × 40.00 g/mol = <strong>' + sig(p.g, 3) + ' g NaOH</strong></p>';
+      return label('Moles of NaOH: milliliters to liters, then liters to moles') +
+        da([p.V + ' ~mL~', ['1 ~L~', '1000 ~mL~'], [p.M + ' mol NaOH', '1 ~L~']], sig(p.mol, 3) + ' mol NaOH') +
+        label('Mass of NaOH: moles to grams') +
+        da([sig(p.mol, 3) + ' ~mol NaOH~', ['40.00 g NaOH', '1 ~mol NaOH~']], sig(p.g, 3) + ' g NaOH') +
+        '<p class="da-note">Or all in one line: (' + p.V + ' mL) × (1 L / 1000 mL) × (' + p.M + ' mol / 1 L) × (40.00 g / 1 mol).</p>';
     }
   });
 
@@ -1010,10 +1070,13 @@
         traps: function (p) { return [{ v: p.mol * p.vol / 1000, say: 'Molarity is moles ÷ liters, not moles × liters.' }, { v: p.vol / 1000 / p.mol, say: 'That is upside down: molarity is moles ÷ liters.' }]; } }
     ],
     working: function (p) {
-      return '<p>Volume: ' + fx(p.fin, 2) + ' − ' + fx(p.ini, 2) + ' = ' + fx(p.vol, 2) + ' mL = ' + sig(p.vol / 1000, 4) + ' L</p>' +
-        '<p>Moles of KHP: ' + fx(p.mass, 4) + ' g ÷ 204.22 g/mol = ' + sig(p.mol, 4) + ' mol (' + sci(p.mol, 4) + ' mol)</p>' +
-        '<p>KHP and NaOH react 1 : 1, so moles of NaOH = ' + sig(p.mol, 4) + ' mol</p>' +
-        '<p>Molarity: ' + sig(p.mol, 4) + ' mol ÷ ' + sig(p.vol / 1000, 4) + ' L = <strong>' + sig(p.M, 4) + ' M NaOH</strong></p>';
+      return label('1. Volume of NaOH, by difference, then in liters') +
+        '<p class="sub">' + fx(p.fin, 2) + ' mL − ' + fx(p.ini, 2) + ' mL = ' + fx(p.vol, 2) + ' mL</p>' + toLiters(p.vol) +
+        label('2. Moles of KHP, and so of NaOH (1 : 1)') +
+        da([fx(p.mass, 4) + ' ~g KHP~', ['1 ~mol KHP~', '204.22 ~g KHP~'], ['1 mol NaOH', '1 ~mol KHP~']], sig(p.mol, 4) + ' mol NaOH') +
+        '<p class="da-note">That is ' + sci(p.mol, 4) + ' mol, the same number of moles of KHP.</p>' +
+        label('3. Molarity: moles divided by liters') +
+        da([[sig(p.mol, 4) + ' mol NaOH', sig(p.vol / 1000, 4) + ' L']], sig(p.M, 4) + ' M NaOH');
     }
   });
 
@@ -1053,10 +1116,16 @@
         traps: function (p) { return [{ v: p.mol / p.mass, say: 'Upside down: molar mass is grams ÷ moles.' }, { v: p.mass * p.mol, say: 'Divide grams by moles; don’t multiply.' }]; } }
     ],
     working: function (p) {
-      var v = p.two ? '<p>First filling: ' + fx(p.f1, 2) + ' − ' + fx(p.i1, 2) + ' = ' + fx(p.f1 - p.i1, 2) + ' mL; second: ' + fx(p.f2, 2) + ' − ' + fx(p.i2, 2) + ' = ' + fx(p.f2 - p.i2, 2) + ' mL; total ' + fx(p.vol, 2) + ' mL = ' + sig(p.vol / 1000, 4) + ' L</p>'
-        : '<p>Volume: ' + fx(p.f1, 2) + ' − ' + fx(p.i1, 2) + ' = ' + fx(p.vol, 2) + ' mL = ' + sig(p.vol / 1000, 4) + ' L</p>';
-      return v + '<p>Moles of NaOH: ' + sig(p.M, 4) + ' mol/L × ' + sig(p.vol / 1000, 4) + ' L = ' + sig(p.mol, 4) + ' mol = moles of acid (1 : 1)</p>' +
-        '<p>Molar mass: ' + fx(p.mass, 4) + ' g ÷ ' + sig(p.mol, 4) + ' mol = <strong>' + sig(p.MM, 4) + ' g/mol</strong></p>';
+      var v = p.two
+        ? '<p class="sub">First filling: ' + fx(p.f1, 2) + ' mL − ' + fx(p.i1, 2) + ' mL = ' + fx(p.f1 - p.i1, 2) + ' mL</p>' +
+          '<p class="sub">Second filling: ' + fx(p.f2, 2) + ' mL − ' + fx(p.i2, 2) + ' mL = ' + fx(p.f2 - p.i2, 2) + ' mL</p>' +
+          '<p class="sub">Total: ' + fx(p.f1 - p.i1, 2) + ' mL + ' + fx(p.f2 - p.i2, 2) + ' mL = ' + fx(p.vol, 2) + ' mL</p>'
+        : '<p class="sub">' + fx(p.f1, 2) + ' mL − ' + fx(p.i1, 2) + ' mL = ' + fx(p.vol, 2) + ' mL</p>';
+      return label('1. Volume of NaOH, by difference, then in liters') + v + toLiters(p.vol) +
+        label('2. Moles of acid, from the volume of NaOH (1 : 1)') +
+        da([sig(p.vol / 1000, 4) + ' ~L~', [sig(p.M, 4) + ' ~mol NaOH~', '1 ~L~'], ['1 mol acid', '1 ~mol NaOH~']], sig(p.mol, 4) + ' mol acid') +
+        label('3. Molar mass: grams divided by moles') +
+        da([[fx(p.mass, 4) + ' g acid', sig(p.mol, 4) + ' mol acid']], sig(p.MM, 4) + ' g/mol');
     }
   });
 
@@ -1081,8 +1150,11 @@
         traps: function (p) { return [{ v: p.E2 / p.n2, say: 'The one-to-one answer is the smaller one. To get back to the molar mass, multiply.' }]; } }
     ],
     working: function (p) {
-      return '<p>(a) ' + fx(p.MM1, 1) + ' g/mol ÷ ' + p.n1 + ' = <strong>' + sig(p.E1, 4) + ' g/mol</strong>: each molecule counts as ' + p.n1 + ' “moles” of acidic H, so the mass per “mole” is ' + p.n1 + ' times smaller.</p>' +
-        '<p>(b) ' + fx(p.E2, 2) + ' g/mol × ' + p.n2 + ' = <strong>' + sig(p.MM2, 4) + ' g/mol</strong></p>';
+      return label('(a) Grams per mole of acid, to grams per mole of acidic H') +
+        da([[fx(p.MM1, 1) + ' g', '1 ~mol acid~'], ['1 ~mol acid~', p.n1 + ' mol H⁺']], sig(p.E1, 4) + ' g per mol H⁺') +
+        '<p class="da-note">Each molecule counts as ' + p.n1 + ' “moles” of acidic H, so the mass per “mole” is ' + p.n1 + ' times smaller.</p>' +
+        label('(b) Back again: grams per mole of H, to grams per mole of acid') +
+        da([[fx(p.E2, 2) + ' g', '1 ~mol H⁺~'], [p.n2 + ' ~mol H⁺~', '1 mol acid']], sig(p.MM2, 4) + ' g/mol');
     }
   });
 
