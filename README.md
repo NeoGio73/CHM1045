@@ -20,6 +20,7 @@ Listed in roughly the order the course covers them.
 | Solutions and gases | [Solutions and Gases Study Guide](https://neogio73.github.io/CHM1045/solutions-and-gases-study-guide.html) | Study guide |
 | Gases | [Gases Study Guide](https://neogio73.github.io/CHM1045/gases-study-guide.html) | Study guide |
 | Calorimetry and Hess's law | [Calorimetry and Hess's Law Study Guide](https://neogio73.github.io/CHM1045/calorimetry-and-hess-law-study-guide.html) | Study guide |
+| Calorimetry and Hess's law | [Calorimetry and Hess's Law](https://neogio73.github.io/CHM1045/calorimetry-hess-lab/), with its [prelab review](https://neogio73.github.io/CHM1045/calorimetry-hess-lab/prelab/) | Virtual lab |
 | Thermochemistry (Ch. 10) | [Heat of Fusion](https://neogio73.github.io/CHM1045/heat-of-fusion/) | Game (3D, WebGL) |
 | Atomic spectra and the Bohr model | [The Atomic Spectrum of Hydrogen](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/), with its [prelab review](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/prelab/) | Virtual lab |
 | Chemical bonding, Lewis structures, and formal charge (Ch. 6) | [Escape from Lewis Manor](https://neogio73.github.io/CHM1045/lewis-manor/) | Game (Halloween) |
@@ -117,6 +118,46 @@ The [prelab review](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/pre
 | 8. Check yourself | Eleven questions |
 
 Everything the prelab practices on is made up: an imaginary atom with four energy levels, and invented lines to read. It gives away none of the lab's answers.
+
+## Calorimetry and Hess's Law
+
+A fully virtual lab on a 3D bench inside a fume hood. Students find the enthalpy change for Mg(s) + ½O₂(g) → MgO(s) without burning any magnesium: they measure the heat capacity of a foam-cup calorimeter, measure the heat given out by magnesium and by magnesium oxide in 1.0 M HCl, and combine the two with water's heat of formation by Hess's law.
+
+| Part | What the student does |
+| --- | --- |
+| I. The calorimeter constant | Heats water on a hot plate, mixes about 50 mL of hot water with about 50 mL of cold in the calorimeter, and works out C<sub>cal</sub> |
+| II. Mg + HCl | Weighs about 0.20 g of magnesium into 90–100 mL of 1.0 M HCl and works out ΔH per mole of Mg |
+| III. MgO + HCl | Does the same with about 1.0 g of magnesium oxide |
+| Post-lab | Hess's law, the textbook value, the percent error, and three sources of error |
+
+- **Everything is done by hand on the bench:** the graduated cylinder is read at the meniscus, the thermometer and the balance (to 0.001 g) are read off their displays, the lid and the probe go on, the cup is swirled. Every step also has a button in a list beside the bench.
+- **The temperature probe records into software on the page,** modeled on Logger Pro: Data Collection settings, Collect and Stop, a live graph, a linear fit on a region dragged across the graph, and Examine. The final temperature is found by carrying the cooling line back to the moment of mixing. The bench clock can run 10 or 25 times faster during the 10-minute runs.
+- **Each student's bench is a little different.** A five-character code at the top of the page sets the calorimeter's heat capacity and the room's temperature, so no two students' data agree. Adding `?code=` and a code to the address opens that bench.
+- **The page checks each reading against what the bench showed,** and each calculation against the student's own numbers, and explains common slips: a mass that includes the weighing paper, a hot-water temperature taken in the beaker instead of the cylinder, a final temperature read at the peak instead of by extrapolation, a dropped minus sign. The sources of error are not checked: they are for the instructor to read.
+- **Work is saved in the student's own browser** and is not sent anywhere. The last part prints a report, or saves it as a PDF, with the three graphs and their fits. A line at its foot tells the instructor how each run was done (its length, whether the cup was swirled with the lid on, where the hot water's temperature was read).
+
+The lab needs a browser with WebGL, which covers current versions of Chrome, Edge, Firefox, and Safari. It works on a phone, but a computer is easier. Fume hood model: "Dm3-004-08" by foxart3d (CC BY 4.0); foam cup and wash bottle by Desertsage (BlenderKit).
+
+### Prelab review
+
+The [prelab review](https://neogio73.github.io/CHM1045/calorimetry-hess-lab/prelab/) is linked from the top of the lab. Nothing in it is graded or recorded.
+
+| Part | What it covers |
+| --- | --- |
+| 1. The plan of the lab | Why burning magnesium cannot be measured in a cup, and the three reactions used instead |
+| 2. Energy, heat and temperature | System and surroundings, the first law, and the sign of q, with an exothermic/endothermic animation |
+| 3. Specific heat and q = m s ΔT | The same heat warming three materials by different amounts, with a worked example and practice |
+| 4. The calorimeter and its constant | A cut-away drawing, a hot-and-cold mixing simulation with energy bars, and a practice calculation of C<sub>cal</sub> |
+| 5. Reading a temperature–time curve | Choosing the cooling region, fitting a line, and extrapolating to the time of mixing, with practice |
+| 6. From heat to enthalpy | q<sub>rxn</sub>, moles, limiting reactant, and ΔH in kJ/mol |
+| 7. Hess's law | State functions and an equation puzzle on carbon monoxide |
+| 8. Systematic and random error | Taught on a balance and a pendulum, with a sorting exercise |
+| 9. The data-collection software | Data Collection settings, Collect and Stop, Linear Fit, and Examine |
+| 10. The virtual bench | How the bench works |
+| 11. Safety | The hazards of the real experiment |
+| 12. Check yourself | Twelve questions |
+
+Everything the prelab practices on is made up. It does not work the handout's prelab questions, show how the three reactions combine, give the textbook value for MgO, or list this experiment's sources of error.
 
 ## Molar Mass of an Unknown Acid: Prelab Review
 

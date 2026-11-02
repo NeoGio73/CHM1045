@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calorimetry and Hess's Law</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23b4441e'/%3E%3Cpath d='M9 9h14l-2 17H11z' fill='%23fff'/%3E%3Crect x='8' y='7' width='16' height='3' rx='1' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <h1>Calorimetry and Hess&rsquo;s Law</h1>
+    <p class="unknown-tag">Bench code <span id="unknown-code" class="code">&nbsp;</span></p>
+    <p class="print-header" aria-hidden="true"><span id="print-name"></span><span id="print-date"></span></p>
+  </header>
+  <p class="prelab-note">First time here? Read the <a href="prelab/">prelab review</a> first: heat and q&nbsp;=&nbsp;m&#8239;s&#8239;&Delta;T, the calorimeter constant, reading T<sub>f</sub> off a cooling curve, enthalpy per mole, and Hess&rsquo;s law.</p>
+
+  <section class="part" id="part-bench" aria-labelledby="bench-title">
+    <h2 id="bench-title"><span class="step" aria-hidden="true">1</span>The bench</h2>
+    <p class="lede">You find the enthalpy change for Mg(s) + &frac12;O<sub>2</sub>(g) &rarr; MgO(s) without burning any magnesium: Part I measures your calorimeter, Parts II and III measure two reactions in it, and Hess&rsquo;s law does the rest. Click a thing on the bench to pick it up and click where it goes; click it again to put it down. Every step also has a button in the list beside the bench.</p>
+
+    <div class="part-tabs" role="tablist" aria-label="Part of the experiment">
+      <button type="button" role="tab" class="part-tab" data-part="1" aria-selected="true">Part I &middot; Calorimeter constant</button>
+      <button type="button" role="tab" class="part-tab" data-part="2" aria-selected="false">Part II &middot; Mg + HCl</button>
+      <button type="button" role="tab" class="part-tab" data-part="3" aria-selected="false">Part III &middot; MgO + HCl</button>
+    </div>
+
+    <div class="bench-layout">
+      <div class="stage-column">
+        <div class="stage" id="stage">
+          <canvas id="unity-canvas" tabindex="-1" aria-label="3D fume hood with a hot plate, a balance, a foam-cup calorimeter with a temperature probe, a graduated cylinder and bottles"></canvas>
+          <div class="stage-cover" id="stage-cover">
+            <p id="stage-status">Setting up the fume hood</p>
+            <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+          </div>
+          <p class="held-tag" id="held-tag" hidden></p>
+        </div>
+        <p class="stage-note" id="stage-note" role="status"></p>
+        <div class="stage-controls">
+          <div class="views" role="group" aria-label="Camera view">
+            <button type="button" class="view-button" data-view="hood" aria-pressed="false">Fume hood</button>
+            <button type="button" class="view-button" data-view="bench" aria-pressed="true">Bench</button>
+            <button type="button" class="view-button" data-view="hotplate" aria-pressed="false">Hot plate</button>
+            <button type="button" class="view-button" data-view="thermometer" aria-pressed="false">Thermometer</button>
+            <button type="button" class="view-button" data-view="balance" aria-pressed="false">Balance</button>
+            <button type="button" class="view-button" data-view="cylinder" aria-pressed="false">Cylinder close-up</button>
+            <button type="button" class="view-button" data-view="cup" aria-pressed="false">Calorimeter</button>
+            <button type="button" class="view-button" data-view="cupTop" aria-pressed="false">Into the cup</button>
+          </div>
+          <div class="speed" role="group" aria-label="Bench clock">
+            <span class="speed-label">Bench clock</span>
+            <button type="button" class="speed-button" data-speed="1" aria-pressed="true">Real time</button>
+            <button type="button" class="speed-button" data-speed="10" aria-pressed="false">&times;10</button>
+            <button type="button" class="speed-button" data-speed="25" aria-pressed="false">&times;25</button>
+          </div>
+        </div>
+
+        <!-- the logging software, after Logger Pro -->
+        <section class="logger" id="logger" aria-labelledby="logger-title">
+          <div class="logger-bar">
+            <h3 id="logger-title">Temperature logger <span class="logger-part" id="logger-part">Part I</span></h3>
+            <div class="logger-buttons">
+              <button type="button" class="quiet-button" id="logger-settings-open" aria-expanded="false" aria-controls="logger-settings">Data Collection&hellip;</button>
+              <button type="button" class="collect-button" id="collect">&#9654; Collect</button>
+              <button type="button" class="stop-button" id="stop" disabled>&#9632; Stop</button>
+            </div>
+          </div>
+          <div class="logger-settings" id="logger-settings" hidden>
+            <label class="field"><span class="field-name">Mode</span>
+              <select id="set-mode"><option>Time Based</option></select></label>
+            <label class="field"><span class="field-name">Length (s)</span>
+              <input type="text" inputmode="decimal" id="set-length" autocomplete="off"></label>
+            <label class="field"><span class="field-name">Sampling rate (samples/s)</span>
+              <input type="text" inputmode="decimal" id="set-rate" autocomplete="off"></label>
+            <p class="fine" id="set-note"></p>
+            <button type="button" class="quiet-button" id="logger-settings-done">Done</button>
+          </div>
+          <div class="logger-readout" aria-live="off">
+            <span>Temperature <strong id="live-temp">&ndash;&ndash;.&ndash;&ndash;</strong> &deg;C</span>
+            <span>Time <strong id="live-time">0.0</strong> s</span>
+            <span id="live-state">Not collecting</span>
+          </div>
+          <div class="graph-wrap">
+            <canvas id="graph" width="900" height="420" aria-label="Graph of temperature against time for this part's run. Drag across the graph to choose a region for a linear fit."></canvas>
+            <p class="graph-tip" id="graph-tip" hidden></p>
+          </div>
+          <div class="graph-tools">
+            <button type="button" class="quiet-button" id="fit" disabled>Linear Fit</button>
+            <button type="button" class="quiet-button" id="clear-fit" disabled>Clear fit</button>
+            <label class="check"><input type="checkbox" id="examine"> Examine</label>
+            <span class="fit-text" id="fit-text" role="status"></span>
+          </div>
+          <p class="fine">Drag across the graph to choose the readings to fit. With <em>Examine</em> on, point at the graph to read the time and temperature there (and the fitted line&rsquo;s value). The dashed upright line marks the moment the second reagent went in.</p>
+        </section>
+      </div>
+
+      <div class="data-column">
+        <div class="steps" id="steps" aria-label="Steps for this part"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="part" id="part-data" aria-labelledby="data-title">
+    <h2 id="data-title"><span class="step" aria-hidden="true">2</span>Data and calculations</h2>
+    <p class="lede">Type each reading as you take it; it is checked against what was on the bench. Then work through the calculations: each is checked against your own numbers above it. Use 1.00 g/mL for the density of every solution and 4.184 J/(g&middot;&deg;C) for its specific heat.</p>
+    <div id="tables"></div>
+  </section>
+
+  <section class="part" id="part-post" aria-labelledby="post-title">
+    <h2 id="post-title"><span class="step" aria-hidden="true">3</span>Post-lab</h2>
+    <div id="post"></div>
+  </section>
+
+  <section class="part" id="part-report" aria-labelledby="report-title">
+    <h2 id="report-title"><span class="step" aria-hidden="true">4</span>Turn in</h2>
+    <div class="report-row">
+      <label class="field name-field"><span class="field-name">Your name</span><input type="text" id="student-name" autocomplete="name"></label>
+      <button type="button" class="primary-button" id="print-report">Print or save as PDF</button>
+    </div>
+    <p class="report-status" id="report-status" role="status"></p>
+    <div class="print-graphs" id="print-graphs" aria-hidden="true"></div>
+    <p class="fine">
+      Your work is saved in this browser as you go.
+      <button type="button" class="link-button" id="start-part-over">Start this part over</button>
+      <span class="confirm" id="part-confirm" hidden>
+        Clear this part&rsquo;s run, readings and calculations, and put the bench back?
+        <button type="button" class="quiet-button danger" id="part-yes">Start the part over</button>
+        <button type="button" class="quiet-button" id="part-no">Keep it</button>
+      </span>
+      &middot;
+      <button type="button" class="link-button" id="new-unknown">Start over with a new bench code</button>
+      <span class="confirm" id="new-confirm" hidden>
+        This erases everything you have recorded.
+        <button type="button" class="quiet-button danger" id="new-yes">Erase and start over</button>
+        <button type="button" class="quiet-button" id="new-no">Keep my work</button>
+      </span>
+    </p>
+  </section>
+
+  <footer class="print-footer" aria-hidden="true"><span id="print-checks"></span></footer>
+
+  <footer class="credits">
+    This page is a simulation of the in-person experiment. Fume hood model: <a href="https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f" target="_blank" rel="noopener">&ldquo;Dm3-004-08&rdquo;</a> by foxart3d,
+    used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, shown with the sash raised and with different materials.
+    Foam cup and wash bottle: &ldquo;Styrofoam Cup&rdquo; and &ldquo;Wash Bottle&rdquo; by Desertsage, from BlenderKit (royalty-free licence).
+  </footer>
+</main>
+
+<script src="model.js"></script>
+<script src="app.js"></script>
+<script>
+  (function () {
+    var lab = window.CalLab;
+    if (lab.isMock) return;
+
+    var canvas = document.querySelector("#unity-canvas");
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/CalorimetryLab.loader.js";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/CalorimetryLab.data.unityweb",
+      frameworkUrl: buildUrl + "/CalorimetryLab.framework.js.unityweb",
+      codeUrl: buildUrl + "/CalorimetryLab.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "Prof. Picione",
+      productName: "Calorimetry and Hess's Law",
+      productVersion: "0.1.0",
+      showBanner: function (message, type) { lab.unityBanner(message, type); }
+    };
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (progress) { lab.unityProgress(progress); })
+        .then(function (instance) { lab.attachUnity(instance); })
+        .catch(function (error) { lab.unityFailed(error); });
+    };
+    script.onerror = function () { lab.unityFailed("The lab files did not load."); };
+    document.body.appendChild(script);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calorimetry and Hess's Law — Prelab Review</title>
+  <meta name="description" content="A review before the virtual lab Calorimetry and Hess's Law: heat and temperature, system and surroundings, q = m s ΔT, the coffee-cup calorimeter and its constant, reading a temperature-time curve, from heat to enthalpy, Hess's law, systematic and random error, the data-collection software, the virtual bench and safety.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Cpath d='M8 9h16l-2 18H10z' fill='none' stroke='%23fff' stroke-width='1.8'/%3E%3Cpath d='M16 3v15' stroke='%23fff' stroke-width='1.8'/%3E%3Cpath d='M10.6 18h10.8l-1 8H11.6z' fill='%23fff'/%3E%3C/svg%3E">
+  <style>
+    /* Same look as the lab pages and the other prelabs: paper white, bench slate for ink, enamel blue. */
+    :root {
+      --paper: #ffffff;
+      --wash: #f3f6f4;
+      --ink: #17211e;
+      --ink-soft: #4b5854;
+      --ink-faint: #6b7773;
+      --rule: #c7d1cc;
+      --rule-strong: #8d9994;
+      --enamel: #1c4c9a;
+      --enamel-deep: #153a78;
+      --enamel-wash: #e9eff9;
+      --good: #1b7a40;
+      --good-wash: #edf7f0;
+      --flag: #ab2a1c;
+      --flag-wash: #fdf1ee;
+      --grid-minor: #dcebe2;
+      --grid-major: #a9cdb8;
+      --guide: #b4541a;
+      --hot: #c2410c;
+      --hot-wash: #fdeee4;
+      --cold: #1d6fb8;
+      --cold-wash: #e6f1fb;
+      --cup: #6b7280;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .sheet { max-width: 1040px; margin: 0 auto; padding: 0 20px 64px; }
+
+    a { color: var(--enamel-deep); }
+    a:hover { color: var(--enamel); }
+
+    /* ---- Masthead ---- */
+
+    .masthead { padding: 22px 20px 26px; background: var(--wash); border-bottom: 1px solid var(--rule); }
+    .masthead-inner { max-width: 1000px; margin: 0 auto; }
+    .back { display: inline-block; margin: 0 0 12px; font-weight: 600; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+    .eyebrow { margin: 0 0 4px; color: var(--ink-faint); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    h1 { margin: 0; font-family: var(--serif); font-size: 2.1rem; font-weight: 600; line-height: 1.15; }
+    .dek { margin: 8px 0 0; max-width: 68ch; color: var(--ink-soft); }
+
+    /* ---- Contents ---- */
+
+    .contents { margin: 26px 0 0; padding: 14px 18px; border: 1px solid var(--rule); border-radius: 10px; }
+    .contents p { margin: 0 0 6px; font-weight: 600; }
+    .contents ol { margin: 0; padding-left: 1.5em; columns: 2; column-gap: 32px; font-size: 0.96rem; }
+    .contents li { margin-bottom: 3px; break-inside: avoid; }
+
+    /* ---- Sections ---- */
+
+    section { margin-top: 50px; }
+    h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; line-height: 1.25; }
+    .step {
+      display: inline-flex; flex: none; align-items: center; justify-content: center;
+      width: 1.85rem; height: 1.85rem; border-radius: 50%;
+      background: var(--enamel); color: #fff; font-family: var(--sans); font-size: 0.92rem; font-weight: 650;
+    }
+    h3 { margin: 24px 0 6px; font-family: var(--serif); font-size: 1.18rem; font-weight: 600; }
+    p { margin: 0 0 12px; }
+    .prose { max-width: 70ch; }
+    .soft { color: var(--ink-soft); }
+    .math { font-variant-numeric: tabular-nums; }
+    sub, sup { font-size: 0.72em; line-height: 0; }
+    .callout { max-width: 70ch; margin-top: 16px; padding: 14px 18px 4px; border-radius: 8px; background: var(--enamel-wash); border: 1px solid #cfdcf1; }
+    .callout h3 { margin-top: 0; }
+    .callout.warn { background: var(--flag-wash); border-color: #efc9c1; }
+    .made-up { max-width: 72ch; padding: 8px 12px; border-left: 3px solid var(--enamel); background: var(--enamel-wash); border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+    .worked { max-width: 72ch; margin: 14px 0; padding: 10px 14px; border-left: 3px solid var(--enamel); background: var(--enamel-wash); border-radius: 0 6px 6px 0; }
+    .worked h3 { margin-top: 0; }
+    .worked ol { margin: 6px 0 4px; padding-left: 1.3em; }
+    .worked li { margin-bottom: 6px; }
+    .tips, .steps { max-width: 72ch; margin: 0 0 12px; padding-left: 1.3em; }
+    .tips li, .steps li { margin-bottom: 9px; }
+    .terms { max-width: 72ch; margin: 8px 0 14px; }
+    .terms dt { font-weight: 700; }
+    .terms dd { margin: 0 0 10px 1.2rem; }
+
+    .equation { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; max-width: 46rem; margin: 8px 0 14px 1rem; }
+    .eq { font-family: var(--serif); font-size: 1.2rem; }
+    .eq-note { color: var(--ink-soft); font-size: 0.9rem; }
+    .eq-tag { display: inline-block; margin-left: 10px; padding: 1px 8px; border-radius: 10px; background: var(--wash); border: 1px solid var(--rule); font-family: var(--sans); font-size: 0.8rem; color: var(--ink-soft); vertical-align: 2px; }
+    .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 0.25em; line-height: 1.25; }
+    .frac > span:first-child { padding: 0 0.35em 0.12em; border-bottom: 1.5px solid currentColor; }
+    .frac > span:last-child { padding: 0.12em 0.35em 0; }
+    .rxn { max-width: 46rem; margin: 8px 0 12px 1rem; font-family: var(--serif); font-size: 1.12rem; line-height: 1.5; }
+    .rxn small { display: block; font-family: var(--sans); font-size: 0.86rem; color: var(--ink-soft); }
+
+    /* ---- In short ---- */
+
+    .inshort { max-width: 72ch; margin: 20px 0 0; padding: 12px 16px 6px; border-radius: 8px; background: var(--good-wash); border: 1px solid #bfdcc9; }
+    .inshort h3 { margin: 0 0 4px; font-family: var(--sans); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--good); }
+    .inshort ul { margin: 0 0 6px; padding-left: 1.2em; }
+    .inshort li { margin-bottom: 4px; }
+
+    /* ---- Figures ---- */
+
+    .figure { margin: 16px 0 0; max-width: 600px; }
+    .figure.wide { max-width: 760px; }
+    .figure svg { display: block; width: 100%; height: auto; }
+    .figure figcaption { margin-top: 6px; color: var(--ink-soft); font-size: 0.9rem; }
+    .svg-label { font-family: var(--sans); font-size: 15px; fill: var(--ink); }
+    .svg-small { font-family: var(--sans); font-size: 13px; fill: var(--ink-soft); }
+    .svg-bold { font-family: var(--sans); font-size: 15px; font-weight: 700; fill: var(--enamel-deep); }
+    .svg-chem { font-family: var(--serif); font-size: 17px; fill: var(--ink); }
+    .leader { stroke: var(--rule-strong); stroke-width: 1.2; fill: none; }
+
+    .parts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; max-width: 1000px; margin: 16px 0 6px; }
+    .part-card { margin: 0; padding: 12px 14px 10px; border: 1px solid var(--rule); border-top: 4px solid var(--c, var(--enamel)); border-radius: 10px; }
+    .part-card svg { display: block; width: 100%; max-width: 200px; height: auto; margin: 4px auto 6px; }
+    .part-card h3 { margin: 0; font-size: 1.03rem; }
+    .part-card p { margin: 4px 0 0; font-size: 0.9rem; color: var(--ink-soft); }
+    .part-card .gives { margin-top: 6px; color: var(--ink); font-weight: 600; }
+
+    /* ---- Interactive boxes ---- */
+
+    .demo { max-width: 1000px; margin-top: 18px; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 10px; }
+    .demo h3 { margin-top: 0; }
+    .demo-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 18px 26px; align-items: start; }
+    .demo svg.art { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 8px; background: #fbfcfd; }
+    .practice { max-width: 880px; margin-top: 18px; padding: 16px 18px 14px; border: 1.5px solid var(--enamel); border-radius: 10px; }
+    .practice h3 { margin-top: 0; }
+    .practice .ask { margin: 0 0 12px; max-width: 72ch; }
+    .practice .ask .given { display: block; margin: 6px 0 0; padding-left: 1rem; font-variant-numeric: tabular-nums; }
+    .entry-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 9px; }
+    .entry-row label { flex: 0 0 16rem; font-size: 0.95rem; line-height: 1.35; }
+    .msg-inline { flex: 1 1 100%; margin: -2px 0 0; padding-left: 16.6rem; font-size: 0.9rem; color: var(--flag); }
+    .msg-inline:empty { display: none; }
+    input[type="text"] { width: 9rem; padding: 7px 9px; border: 1px solid var(--rule-strong); border-radius: 4px; background: #fff; color: var(--ink); font: inherit; font-variant-numeric: tabular-nums; }
+    input[data-state="right"] { border-color: var(--good); background: var(--good-wash); }
+    input[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); }
+    .unit { color: var(--ink-soft); white-space: nowrap; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .buttons button, .seg button, .eqctl button {
+      padding: 7px 13px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; cursor: pointer;
+    }
+    .buttons button:hover, .seg button:hover, .eqctl button:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .buttons button.main { border-color: var(--enamel); background: var(--enamel); color: #fff; font-weight: 600; }
+    .buttons button.main:hover { background: var(--enamel-deep); }
+    .buttons button:disabled { opacity: 0.45; cursor: default; }
+    .seg { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+    .seg button[aria-pressed="true"], .eqctl button[aria-pressed="true"] { border-color: var(--enamel); background: var(--enamel); color: #fff; font-weight: 600; }
+    .say { min-height: 1.5em; margin: 10px 0 0; font-size: 0.96rem; max-width: 72ch; }
+    .say b.right { color: var(--good); }
+    .say b.wrong { color: var(--flag); }
+    .shown { max-width: 72ch; margin: 12px 0 0; padding: 10px 14px 4px; border: 1px solid var(--rule); border-radius: 8px; background: var(--wash); }
+    .shown[hidden] { display: none; }
+    .shown p { margin-bottom: 8px; }
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible, canvas:focus-visible, summary:focus-visible { outline: 3px solid rgba(28, 76, 154, 0.45); outline-offset: 2px; }
+
+    .sliders { display: grid; gap: 10px; margin: 0 0 10px; }
+    .slider label { display: flex; justify-content: space-between; gap: 10px; font-size: 0.93rem; }
+    .slider label b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .slider input[type="range"] { width: 100%; accent-color: var(--enamel); }
+    .readouts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0; }
+    .readout { padding: 6px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--wash); }
+    .readout span { display: block; color: var(--ink-soft); font-size: 0.8rem; line-height: 1.3; }
+    .readout b { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+    .look { margin: 8px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--enamel-wash); font-size: 0.95rem; max-width: 72ch; }
+
+    /* ---- Part 2: exothermic and endothermic ---- */
+
+    .flow-arrow { stroke-width: 4; fill: none; stroke-linecap: round; }
+    .flowing { stroke-dasharray: 10 8; animation: flow 0.9s linear infinite; }
+    @keyframes flow { to { stroke-dashoffset: -18; } }
+    .flowing.inward { animation-direction: normal; }
+
+    /* ---- Part 4: energy bars ---- */
+
+    .bar-label { font-family: var(--sans); font-size: 14px; fill: var(--ink); }
+    .bar-value { font-family: var(--sans); font-size: 13px; font-weight: 700; fill: var(--ink); font-variant-numeric: tabular-nums; }
+
+    /* ---- Part 5: the curve tool ---- */
+
+    .curve-box { position: relative; }
+    .curve-box canvas { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 8px; background: #fdfefc; touch-action: none; cursor: crosshair; }
+    .examine { margin: 6px 0 0; font-family: var(--mono); font-size: 0.9rem; color: var(--ink-soft); min-height: 1.4em; }
+    .region-ctl { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 18px; margin: 10px 0 0; }
+    .fit-out { margin: 8px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--wash); border: 1px solid var(--rule); font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+    .fit-out:empty { display: none; }
+    .fit-out .warn { color: var(--flag); font-weight: 600; }
+
+    /* ---- Part 7: Hess's law puzzle ---- */
+
+    .eqrow { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 10px 12px; margin-bottom: 10px; border: 1px solid var(--rule); border-radius: 8px; }
+    .eqrow .eqtext { font-family: var(--serif); font-size: 1.12rem; }
+    .eqrow .dh { white-space: nowrap; font-family: var(--sans); font-size: 0.95rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .eqctl { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .eqctl span { font-size: 0.85rem; color: var(--ink-soft); margin-right: 2px; }
+    .eqctl button { padding: 4px 10px; font-size: 0.9rem; }
+    .sum { padding: 10px 12px; border-radius: 8px; background: var(--wash); border: 1px solid var(--rule); }
+    .sum .eqtext { font-family: var(--serif); font-size: 1.12rem; }
+    .sum s { color: var(--flag); text-decoration-thickness: 2px; }
+    .sum .net { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--rule-strong); }
+    .target { font-family: var(--serif); font-size: 1.15rem; }
+    .solved { color: var(--good); font-weight: 700; }
+    details { max-width: 760px; margin-top: 14px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 8px; }
+    details summary { cursor: pointer; font-weight: 600; }
+
+    /* ---- Part 8: errors ---- */
+
+    .table-wrap { max-width: 100%; overflow-x: auto; }
+    .data { border-collapse: collapse; margin: 10px 0 8px; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+    .data th, .data td { padding: 6px 10px; border: 1px solid var(--rule); text-align: right; }
+    .data thead th { background: var(--wash); font-size: 0.86rem; text-align: center; vertical-align: bottom; line-height: 1.3; }
+    .data tbody th { text-align: left; font-weight: 600; }
+    .sort { display: grid; gap: 10px; max-width: 880px; margin: 10px 0 0; padding: 0; list-style: none; }
+    .sort li { padding: 10px 12px; border: 1px solid var(--rule); border-radius: 8px; }
+    .sort p { margin: 0 0 8px; }
+    .sort .options { display: flex; flex-wrap: wrap; gap: 6px; }
+    .compare { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; max-width: 880px; margin: 12px 0; }
+    .compare > div { padding: 12px 14px 4px; border: 1px solid var(--rule); border-top: 4px solid var(--c); border-radius: 10px; }
+    .compare h3 { margin-top: 0; }
+
+    /* ---- Part 9: the software ---- */
+
+    .lp { max-width: 640px; margin: 14px 0 0; border: 1px solid #9aa5a0; border-radius: 8px; overflow: hidden; background: #f7f8f8; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    .lp-bar { padding: 6px 12px; background: #dfe5e8; border-bottom: 1px solid #b9c2c6; font-size: 0.88rem; font-weight: 600; }
+    .lp-menu { display: flex; flex-wrap: wrap; gap: 2px 16px; padding: 4px 12px; border-bottom: 1px solid #d3d9dc; font-size: 0.88rem; background: #fff; }
+    .lp-menu span.on { padding: 0 6px; border-radius: 3px; background: var(--enamel); color: #fff; }
+    .lp-body { padding: 14px 16px; display: grid; gap: 10px; }
+    .lp-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 0.95rem; }
+    .lp-row label { min-width: 9.5rem; font-weight: 600; }
+    .lp-row select, .lp-row input { padding: 5px 8px; border: 1px solid var(--rule-strong); border-radius: 4px; font: inherit; background: #fff; color: var(--ink); }
+    .lp-row input { width: 6rem; }
+    .lp-derived { font-size: 0.9rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+    .lp-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0 0; }
+    .lp-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px; font-weight: 700; color: #fff; border: 0; font: inherit; font-weight: 700; }
+    .lp-btn.collect { background: #1b7a40; }
+    .lp-btn.stop { background: #ab2a1c; }
+
+    /* ---- Part 10 and 11: lists of things ---- */
+
+    .things { margin: 14px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; max-width: 1000px; }
+    .things li { padding: 10px 14px; border: 1px solid var(--rule); border-left: 4px solid var(--c, var(--enamel)); border-radius: 8px; font-size: 0.95rem; }
+    .things b { display: block; }
+    .hazard { --c: var(--flag); }
+
+    /* ---- Check yourself ---- */
+
+    .mini { max-width: 800px; margin-top: 18px; padding: 12px 16px 10px; border: 1px dashed var(--enamel); border-radius: 10px; }
+    .mini > h3 { margin: 0 0 8px; font-family: var(--sans); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--enamel-deep); }
+    .mini .quiz { gap: 10px; }
+    .mini .q { padding: 10px 12px 8px; }
+    .quiz { display: grid; gap: 14px; max-width: 800px; margin: 0; padding: 0; list-style: none; counter-reset: q; }
+    .q { padding: 14px 16px 12px; border: 1px solid var(--rule); border-radius: 8px; counter-increment: q; }
+    .q-text { margin: 0 0 10px; font-weight: 600; }
+    .q-text::before { content: counter(q) ". "; color: var(--ink-faint); }
+    .options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .options button {
+      padding: 7px 12px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer;
+    }
+    .options button:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .options button[data-state="right"] { border-color: var(--good); background: var(--good-wash); color: var(--good); font-weight: 600; }
+    .options button[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); color: var(--flag); }
+    .options button[data-state="right"]::before { content: "✓ "; }
+    .options button[data-state="wrong"]::before { content: "✗ "; }
+    .feedback { margin: 10px 0 0; font-size: 0.95rem; }
+    .feedback:empty { display: none; }
+    .feedback b.right { color: var(--good); }
+    .feedback b.wrong { color: var(--flag); }
+    .score { margin: 16px 0 0; font-weight: 600; }
+    .score .done { color: var(--good); }
+
+    /* ---- Footer ---- */
+
+    .next { margin-top: 40px; padding: 18px 20px; border-radius: 10px; background: var(--wash); }
+    .next p { margin: 0 0 8px; max-width: 72ch; }
+    .next p:last-child { margin-bottom: 0; }
+    .credit { margin-top: 30px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 0.84rem; color: var(--ink-faint); max-width: 90ch; }
+
+    /* ---- Narrow screens ---- */
+
+    @media (max-width: 900px) {
+      .parts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .demo-grid, .compare { grid-template-columns: minmax(0, 1fr); }
+      .contents ol { columns: 1; }
+    }
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .sheet { padding: 0 16px 48px; }
+      .masthead { padding: 18px 16px 20px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.32rem; }
+      .equation, .rxn { margin-left: 0; }
+      .eq { font-size: 1.08rem; }
+      .practice, .demo { padding: 14px 12px 12px; }
+      .entry-row label { flex-basis: 100%; }
+      .msg-inline { padding-left: 0; }
+      .readouts { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      .region-ctl { grid-template-columns: minmax(0, 1fr); }
+      .parts { grid-template-columns: minmax(0, 1fr); }
+      .data th, .data td { padding: 5px 6px; }
+      .data { font-size: 0.88rem; }
+      .lp-row label { min-width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; }
+      .flowing { animation: none; }
+    }
+    @media print {
+      .buttons, .contents, .seg, .back { display: none !important; }
+      .masthead { background: none; }
+      .practice, .q, figure, .demo, .part-card, tr, .worked, .inshort { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="back" href="../index.html">← Back to the lab</a>
+      <p class="eyebrow">Prelab review · CHM1045 · Calorimetry and Hess’s Law</p>
+      <h1>Calorimetry and Hess’s Law — Prelab Review</h1>
+      <p class="dek">This review goes with the virtual lab and your handout. It takes about forty minutes. Read each part, try the things you can click, practice every calculation the lab needs, and answer the short checks as you go. Have a calculator ready.</p>
+    </div>
+  </header>
+
+<div class="sheet">
+  <main>
+    <p class="made-up" style="margin-top:24px">Every mass, volume, temperature, calorimeter constant and curve on this page is <strong>made up for practice</strong>, and so are solids P, Q, R and W. None of them is a result from the lab. The two prelab questions in your handout use other numbers and other reactions; they are still yours to do.</p>
+
+    <nav class="contents" aria-label="Contents">
+      <p>In this review</p>
+      <ol>
+        <li><a href="#plan">The plan of the lab</a></li>
+        <li><a href="#energy">Energy, heat and temperature</a></li>
+        <li><a href="#specific">Specific heat and q = m s ΔT</a></li>
+        <li><a href="#calorimeter">The calorimeter and its constant</a></li>
+        <li><a href="#curve">Reading a temperature–time curve</a></li>
+        <li><a href="#enthalpy">From heat to enthalpy</a></li>
+        <li><a href="#hess">Hess’s law</a></li>
+        <li><a href="#errors">Systematic and random error</a></li>
+        <li><a href="#software">The data-collection software</a></li>
+        <li><a href="#bench">The virtual bench</a></li>
+        <li><a href="#safety">Safety</a></li>
+        <li><a href="#check">Check yourself</a></li>
+      </ol>
+    </nav>
+
+    <!-- ============================== 1 ============================== -->
+    <section id="plan" aria-labelledby="plan-title">
+      <h2 id="plan-title"><span class="step" aria-hidden="true">1</span>The plan of the lab</h2>
+      <p class="prose">The goal of the lab is one number: the <strong>enthalpy change</strong>, ΔH, for burning magnesium metal in oxygen to make magnesium oxide.</p>
+      <p class="rxn">Mg(s) + ½ O₂(g) → MgO(s)<small>the target reaction (Rxn 2 in your handout): ΔH = ?</small></p>
+      <p class="prose">ΔH tells you how much heat a reaction gives off or takes in, per mole. You might think the easy way to find it is to burn some magnesium and measure the heat. It is not.</p>
+      <div class="callout warn">
+        <h3>Why not just burn the magnesium?</h3>
+        <ul class="tips">
+          <li><strong>Too violent.</strong> Burning magnesium gives a blinding white flame (never look straight at it) and reaches thousands of degrees.</li>
+          <li><strong>Too fast.</strong> It is over in seconds, before heat has spread evenly into anything you could measure.</li>
+          <li><strong>Too hard to catch.</strong> Some of the heat leaves as light, and white MgO smoke drifts away. A foam coffee cup would melt or burn.</li>
+        </ul>
+      </div>
+      <p class="prose">So the lab goes around the problem. You measure the heat of two <strong>gentle</strong> reactions that happen in a cup of acid near room temperature. Then you combine them with one reaction whose ΔH is given, using <strong>Hess’s law</strong> (part 7), to get the ΔH you could not measure directly. This is called finding ΔH <strong>indirectly</strong>.</p>
+
+      <div class="parts">
+        <figure class="part-card" style="--c:#1d6fb8">
+          <svg viewBox="0 0 200 120" role="img" aria-label="Hot water being poured into a foam cup of cold water.">
+            <path d="M120 40 h50 l-6 66 h-38 z" fill="#f4f1ea" stroke="#6b7280" stroke-width="2"/>
+            <path d="M124 70 h42 l-3 34 h-36 z" fill="#9cc7ea"/>
+            <g transform="rotate(-50 70 40)"><path d="M52 14 h36 l-3 44 h-30 z" fill="#fff" stroke="#6b7280" stroke-width="2"/><path d="M53 34 h34 l-2 24 h-30 z" fill="#f3b9a0"/></g>
+            <path d="M74 48 q30 0 50 20" stroke="#c2410c" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <text x="18" y="112" class="svg-small">hot water</text>
+            <text x="118" y="30" class="svg-small">cold water</text>
+          </svg>
+          <h3>Part I</h3>
+          <p>Mix hot and cold water in the cup. No reaction: just heat moving.</p>
+          <p class="gives">Gives: the calorimeter constant, C<sub>cal</sub></p>
+        </figure>
+        <figure class="part-card" style="--c:#6b7280">
+          <svg viewBox="0 0 200 120" role="img" aria-label="Small curls of magnesium metal dropping into a cup of acid, which fizzes.">
+            <path d="M70 40 h60 l-6 66 h-48 z" fill="#f4f1ea" stroke="#6b7280" stroke-width="2"/>
+            <path d="M74 66 h52 l-3 38 h-46 z" fill="#d7ecd9"/>
+            <g fill="none" stroke="#7b8288" stroke-width="3"><path d="M92 12 q6 6 0 12 q-6 6 0 12"/><path d="M108 18 q6 6 0 12"/></g>
+            <g fill="#fff" stroke="#5d7567"><circle cx="90" cy="80" r="3"/><circle cx="102" cy="74" r="2.5"/><circle cx="112" cy="86" r="3"/><circle cx="96" cy="92" r="2"/></g>
+          </svg>
+          <h3>Part II</h3>
+          <p>Drop about 0.20 g of magnesium metal into hydrochloric acid in the cup.</p>
+          <p class="gives">Gives: ΔH of Rxn 3</p>
+        </figure>
+        <figure class="part-card" style="--c:#9aa5a0">
+          <svg viewBox="0 0 200 120" role="img" aria-label="White magnesium oxide powder being tipped into a cup of acid.">
+            <path d="M70 40 h60 l-6 66 h-48 z" fill="#f4f1ea" stroke="#6b7280" stroke-width="2"/>
+            <path d="M74 66 h52 l-3 38 h-46 z" fill="#d7ecd9"/>
+            <path d="M60 12 h40 l-10 14 h-20 z" fill="#fff" stroke="#6b7280" stroke-width="2" transform="rotate(25 80 19)"/>
+            <g fill="#e9ecef" stroke="#aab2b8"><circle cx="96" cy="40" r="2"/><circle cx="100" cy="48" r="2"/><circle cx="95" cy="56" r="2"/><circle cx="101" cy="62" r="2"/></g>
+          </svg>
+          <h3>Part III</h3>
+          <p>Tip about 1.0 g of magnesium oxide powder into hydrochloric acid in the cup.</p>
+          <p class="gives">Gives: ΔH of Rxn 4</p>
+        </figure>
+        <figure class="part-card" style="--c:#1b7a40">
+          <svg viewBox="0 0 200 120" role="img" aria-label="Three reaction cards being added together into one.">
+            <g fill="#fff" stroke="#5d7567" stroke-width="2"><rect x="14" y="14" width="56" height="26" rx="4"/><rect x="14" y="48" width="56" height="26" rx="4"/><rect x="14" y="82" width="56" height="26" rx="4"/></g>
+            <g class="svg-small" text-anchor="middle"><text x="42" y="32">Rxn 3</text><text x="42" y="66">Rxn 4</text><text x="42" y="100">Rxn 5</text></g>
+            <path d="M80 61 h40 m-8 -7 l8 7 -8 7" stroke="#1b7a40" stroke-width="3" fill="none"/>
+            <rect x="128" y="44" width="62" height="34" rx="4" fill="#edf7f0" stroke="#1b7a40" stroke-width="2"/>
+            <text x="159" y="66" text-anchor="middle" class="svg-small" style="fill:#1b7a40;font-weight:700">target</text>
+          </svg>
+          <h3>After the lab</h3>
+          <p>Combine your two results with Rxn 5 (given) by Hess’s law.</p>
+          <p class="gives">Gives: ΔH of the target</p>
+        </figure>
+      </div>
+
+      <p class="prose">The three reactions, as your handout lists them:</p>
+      <p class="rxn">Mg(s) + 2 HCl(aq) → MgCl₂(aq) + H₂(g)<small>Rxn 3: you measure its ΔH in Part II</small></p>
+      <p class="rxn">MgO(s) + 2 HCl(aq) → MgCl₂(aq) + H₂O(l)<small>Rxn 4: you measure its ΔH in Part III</small></p>
+      <p class="rxn">H₂(g) + ½ O₂(g) → H₂O(l) &nbsp; ΔH<sub>f</sub>° = −285.84 kJ/mol<small>Rxn 5: given in the handout</small></p>
+      <p class="prose">How to arrange these three to get the target is post-lab question 1. That is your work: part 7 teaches the rules on a different example, so you will know how to do it.</p>
+
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>The lab finds ΔH for Mg + ½ O₂ → MgO, a reaction too violent to measure in a cup.</li>
+          <li>Part I measures how much heat the cup itself takes up (C<sub>cal</sub>).</li>
+          <li>Parts II and III measure ΔH for two gentle reactions in acid.</li>
+          <li>Hess’s law combines them with a given reaction to get the target.</li>
+        </ul>
+      </div>
+      <div class="mini" data-mini="plan"><h3>Check yourself</h3></div>
+    </section>
+
+    <!-- ============================== 2 ============================== -->
+    <section id="energy" aria-labelledby="energy-title">
+      <h2 id="energy-title"><span class="step" aria-hidden="true">2</span>Energy, heat and temperature</h2>
+      <p class="prose">These three words are used loosely in everyday life. In chemistry they mean different things.</p>
+      <dl class="terms">
+        <dt>Energy</dt>
+        <dd>The ability to do work or to warm something. It is measured in <strong>joules (J)</strong>; 1000 J = 1 kJ. (One food Calorie is about 4184 J.)</dd>
+        <dt>Temperature</dt>
+        <dd>How hot or cold something is. It measures how fast its particles move <em>on average</em>. Measured in °C here. A change of 1 °C is the same size as a change of 1 K, so J/°C and J/K are the same unit.</dd>
+        <dt>Heat (q)</dt>
+        <dd>Energy that moves from one thing to another <strong>because their temperatures differ</strong>. Heat always flows on its own from the hotter thing to the colder one, never the other way, until both reach the same temperature.</dd>
+      </dl>
+      <p class="prose">Temperature and heat are not the same. A bathtub of warm water and a cup of boiling water: the cup has the higher temperature, but the bathtub holds far more heat energy, because it has far more water.</p>
+
+      <h3>System and surroundings</h3>
+      <p class="prose">To keep track of energy, split the world in two. The <strong>system</strong> is the part you are studying. The <strong>surroundings</strong> are everything else. In a coffee-cup calorimeter:</p>
+      <ul class="tips">
+        <li><strong>The system</strong> is the reaction: the atoms that are rearranging (for example, the solid and the acid reacting).</li>
+        <li><strong>The surroundings</strong> are the water the reaction happens in, the cup, the lid, the probe, and (we hope, only a little) the air in the room.</li>
+      </ul>
+
+      <h3>The first law: energy is never made or lost</h3>
+      <p class="prose">The <strong>first law of thermodynamics</strong> says the total energy of the universe stays the same. Energy can move from the system to the surroundings, or back, but whatever one side loses, the other side gains.</p>
+      <div class="equation" role="math" aria-label="Delta E of the universe equals Delta E of the system plus Delta E of the surroundings, which equals zero">
+        <span class="eq">ΔE<sub>universe</sub> = ΔE<sub>system</sub> + ΔE<sub>surroundings</sub> = 0 <span class="eq-tag">Eqn 1</span></span>
+      </div>
+      <p class="prose">This is the idea behind every calculation in the lab: <strong>if you add up every heat, the sum is zero.</strong></p>
+
+      <h3>The sign of q</h3>
+      <p class="prose">q is always written <strong>from the point of view of the thing it belongs to</strong>:</p>
+      <ul class="tips">
+        <li><strong>q is positive (+)</strong> when that thing <strong>gains</strong> heat. Its temperature goes up (unless it is melting or boiling).</li>
+        <li><strong>q is negative (−)</strong> when that thing <strong>loses</strong> heat. Its temperature goes down.</li>
+      </ul>
+      <p class="prose">Two names for the two directions:</p>
+      <ul class="tips">
+        <li><strong>Exothermic</strong> (“heat goes out”): the system gives heat to the surroundings. q<sub>system</sub> is negative, ΔH is negative, and <strong>the water gets warmer</strong>. A hand warmer is exothermic.</li>
+        <li><strong>Endothermic</strong> (“heat goes in”): the system takes heat from the surroundings. q<sub>system</sub> is positive, ΔH is positive, and <strong>the water gets colder</strong>. An instant cold pack is endothermic.</li>
+      </ul>
+      <p class="prose">Notice the trap: the thermometer is in the <em>surroundings</em>. When the thermometer goes <em>up</em>, the <em>reaction</em> (the system) has given heat away, so its q is <em>negative</em>.</p>
+
+      <div class="demo">
+        <h3>Try it: which way does the heat go?</h3>
+        <div class="demo-grid">
+          <svg class="art" id="exo-art" viewBox="0 0 440 300" role="img" aria-labelledby="exo-desc"><desc id="exo-desc">A cup of water with a reaction in the middle. Choose exothermic or endothermic to see the heat arrows and the thermometer.</desc></svg>
+          <div>
+            <div class="seg" role="group" aria-label="Kind of reaction">
+              <button type="button" id="exo-btn" aria-pressed="true">Exothermic</button>
+              <button type="button" id="endo-btn" aria-pressed="false">Endothermic</button>
+            </div>
+            <div class="readouts" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+              <div class="readout"><span>q of the system (the reaction)</span><b id="exo-qsys"></b></div>
+              <div class="readout"><span>q of the surroundings (the water)</span><b id="exo-qsur"></b></div>
+              <div class="readout"><span>Thermometer in the water</span><b id="exo-temp"></b></div>
+              <div class="readout"><span>ΔH of the reaction</span><b id="exo-dh"></b></div>
+            </div>
+            <p class="say" id="exo-say" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>Heat is energy that flows from hot to cold. Temperature is how hot something is.</li>
+          <li>The system is the reaction; the surroundings are the water, the cup and the rest.</li>
+          <li>All the heats add up to zero (the first law).</li>
+          <li>q &gt; 0 means gains heat; q &lt; 0 means loses heat. Exothermic: water warms, ΔH &lt; 0. Endothermic: water cools, ΔH &gt; 0.</li>
+        </ul>
+      </div>
+      <div class="mini" data-mini="energy"><h3>Check yourself</h3></div>
+    </section>
+
+    <!-- ============================== 3 ============================== -->
+    <section id="specific" aria-labelledby="specific-title">
+      <h2 id="specific-title"><span class="step" aria-hidden="true">3</span>Specific heat and q = m s ΔT</h2>
+      <p class="prose">Put the same pan of water and a same-sized iron pan on a stove: the iron gets hot much faster. Different materials need different amounts of heat to warm up. The <strong>specific heat capacity</strong>, <em>s</em>, says how much: it is the heat needed to warm <strong>1 gram</strong> of a substance by <strong>1 °C</strong>.</p>
+      <p class="prose">Water’s specific heat is large: <strong>s = 4.184 J g⁻¹ °C⁻¹</strong> (also written J/(g·°C)). It takes 4.184 J to warm 1 g of water by 1 °C. Most metals and rocks have a specific heat below 1 J/(g·°C), so they warm up far faster than water given the same heat.</p>
+      <p class="prose">The heat a substance gains or loses is:</p>
+      <div class="equation" role="math" aria-label="q equals m times s times Delta T">
+        <span class="eq">q = m · s · ΔT <span class="eq-tag">Eqn 2</span></span>
+        <span class="eq-note">q in J, m in g, s in J/(g·°C), ΔT in °C</span>
+      </div>
+      <div class="equation" role="math" aria-label="Delta T equals T final minus T initial">
+        <span class="eq">ΔT = T<sub>f</sub> − T<sub>i</sub></span>
+        <span class="eq-note">always <strong>final minus initial</strong>, so ΔT has a sign</span>
+      </div>
+      <p class="prose">Because ΔT is final minus initial, q comes out with the right sign by itself: something that cools has T<sub>f</sub> &lt; T<sub>i</sub>, a negative ΔT, and a negative q. Do not drop the minus sign.</p>
+      <p class="prose">In the lab, the volume of water or of 1.0 M HCl is measured, not its mass. The handout says to take the density as <strong>1.00 g/mL</strong>, so 95.0 mL is 95.0 g. It also says to use water’s specific heat for the HCl solution.</p>
+
+      <div class="demo">
+        <h3>Try it: same heat, different materials</h3>
+        <p class="soft">Three made-up blocks of the same mass start at 20.0 °C. Each one is given exactly the same amount of heat. Move the sliders and see how far each one warms. ΔT = q ÷ (m · s).</p>
+        <div class="demo-grid">
+          <svg class="art" id="sh-art" viewBox="0 0 440 290" role="img" aria-labelledby="sh-desc"><desc id="sh-desc">Three thermometers, one per block, showing how far each block warms.</desc></svg>
+          <div>
+            <div class="sliders">
+              <div class="slider"><label for="sh-q">Heat given to each block <b id="sh-q-out"></b></label><input type="range" id="sh-q" min="200" max="4000" step="100" value="1500"></div>
+              <div class="slider"><label for="sh-m">Mass of each block <b id="sh-m-out"></b></label><input type="range" id="sh-m" min="20" max="200" step="5" value="100"></div>
+            </div>
+            <div class="table-wrap">
+              <table class="data" id="sh-table">
+                <thead><tr><th scope="col">Block</th><th scope="col">s, J/(g·°C)</th><th scope="col">ΔT, °C</th><th scope="col">T<sub>f</sub>, °C</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <p class="look">The block with the <strong>largest</strong> s warms the <strong>least</strong>. Water’s large specific heat is why a cup of water is a good place to catch heat: a lot of heat gives a temperature change that is easy to measure but not wild.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="worked">
+        <h3>Worked example</h3>
+        75.0 g of water warms from 21.40 °C to 28.65 °C. How much heat did it gain?
+        <ol>
+          <li>ΔT = T<sub>f</sub> − T<sub>i</sub> = 28.65 − 21.40 = +7.25 °C</li>
+          <li>q = m s ΔT = (75.0 g)(4.184 J/(g·°C))(7.25 °C) = <strong>+2275 J</strong>, or +2.28 kJ</li>
+        </ol>
+        The sign is positive: the water gained heat. If it had cooled by 7.25 °C, q would be −2275 J.
+      </div>
+
+      <div class="practice" id="pr-q">
+        <h3>Practice: heat gained or lost by water</h3>
+        <p class="ask"></p>
+        <div class="fields"></div>
+        <div class="buttons"><button type="button" class="main" data-act="check">Check</button><button type="button" data-act="show">Show the working</button><button type="button" data-act="new">New numbers</button></div>
+        <p class="say" aria-live="polite"></p>
+        <div class="shown" hidden></div>
+      </div>
+
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>Specific heat s is the heat to warm 1 g by 1 °C. Water: 4.184 J/(g·°C).</li>
+          <li>q = m s ΔT, with ΔT = final − initial, so q carries its own sign.</li>
+          <li>The same heat warms a high-s material less than a low-s one.</li>
+          <li>In the lab, 1 mL of solution counts as 1.00 g.</li>
+        </ul>
+      </div>
+      <div class="mini" data-mini="specific"><h3>Check yourself</h3></div>
+    </section>
+
+    <!-- ============================== 4 ============================== -->
+    <section id="calorimeter" aria-labelledby="calorimeter-title">
+      <h2 id="calorimeter-title"><span class="step" aria-hidden="true">4</span>The calorimeter and its constant</h2>
+      <p class="prose">A <strong>calorimeter</strong> is a container that catches the heat of a process so it can be measured. In general chemistry it is a <strong>coffee-cup calorimeter</strong>: foam cups with a lid. Foam is a poor conductor of heat, so most of the heat stays in the liquid and shows up as a temperature change. The cup is open to the air (through the hole in the lid), so the pressure stays constant; that is why the heat measured is an <strong>enthalpy</strong> change.</p>
+
+      <figure class="figure wide">
+        <svg viewBox="0 0 760 400" role="img" aria-labelledby="cal-desc">
+          <desc id="cal-desc">A cut-away drawing of the coffee-cup calorimeter. Two foam cups sit one inside the other, standing in a beaker for support. A lid covers them, with a hole for the temperature probe. The probe reaches down into the liquid. A cable runs from the probe to an interface box, and another cable to a computer running the data-collection software. Small wavy arrows show a little heat escaping through the walls and the lid.</desc>
+          <rect width="760" height="400" rx="8" fill="#f6f8fa"/>
+          <!-- beaker -->
+          <path d="M92 150 v226 a8 8 0 0 0 8 8 h196 a8 8 0 0 0 8 -8 v-226" fill="#eef5f9" stroke="#8aa2b3" stroke-width="2.5"/>
+          <path d="M86 150 h12 M298 150 h12" stroke="#8aa2b3" stroke-width="2.5"/>
+          <!-- outer cup (cut away: walls drawn thick) -->
+          <path d="M110 118 L130 372 L266 372 L286 118" fill="none" stroke="#d9d2c3" stroke-width="12" stroke-linejoin="round"/>
+          <path d="M130 372 h136" stroke="#d9d2c3" stroke-width="12"/>
+          <!-- inner cup -->
+          <path d="M124 112 L142 356 L254 356 L272 112" fill="none" stroke="#efe9db" stroke-width="10" stroke-linejoin="round"/>
+          <path d="M142 356 h112" stroke="#efe9db" stroke-width="10"/>
+          <path d="M104 118 L124 374 M292 118 L272 374" stroke="#a89f8c" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
+          <!-- liquid -->
+          <path d="M136 200 L146 351 L250 351 L260 200 Z" fill="#9cc7ea" opacity="0.85"/>
+          <path d="M136 200 h124" stroke="#5a9bd0" stroke-width="2"/>
+          <!-- lid -->
+          <rect x="100" y="98" width="196" height="16" rx="3" fill="#f2efe6" stroke="#9a917d" stroke-width="2"/>
+          <rect x="190" y="98" width="16" height="16" fill="#f6f8fa" stroke="#9a917d" stroke-width="1"/>
+          <!-- probe -->
+          <rect x="194" y="40" width="8" height="300" rx="3" fill="#b9c0c6" stroke="#6b7280" stroke-width="1.2"/>
+          <rect x="190" y="30" width="16" height="34" rx="4" fill="#2c3a4a"/>
+          <!-- cables -->
+          <path d="M198 30 C 198 0, 560 0, 600 48" fill="none" stroke="#2c3a4a" stroke-width="3"/>
+          <rect x="600" y="22" width="96" height="58" rx="6" fill="#dfe4e2" stroke="#5d6b66" stroke-width="2"/>
+          <circle cx="620" cy="51" r="5" fill="#2c3a4a"/><rect x="636" y="40" width="48" height="22" rx="3" fill="#c6d3bd"/>
+          <path d="M696 50 C 745 50, 730 110, 690 132" fill="none" stroke="#2c3a4a" stroke-width="3"/>
+          <!-- laptop -->
+          <rect x="620" y="130" width="112" height="72" rx="5" fill="#2c3a4a"/>
+          <rect x="627" y="137" width="98" height="58" fill="#fdfefc"/>
+          <path d="M632 185 L652 155 L668 168 L718 160" fill="none" stroke="#1c4c9a" stroke-width="2"/>
+          <path d="M608 202 h136 l-10 12 h-116 z" fill="#5d6b66"/>
+          <!-- heat leaks -->
+          <g fill="none" stroke="#c2410c" stroke-width="2" stroke-linecap="round">
+            <path d="M82 250 q-8 -6 0 -12 q8 -6 0 -12"/>
+            <path d="M316 250 q8 -6 0 -12 q-8 -6 0 -12"/>
+            <path d="M160 92 q-6 -8 0 -16 q6 -8 0 -14"/>
+          </g>
+          <!-- labels -->
+          <g class="svg-small">
+            <path class="leader" d="M206 48 L250 48"/><text x="254" y="52">temperature probe</text>
+            <path class="leader" d="M290 106 L340 140"/><text x="344" y="144">lid, with a hole for the probe</text>
+            <path class="leader" d="M268 170 L340 182"/><text x="344" y="186">two foam cups, one inside the other</text>
+            <path class="leader" d="M232 290 L340 262"/><text x="344" y="266">the liquid (water or 1.0 M HCl)</text>
+            <path class="leader" d="M300 340 L340 330"/><text x="344" y="334">beaker that holds the cups steady</text>
+            <text x="610" y="98">interface</text>
+            <text x="612" y="234">computer with the</text><text x="612" y="250">data-collection</text><text x="612" y="266">software</text>
+            <text x="18" y="218" style="fill:#c2410c">a little heat</text><text x="18" y="232" style="fill:#c2410c">escapes</text>
+          </g>
+        </svg>
+        <figcaption>The coffee-cup calorimeter, cut open. Two cups instead of one: the air between them makes the wall a better insulator.</figcaption>
+      </figure>
+
+      <h3>The cup is not a perfect insulator</h3>
+      <p class="prose">An ideal calorimeter would keep all of the heat in the liquid. A real one does not:</p>
+      <ul class="tips">
+        <li><strong>The cup takes some heat itself.</strong> The inner wall, the lid and the metal probe start at the liquid’s temperature and must warm up with it.</li>
+        <li><strong>Some heat leaks out</strong> through the walls and the hole in the lid, slowly, the whole time. That is why the temperature drifts down after the peak (part 5).</li>
+      </ul>
+      <p class="prose">The heat the cup takes is handled with one number, the <strong>calorimeter constant</strong>, C<sub>cal</sub> (also called the heat capacity of the calorimeter). It is the heat needed to warm the <em>whole calorimeter</em> by 1 °C, in J/°C. It is like m · s for the cup, rolled into one number because nobody weighs the cup’s parts separately.</p>
+      <div class="equation" role="math" aria-label="q of the calorimeter equals C cal times Delta T">
+        <span class="eq">q<sub>cal</sub> = C<sub>cal</sub> · ΔT <span class="eq-tag">Eqn 3</span></span>
+        <span class="eq-note">C<sub>cal</sub> in J/°C</span>
+      </div>
+      <p class="prose">Each calorimeter has its own C<sub>cal</sub>. Once you have measured yours (Part I), you use it for Parts II and III, <strong>in the same cup</strong>.</p>
+
+      <h3>How Part I finds C<sub>cal</sub></h3>
+      <p class="prose">Cold water goes into the cup first and sits until the cup and the water are at the same temperature, T<sub>cold</sub>. Then hot water (temperature T<sub>hot</sub>, taken just before pouring) goes in. Heat flows from the hot water into the cold water and into the cup, until all three end at one final temperature, T<sub>f</sub>. No reaction happens, so the first law says:</p>
+      <div class="equation" role="math" aria-label="q hot water plus q cold water plus q cal equals zero">
+        <span class="eq">q<sub>hw</sub> + q<sub>cw</sub> + q<sub>cal</sub> = 0 <span class="eq-tag">Eqn 4</span></span>
+      </div>
+      <div class="equation" role="math" aria-label="m hot water times s times Delta T hot, plus m cold water times s times Delta T cold, plus C cal times Delta T cal, equals zero">
+        <span class="eq">m<sub>hw</sub> s ΔT<sub>hw</sub> + m<sub>cw</sub> s ΔT<sub>cw</sub> + C<sub>cal</sub> ΔT<sub>cal</sub> = 0 <span class="eq-tag">Eqn 5</span></span>
+      </div>
+      <ul class="tips">
+        <li>ΔT<sub>hw</sub> = T<sub>f</sub> − T<sub>hot</sub>: <strong>negative</strong>, so q<sub>hw</sub> is negative (the hot water lost heat).</li>
+        <li>ΔT<sub>cw</sub> = T<sub>f</sub> − T<sub>cold</sub>: positive.</li>
+        <li>ΔT<sub>cal</sub> = T<sub>f</sub> − T<sub>cold</sub> too: the cup started at the cold water’s temperature. So ΔT<sub>cal</sub> = ΔT<sub>cw</sub>.</li>
+      </ul>
+      <p class="prose">Solve in three steps: work out q<sub>hw</sub> and q<sub>cw</sub> with Eqn 2; then q<sub>cal</sub> = −(q<sub>hw</sub> + q<sub>cw</sub>) from Eqn 4; then C<sub>cal</sub> = q<sub>cal</sub> ÷ ΔT<sub>cal</sub> from Eqn 3.</p>
+
+      <div class="demo">
+        <h3>Try it: mix hot and cold water</h3>
+        <p class="soft">Choose the waters and a made-up calorimeter constant, then press Mix. The bars show where the heat goes. The hot water’s bar (lost, to the left) is always exactly as long as the other two together (gained, to the right): the sum is zero.</p>
+        <div class="demo-grid">
+          <div>
+            <svg class="art" id="mix-art" viewBox="0 0 520 260" role="img" aria-labelledby="mix-desc"><desc id="mix-desc">Energy bars for the hot water, the cold water and the calorimeter.</desc></svg>
+            <div class="readouts">
+              <div class="readout"><span>Final temperature T<sub>f</sub></span><b id="mix-tf"></b></div>
+              <div class="readout"><span>ΔT of the hot water</span><b id="mix-dth"></b></div>
+              <div class="readout"><span>ΔT of the cold water and cup</span><b id="mix-dtc"></b></div>
+            </div>
+            <p class="say math" id="mix-sum" aria-live="polite"></p>
+          </div>
+          <div>
+            <div class="sliders">
+              <div class="slider"><label for="mix-mh">Mass of hot water <b id="mix-mh-out"></b></label><input type="range" id="mix-mh" min="20" max="80" step="1" value="50"></div>
+              <div class="slider"><label for="mix-th">Temperature of hot water <b id="mix-th-out"></b></label><input type="range" id="mix-th" min="45" max="80" step="0.5" value="65"></div>
+              <div class="slider"><label for="mix-mc">Mass of cold water <b id="mix-mc-out"></b></label><input type="range" id="mix-mc" min="20" max="80" step="1" value="50"></div>
+              <div class="slider"><label for="mix-tc">Temperature of cold water and cup <b id="mix-tc-out"></b></label><input type="range" id="mix-tc" min="15" max="25" step="0.5" value="21"></div>
+              <div class="slider"><label for="mix-c"><span>C<sub>cal</sub> (made up)</span> <b id="mix-c-out"></b></label><input type="range" id="mix-c" min="0" max="80" step="1" value="30"></div>
+            </div>
+            <div class="buttons"><button type="button" class="main" id="mix-go">Mix</button></div>
+            <p class="look">Set C<sub>cal</sub> to 0 (a perfect cup): T<sub>f</sub> lands exactly halfway between the two temperatures when the masses are equal. With a real cup, part of the heat warms the cup, so T<sub>f</sub> lands lower.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="worked">
+        <h3>Worked example (made-up numbers)</h3>
+        50.2 mL of cold water at 21.40 °C is in the calorimeter. 49.8 mL of hot water at 66.20 °C is poured in. The extrapolated final temperature is 42.31 °C. Take 1.00 g/mL and 4.184 J/(g·°C).
+        <ol>
+          <li>Masses: m<sub>cw</sub> = 50.2 g, m<sub>hw</sub> = 49.8 g.</li>
+          <li>q<sub>hw</sub> = (49.8 g)(4.184)(42.31 − 66.20) = (49.8)(4.184)(−23.89) = <strong>−4978 J</strong></li>
+          <li>q<sub>cw</sub> = (50.2 g)(4.184)(42.31 − 21.40) = (50.2)(4.184)(20.91) = <strong>+4392 J</strong></li>
+          <li>q<sub>cal</sub> = −(q<sub>hw</sub> + q<sub>cw</sub>) = −(−4978 + 4392) = <strong>+586 J</strong></li>
+          <li>C<sub>cal</sub> = q<sub>cal</sub> ÷ ΔT<sub>cal</sub> = 586 J ÷ 20.91 °C = <strong>28.0 J/°C</strong></li>
+        </ol>
+        Check the sign: C<sub>cal</sub> must come out positive. A negative C<sub>cal</sub> means a sign was dropped, or T<sub>f</sub> or a starting temperature was misread.
+      </div>
+      <div class="callout">
+        <h3>Keep the digits</h3>
+        <p>q<sub>cal</sub> is a small difference between two big numbers (here 4978 and 4392). Round too early and it changes a lot. Keep every digit in your calculator until C<sub>cal</sub>, then round.</p>
+      </div>
+
+      <div class="practice" id="pr-cal">
+        <h3>Practice: find a calorimeter constant</h3>
+        <p class="ask"></p>
+        <div class="fields"></div>
+        <div class="buttons"><button type="button" class="main" data-act="check">Check</button><button type="button" data-act="show">Show the working</button><button type="button" data-act="new">New numbers</button></div>
+        <p class="say" aria-live="polite"></p>
+        <div class="shown" hidden></div>
+      </div>
+
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>A coffee-cup calorimeter catches heat in a liquid, but the cup takes some heat too.</li>
+          <li>C<sub>cal</sub> is the heat to warm the whole calorimeter by 1 °C; q<sub>cal</sub> = C<sub>cal</sub> ΔT.</li>
+          <li>Part I: q<sub>hw</sub> + q<sub>cw</sub> + q<sub>cal</sub> = 0. Find q<sub>hw</sub> (negative) and q<sub>cw</sub>, then q<sub>cal</sub>, then C<sub>cal</sub>.</li>
+          <li>The cup’s ΔT is the cold water’s ΔT.</li>
+        </ul>
+      </div>
+      <div class="mini" data-mini="calorimeter"><h3>Check yourself</h3></div>
+    </section>
+
+    <!-- ============================== 5 ============================== -->
+    <section id="curve" aria-labelledby="curve-title">
+      <h2 id="curve-title"><span class="step" aria-hidden="true">5</span>Reading a temperature–time curve</h2>
+      <p class="prose">The probe records the temperature twice a second for 10 minutes. The graph of temperature against time has three parts:</p>
+      <ol class="steps">
+        <li><strong>A flat start.</strong> About 10 s of readings before anything is added: the starting temperature, T<sub>i</sub>.</li>
+        <li><strong>A quick rise</strong> after the second liquid or solid goes in, bending over into a rounded top.</li>
+        <li><strong>A slow, nearly straight fall</strong>, as heat leaks out of the cup into the room.</li>
+      </ol>
+      <h3>Why the highest reading is not T<sub>f</sub></h3>
+      <p class="prose">The calculations assume all the heat moved <strong>instantly</strong>, at the moment of mixing, with no heat lost. In a real cup, mixing and reacting take time, the cup’s walls warm up slowly, and heat starts leaking out while the temperature is still rising. So the top of the curve is <strong>lower</strong> than the temperature an ideal, instant mix would have reached.</p>
+      <p class="prose">The fix: the slow fall after the peak is almost a straight line. Fit a straight line to that <strong>cooling region</strong>, and extend it <strong>back to the time of mixing</strong>. The temperature where the line crosses the mixing time is T<sub>f</sub>: the final temperature you would have had if everything had happened at once. This is called <strong>extrapolating</strong>.</p>
+
+      <div class="demo">
+        <h3>Try it: extrapolate the cooling line</h3>
+        <p class="soft">A made-up run. <strong>Drag across the graph</strong> to choose the cooling region (or use the two sliders below it). A least-squares line is fitted to the readings you chose and drawn back to the time of mixing. Point at the graph, or tab to it and use the arrow keys, to examine single readings.</p>
+        <div class="curve-box">
+          <canvas id="cv-demo" width="900" height="460" tabindex="0" role="img" aria-label="Temperature against time for a made-up run. Drag across it to choose a cooling region; use the left and right arrow keys to examine readings."></canvas>
+        </div>
+        <p class="examine" id="cv-demo-ex" aria-live="polite"></p>
+        <div class="region-ctl">
+          <div class="slider"><label for="cv-demo-a">Region starts at <b id="cv-demo-a-out"></b></label><input type="range" id="cv-demo-a" min="0" max="600" step="5" value="0"></div>
+          <div class="slider"><label for="cv-demo-b">Region ends at <b id="cv-demo-b-out"></b></label><input type="range" id="cv-demo-b" min="0" max="600" step="5" value="0"></div>
+        </div>
+        <div class="fit-out" id="cv-demo-fit" aria-live="polite"></div>
+        <div class="buttons"><button type="button" id="cv-demo-new">New made-up curve</button><button type="button" id="cv-demo-bad">Show a bad region</button><button type="button" id="cv-demo-good">Show a good region</button></div>
+      </div>
+
+      <div class="callout">
+        <h3>Choosing a good cooling region</h3>
+        <ul class="tips">
+          <li><strong>Start after the curve has become straight</strong>, well past the rounded top. A region that includes the top bends the line and gives a wrong T<sub>f</sub>.</li>
+          <li><strong>Take a long stretch</strong>, a few minutes. A short region has few readings, and the noise tips the line.</li>
+          <li><strong>Extrapolate to the moment of mixing</strong>, the time the second reagent went in, not to time zero and not to the top.</li>
+        </ul>
+      </div>
+
+      <div class="practice" id="pr-curve">
+        <h3>Practice: read T<sub>f</sub> from a run</h3>
+        <p class="ask" id="cv-pr-ask"></p>
+        <div class="curve-box">
+          <canvas id="cv-pr" width="900" height="460" tabindex="0" role="img" aria-label="Temperature against time for a practice run. Drag across it to choose a cooling region; use the left and right arrow keys to examine readings and the fitted line."></canvas>
+        </div>
+        <p class="examine" id="cv-pr-ex" aria-live="polite"></p>
+        <div class="region-ctl">
+          <div class="slider"><label for="cv-pr-a">Region starts at <b id="cv-pr-a-out"></b></label><input type="range" id="cv-pr-a" min="0" max="600" step="5" value="0"></div>
+          <div class="slider"><label for="cv-pr-b">Region ends at <b id="cv-pr-b-out"></b></label><input type="range" id="cv-pr-b" min="0" max="600" step="5" value="0"></div>
+        </div>
+        <div class="fit-out" id="cv-pr-fit" aria-live="polite"></div>
+        <div class="entry-row" style="margin-top:12px"><label for="cv-pr-in">Extrapolated T<sub>f</sub></label><input type="text" id="cv-pr-in" inputmode="decimal" autocomplete="off"><span class="unit">°C</span></div>
+        <div class="buttons"><button type="button" class="main" id="cv-pr-check">Check</button><button type="button" id="cv-pr-show">Show how</button><button type="button" id="cv-pr-new">New run</button></div>
+        <p class="say" id="cv-pr-say" aria-live="polite"></p>
+        <div class="shown" id="cv-pr-shown" hidden></div>
+      </div>
+
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>The curve: flat start (T<sub>i</sub>), quick rise, rounded top, slow straight fall.</li>
+          <li>The top is too low, because mixing takes time and heat leaks out meanwhile.</li>
+          <li>Fit a line to the straight cooling part and extend it back to the moment of mixing: that is T<sub>f</sub>.</li>
+          <li>The lab accepts a T<sub>f</sub> within 0.3 °C of a fit to your own cooling region.</li>
+        </ul>
+      </div>
+      <div class="mini" data-mini="curve"><h3>Check yourself</h3></div>
+    </section>
+
+    <!-- ============================== 6 ============================== -->
+    <section id="enthalpy" aria-labelledby="enthalpy-title">
+      <h2 id="enthalpy-title"><span class="step" aria-hidden="true">6</span>From heat to enthalpy</h2>
+      <p class="prose">In Parts II and III, a reaction happens in the cup. Now there are three heats: the reaction’s (the system), and the solution’s and the cup’s (the surroundings). By the first law, they add up to zero:</p>
+      <div class="equation" role="math" aria-label="q rxn plus q soln plus q cal equals zero">
+        <span class="eq">q<sub>rxn</sub> + q<sub>soln</sub> + q<sub>cal</sub> = 0 <span class="eq-tag">Eqn 6</span></span>
+      </div>
+      <div class="equation" role="math" aria-label="so q rxn equals minus the sum of q soln and q cal">
+        <span class="eq">so q<sub>rxn</sub> = −(q<sub>soln</sub> + q<sub>cal</sub>)</span>
+      </div>
+      <ul class="tips">
+        <li><strong>q<sub>soln</sub> = m<sub>soln</sub> · s · ΔT</strong>, where m<sub>soln</sub> comes from the volume of solution at 1.00 g/mL, and s = 4.184 J/(g·°C).</li>
+        <li><strong>q<sub>cal</sub> = C<sub>cal</sub> · ΔT</strong>, with your C<sub>cal</sub> from Part I and the same ΔT (the cup starts at the solution’s temperature).</li>
+        <li>ΔT = T<sub>f</sub> (extrapolated) − T<sub>i</sub> (the flat start).</li>
+      </ul>
+      <p class="prose">If the solution warms up, q<sub>soln</sub> and q<sub>cal</sub> are positive, so q<sub>rxn</sub> is <strong>negative</strong>: the reaction is exothermic.</p>
+
+      <h3>Per mole: the enthalpy of reaction</h3>
+      <p class="prose">Twice as much solid gives twice as much heat. To get a number that belongs to the reaction itself, divide by the moles that reacted. That is the <strong>enthalpy of reaction</strong>:</p>
+      <div class="equation" role="math" aria-label="Delta H rxn equals q rxn divided by n">
+        <span class="eq">ΔH<sub>rxn</sub> = <span class="frac"><span>q<sub>rxn</sub></span><span>n</span></span> <span class="eq-tag">Eqn 7</span></span>
+        <span class="eq-note">change J to kJ (÷ 1000) and report kJ/mol</span>
+      </div>
+      <p class="prose">ΔH has the <strong>same sign as q<sub>rxn</sub></strong>: negative for exothermic, positive for endothermic.</p>
+
+      <h3>Moles, and which reactant counts</h3>
+      <ul class="tips">
+        <li><strong>From a mass:</strong> n = mass (g) ÷ molar mass (g/mol).</li>
+        <li><strong>From a solution:</strong> n = molarity (mol/L) × volume (L). Change mL to L first: 75.0 mL = 0.0750 L.</li>
+        <li><strong>The limiting reactant</strong> is the one that runs out first. Only as much reaction happens as it allows, so the heat comes from <em>its</em> moles. Use the mole ratio of the balanced equation to see which one runs out.</li>
+      </ul>
+      <div class="worked">
+        <h3>Example: which runs out? (made up)</h3>
+        A made-up solid Y reacts with a made-up acid HA in a 1 : 2 ratio (1 Y uses 2 HA). You have 0.0150 mol of Y and 60.0 mL of 0.80 M HA.
+        <ol>
+          <li>Moles of HA = 0.80 mol/L × 0.0600 L = 0.048 mol.</li>
+          <li>Y would need 2 × 0.0150 = 0.0300 mol HA. There is more than that (0.048 mol), so the acid is <strong>in excess</strong>.</li>
+          <li><strong>Y is limiting.</strong> All 0.0150 mol of Y react; ΔH is reported per mole of Y.</li>
+        </ol>
+      </div>
+      <p class="prose">In the lab the acid is in excess and the solid is limiting: the handout asks for ΔH <strong>per mole of the solid</strong>. Check this with your own masses and the moles of HCl in the cup.</p>
+
+      <div class="worked">
+        <h3>Worked example (made-up solid Q)</h3>
+        2.40 g of a made-up solid Q (molar mass 96.0 g/mol) dissolves in 85.0 mL of water in a calorimeter with C<sub>cal</sub> = 30.0 J/°C. The temperature goes from 22.10 °C to an extrapolated 26.12 °C. Find ΔH per mole of Q.
+        <ol>
+          <li>ΔT = 26.12 − 22.10 = +4.02 °C</li>
+          <li>q<sub>soln</sub> = (85.0 g)(4.184 J/(g·°C))(4.02 °C) = +1430 J</li>
+          <li>q<sub>cal</sub> = (30.0 J/°C)(4.02 °C) = +121 J</li>
+          <li>q<sub>rxn</sub> = −(1430 + 121) = <strong>−1550 J</strong> = −1.550 kJ (exothermic: the water warmed)</li>
+          <li>n = 2.40 g ÷ 96.0 g/mol = 0.0250 mol Q</li>
+          <li>ΔH = −1.550 kJ ÷ 0.0250 mol = <strong>−62.0 kJ/mol</strong></li>
+        </ol>
+      </div>
+
+      <div class="practice" id="pr-dh">
+        <h3>Practice: ΔH of a made-up solid dissolving</h3>
+        <p class="ask"></p>
+        <div class="fields"></div>
+        <div class="buttons"><button type="button" class="main" data-act="check">Check</button><button type="button" data-act="show">Show the working</button><button type="button" data-act="new">New numbers</button></div>
+        <p class="say" aria-live="polite"></p>
+        <div class="shown" hidden></div>
+      </div>
+
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>q<sub>rxn</sub> + q<sub>soln</sub> + q<sub>cal</sub> = 0, so q<sub>rxn</sub> = −(q<sub>soln</sub> + q<sub>cal</sub>).</li>
+          <li>ΔH = q<sub>rxn</sub> ÷ n, in kJ/mol, per mole of the limiting reactant.</li>
+          <li>Solution warms → q<sub>rxn</sub> &lt; 0 → ΔH &lt; 0 (exothermic).</li>
+          <li>Moles: grams ÷ molar mass, or molarity × liters.</li>
+        </ul>
+      </div>
+      <div class="mini" data-mini="enthalpy"><h3>Check yourself</h3></div>
+    </section>
+
+    <!-- ============================== 7 ============================== -->
+    <section id="hess" aria-labelledby="hess-title">
+      <h2 id="hess-title"><span class="step" aria-hidden="true">7</span>Hess’s law</h2>
+      <h3>State functions: only the start and the end matter</h3>
+      <p class="prose">Two hikers leave the same camp for the same summit. One climbs a steep, direct trail; the other winds over a pass and down a little before the last climb. They walk different distances and get differently tired, but the <strong>change in altitude</strong> is the same for both: summit minus camp.</p>
+      <figure class="figure">
+        <svg viewBox="0 0 560 280" role="img" aria-labelledby="mtn-desc">
+          <desc id="mtn-desc">A mountain. A camp at 1200 meters at the bottom left and a summit at 2100 meters at the top. A direct dashed trail goes straight up. A winding trail climbs to a pass at 1700 meters, dips to 1550 meters, then climbs to the summit. Both give a change in altitude of plus 900 meters.</desc>
+          <rect width="560" height="280" rx="8" fill="#eef4f8"/>
+          <path d="M0 260 L120 220 L250 60 L330 30 L420 120 L470 100 L560 200 L560 280 L0 280 Z" fill="#cfd9cf"/>
+          <path d="M250 60 L330 30 L360 58 L300 70 Z" fill="#fff"/>
+          <circle cx="110" cy="224" r="7" fill="#1c4c9a"/>
+          <circle cx="330" cy="30" r="7" fill="#1b7a40"/>
+          <path d="M110 224 L330 30" stroke="#ab2a1c" stroke-width="3" stroke-dasharray="8 6" fill="none"/>
+          <path d="M110 224 C 200 230, 380 160, 430 118 C 450 100, 470 120, 455 140 C 430 170, 380 90, 330 30" stroke="#b4541a" stroke-width="3" fill="none"/>
+          <g class="svg-small">
+            <text x="20" y="250">camp, 1200 m</text>
+            <text x="346" y="24">summit, 2100 m</text>
+            <text x="150" y="150" style="fill:#ab2a1c;font-weight:700">direct trail</text>
+            <text x="380" y="190" style="fill:#b4541a;font-weight:700">winding trail</text>
+          </g>
+          <text x="20" y="30" class="svg-bold">Δaltitude = 2100 − 1200 = +900 m either way</text>
+        </svg>
+        <figcaption>Altitude is a state function: its change depends only on where you start and where you end.</figcaption>
+      </figure>
+      <p class="prose">A quantity like that is called a <strong>state function</strong>. <strong>Enthalpy is a state function.</strong> So ΔH for going from some reactants to some products is the same whether the change happens in one step or in several. That is <strong>Hess’s law</strong>: if a reaction can be written as the sum of other reactions, its ΔH is the sum of their ΔH values.</p>
+
+      <h3>Three rules for handling equations</h3>
+      <ol class="steps">
+        <li><strong>Reverse a reaction → change the sign of ΔH.</strong> If A → B gives off 50 kJ (ΔH = −50 kJ), then B → A takes in 50 kJ (ΔH = +50 kJ).</li>
+        <li><strong>Multiply a reaction by a number → multiply ΔH by the same number.</strong> Twice the moles, twice the heat. Halving works too.</li>
+        <li><strong>Add reactions → add their ΔH values.</strong> Anything that appears on both sides of the sum (the same substance, in the same state) cancels, like in algebra.</li>
+      </ol>
+      <p class="prose">The aim is to flip and scale the given reactions so that, when they are added, everything you do not want cancels and exactly the target reaction is left.</p>
+
+      <div class="demo" id="puzzle">
+        <h3>Try it: build a target reaction</h3>
+        <p class="prose">Carbon monoxide is hard to make on purpose without also making some carbon dioxide, so its ΔH of formation is found indirectly, just like your magnesium oxide. Make the target from reactions A and B. Use Flip and the multipliers; the sum underneath updates as you go, with cancelled substances struck through.</p>
+        <p class="target">Target: C(s) + ½ O₂(g) → CO(g) &nbsp; ΔH = ?</p>
+        <div id="hz-rows"></div>
+        <div class="sum" aria-live="polite">
+          <div><b>Sum:</b> <span class="eqtext" id="hz-sum"></span></div>
+          <div class="net"><b>Net:</b> <span class="eqtext" id="hz-net"></span> &nbsp; <b class="math" id="hz-dh"></b></div>
+        </div>
+        <p class="say" id="hz-say" aria-live="polite"></p>
+        <div class="buttons"><button type="button" id="hz-reset">Start over</button></div>
+      </div>
+
+      <details>
+        <summary>See the answer as an enthalpy diagram (try the puzzle first)</summary>
+        <figure class="figure" style="max-width:640px">
+          <svg viewBox="0 0 600 380" role="img" aria-labelledby="hl-desc">
+            <desc id="hl-desc">An enthalpy level diagram. The top level is C plus O2, at zero. A middle level is CO plus one half O2, at minus 110.5 kilojoules. The bottom level is CO2, at minus 393.5 kilojoules. On the left, one arrow goes straight down from the top to the bottom: minus 393.5 kilojoules. On the right, an arrow goes from the top to the middle, minus 110.5 kilojoules, and another from the middle to the bottom, minus 283.0 kilojoules. The two routes add to the same total.</desc>
+            <rect width="600" height="380" rx="8" fill="#f6f8fa"/>
+            <path d="M50 30 v320" stroke="#5d6b66" stroke-width="1.5"/>
+            <path d="M44 40 l6 -10 6 10" fill="none" stroke="#5d6b66" stroke-width="1.5"/>
+            <text x="20" y="200" class="svg-small" transform="rotate(-90 20 200)" text-anchor="middle">enthalpy, H</text>
+            <g stroke="#17211e" stroke-width="3">
+              <path d="M90 60 h460"/>
+              <path d="M330 139 h220"/>
+              <path d="M90 340 h460"/>
+            </g>
+            <g class="svg-chem">
+              <text x="96" y="52">C(s) + O₂(g)</text>
+              <text x="336" y="131">CO(g) + ½ O₂(g)</text>
+              <text x="96" y="368">CO₂(g)</text>
+            </g>
+            <g stroke-width="3" fill="none">
+              <path d="M200 64 V330" stroke="#ab2a1c"/><path d="M193 322 l7 12 7 -12" stroke="#ab2a1c"/>
+              <path d="M420 64 V129" stroke="#1c4c9a"/><path d="M413 121 l7 12 7 -12" stroke="#1c4c9a"/>
+              <path d="M420 143 V330" stroke="#1b7a40"/><path d="M413 322 l7 12 7 -12" stroke="#1b7a40"/>
+            </g>
+            <g class="svg-small" style="font-weight:700">
+              <text x="210" y="200" style="fill:#ab2a1c">A: −393.5 kJ</text>
+              <text x="430" y="104" style="fill:#1c4c9a">target: −110.5 kJ</text>
+              <text x="430" y="240" style="fill:#1b7a40">B: −283.0 kJ</text>
+            </g>
+          </svg>
+          <figcaption>Going down by A in one step (−393.5 kJ) equals going down by the target and then B: (−110.5) + (−283.0) = −393.5 kJ. So the target’s ΔH = −393.5 − (−283.0) = −110.5 kJ. In the puzzle this is A as written plus B flipped.</figcaption>
+        </figure>
+      </details>
+
+      <p class="prose" style="margin-top:16px">For your post-lab question 1, the target is Mg(s) + ½ O₂(g) → MgO(s), and the reactions to combine are Rxn 3 and Rxn 4 (with your own measured ΔH values) and Rxn 5 (ΔH given). Use the same three rules. Then question 2 compares your answer with the textbook value by percent error:</p>
+      <div class="equation" role="math" aria-label="percent error equals experimental value minus true value, divided by true value, times 100">
+        <span class="eq">% error = <span class="frac"><span>experimental value − true value</span><span>true value</span></span> × 100 <span class="eq-tag">Eqn 11</span></span>
+      </div>
+      <p class="prose soft">For example, if a made-up experiment gave −52.0 kJ/mol and the true value were −48.0 kJ/mol: (−52.0 − (−48.0)) ÷ (−48.0) × 100 = −4.0 ÷ −48.0 × 100 = +8.3 %. Many instructors report the size only (8.3 %); follow your instructor.</p>
+
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>Enthalpy is a state function: ΔH depends only on the start and the end.</li>
+          <li>Hess’s law: if reactions add up to the target, their ΔH values add up to the target’s ΔH.</li>
+          <li>Reverse → flip the sign. Multiply → multiply ΔH. Add → add ΔH; cancel what appears on both sides.</li>
+        </ul>
+      </div>
+      <div class="mini" data-mini="hess"><h3>Check yourself</h3></div>
+    </section>
+
+    <!-- ============================== 8 ============================== -->
+    <section id="errors" aria-labelledby="errors-title">
+      <h2 id="errors-title"><span class="step" aria-hidden="true">8</span>Systematic and random error</h2>
+      <p class="prose">Every measurement differs a little from the true value. Scientists sort the causes into two kinds, because they behave differently and are fixed differently. This part teaches them on <strong>other experiments</strong>: naming the sources of error in <em>this</em> lab is post-lab question 3, and it is yours.</p>
+      <div class="compare">
+        <div style="--c:#b4541a">
+          <h3>Systematic error</h3>
+          <p>Pushes every result <strong>the same way</strong> (always too high, or always too low), usually by about the same amount. It comes from the method or an instrument.</p>
+          <p>Repeating the measurement <strong>does not help</strong>: the average is off too. It is found by checking against a known standard and fixed by changing the method or calibrating the instrument.</p>
+          <p><em>Example:</em> a balance that reads 0.30 g high on everything.</p>
+        </div>
+        <div style="--c:#1d6fb8">
+          <h3>Random error</h3>
+          <p>Scatters results <strong>both ways</strong>, a bit high one time and a bit low the next, unpredictably. It comes from limits of reading, timing and small changes you cannot control.</p>
+          <p>It cannot be removed, but <strong>averaging several trials</strong> shrinks its effect, because highs and lows partly cancel.</p>
+          <p><em>Example:</em> starting a stopwatch a little early or late each time.</p>
+        </div>
+      </div>
+      <p class="prose"><strong>Mistakes are not “error” in this sense.</strong> Spilling a sample, misreading a scale, writing down the wrong number, or using the wrong formula are <strong>gross errors</strong> (blunders). The cure is to redo the step, not to name it as a source of error. Your handout says gross errors do not count for points.</p>
+      <p class="prose">Two words go with these: results are <strong>accurate</strong> when their average is close to the true value (little systematic error), and <strong>precise</strong> when they agree closely with each other (little random error). Results can be precise but not accurate: tightly grouped, in the wrong place.</p>
+
+      <div class="demo">
+        <h3>Try it: weigh a 10.00 g mass five times</h3>
+        <p class="soft">A made-up standard mass that is exactly 10.00 g. Switch each kind of error on or off, then weigh it five times.</p>
+        <div class="seg" role="group" aria-label="Errors in the balance">
+          <button type="button" id="er-sys" aria-pressed="true">Balance reads 0.30 g high (systematic)</button>
+          <button type="button" id="er-rand" aria-pressed="true">Readings scatter (random)</button>
+        </div>
+        <div class="buttons"><button type="button" class="main" id="er-go">Weigh five times</button></div>
+        <div class="table-wrap">
+          <table class="data" id="er-table">
+            <thead><tr><th scope="col">Trial</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th><th scope="col">Average</th><th scope="col">Average − true</th></tr></thead>
+            <tbody><tr><th scope="row">Reading, g</th><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr></tbody>
+          </table>
+        </div>
+        <p class="say" id="er-say" aria-live="polite"></p>
+      </div>
+
+      <h3>Practice: sort them (timing a pendulum)</h3>
+      <p class="prose">A student finds the time of one swing of a pendulum by timing 20 swings with a stopwatch and dividing by 20, and measures the string’s length with a meter stick. Sort each problem.</p>
+      <ol class="sort" id="sort"></ol>
+      <p class="score" id="sort-score" aria-live="polite"></p>
+
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>Systematic: same direction every time; averaging does not fix it; calibrate or change the method.</li>
+          <li>Random: scatter both ways; averaging more trials reduces it.</li>
+          <li>Mistakes (gross errors) are not sources of error: redo the step.</li>
+        </ul>
+      </div>
+      <div class="mini" data-mini="errors"><h3>Check yourself</h3></div>
+    </section>
+
+    <!-- ============================== 9 ============================== -->
+    <section id="software" aria-labelledby="software-title">
+      <h2 id="software-title"><span class="step" aria-hidden="true">9</span>The data-collection software</h2>
+      <p class="prose">The probe sends its readings through the interface to the computer. The virtual lab’s software is modeled on Vernier’s Logger Pro, a program many college chemistry labs use. You will use five things in it.</p>
+
+      <h3>1. Data Collection settings</h3>
+      <p class="prose">Before the first run, open <strong>Experiment ▸ Data Collection…</strong> and check three settings:</p>
+      <ul class="tips">
+        <li><strong>Mode: Time Based</strong> (a reading every so often, by the clock).</li>
+        <li><strong>Length: 600 seconds</strong> (10 minutes).</li>
+        <li><strong>Sampling rate: 2 samples/second</strong>, which is the same as <strong>0.5 seconds/sample</strong>. 600 s at 2 per second is 1200 readings (plus the one at time zero).</li>
+      </ul>
+      <div class="lp" id="lp">
+        <div class="lp-bar">Data Collection (practice copy)</div>
+        <div class="lp-menu" aria-hidden="true"><span>File</span><span>Edit</span><span class="on">Experiment</span><span>Data</span><span>Analyze</span><span>Insert</span></div>
+        <div class="lp-body">
+          <div class="lp-row"><label for="lp-mode">Mode</label><select id="lp-mode"><option>Selected Events</option><option>Events with Entry</option><option>Time Based</option></select></div>
+          <div class="lp-row"><label for="lp-len">Length</label><input type="text" id="lp-len" value="180" inputmode="decimal" autocomplete="off"><span class="unit">seconds</span></div>
+          <div class="lp-row"><label for="lp-rate">Sampling rate</label><input type="text" id="lp-rate" value="20" inputmode="decimal" autocomplete="off"><span class="unit">samples/second</span></div>
+          <div class="lp-row lp-derived" id="lp-derived" aria-live="polite"></div>
+          <div class="buttons" style="margin-top:0"><button type="button" class="main" id="lp-done">Done</button></div>
+          <p class="say" id="lp-say" aria-live="polite" style="margin-top:0"></p>
+        </div>
+      </div>
+      <p class="soft" style="margin-top:6px">Set the three settings as the handout asks, then press Done.</p>
+
+      <h3>2. Collect and Stop</h3>
+      <div class="lp-tools" aria-hidden="true"><span class="lp-btn collect">▶ Collect</span><span class="lp-btn stop">■ Stop</span></div>
+      <ul class="tips" style="margin-top:10px">
+        <li><strong>Collect</strong> starts recording. The graph draws itself as the readings come in.</li>
+        <li><strong>Wait about 10 seconds before adding the second reagent.</strong> Those first readings are the flat start: they give T<sub>i</sub>, show that the liquid and cup have settled, and mark clearly the moment of mixing on the graph. Note that time.</li>
+        <li><strong>Lid back on at once and swirl the whole time.</strong> Swirling spreads the heat evenly so the probe reads the whole liquid, and the lid keeps heat in.</li>
+        <li><strong>Stop</strong> ends the run early if your instructor allows; otherwise it stops by itself at 600 s.</li>
+      </ul>
+
+      <h3>3. Linear Fit</h3>
+      <p class="prose">Drag across the graph to select the cooling region (part 5), then choose <strong>Analyze ▸ Linear Fit</strong>. The software fits a straight line, y = m x + b, to the selected readings only, and shows m (the slope, in °C/s) and b (where the line crosses time zero, in °C).</p>
+      <h3>4. Extrapolating with the fit</h3>
+      <p class="prose">T<sub>f</sub> is the line’s temperature at the moment of mixing, t<sub>mix</sub>: <strong>T<sub>f</sub> = m · t<sub>mix</sub> + b</strong>. Note that b is <em>not</em> T<sub>f</sub> unless mixing happened at exactly t = 0.</p>
+      <div class="worked">
+        <h3>Worked example (made up)</h3>
+        A fit to the cooling region gives m = −0.00420 °C/s and b = 31.85 °C. The second reagent went in at t = 12.0 s.
+        <ol><li>T<sub>f</sub> = (−0.00420 °C/s)(12.0 s) + 31.85 °C = −0.0504 + 31.85 = <strong>31.80 °C</strong></li></ol>
+      </div>
+      <h3>5. Examine</h3>
+      <p class="prose"><strong>Analyze ▸ Examine</strong> shows the time and temperature of the reading under the pointer. Use it to read T<sub>i</sub> from the flat start, to find the time of mixing (the first reading that jumps), and to check where the fitted line crosses the mixing time. The graphs in part 5 work the same way.</p>
+
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>Settings: Time Based, 600 s, 2 samples/s (0.5 s/sample).</li>
+          <li>Collect, wait about 10 s, add the reagent, lid on, swirl the whole time.</li>
+          <li>Select the cooling region, Linear Fit, then T<sub>f</sub> = m · t<sub>mix</sub> + b. Examine reads single points.</li>
+        </ul>
+      </div>
+      <div class="mini" data-mini="software"><h3>Check yourself</h3></div>
+    </section>
+
+    <!-- ============================== 10 ============================== -->
+    <section id="bench" aria-labelledby="bench-title">
+      <h2 id="bench-title"><span class="step" aria-hidden="true">10</span>The virtual bench</h2>
+      <p class="prose">In the virtual lab every step is done by hand, on a bench in a fume hood. On the bench:</p>
+      <ul class="things">
+        <li style="--c:#c2410c"><b>Hot plate with a 400 mL beaker</b>Heats about 150 mL of water to 60–70 °C for Part I. A digital thermometer stands ready to read it.</li>
+        <li style="--c:#6b7280"><b>Balance and weighing paper</b>Reads to 0.001 g. Put the paper on, zero the balance, then add the solid.</li>
+        <li style="--c:#9aa5a0"><b>Jars of magnesium turnings and magnesium oxide</b>With a spatula, for about 0.20 g of Mg (Part II) and about 1.0 g of MgO (Part III).</li>
+        <li style="--c:#1c4c9a"><b>The calorimeter</b>Two foam cups in a beaker, a lid with a hole, the temperature probe and its interface.</li>
+        <li style="--c:#1d6fb8"><b>100 mL graduated cylinder</b>Read at the bottom of the meniscus, to 0.1 mL.</li>
+        <li style="--c:#1b7a40"><b>Bottles of 1.0 M HCl and deionized water</b>Measured in the cylinder, then poured into the cup.</li>
+        <li style="--c:#ab2a1c"><b>Waste beaker</b>In the hood. Everything that has been in the cup goes here.</li>
+      </ul>
+      <h3>How it works</h3>
+      <ul class="tips">
+        <li><strong>Click a thing to pick it up, and click again where it goes</strong> (the cylinder on a bottle to fill it, the cylinder on the cup to pour, the spatula on a jar, then on the weighing paper).</li>
+        <li><strong>Every step also has a button on the page</strong>, if a click on the bench is hard to place.</li>
+        <li><strong>The software is on the page</strong> beside the bench, as in part 9.</li>
+        <li><strong>“Speed up the wait”</strong> runs the bench clock faster during the 10-minute runs, so you do not have to sit through them.</li>
+        <li><strong>Readings are typed from what the bench shows</strong>: the cylinder, the thermometer, the balance, and the values you read off your graph. The page checks them against what was really on the bench, so read carefully.</li>
+        <li><strong>Each student gets a code</strong>, so no two students’ data are the same. Work with your own numbers.</li>
+      </ul>
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>Click to pick up, click to use; or use the step buttons.</li>
+          <li>Type what you read from the bench and from your graph; the page checks it.</li>
+          <li>Speed up the 10-minute waits.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================== 11 ============================== -->
+    <section id="safety" aria-labelledby="safety-title">
+      <h2 id="safety-title"><span class="step" aria-hidden="true">11</span>Safety</h2>
+      <p class="prose">You will not handle any of these chemicals: this lab is done entirely on the computer. A chemist doing the real experiment would still have to know their hazards, so here they are. In a real lab, goggles stay on the whole time.</p>
+      <ul class="things">
+        <li class="hazard"><b>1.0 M hydrochloric acid</b>Irritates and can burn the eyes and skin. Goggles always. If it touches skin, rinse with plenty of water for several minutes; for the eyes, use the eyewash for 15 minutes and tell your instructor. Wipe up small spills with plenty of water and tell your instructor.</li>
+        <li class="hazard"><b>Hot plate and hot water</b>A hot plate looks the same hot or cold. Do not touch its top. Handle the hot beaker with tongs or a heat-resistant glove, and pour hot water slowly.</li>
+        <li class="hazard"><b>Hydrogen gas</b>Magnesium in acid gives off hydrogen, H₂, which burns. Work in the hood, and keep flames and sparks away. The fizzing is the hydrogen.</li>
+        <li class="hazard"><b>Magnesium oxide powder</b>A fine dust: do not breathe it in. Scoop gently and tip it in carefully.</li>
+        <li class="hazard"><b>Waste</b>Everything from Parts II and III goes into the waste beaker in the hood, not down the sink. Rinse and dry the cup between parts.</li>
+      </ul>
+      <div class="inshort">
+        <h3>In short</h3>
+        <ul>
+          <li>In a real lab: goggles on, and rinse acid off skin with lots of water.</li>
+          <li>Hot plates and hot water burn. Hydrogen burns: no flames.</li>
+          <li>Do not breathe MgO dust. Waste into the waste beaker in the hood.</li>
+        </ul>
+      </div>
+      <div class="mini" data-mini="safety"><h3>Check yourself</h3></div>
+    </section>
+
+    <!-- ============================== 12 ============================== -->
+    <section id="check" aria-labelledby="check-title">
+      <h2 id="check-title"><span class="step" aria-hidden="true">12</span>Check yourself</h2>
+      <p class="prose">Questions over the whole page. Pick an answer to see whether it is right and why. Nothing is recorded.</p>
+      <ol class="quiz" id="quiz"></ol>
+      <p class="score" id="score" aria-live="polite"></p>
+    </section>
+
+    <div class="next">
+      <p><strong>Before the lab:</strong> answer the two prelab questions in your handout, with their own numbers. Bring a calculator.</p>
+      <p><a href="../index.html">← Back to the lab</a></p>
+    </div>
+
+    <p class="credit">A review for the virtual lab “Calorimetry and Hess’s Law” (CHM1045). Nothing on this page is graded or recorded. Every example on it is made up for practice: solids P, Q, R, W and Y, the acid HA, the blocks, the calorimeter constants, the curves and every mass, volume and temperature. None is a result from the lab. The real values used: the specific heat of water, 4.184 J/(g·°C); ΔH = −393.5 kJ for C(s) + O₂(g) → CO₂(g) and −283.0 kJ for CO(g) + ½ O₂(g) → CO₂(g), standard textbook values; ΔH<sub>f</sub>° of water, −285.84 kJ/mol, as given in the handout.</p>
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var NS = 'http://www.w3.org/2000/svg';
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var S = 4.184;
+
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+  function add(parent, tag, attrs, text) {
+    var node = document.createElementNS(NS, tag);
+    Object.keys(attrs || {}).forEach(function (k) { node.setAttribute(k, attrs[k]); });
+    if (text != null) node.textContent = text;
+    parent.appendChild(node);
+    return node;
+  }
+  function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+  function rand(lo, hi) { return lo + Math.random() * (hi - lo); }
+  function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
+  function round(v, d) { var f = Math.pow(10, d); return Math.round(v * f) / f; }
+  function minus(s) { return String(s).replace(/^-/, '−'); }
+  function fx(v, d) { return minus(v.toFixed(d)); }
+  function sgn(v, d) { return (v > 0 ? '+' : '') + fx(v, d); }
+  function par(v, d) { return v < 0 ? '(' + fx(v, d) + ')' : fx(v, d); }
+  function gauss() { var u = 1 - Math.random(), v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+
+  // Reads a typed number: "-1234", "−1.23e3", "1.23 x 10^3", with or without a unit after it.
+  function parseNum(text) {
+    var t = String(text).trim().replace(/,/g, '').replace(/[−–]/g, '-')
+      .replace(/\s*[x×*]\s*10\s*\^?\s*/i, 'e');
+    var m = t.match(/^[-+]?(\d+\.?\d*|\.\d+)(e[-+]?\d+)?/i);
+    return m ? parseFloat(m[0]) : NaN;
+  }
+
+  // Judges a typed answer against the right value (to 2% unless told otherwise) and a list of common slips.
+  function judge(text, target, opts) {
+    opts = opts || {};
+    var v = parseNum(text);
+    if (!isFinite(v)) return { ok: false, msg: 'Type a number, like -1234 or 28.5.' };
+    var rel = opts.rel == null ? 0.02 : opts.rel;
+    var tol = Math.max(Math.abs(target) * rel, opts.abs || 0);
+    if (Math.abs(v - target) <= tol + 1e-12) return { ok: true, msg: '' };
+    if (Math.abs(v + target) <= tol + 1e-12 && target !== 0) return { ok: false, msg: 'Right size, wrong sign. Gained heat is +, lost heat is −.' };
+    var traps = opts.traps || [];
+    for (var i = 0; i < traps.length; i++) {
+      var t = traps[i];
+      if (Math.abs(v - t.v) <= Math.max(Math.abs(t.v) * 0.01, opts.abs || 0) + 1e-12) return { ok: false, msg: t.say };
+    }
+    if (target !== 0) {
+      var ratio = v / target;
+      if (Math.abs(ratio / 1000 - 1) < 0.02 || Math.abs(ratio * 1000 - 1) < 0.02) return { ok: false, msg: 'Off by a factor of 1000. Check J against kJ, or mL against L.' };
+      if (Math.abs(ratio / 10 - 1) < 0.02 || Math.abs(ratio * 10 - 1) < 0.02) return { ok: false, msg: 'Off by a factor of 10: check the decimal point.' };
+      if (Math.abs(v - target) <= Math.abs(target) * 0.06) return { ok: false, msg: 'Close, but not quite. Keep every digit until the last step.' };
+    }
+    return { ok: false, msg: 'Not right yet. “Show the working” goes through it step by step.' };
+  }
+
+  // ---------- Small "check yourself" boxes and the final quiz ----------
+
+  // Writes "T_f", "q_cal", "C_cal" with real subscripts.
+  function subs(t) { return String(t).replace(/([A-Za-zΔ])_([A-Za-z]+)/g, '$1<sub>$2</sub>'); }
+
+  function buildQuiz(list, questions, scoreEl) {
+    var state = questions.map(function () { return null; });
+    questions.forEach(function (q, qi) {
+      var li = el('li', 'q'), opts = el('div', 'options'), fb = el('p', 'feedback');
+      fb.setAttribute('aria-live', 'polite');
+      var qt = el('p', 'q-text'); qt.innerHTML = subs(q.q); li.appendChild(qt);
+      opts.setAttribute('role', 'group');
+      opts.setAttribute('aria-label', 'Answers to question ' + (qi + 1));
+      q.options.forEach(function (o, oi) {
+        var b = el('button'); b.innerHTML = subs(o); b.type = 'button';
+        b.addEventListener('click', function () {
+          Array.prototype.forEach.call(opts.children, function (other) { other.removeAttribute('data-state'); });
+          var ok = oi === q.right;
+          b.setAttribute('data-state', ok ? 'right' : 'wrong');
+          fb.innerHTML = (ok ? '<b class="right">Right.</b> ' : '<b class="wrong">Not quite.</b> ') + subs(q.why);
+          if (state[qi] === null) state[qi] = ok; else if (ok && state[qi] === false) state[qi] = 'later';
+          if (scoreEl) score();
+        });
+        opts.appendChild(b);
+      });
+      li.appendChild(opts); li.appendChild(fb); list.appendChild(li);
+    });
+    function score() {
+      var answered = state.filter(function (x) { return x !== null; }).length;
+      var first = state.filter(function (x) { return x === true; }).length;
+      scoreEl.innerHTML = answered === questions.length ? '<span class="done">All ' + questions.length + ' answered</span>, ' + first + ' right the first time.' : answered + ' of ' + questions.length + ' answered.';
+    }
+    if (scoreEl) score();
+  }
+
+  var MINI = {
+    plan: [
+      { q: 'Why is ΔH for burning magnesium found indirectly?',
+        options: ['Burning magnesium is too fast, hot and bright to measure in a foam cup', 'Magnesium does not react with oxygen', 'The reaction takes in heat, so the cup would freeze'], right: 0,
+        why: 'The flame is blinding and thousands of degrees hot, and it is over in seconds. Two gentle reactions in acid are measured instead.' },
+      { q: 'What does Part I (hot water into cold water) measure?',
+        options: ['ΔH of a reaction', 'The calorimeter constant, C_cal', 'The specific heat of water'], right: 1,
+        why: 'No reaction happens in Part I. It measures how much heat the cup itself takes up per °C, so Parts II and III can account for it.' }
+    ],
+    energy: [
+      { q: 'A reaction in a cup of water makes the water warmer. What is the sign of q for the reaction?',
+        options: ['Positive', 'Negative', 'Zero'], right: 1,
+        why: 'The water gained the heat the reaction gave off. The reaction lost heat, so q_rxn is negative: exothermic.' },
+      { q: 'An instant cold pack gets cold when squeezed. Is the process inside exothermic or endothermic?',
+        options: ['Exothermic', 'Endothermic'], right: 1,
+        why: 'It takes heat from its surroundings (your hand, the water in the pack), so the surroundings get colder. ΔH is positive.' }
+    ],
+    specific: [
+      { q: 'The same heat is given to 100 g of each. Which warms the least?',
+        options: ['A metal with s = 0.45 J/(g·°C)', 'Water, s = 4.184 J/(g·°C)', 'A stone with s = 0.84 J/(g·°C)'], right: 1,
+        why: 'ΔT = q ÷ (m s). The largest s gives the smallest ΔT.' },
+      { q: '40.0 g of water cools from 30.0 °C to 25.0 °C. What is q for the water?',
+        options: ['+837 J', '−837 J', '−200 J'], right: 1,
+        why: 'q = (40.0)(4.184)(25.0 − 30.0) = (40.0)(4.184)(−5.0) = −837 J. It cooled, so it lost heat.' }
+    ],
+    calorimeter: [
+      { q: 'Why is C_cal needed at all?',
+        options: ['The cup, lid and probe also take up some of the heat', 'The water’s specific heat changes in a cup', 'To convert J into kJ'], right: 0,
+        why: 'A foam cup is a good insulator, not a perfect one. Its parts warm with the liquid, and C_cal counts that heat.' },
+      { q: 'In Part I, which ΔT goes with C_cal?',
+        options: ['T_f − T_hot', 'T_f − T_cold', 'T_hot − T_cold'], right: 1,
+        why: 'The cup sat with the cold water, so it starts at the cold water’s temperature and ends at T_f, just like the cold water.' }
+    ],
+    curve: [
+      { q: 'Where on the graph do you read T_f?',
+        options: ['At the highest reading', 'Where the line fitted to the cooling region crosses the time of mixing', 'At the last reading, at 600 s', 'Where the fitted line crosses t = 0'], right: 1,
+        why: 'The extrapolated line at the moment of mixing gives the temperature an instant, loss-free mix would have reached.' },
+      { q: 'You choose a cooling region that starts right at the top of the curve. What goes wrong?',
+        options: ['Nothing; any part of the fall works', 'The rounded top bends the fitted line, so the extrapolated T_f is off', 'The software cannot fit a line there'], right: 1,
+        why: 'Start where the fall has become straight, well past the top.' }
+    ],
+    enthalpy: [
+      { q: 'q_soln = +1200 J and q_cal = +80 J. What is q_rxn?',
+        options: ['+1280 J', '−1280 J', '−1120 J'], right: 1,
+        why: 'q_rxn = −(q_soln + q_cal) = −(1200 + 80) = −1280 J.' },
+      { q: 'A reaction gives q_rxn = −2.10 kJ for 0.0300 mol of the limiting reactant. What is ΔH?',
+        options: ['−70.0 kJ/mol', '−0.063 kJ/mol', '+70.0 kJ/mol'], right: 0,
+        why: 'ΔH = q_rxn ÷ n = −2.10 kJ ÷ 0.0300 mol = −70.0 kJ/mol.' }
+    ],
+    hess: [
+      { q: 'A made-up reaction X → Y has ΔH = −85 kJ. What is ΔH for Y → X?',
+        options: ['−85 kJ', '+85 kJ', '0 kJ'], right: 1,
+        why: 'Reversing a reaction changes the sign of ΔH.' },
+      { q: 'A made-up reaction 2 A → B has ΔH = +40 kJ. What is ΔH for A → ½ B?',
+        options: ['+40 kJ', '+80 kJ', '+20 kJ', '−20 kJ'], right: 2,
+        why: 'Halving the equation halves ΔH: ½ × (+40) = +20 kJ.' }
+    ],
+    errors: [
+      { q: 'A thermometer reads 0.5 °C low at every temperature. What kind of error is that?',
+        options: ['Systematic', 'Random', 'A gross error'], right: 0,
+        why: 'It is always in the same direction, by the same amount. Averaging more readings will not remove it.' },
+      { q: 'Which kind of error does averaging several trials reduce?',
+        options: ['Systematic', 'Random', 'Both equally'], right: 1,
+        why: 'Random highs and lows partly cancel in an average. A systematic shift stays in the average.' }
+    ],
+    software: [
+      { q: 'At 2 samples per second, how much time passes between readings?',
+        options: ['2 s', '0.5 s', '0.2 s'], right: 1,
+        why: '1 ÷ 2 samples/s = 0.5 s/sample.' },
+      { q: 'Why collect about 10 s of readings before adding the second reagent?',
+        options: ['To warm the probe up', 'To record the steady starting temperature and mark the moment of mixing', 'The software needs 10 s before it will fit a line'], right: 1,
+        why: 'The flat start gives T_i, and the jump after it shows exactly when mixing happened.' }
+    ],
+    safety: [
+      { q: 'Magnesium is fizzing in the acid. What should be kept away?',
+        options: ['Water', 'Flames and sparks', 'The thermometer'], right: 1,
+        why: 'The fizzing is hydrogen gas, which burns.' }
+    ]
+  };
+  // Each small check box gets its own questions.
+  Array.prototype.forEach.call(document.querySelectorAll('.mini[data-mini]'), function (box) {
+    var qs = MINI[box.getAttribute('data-mini')];
+    if (!qs) return;
+    var list = el('ol', 'quiz');
+    box.appendChild(list);
+    buildQuiz(list, qs, null);
+  });
+
+  // ---------- A practice box: numbers made fresh, typed answers checked, the working shown ----------
+
+  function practice(id, spec) {
+    var box = $(id);
+    var ask = box.querySelector('.ask'), fieldsBox = box.querySelector('.fields');
+    var say = box.querySelector('.say'), shown = box.querySelector('.shown');
+    var p, inputs;
+    function fresh() {
+      p = spec.gen();
+      ask.innerHTML = spec.ask(p);
+      clear(fieldsBox); inputs = {};
+      shown.hidden = true; shown.innerHTML = ''; say.textContent = '';
+      spec.fields.forEach(function (f) {
+        var row = el('div', 'entry-row');
+        var fid = id + '-' + f.key;
+        var lab = el('label'); lab.htmlFor = fid; lab.innerHTML = f.label;
+        var inp = el('input'); inp.type = 'text'; inp.id = fid; inp.inputMode = 'decimal'; inp.autocomplete = 'off';
+        var unit = el('span', 'unit'); unit.innerHTML = f.unit || '';
+        var msg = el('p', 'msg-inline');
+        row.appendChild(lab); row.appendChild(inp); row.appendChild(unit); row.appendChild(msg);
+        fieldsBox.appendChild(row);
+        inputs[f.key] = { inp: inp, msg: msg };
+        inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
+        inp.addEventListener('input', function () { inp.removeAttribute('data-state'); msg.textContent = ''; });
+      });
+    }
+    function check() {
+      var right = 0, filled = 0;
+      spec.fields.forEach(function (f) {
+        var io = inputs[f.key];
+        if (!io.inp.value.trim()) { io.inp.removeAttribute('data-state'); io.msg.textContent = ''; return; }
+        filled++;
+        var r = judge(io.inp.value, f.target(p), { rel: f.rel, abs: f.abs, traps: f.traps ? f.traps(p) : [] });
+        io.inp.setAttribute('data-state', r.ok ? 'right' : 'wrong');
+        io.msg.innerHTML = r.ok ? '' : subs(r.msg);
+        if (r.ok) right++;
+      });
+      var n = spec.fields.length;
+      if (!filled) { say.textContent = 'Type your answers in the boxes first.'; return; }
+      say.innerHTML = right === n ? '<b class="right">All ' + n + ' right.</b> Try “New numbers” for another one.' :
+        right + ' of ' + n + ' right so far.' + (filled < n ? ' Some boxes are still empty.' : '');
+    }
+    box.querySelector('[data-act="check"]').addEventListener('click', check);
+    box.querySelector('[data-act="show"]').addEventListener('click', function () { shown.innerHTML = spec.working(p); shown.hidden = false; });
+    box.querySelector('[data-act="new"]').addEventListener('click', fresh);
+    fresh();
+  }
+
+  // ---------- Part 2: exothermic or endothermic ----------
+
+  (function () {
+    var svg = $('exo-art'), exo = true, temp = 22.0, raf = null;
+    add(svg, 'rect', { x: 0, y: 0, width: 440, height: 300, fill: '#fbfcfd' });
+    add(svg, 'path', { d: 'M70 50 L95 270 L265 270 L290 50', fill: '#f4f1ea', stroke: '#9a917d', 'stroke-width': 3 });
+    var water = add(svg, 'path', { d: 'M78 90 L99 262 L261 262 L282 90 Z', fill: '#9cc7ea' });
+    add(svg, 'circle', { cx: 180, cy: 175, r: 38, fill: '#fff', stroke: '#17211e', 'stroke-width': 2, 'stroke-dasharray': '6 4' });
+    add(svg, 'text', { x: 180, y: 171, 'text-anchor': 'middle', class: 'svg-small', style: 'font-weight:700;fill:#17211e' }, 'system:');
+    add(svg, 'text', { x: 180, y: 187, 'text-anchor': 'middle', class: 'svg-small', style: 'fill:#17211e' }, 'the reaction');
+    add(svg, 'text', { x: 180, y: 30, 'text-anchor': 'middle', class: 'svg-small' }, 'surroundings: the water, the cup, the air');
+    var arrows = [];
+    for (var i = 0; i < 6; i++) {
+      var a = i / 6 * Math.PI * 2 + Math.PI / 6;
+      var x1 = 180 + Math.cos(a) * 44, y1 = 175 + Math.sin(a) * 44, x2 = 180 + Math.cos(a) * 78, y2 = 175 + Math.sin(a) * 78;
+      var g = add(svg, 'g', {});
+      var line = add(g, 'path', { class: 'flow-arrow flowing', d: '' });
+      var head = add(g, 'path', { fill: 'none', 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+      arrows.push({ a: a, x1: x1, y1: y1, x2: x2, y2: y2, line: line, head: head });
+    }
+    var heatLabel = add(svg, 'text', { x: 180, y: 290, 'text-anchor': 'middle', class: 'svg-label', style: 'font-weight:700' }, '');
+    // thermometer
+    add(svg, 'rect', { x: 352, y: 40, width: 22, height: 200, rx: 11, fill: '#fff', stroke: '#5d6b66', 'stroke-width': 2 });
+    add(svg, 'circle', { cx: 363, cy: 252, r: 18, fill: '#d23a2a', stroke: '#5d6b66', 'stroke-width': 2 });
+    var col = add(svg, 'rect', { x: 358, y: 140, width: 10, height: 110, fill: '#d23a2a' });
+    for (var t = 10; t <= 34; t += 4) {
+      var y = yOf(t);
+      add(svg, 'path', { d: 'M374 ' + y + ' h8', stroke: '#5d6b66', 'stroke-width': 1.5 });
+      add(svg, 'text', { x: 386, y: y + 4, class: 'svg-small' }, t + '°');
+    }
+    var tempText = add(svg, 'text', { x: 363, y: 30, 'text-anchor': 'middle', class: 'svg-bold' }, '');
+    function yOf(t) { return 230 - (t - 10) / 24 * 180; }
+    function drawTemp() {
+      var y = yOf(temp);
+      col.setAttribute('y', y); col.setAttribute('height', 252 - y);
+      tempText.textContent = temp.toFixed(1) + ' °C';
+      $('exo-temp').textContent = temp.toFixed(1) + ' °C';
+    }
+    function draw() {
+      var color = exo ? '#c2410c' : '#1d6fb8';
+      arrows.forEach(function (ar) {
+        var sx = exo ? ar.x1 : ar.x2, sy = exo ? ar.y1 : ar.y2, ex = exo ? ar.x2 : ar.x1, ey = exo ? ar.y2 : ar.y1;
+        ar.line.setAttribute('d', 'M' + sx + ' ' + sy + ' L' + ex + ' ' + ey);
+        ar.line.setAttribute('stroke', color);
+        var ang = Math.atan2(ey - sy, ex - sx), l = 10;
+        var hx1 = ex - l * Math.cos(ang - 0.5), hy1 = ey - l * Math.sin(ang - 0.5), hx2 = ex - l * Math.cos(ang + 0.5), hy2 = ey - l * Math.sin(ang + 0.5);
+        ar.head.setAttribute('d', 'M' + hx1 + ' ' + hy1 + ' L' + ex + ' ' + ey + ' L' + hx2 + ' ' + hy2);
+        ar.head.setAttribute('stroke', color);
+      });
+      heatLabel.textContent = exo ? 'heat flows OUT of the system' : 'heat flows IN to the system';
+      heatLabel.style.fill = color;
+      water.setAttribute('fill', exo ? '#f3b9a0' : '#9cc7ea');
+      $('exo-qsys').textContent = exo ? 'negative (−): loses heat' : 'positive (+): gains heat';
+      $('exo-qsur').textContent = exo ? 'positive (+): gains heat' : 'negative (−): loses heat';
+      $('exo-dh').textContent = exo ? 'negative (−)' : 'positive (+)';
+      $('exo-say').innerHTML = exo ? '<b>Exothermic.</b> The reaction gives heat to the water, so the thermometer rises. The thermometer is in the surroundings, so a rise means the <em>system</em> lost heat.' :
+        '<b>Endothermic.</b> The reaction takes heat from the water, so the thermometer falls. The system gained the heat the water lost.';
+      $('exo-btn').setAttribute('aria-pressed', exo); $('endo-btn').setAttribute('aria-pressed', !exo);
+      var goal = exo ? 30.0 : 14.0, start = 22.0;
+      if (raf) cancelAnimationFrame(raf);
+      if (reduceMotion) { temp = goal; drawTemp(); return; }
+      temp = start; var t0 = null;
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var f = Math.min(1, (ts - t0) / 2200);
+        temp = start + (goal - start) * (1 - Math.pow(1 - f, 2));
+        drawTemp();
+        if (f < 1) raf = requestAnimationFrame(step);
+      }
+      raf = requestAnimationFrame(step);
+    }
+    $('exo-btn').addEventListener('click', function () { exo = true; draw(); });
+    $('endo-btn').addEventListener('click', function () { exo = false; draw(); });
+    drawTemp(); draw();
+  })();
+
+  // ---------- Part 3: same heat, three made-up blocks ----------
+
+  (function () {
+    var BLOCKS = [
+      { name: 'Metal block (made up)', s: 0.40, color: '#7b8288' },
+      { name: 'Stone block (made up)', s: 0.85, color: '#b08d57' },
+      { name: 'Water', s: S, color: '#1d6fb8' }
+    ];
+    var svg = $('sh-art'), tbody = $('sh-table').querySelector('tbody'), cols = [], labels = [];
+    add(svg, 'rect', { x: 0, y: 0, width: 440, height: 290, fill: '#fbfcfd' });
+    function yOf(t) { return 240 - (t - 20) / 100 * 200; }
+    for (var t = 20; t <= 120; t += 20) {
+      add(svg, 'path', { d: 'M40 ' + yOf(t) + ' H420', stroke: '#e3e9e6', 'stroke-width': 1 });
+      add(svg, 'text', { x: 34, y: yOf(t) + 4, 'text-anchor': 'end', class: 'svg-small' }, t + '°');
+    }
+    BLOCKS.forEach(function (b, i) {
+      var x = 100 + i * 120;
+      add(svg, 'rect', { x: x - 10, y: 30, width: 20, height: 214, rx: 10, fill: '#fff', stroke: '#5d6b66', 'stroke-width': 1.5 });
+      add(svg, 'circle', { cx: x, cy: 252, r: 14, fill: b.color, stroke: '#5d6b66', 'stroke-width': 1.5 });
+      cols.push(add(svg, 'rect', { x: x - 5, y: 200, width: 10, height: 50, fill: b.color }));
+      labels.push(add(svg, 'text', { x: x, y: 22, 'text-anchor': 'middle', class: 'svg-bold' }, ''));
+      add(svg, 'text', { x: x, y: 284, 'text-anchor': 'middle', class: 'svg-small' }, i === 2 ? 'water' : (i === 0 ? 'metal' : 'stone'));
+      var tr = el('tr');
+      tr.appendChild(el('th', null, b.name)); tr.lastChild.scope = 'row';
+      tr.appendChild(el('td', null, b.s.toFixed(b.s === S ? 3 : 2)));
+      tr.appendChild(el('td')); tr.appendChild(el('td'));
+      tbody.appendChild(tr);
+      b.row = tr;
+    });
+    function update() {
+      var q = +$('sh-q').value, m = +$('sh-m').value;
+      $('sh-q-out').textContent = q + ' J';
+      $('sh-m-out').textContent = m + ' g';
+      BLOCKS.forEach(function (b, i) {
+        var dT = q / (m * b.s), Tf = 20 + dT, shown = Math.min(Tf, 125);
+        var y = yOf(shown);
+        cols[i].setAttribute('y', y); cols[i].setAttribute('height', 250 - y);
+        labels[i].textContent = (Tf > 125 ? '>' : '') + Math.min(Tf, 999).toFixed(1) + '°';
+        b.row.children[2].textContent = '+' + dT.toFixed(1);
+        b.row.children[3].textContent = Tf.toFixed(1);
+      });
+    }
+    $('sh-q').addEventListener('input', update); $('sh-m').addEventListener('input', update);
+    update();
+  })();
+
+  // Part 3 practice: q for water.
+  practice('pr-q', {
+    gen: function () {
+      var V = round(rand(40, 120), 1), Ti = round(rand(18, 60), 2), dT = round(rand(3, 25), 2) * (Math.random() < 0.4 ? -1 : 1);
+      var Tf = round(Ti + dT, 2);
+      return { V: V, Ti: Ti, Tf: Tf, dT: Tf - Ti, q: V * S * (Tf - Ti) };
+    },
+    ask: function (p) { return 'A sample of water measures <strong>' + p.V.toFixed(1) + ' mL</strong>. Its temperature goes from <strong>' + p.Ti.toFixed(2) + ' °C</strong> to <strong>' + p.Tf.toFixed(2) + ' °C</strong>. Take 1.00 g/mL and 4.184 J/(g·°C).'; },
+    fields: [
+      { key: 'dT', label: 'ΔT (with its sign)', unit: '°C', target: function (p) { return p.dT; }, abs: 0.011, rel: 0.001 },
+      { key: 'q', label: 'q for the water (with its sign)', unit: 'J', target: function (p) { return p.q; },
+        traps: function (p) { return [{ v: p.V * (p.Tf - p.Ti), say: 'Multiply by the specific heat, 4.184 J/(g·°C), too.' }]; } }
+    ],
+    working: function (p) {
+      return '<p>Mass: ' + p.V.toFixed(1) + ' mL × 1.00 g/mL = ' + p.V.toFixed(1) + ' g</p><p>ΔT = ' + p.Tf.toFixed(2) + ' − ' + p.Ti.toFixed(2) + ' = ' + sgn(p.dT, 2) + ' °C</p><p>q = (' + p.V.toFixed(1) + ' g)(4.184 J/(g·°C))(' + fx(p.dT, 2) + ' °C) = <strong>' + sgn(p.q, 0) + ' J</strong> (' + (p.q < 0 ? 'the water lost heat' : 'the water gained heat') + ')</p>';
+    }
+  });
+
+  // ---------- Part 4: mixing hot and cold water ----------
+
+  (function () {
+    var svg = $('mix-art'), anim = 1, raf = null;
+    var ids = ['mh', 'th', 'mc', 'tc', 'c'];
+    function val(k) { return +$('mix-' + k).value; }
+    function compute() {
+      var mh = val('mh'), th = val('th'), mc = val('mc'), tc = val('tc'), C = val('c');
+      var Tf = (mh * S * th + mc * S * tc + C * tc) / (mh * S + mc * S + C);
+      return { mh: mh, th: th, mc: mc, tc: tc, C: C, Tf: Tf, qh: mh * S * (Tf - th), qc: mc * S * (Tf - tc), qcal: C * (Tf - tc) };
+    }
+    function draw() {
+      var r = compute();
+      $('mix-mh-out').textContent = r.mh + ' g'; $('mix-th-out').textContent = r.th.toFixed(1) + ' °C';
+      $('mix-mc-out').textContent = r.mc + ' g'; $('mix-tc-out').textContent = r.tc.toFixed(1) + ' °C';
+      $('mix-c-out').textContent = r.C + ' J/°C';
+      clear(svg);
+      add(svg, 'rect', { x: 0, y: 0, width: 520, height: 260, fill: '#fbfcfd' });
+      var zero = 260, nice = [2000, 4000, 6000, 8000, 12000, 16000, 24000].filter(function (n) { return n >= Math.abs(r.qh); })[0] || 24000, scale = 230 / nice;
+      add(svg, 'path', { d: 'M' + zero + ' 20 V240', stroke: '#17211e', 'stroke-width': 2 });
+      add(svg, 'text', { x: zero, y: 254, 'text-anchor': 'middle', class: 'svg-small' }, '0 J');
+      add(svg, 'text', { x: zero - 10, y: 16, 'text-anchor': 'end', class: 'svg-small' }, '← heat lost (−)');
+      add(svg, 'text', { x: zero + 10, y: 16, class: 'svg-small' }, 'heat gained (+) →');
+      var qh = r.qh * anim, qc = r.qc * anim, qcal = r.qcal * anim;
+      // Row 1: hot water (negative, to the left)
+      var wh = Math.abs(qh) * scale;
+      add(svg, 'rect', { x: zero - wh, y: 40, width: wh, height: 40, fill: '#c2410c' });
+      add(svg, 'text', { x: zero + 8, y: 58, class: 'bar-label' }, 'hot water');
+      add(svg, 'text', { x: zero + 8, y: 76, class: 'bar-value' }, 'q = ' + sgn(qh, 0) + ' J');
+      // Row 2: cold water and cup (positive, stacked to the right)
+      var wc = qc * scale, wcal = qcal * scale;
+      add(svg, 'rect', { x: zero, y: 110, width: Math.max(0, wc), height: 40, fill: '#1d6fb8' });
+      add(svg, 'rect', { x: zero + Math.max(0, wc), y: 110, width: Math.max(0, wcal), height: 40, fill: '#9aa5a0', stroke: '#6b7280', 'stroke-width': 1 });
+      add(svg, 'text', { x: zero - 8, y: 128, 'text-anchor': 'end', class: 'bar-label' }, 'cold water');
+      add(svg, 'text', { x: zero - 8, y: 146, 'text-anchor': 'end', class: 'bar-value' }, 'q = ' + sgn(qc, 0) + ' J');
+      add(svg, 'text', { x: zero - 8, y: 186, 'text-anchor': 'end', class: 'bar-label' }, 'the cup');
+      add(svg, 'text', { x: zero - 8, y: 204, 'text-anchor': 'end', class: 'bar-value' }, 'q = ' + sgn(qcal, 0) + ' J');
+      add(svg, 'path', { d: 'M' + (zero + Math.max(0, wc) + Math.max(0, wcal) / 2) + ' 152 L' + (zero + 6) + ' 180', stroke: '#6b7280', 'stroke-width': 1.2, fill: 'none' });
+      add(svg, 'text', { x: zero - 8, y: 236, 'text-anchor': 'end', class: 'svg-small' }, 'scale: full width = ' + nice + ' J');
+      var Tnow = r.th + (r.Tf - r.th) * anim, Tc = r.tc + (r.Tf - r.tc) * anim;
+      $('mix-tf').textContent = r.Tf.toFixed(2) + ' °C';
+      $('mix-dth').textContent = sgn(r.Tf - r.th, 2) + ' °C';
+      $('mix-dtc').textContent = sgn(r.Tf - r.tc, 2) + ' °C';
+      $('mix-sum').textContent = anim < 1 ? 'Mixing… hot water at ' + Tnow.toFixed(1) + ' °C, cold water and cup at ' + Tc.toFixed(1) + ' °C' :
+        '(' + sgn(r.qh, 0) + ' J) + (' + sgn(r.qc, 0) + ' J) + (' + sgn(r.qcal, 0) + ' J) = ' + fx(Math.abs(r.qh + r.qc + r.qcal) < 0.5 ? 0 : r.qh + r.qc + r.qcal, 0) + ' J';
+    }
+    ids.forEach(function (k) { $('mix-' + k).addEventListener('input', function () { if (raf) cancelAnimationFrame(raf); anim = 1; draw(); }); });
+    $('mix-go').addEventListener('click', function () {
+      if (raf) cancelAnimationFrame(raf);
+      if (reduceMotion) { anim = 1; draw(); return; }
+      var t0 = null;
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        anim = Math.min(1, (ts - t0) / 1600);
+        draw();
+        if (anim < 1) raf = requestAnimationFrame(step);
+      }
+      raf = requestAnimationFrame(step);
+    });
+    draw();
+  })();
+
+  // Part 4 practice: find C_cal.
+  practice('pr-cal', {
+    gen: function () {
+      var vc = round(rand(45, 55), 1), vh = round(rand(45, 55), 1);
+      var tc = round(rand(19, 24), 2), th = round(rand(58, 72), 2), C = rand(18, 60);
+      var Tf = round((vh * S * th + vc * S * tc + C * tc) / (vh * S + vc * S + C), 2);
+      var qh = vh * S * (Tf - th), qc = vc * S * (Tf - tc), qcal = -(qh + qc);
+      return { vc: vc, vh: vh, tc: tc, th: th, Tf: Tf, qh: qh, qc: qc, qcal: qcal, C: qcal / (Tf - tc) };
+    },
+    ask: function (p) {
+      return 'Cold water, <strong>' + p.vc.toFixed(1) + ' mL</strong> at <strong>' + p.tc.toFixed(2) + ' °C</strong>, is in the calorimeter. Hot water, <strong>' + p.vh.toFixed(1) + ' mL</strong> at <strong>' + p.th.toFixed(2) + ' °C</strong>, is poured in. The extrapolated final temperature is <strong>' + p.Tf.toFixed(2) + ' °C</strong>. Take 1.00 g/mL and 4.184 J/(g·°C). Answers are accepted within 2%.';
+    },
+    fields: [
+      { key: 'qh', label: 'q<sub>hw</sub>, heat of the hot water', unit: 'J', target: function (p) { return p.qh; } },
+      { key: 'qc', label: 'q<sub>cw</sub>, heat of the cold water', unit: 'J', target: function (p) { return p.qc; } },
+      { key: 'qcal', label: 'q<sub>cal</sub>, heat of the cup', unit: 'J', target: function (p) { return p.qcal; },
+        traps: function (p) { return [{ v: p.qh + p.qc, say: 'q_cal = −(q_hw + q_cw): change the sign of the sum.' }]; } },
+      { key: 'C', label: 'C<sub>cal</sub>, the calorimeter constant', unit: 'J/°C', target: function (p) { return p.C; },
+        traps: function (p) { return [{ v: p.qcal / (p.Tf - p.th), say: 'Divide by the cup’s ΔT, which is the cold water’s: T_f − T_cold.' }, { v: p.qcal / (p.th - p.tc), say: 'Divide by the cup’s ΔT, T_f − T_cold, not by T_hot − T_cold.' }]; } }
+    ],
+    working: function (p) {
+      return '<p>q<sub>hw</sub> = (' + p.vh.toFixed(1) + ' g)(4.184)(' + p.Tf.toFixed(2) + ' − ' + p.th.toFixed(2) + ') = (' + p.vh.toFixed(1) + ')(4.184)(' + fx(p.Tf - p.th, 2) + ') = <strong>' + sgn(p.qh, 0) + ' J</strong></p>' +
+        '<p>q<sub>cw</sub> = (' + p.vc.toFixed(1) + ' g)(4.184)(' + p.Tf.toFixed(2) + ' − ' + p.tc.toFixed(2) + ') = (' + p.vc.toFixed(1) + ')(4.184)(' + fx(p.Tf - p.tc, 2) + ') = <strong>' + sgn(p.qc, 0) + ' J</strong></p>' +
+        '<p>q<sub>cal</sub> = −(q<sub>hw</sub> + q<sub>cw</sub>) = −(' + par(p.qh, 0) + ' + ' + par(p.qc, 0) + ') = <strong>' + sgn(p.qcal, 0) + ' J</strong></p>' +
+        '<p>C<sub>cal</sub> = q<sub>cal</sub> ÷ ΔT<sub>cal</sub> = ' + fx(p.qcal, 0) + ' J ÷ ' + fx(p.Tf - p.tc, 2) + ' °C = <strong>' + fx(p.C, 1) + ' J/°C</strong></p>';
+    }
+  });
+
+  // ---------- Part 5: the temperature-time curve and the cooling-line fit ----------
+
+  function makeCurve() {
+    var Ti = round(rand(19.5, 23.5), 2), dT = rand(5.5, 13), tm = round(rand(10, 40) * 2, 0) / 2;
+    var tau = rand(12, 24), k = -rand(0.0030, 0.0075), Tf = Ti + dT;
+    var pts = [];
+    for (var i = 0; i <= 1200; i++) {
+      var t = i * 0.5, T;
+      if (t < tm) T = Ti; else T = Tf + k * (t - tm) - dT * Math.exp(-(t - tm) / tau);
+      pts.push({ t: t, T: round(T + gauss() * 0.02, 2) });
+    }
+    var max = pts.reduce(function (m, p) { return p.T > m.T ? p : m; }, pts[0]);
+    return { Ti: Ti, Tf: Tf, tm: tm, tau: tau, k: k, pts: pts, max: max };
+  }
+
+  function fitLine(pts, a, b) {
+    var n = 0, sx = 0, sy = 0, sxx = 0, sxy = 0;
+    pts.forEach(function (p) { if (p.t >= a && p.t <= b) { n++; sx += p.t; sy += p.T; sxx += p.t * p.t; sxy += p.t * p.T; } });
+    if (n < 10) return null;
+    var m = (n * sxy - sx * sy) / (n * sxx - sx * sx);
+    return { m: m, b: (sy - m * sx) / n, n: n };
+  }
+
+  function curveTool(prefix, opts) {
+    var canvas = $(prefix), ctx = canvas.getContext('2d');
+    var exOut = $(prefix + '-ex'), fitOut = $(prefix + '-fit'), sa = $(prefix + '-a'), sb = $(prefix + '-b');
+    var data = null, a = 0, b = 0, fit = null, cursor = null, drag = null, W = 900, H = 460;
+    var pad = { l: 58, r: 16, t: 16, b: 46 }, yLo = 0, yHi = 1;
+    function X(t) { return pad.l + t / 600 * (W - pad.l - pad.r); }
+    function Y(T) { return H - pad.b - (T - yLo) / (yHi - yLo) * (H - pad.t - pad.b); }
+    function tAt(px) { return Math.max(0, Math.min(600, (px - pad.l) / (W - pad.l - pad.r) * 600)); }
+    function size() {
+      var w = canvas.clientWidth || 900, dpr = window.devicePixelRatio || 1;
+      W = Math.max(300, w); H = Math.round(W * (W < 520 ? 0.75 : 0.5));
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      pad.l = W < 520 ? 46 : 58;
+      draw();
+    }
+    function setData(d) {
+      data = d; a = 0; b = 0; fit = null; cursor = null;
+      var lo = Infinity, hi = -Infinity;
+      d.pts.forEach(function (p) { lo = Math.min(lo, p.T); hi = Math.max(hi, p.T); });
+      hi = Math.max(hi, d.Tf);
+      yLo = Math.floor(lo - 0.5); yHi = Math.ceil(hi + 0.5);
+      sa.value = 0; sb.value = 0;
+      refit(); draw(); examine();
+    }
+    function refit() {
+      var lo = Math.min(a, b), hi = Math.max(a, b);
+      sa.value = lo; sb.value = hi;
+      $(prefix + '-a-out').textContent = lo.toFixed(0) + ' s';
+      $(prefix + '-b-out').textContent = hi.toFixed(0) + ' s';
+      fit = hi - lo >= 5 ? fitLine(data.pts, lo, hi) : null;
+      var html = '';
+      if (fit) {
+        var at = fit.m * data.tm + fit.b;
+        html = 'Linear fit to ' + fit.n + ' readings from ' + lo.toFixed(0) + ' s to ' + hi.toFixed(0) + ' s: T = (' + fx(fit.m, 5) + ' °C/s) · t + ' + fit.b.toFixed(2) + ' °C.';
+        if (opts.showTf) html += '<br>At the time of mixing, t = ' + data.tm.toFixed(1) + ' s: <strong>T<sub>f</sub> = ' + at.toFixed(2) + ' °C</strong>. Highest reading: ' + data.max.T.toFixed(2) + ' °C.';
+        else html += '<br>The second reagent went in at t = ' + data.tm.toFixed(1) + ' s. Examine the line there to read T<sub>f</sub>.';
+        if (lo < Math.max(data.tm + 4 * data.tau, data.max.t + 30)) html += '<br><span class="warn">Warning: this region takes in the rise or the rounded top, so the line is bent. Start later, where the fall is straight.</span>';
+        else if (hi - lo < 90) html += '<br><span class="warn">This region is short, so the noise can tip the line. Take a few minutes of cooling.</span>';
+      } else if (hi - lo > 0) html = 'Choose a longer region to fit a line.';
+      fitOut.innerHTML = html;
+      if (opts.onFit) opts.onFit(fit);
+    }
+    function examine() {
+      if (cursor === null) { exOut.textContent = 'Examine: point at the graph (or use the arrow keys) to read a point.'; return; }
+      var i = Math.round(cursor / 0.5), p = data.pts[i];
+      var s = 'Examine: t = ' + p.t.toFixed(1) + ' s, T = ' + p.T.toFixed(2) + ' °C';
+      if (fit) s += ';  fitted line at this time: ' + (fit.m * p.t + fit.b).toFixed(2) + ' °C';
+      exOut.textContent = s;
+    }
+    function draw() {
+      if (!data) return;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#fdfefc'; ctx.fillRect(0, 0, W, H);
+      ctx.lineWidth = 1;
+      for (var t = 0; t <= 600; t += 25) {
+        ctx.strokeStyle = t % 100 === 0 ? '#a9cdb8' : '#dcebe2';
+        ctx.beginPath(); ctx.moveTo(X(t), Y(yLo)); ctx.lineTo(X(t), Y(yHi)); ctx.stroke();
+      }
+      var minorStep = (yHi - yLo) > 10 ? 0.5 : 0.2;
+      for (var T = yLo; T <= yHi + 1e-9; T += minorStep) {
+        var major = Math.abs(T - Math.round(T)) < 1e-6;
+        ctx.strokeStyle = major ? '#a9cdb8' : '#dcebe2';
+        ctx.beginPath(); ctx.moveTo(X(0), Y(T)); ctx.lineTo(X(600), Y(T)); ctx.stroke();
+      }
+      ctx.strokeStyle = '#5d7567'; ctx.lineWidth = 1.25; ctx.strokeRect(X(0), Y(yHi), X(600) - X(0), Y(yLo) - Y(yHi));
+      ctx.fillStyle = '#4b5854'; ctx.font = (W < 520 ? 11 : 13) + 'px system-ui, sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      for (t = 0; t <= 600; t += 100) ctx.fillText(String(t), X(t), Y(yLo) + 5);
+      ctx.fillText('time (s)', (X(0) + X(600)) / 2, H - 18);
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      var lblStep = (yHi - yLo) > 12 ? 2 : 1;
+      for (T = yLo; T <= yHi; T += lblStep) ctx.fillText(String(T), X(0) - 6, Y(T));
+      ctx.save(); ctx.translate(12, (Y(yLo) + Y(yHi)) / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center'; ctx.fillText('temperature (°C)', 0, 0); ctx.restore();
+      // region
+      var lo = Math.min(a, b), hi = Math.max(a, b);
+      if (hi > lo) { ctx.fillStyle = 'rgba(28, 76, 154, 0.10)'; ctx.fillRect(X(lo), Y(yHi), X(hi) - X(lo), Y(yLo) - Y(yHi)); }
+      // mixing time
+      ctx.strokeStyle = '#b4541a'; ctx.setLineDash([5, 4]); ctx.lineWidth = 1.25;
+      ctx.beginPath(); ctx.moveTo(X(data.tm), Y(yLo)); ctx.lineTo(X(data.tm), Y(yHi)); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = '#b4541a'; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.font = 'bold ' + (W < 520 ? 11 : 13) + 'px system-ui, sans-serif';
+      ctx.fillText('mixing', X(data.tm) + 4, Y(yHi) + 4);
+      // data
+      ctx.strokeStyle = '#1c4c9a'; ctx.lineWidth = 1.5; ctx.beginPath();
+      data.pts.forEach(function (p, i) { if (i === 0) ctx.moveTo(X(p.t), Y(p.T)); else ctx.lineTo(X(p.t), Y(p.T)); });
+      ctx.stroke();
+      // fit
+      if (fit) {
+        ctx.strokeStyle = '#17211e'; ctx.lineWidth = 2.25;
+        ctx.beginPath(); ctx.moveTo(X(lo), Y(fit.m * lo + fit.b)); ctx.lineTo(X(hi), Y(fit.m * hi + fit.b)); ctx.stroke();
+        ctx.setLineDash([7, 5]); ctx.lineWidth = 2;
+        var t0 = Math.max(0, data.tm - 15);
+        ctx.beginPath(); ctx.moveTo(X(t0), Y(fit.m * t0 + fit.b)); ctx.lineTo(X(lo), Y(fit.m * lo + fit.b)); ctx.stroke(); ctx.setLineDash([]);
+        var yy = Y(fit.m * data.tm + fit.b);
+        ctx.fillStyle = '#fff'; ctx.strokeStyle = '#b4541a'; ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.arc(X(data.tm), yy, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      }
+      // cursor
+      if (cursor !== null) {
+        var p = data.pts[Math.round(cursor / 0.5)];
+        ctx.strokeStyle = '#4b5854'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(X(p.t), Y(yLo)); ctx.lineTo(X(p.t), Y(yHi)); ctx.stroke();
+        ctx.fillStyle = '#ab2a1c'; ctx.beginPath(); ctx.arc(X(p.t), Y(p.T), 4, 0, Math.PI * 2); ctx.fill();
+        if (fit) { ctx.fillStyle = '#17211e'; ctx.beginPath(); ctx.arc(X(p.t), Y(fit.m * p.t + fit.b), 3.5, 0, Math.PI * 2); ctx.fill(); }
+      }
+    }
+    function pxOf(e) { var r = canvas.getBoundingClientRect(); return (e.clientX - r.left) * (W / r.width); }
+    canvas.addEventListener('pointerdown', function (e) {
+      var x = pxOf(e); drag = { x: x, t: tAt(x), moved: false };
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener('pointermove', function (e) {
+      var x = pxOf(e), t = tAt(x);
+      if (drag) {
+        if (Math.abs(x - drag.x) > 5) drag.moved = true;
+        if (drag.moved) { a = round(drag.t * 2, 0) / 2; b = round(t * 2, 0) / 2; refit(); }
+      }
+      cursor = round(t * 2, 0) / 2; examine(); draw();
+    });
+    canvas.addEventListener('pointerup', function () { drag = null; });
+    canvas.addEventListener('pointercancel', function () { drag = null; });
+    canvas.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      var step = e.shiftKey ? 10 : 0.5;
+      if (cursor === null) cursor = data.tm;
+      cursor = Math.max(0, Math.min(600, cursor + (e.key === 'ArrowRight' ? step : -step)));
+      examine(); draw();
+    });
+    sa.addEventListener('input', function () { a = +sa.value; b = Math.max(+sb.value, a); refit(); draw(); examine(); });
+    sb.addEventListener('input', function () { b = +sb.value; a = Math.min(+sa.value, b); refit(); draw(); examine(); });
+    window.addEventListener('resize', size);
+    var api = {
+      set: setData,
+      region: function (lo, hi) { a = lo; b = hi; refit(); draw(); examine(); },
+      data: function () { return data; },
+      fit: function () { return fit; }
+    };
+    setData(makeCurve());
+    size();
+    return api;
+  }
+
+  var demoCurve = curveTool('cv-demo', { showTf: true });
+  function goodRegion(d) { return [Math.min(560, Math.ceil((d.tm + 6 * d.tau) / 5) * 5), 595]; }
+  $('cv-demo-new').addEventListener('click', function () { demoCurve.set(makeCurve()); });
+  $('cv-demo-good').addEventListener('click', function () { var r = goodRegion(demoCurve.data()); demoCurve.region(r[0], r[1]); });
+  $('cv-demo-bad').addEventListener('click', function () { var d = demoCurve.data(); demoCurve.region(Math.max(d.tm + 5, Math.floor(d.max.t / 5) * 5 - 40), Math.floor(d.max.t / 5) * 5 + 80); });
+
+  (function () {
+    var tool = curveTool('cv-pr', { showTf: false }), inp = $('cv-pr-in'), say = $('cv-pr-say'), shown = $('cv-pr-shown');
+    function ask() {
+      var d = tool.data();
+      $('cv-pr-ask').innerHTML = 'A made-up run: the second reagent went in at <strong>t = ' + d.tm.toFixed(1) + ' s</strong>. Choose a good cooling region, then read the fitted line at the time of mixing (examine it there) and type T<sub>f</sub> to 0.01 °C. Answers within 0.3 °C are accepted, as in the lab.';
+      inp.value = ''; inp.removeAttribute('data-state'); say.textContent = ''; shown.hidden = true;
+    }
+    ask();
+    $('cv-pr-new').addEventListener('click', function () { tool.set(makeCurve()); ask(); });
+    function check() {
+      var d = tool.data(), v = parseNum(inp.value);
+      if (!isFinite(v)) { say.textContent = 'Type a temperature, like 31.85.'; return; }
+      var ok = Math.abs(v - d.Tf) <= 0.3;
+      inp.setAttribute('data-state', ok ? 'right' : 'wrong');
+      if (ok) { say.innerHTML = '<b class="right">Right.</b> A good fit puts T<sub>f</sub> at ' + d.Tf.toFixed(2) + ' °C; yours is within 0.3 °C.'; return; }
+      if (Math.abs(v - d.max.T) <= 0.1) { say.innerHTML = '<b class="wrong">That is the highest reading.</b> T<sub>f</sub> comes from the cooling line extended back to the mixing time, and it is higher than the top.'; return; }
+      if (Math.abs(v - d.Ti) <= 0.2) { say.innerHTML = '<b class="wrong">That is the starting temperature, T<sub>i</sub>.</b> Read the fitted line at the mixing time instead.'; return; }
+      var f = tool.fit();
+      if (f && Math.abs(v - f.b) <= 0.05 && Math.abs(f.b - d.Tf) > 0.3) { say.innerHTML = '<b class="wrong">That is b, the line at t = 0.</b> Read the line at the mixing time, t = ' + d.tm.toFixed(1) + ' s.'; return; }
+      say.innerHTML = '<b class="wrong">Not within 0.3 °C.</b> Check that your region starts well past the top and runs a few minutes, then examine the line at t = ' + d.tm.toFixed(1) + ' s.';
+    }
+    $('cv-pr-check').addEventListener('click', check);
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
+    inp.addEventListener('input', function () { inp.removeAttribute('data-state'); });
+    $('cv-pr-show').addEventListener('click', function () {
+      var d = tool.data(), r = goodRegion(d);
+      tool.region(r[0], r[1]);
+      var f = tool.fit();
+      shown.hidden = false;
+      shown.innerHTML = '<p>A good cooling region here runs from ' + r[0] + ' s to ' + r[1] + ' s, well past the top. The fit is T = (' + fx(f.m, 5) + ') t + ' + f.b.toFixed(2) + '.</p><p>At t = ' + d.tm.toFixed(1) + ' s: T<sub>f</sub> = (' + fx(f.m, 5) + ')(' + d.tm.toFixed(1) + ') + ' + f.b.toFixed(2) + ' = <strong>' + (f.m * d.tm + f.b).toFixed(2) + ' °C</strong>. The highest reading was only ' + d.max.T.toFixed(2) + ' °C.</p>';
+    });
+  })();
+
+  // Part 6 practice: ΔH of a made-up solid dissolving (kept far from any value of the lab's reactions).
+  practice('pr-dh', {
+    gen: function () {
+      for (;;) {
+        var name = pick(['P', 'R', 'W']);
+        var M = round(rand(60, 180), 1), mass = round(rand(1.5, 5.0), 3), V = round(rand(60, 110), 1);
+        var C = round(rand(18, 55), 1), Ti = round(rand(20, 24), 2);
+        var endo = Math.random() < 0.4;
+        var dH = endo ? rand(12, 40) : -rand(22, 95); // kJ/mol; far from any value the lab's own reactions give
+        var n = mass / M, qrxn = dH * 1000 * n;
+        var dT = -qrxn / (V * S + C);
+        var Tf = round(Ti + dT, 2), dTr = Tf - Ti;
+        if (Math.abs(dTr) < 1.2) continue;
+        var qs = V * S * dTr, qc = C * dTr, qr = -(qs + qc), H = qr / 1000 / n;
+        return { name: name, M: M, mass: mass, V: V, C: C, Ti: Ti, Tf: Tf, dT: dTr, qs: qs, qc: qc, qr: qr, n: n, H: H };
+      }
+    },
+    ask: function (p) {
+      return '<strong>' + p.mass.toFixed(3) + ' g</strong> of a made-up solid ' + p.name + ' (molar mass ' + p.M.toFixed(1) + ' g/mol) dissolves in <strong>' + p.V.toFixed(1) + ' mL</strong> of water in a calorimeter with C<sub>cal</sub> = <strong>' + p.C.toFixed(1) + ' J/°C</strong>. The temperature goes from <strong>' + p.Ti.toFixed(2) + ' °C</strong> to an extrapolated <strong>' + p.Tf.toFixed(2) + ' °C</strong>. Find ΔH per mole of ' + p.name + '. Take 1.00 g/mL and 4.184 J/(g·°C); answers within 2% are accepted.';
+    },
+    fields: [
+      { key: 'qs', label: 'q<sub>soln</sub>, heat of the solution', unit: 'J', target: function (p) { return p.qs; } },
+      { key: 'qc', label: 'q<sub>cal</sub>, heat of the cup', unit: 'J', target: function (p) { return p.qc; } },
+      { key: 'qr', label: 'q<sub>rxn</sub>, heat of the reaction', unit: 'J', target: function (p) { return p.qr; },
+        traps: function (p) { return [{ v: p.qs, say: 'Add q_cal too: q_rxn = −(q_soln + q_cal).' }, { v: -p.qs, say: 'Add q_cal too: q_rxn = −(q_soln + q_cal).' }]; } },
+      { key: 'n', label: 'n, moles of the solid', unit: 'mol', target: function (p) { return p.n; } },
+      { key: 'H', label: 'ΔH, per mole of the solid', unit: 'kJ/mol', target: function (p) { return p.H; },
+        traps: function (p) { return [{ v: p.qr / p.mass / 1000, say: 'Divide by moles, not by grams.' }]; } }
+    ],
+    working: function (p) {
+      return '<p>ΔT = ' + p.Tf.toFixed(2) + ' − ' + p.Ti.toFixed(2) + ' = ' + sgn(p.dT, 2) + ' °C (' + (p.dT > 0 ? 'the water warmed: exothermic' : 'the water cooled: endothermic') + ')</p>' +
+        '<p>q<sub>soln</sub> = (' + p.V.toFixed(1) + ' g)(4.184)(' + fx(p.dT, 2) + ') = <strong>' + sgn(p.qs, 0) + ' J</strong></p>' +
+        '<p>q<sub>cal</sub> = (' + p.C.toFixed(1) + ' J/°C)(' + fx(p.dT, 2) + ' °C) = <strong>' + sgn(p.qc, 0) + ' J</strong></p>' +
+        '<p>q<sub>rxn</sub> = −(' + par(p.qs, 0) + ' + ' + par(p.qc, 0) + ') = <strong>' + sgn(p.qr, 0) + ' J</strong> = ' + fx(p.qr / 1000, 3) + ' kJ</p>' +
+        '<p>n = ' + p.mass.toFixed(3) + ' g ÷ ' + p.M.toFixed(1) + ' g/mol = <strong>' + p.n.toFixed(5) + ' mol</strong></p>' +
+        '<p>ΔH = ' + fx(p.qr / 1000, 3) + ' kJ ÷ ' + p.n.toFixed(5) + ' mol = <strong>' + sgn(p.H, 1) + ' kJ/mol</strong></p>';
+    }
+  });
+
+  // ---------- Part 7: the Hess's law puzzle ----------
+
+  (function () {
+    var NAMES = { C: 'C(s)', O2: 'O₂(g)', CO2: 'CO₂(g)', CO: 'CO(g)' };
+    var ORDER = ['C', 'CO', 'O2', 'CO2'];
+    var EQS = [
+      { label: 'A', left: { C: 1, O2: 1 }, right: { CO2: 1 }, dH: -393.5 },
+      { label: 'B', left: { CO: 1, O2: 0.5 }, right: { CO2: 1 }, dH: -283.0 }
+    ];
+    var TARGET = { C: -1, O2: -0.5, CO: 1 };
+    var st = EQS.map(function () { return { flip: false, k: 1 }; });
+    var rows = $('hz-rows'), rowEls = [];
+
+    function coef(c) {
+      var whole = Math.floor(c + 1e-9), f = c - whole, fr = '';
+      if (Math.abs(f - 0.25) < 1e-6) fr = '¼'; else if (Math.abs(f - 0.5) < 1e-6) fr = '½'; else if (Math.abs(f - 0.75) < 1e-6) fr = '¾';
+      if (whole === 1 && !fr) return '';
+      return (whole ? String(whole) : '') + fr + (whole || fr ? ' ' : '');
+    }
+    function term(sp, c) { return coef(c) + NAMES[sp]; }
+    function sideText(side) {
+      return ORDER.filter(function (sp) { return side[sp]; }).map(function (sp) { return term(sp, side[sp]); }).join(' + ');
+    }
+    function effective(i) {
+      var e = EQS[i], s = st[i], L = s.flip ? e.right : e.left, R = s.flip ? e.left : e.right, out = { left: {}, right: {} };
+      Object.keys(L).forEach(function (sp) { out.left[sp] = L[sp] * s.k; });
+      Object.keys(R).forEach(function (sp) { out.right[sp] = R[sp] * s.k; });
+      out.dH = e.dH * (s.flip ? -1 : 1) * s.k;
+      return out;
+    }
+    function fmtDH(v) { return 'ΔH = ' + (v > 0 ? '+' : '') + minus(v.toFixed(1)) + ' kJ'; }
+
+    EQS.forEach(function (e, i) {
+      var row = el('div', 'eqrow');
+      var head = el('div'); head.innerHTML = '<b>' + e.label + ':</b> <span class="eqtext"></span> &nbsp; <span class="dh"></span>';
+      var ctl = el('div', 'eqctl'); ctl.setAttribute('role', 'group'); ctl.setAttribute('aria-label', 'Change equation ' + e.label);
+      var flip = el('button', null, '⇄ Flip'); flip.type = 'button'; flip.setAttribute('aria-pressed', 'false');
+      flip.setAttribute('aria-label', 'Flip equation ' + e.label);
+      flip.addEventListener('click', function () { st[i].flip = !st[i].flip; update(); });
+      ctl.appendChild(flip);
+      ctl.appendChild(el('span', null, 'multiply by:'));
+      var mult = [];
+      [0.5, 1, 2].forEach(function (k) {
+        var b = el('button', null, '× ' + (k === 0.5 ? '½' : k)); b.type = 'button';
+        b.setAttribute('aria-label', 'Multiply equation ' + e.label + ' by ' + (k === 0.5 ? 'one half' : k));
+        b.addEventListener('click', function () { st[i].k = k; update(); });
+        ctl.appendChild(b); mult.push({ k: k, b: b });
+      });
+      row.appendChild(head); row.appendChild(ctl); rows.appendChild(row);
+      rowEls.push({ text: head.querySelector('.eqtext'), dh: head.querySelector('.dh'), flip: flip, mult: mult });
+    });
+
+    function update() {
+      var L = {}, R = {}, dH = 0;
+      EQS.forEach(function (e, i) {
+        var f = effective(i), r = rowEls[i];
+        r.text.textContent = sideText(f.left) + ' → ' + sideText(f.right);
+        r.dh.textContent = fmtDH(f.dH);
+        r.flip.setAttribute('aria-pressed', st[i].flip);
+        r.mult.forEach(function (m) { m.b.setAttribute('aria-pressed', st[i].k === m.k); });
+        Object.keys(f.left).forEach(function (sp) { L[sp] = (L[sp] || 0) + f.left[sp]; });
+        Object.keys(f.right).forEach(function (sp) { R[sp] = (R[sp] || 0) + f.right[sp]; });
+        dH += f.dH;
+      });
+      function sideHtml(side, other) {
+        return ORDER.filter(function (sp) { return side[sp]; }).map(function (sp) {
+          var c = side[sp], o = other[sp] || 0, cancel = Math.min(c, o), rest = c - cancel;
+          if (cancel <= 1e-9) return term(sp, c);
+          if (rest <= 1e-9) return '<s aria-label="' + term(sp, c) + ' cancelled">' + term(sp, c) + '</s>';
+          return '<s aria-label="' + term(sp, c) + ' partly cancelled">' + term(sp, c) + '</s> ' + term(sp, rest);
+        }).join(' + ');
+      }
+      $('hz-sum').innerHTML = sideHtml(L, R) + ' → ' + sideHtml(R, L);
+      var net = {}, nl = {}, nr = {};
+      ORDER.forEach(function (sp) { var d = (R[sp] || 0) - (L[sp] || 0); if (Math.abs(d) > 1e-9) { net[sp] = d; if (d < 0) nl[sp] = -d; else nr[sp] = d; } });
+      $('hz-net').textContent = (sideText(nl) || 'nothing') + ' → ' + (sideText(nr) || 'nothing');
+      $('hz-dh').textContent = fmtDH(dH);
+      var solved = ORDER.every(function (sp) { return Math.abs((net[sp] || 0) - (TARGET[sp] || 0)) < 1e-9; });
+      var say = $('hz-say');
+      if (solved) say.innerHTML = '<span class="solved">✓ Solved!</span> The net equation is the target, so its ΔH is the sum: <strong>' + fmtDH(dH) + '</strong>. Everything you did not want cancelled out.';
+      else if ((net.CO || 0) < 0) say.innerHTML = 'CO(g) is on the <strong>left</strong> of the net equation, but the target <strong>makes</strong> CO. Which equation has CO in it, and which way round should it be?';
+      else if ((net.CO2 || 0) !== 0) say.innerHTML = 'CO₂(g) is left over in the net equation. It must cancel: make it appear once on each side, in the same amount.';
+      else if (Math.abs((net.C || 0) + 1) > 1e-9) say.innerHTML = 'Everything cancels except the amounts: the target has exactly 1 C(s). Check the multipliers.';
+      else say.innerHTML = 'Not the target yet. Compare the net equation with the target, one substance at a time.';
+    }
+    $('hz-reset').addEventListener('click', function () { st.forEach(function (s) { s.flip = false; s.k = 1; }); update(); });
+    update();
+  })();
+
+  // ---------- Part 8: the balance that reads high, and the sorting practice ----------
+
+  (function () {
+    var sys = true, rnd = true;
+    function toggle(id, getset) {
+      $(id).addEventListener('click', function () { var v = !getset(); getset(v); $(id).setAttribute('aria-pressed', v); });
+    }
+    toggle('er-sys', function (v) { if (v !== undefined) sys = v; return sys; });
+    toggle('er-rand', function (v) { if (v !== undefined) rnd = v; return rnd; });
+    $('er-go').addEventListener('click', function () {
+      var cells = $('er-table').querySelectorAll('tbody td'), sum = 0, vals = [];
+      for (var i = 0; i < 5; i++) {
+        var v = 10.00 + (sys ? 0.30 : 0) + (rnd ? gauss() * 0.05 : 0);
+        v = round(v, 2); vals.push(v); sum += v;
+        cells[i].textContent = v.toFixed(2);
+      }
+      var avg = sum / 5;
+      cells[5].textContent = avg.toFixed(3);
+      cells[6].textContent = sgn(avg - 10, 3);
+      var spread = Math.max.apply(null, vals) - Math.min.apply(null, vals);
+      var msg;
+      if (sys && rnd) msg = 'The readings scatter (random error, a spread of ' + spread.toFixed(2) + ' g), and they are <strong>all too high</strong> (systematic error). Averaging smooths the scatter, but the average is still about 0.30 g high.';
+      else if (sys) msg = 'No scatter: the readings agree perfectly (precise), but every one is 0.30 g high (not accurate). Weighing more times would never fix this. Checking the balance against a known mass would.';
+      else if (rnd) msg = 'The readings scatter on both sides of 10.00 g, but their average lands close to it: random error, reduced by averaging.';
+      else msg = 'A perfect balance: every reading is 10.00 g. Real instruments are never quite this good.';
+      $('er-say').innerHTML = msg;
+    });
+
+    var ITEMS = [
+      { s: 'The stopwatch runs 2% fast, so every time it shows is a little too long.', a: 0, why: 'Every time is too long by the same fraction: systematic. Averaging will not help; checking the watch against a good clock would.' },
+      { s: 'The student starts and stops the watch a little early on some tries and a little late on others.', a: 1, why: 'Reaction time varies both ways from try to try: random. Averaging several tries reduces it.' },
+      { s: 'The student wrote 1.92 s in the notebook when the watch showed 2.19 s.', a: 2, why: 'A copying mistake: a gross error. Redo or correct it; it is not a “source of error”.' },
+      { s: 'The meter stick’s end is worn away by 1 cm, so every length read from it is 1 cm too long.', a: 0, why: 'Always 1 cm too long, the same way each time: systematic.' },
+      { s: 'Small air currents in the room nudge the pendulum by a different amount on each swing.', a: 1, why: 'Unpredictable, both ways: random.' },
+      { s: 'The student counted 19 swings but divided the time by 20.', a: 2, why: 'A counting mistake: a gross error. Redo the count.' }
+    ];
+    var NAMES = ['Systematic', 'Random', 'Mistake (gross error)'], list = $('sort'), state = ITEMS.map(function () { return null; });
+    ITEMS.forEach(function (it, ii) {
+      var li = el('li'), p = el('p', null, it.s), opts = el('div', 'options'), fb = el('p', 'feedback');
+      fb.setAttribute('aria-live', 'polite');
+      opts.setAttribute('role', 'group'); opts.setAttribute('aria-label', 'Kind of error for item ' + (ii + 1));
+      NAMES.forEach(function (n, ni) {
+        var b = el('button', null, n); b.type = 'button';
+        b.addEventListener('click', function () {
+          Array.prototype.forEach.call(opts.children, function (o) { o.removeAttribute('data-state'); });
+          var ok = ni === it.a;
+          b.setAttribute('data-state', ok ? 'right' : 'wrong');
+          fb.innerHTML = (ok ? '<b class="right">Right.</b> ' : '<b class="wrong">Not quite.</b> ') + it.why;
+          if (state[ii] === null) state[ii] = ok; else if (ok && state[ii] === false) state[ii] = 'later';
+          var done = state.filter(function (x) { return x !== null; }).length;
+          $('sort-score').innerHTML = done + ' of ' + ITEMS.length + ' sorted' + (done === ITEMS.length ? ', <span class="done" style="color:var(--good)">' + state.filter(function (x) { return x === true; }).length + ' right the first time.</span>' : '.');
+        });
+        opts.appendChild(b);
+      });
+      li.appendChild(p); li.appendChild(opts); li.appendChild(fb); list.appendChild(li);
+    });
+  })();
+
+  // ---------- Part 9: the Data Collection dialog ----------
+
+  (function () {
+    function derived() {
+      var len = parseNum($('lp-len').value), rate = parseNum($('lp-rate').value), out = $('lp-derived');
+      if (isFinite(len) && isFinite(rate) && rate > 0 && len > 0) out.textContent = '= ' + (1 / rate).toFixed(rate >= 10 ? 3 : 2) + ' seconds/sample; about ' + Math.round(len * rate) + ' readings in the run';
+      else out.textContent = 'Type a length and a sampling rate.';
+    }
+    $('lp-len').addEventListener('input', derived); $('lp-rate').addEventListener('input', derived);
+    $('lp-done').addEventListener('click', function () {
+      var mode = $('lp-mode').value, len = parseNum($('lp-len').value), rate = parseNum($('lp-rate').value), wrong = [];
+      if (mode !== 'Time Based') wrong.push('Mode should be Time Based');
+      if (len !== 600) wrong.push('Length should be 600 seconds (10 minutes)');
+      if (rate !== 2) wrong.push(Math.abs(rate - 0.5) < 1e-9 ? 'Sampling rate is in samples per second: 2, not 0.5 (0.5 is seconds per sample)' : 'Sampling rate should be 2 samples/second');
+      $('lp-say').innerHTML = wrong.length ? '<b class="wrong">Not yet.</b> ' + wrong.join('; ') + '.' : '<b class="right">Right.</b> Time Based, 600 s, 2 samples/s: one reading every 0.5 s, 1200 readings in all (plus the one at t = 0).';
+    });
+    derived();
+  })();
+
+  // ---------- Part 12: check yourself ----------
+
+  var QUESTIONS = [
+    { q: 'Hot water is poured into cold water in a calorimeter. What is the sign of q for the hot water?',
+      options: ['Positive', 'Negative', 'Zero'], right: 1,
+      why: 'It cools, so ΔT = T_f − T_hot is negative and q = m s ΔT is negative: it lost heat.' },
+    { q: 'How much heat warms 50.0 g of water by 2.00 °C?',
+      options: ['100 J', '418 J', '209 J', '4184 J'], right: 1,
+      why: 'q = (50.0 g)(4.184 J/(g·°C))(2.00 °C) = 418 J.' },
+    { q: 'Equal masses of a metal (s = 0.39 J/(g·°C)) and of water get the same heat. Which warms more?',
+      options: ['The metal', 'The water', 'They warm the same'], right: 0,
+      why: 'ΔT = q ÷ (m s): the smaller s gives the bigger ΔT.' },
+    { q: 'What does C_cal measure?',
+      options: ['The heat needed to warm the whole calorimeter by 1 °C', 'The heat of the reaction', 'The specific heat of the solution', 'The heat lost to the room per second'], right: 0,
+      why: 'C_cal, in J/°C, accounts for the heat the cup, lid and probe take up: q_cal = C_cal ΔT.' },
+    { q: 'In a made-up Part I, q_hw = −3900 J and q_cw = +3500 J. What is q_cal?',
+      options: ['−400 J', '+400 J', '+7400 J'], right: 1,
+      why: 'q_cal = −(q_hw + q_cw) = −(−3900 + 3500) = +400 J. A positive q_cal: the cup gained heat, as it should.' },
+    { q: 'Why is T_f found by extrapolating instead of taken as the highest reading?',
+      options: ['The highest reading is always noise', 'Mixing is not instant and heat leaks out meanwhile, so the top is lower than an instant mix would reach', 'The probe reads too high at the top'], right: 1,
+      why: 'The extrapolated line gives the temperature for an instant, loss-free mix, which is what the equations assume.' },
+    { q: 'A linear fit gives T = −0.0050 t + 30.40 (°C, s). Mixing was at t = 20.0 s. What is T_f?',
+      options: ['30.40 °C', '30.30 °C', '30.50 °C', '27.40 °C'], right: 1,
+      why: 'T_f = (−0.0050)(20.0) + 30.40 = −0.10 + 30.40 = 30.30 °C. b alone is the line at t = 0.' },
+    { q: 'The solution in the cup gets warmer during a reaction. What is the sign of ΔH for the reaction?',
+      options: ['Negative (exothermic)', 'Positive (endothermic)', 'It cannot be told'], right: 0,
+      why: 'The solution gained heat that the reaction gave off: q_rxn < 0, so ΔH < 0.' },
+    { q: 'A made-up reaction has ΔH = +60 kJ. What is ΔH for twice the reaction, written backwards?',
+      options: ['+120 kJ', '−120 kJ', '−60 kJ', '−30 kJ'], right: 1,
+      why: 'Reversing flips the sign (−60 kJ); doubling doubles it (−120 kJ).' },
+    { q: 'Why does Hess’s law work?',
+      options: ['Because enthalpy is a state function: ΔH depends only on the start and the end', 'Because every reaction is exothermic', 'Because heat is never lost'], right: 0,
+      why: 'Like a change in altitude, ΔH is the same by any route between the same start and end.' },
+    { q: 'Every reading from a balance is 0.2 g too high. Which is true?',
+      options: ['It is random error; averaging fixes it', 'It is systematic error; averaging does not fix it', 'It is a gross error'], right: 1,
+      why: 'Always too high by the same amount: systematic. Calibrate the balance instead.' },
+    { q: 'Data Collection is set to 600 s at 2 samples/second. How far apart are the readings?',
+      options: ['2 s', '0.5 s', '600 s', '300 s'], right: 1,
+      why: '1 ÷ 2 per second = 0.5 s per sample; about 1200 readings in 10 minutes.' }
+  ];
+  buildQuiz($('quiz'), QUESTIONS, $('score'));
+})();
+</script>
+</body>
+</html>
