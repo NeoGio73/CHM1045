@@ -16,6 +16,7 @@ Listed in roughly the order the course covers them.
 | Stoichiometry | [Stoichiometry Study Guide](https://neogio73.github.io/CHM1045/stoichiometry-study-guide.html) | Study guide |
 | Reactions in aqueous solutions | [Reactions in Aqueous Solutions Worksheet](https://neogio73.github.io/CHM1045/aqueous-reactions-worksheet.html) | In-class worksheet |
 | Solutions and titrations | [Solutions and Titrations Study Guide](https://neogio73.github.io/CHM1045/solution-stoichiometry-study-guide.html) | Study guide |
+| Titration and molar mass | [Molar Mass of an Unknown Acid: Prelab Review](https://neogio73.github.io/CHM1045/molar-mass-acid-prelab/) | Prelab review |
 | Solutions and gases | [Solutions and Gases Study Guide](https://neogio73.github.io/CHM1045/solutions-and-gases-study-guide.html) | Study guide |
 | Gases | [Gases Study Guide](https://neogio73.github.io/CHM1045/gases-study-guide.html) | Study guide |
 | Calorimetry and Hess's law | [Calorimetry and Hess's Law Study Guide](https://neogio73.github.io/CHM1045/calorimetry-and-hess-law-study-guide.html) | Study guide |
@@ -117,6 +118,27 @@ The [prelab review](https://neogio73.github.io/CHM1045/hydrogen-spectrum-lab/pre
 
 Everything the prelab practices on is made up: an imaginary atom with four energy levels, and invented lines to read. It gives away none of the lab's answers.
 
+## Molar Mass of an Unknown Acid: Prelab Review
+
+A review to read before the in-person lab "Determination of the Molar Mass of an Acid by Titration with a Base", in which students make a sodium hydroxide solution, standardize it against KHP, and titrate an unknown solid acid to find its molar mass. It takes about thirty minutes, and nothing in it is graded or recorded.
+
+| Part | What it covers |
+| --- | --- |
+| 1. The plan of the lab | The three parts of the lab and what each one gives |
+| 2. Acids, bases and neutralization | Neutralization, the equivalence point, and KHP's one acidic hydrogen, with an animation of hydroxide ions reacting one at a time |
+| 3. Molarity and making the NaOH solution | Molarity, liters and milliliters, and how much NaOH to weigh, with practice |
+| 4. Why the NaOH must be standardized | Why solid NaOH cannot be weighed exactly, with a balance whose reading creeps up |
+| 5. The buret | The titration set-up, reading a buret to 0.01 mL (with practice), volume by difference, and refilling during a titration |
+| 6. Indicators, end point and equivalence point | Phenolphthalein and bromothymol blue, and a simulated titration that draws its pH curve as it goes |
+| 7. From KHP to the molarity of NaOH | A worked example and practice |
+| 8. From NaOH to the molar mass of the acid | Worked examples and practice |
+| 9. Acids with more than one acidic H | Equivalent mass, with practice |
+| 10. Several trials and one average | Which trials to average, and significant figures |
+| 11. At the bench | Safety and good habits |
+| 12. Check yourself | Ten questions |
+
+The practice problems get new numbers each time and explain common slips, such as a volume left in milliliters. Every acid, mass and reading on the page is made up. None of the answers is the molar mass of one of the lab's unknowns, and the prelab questions in the lab handout are left for students to do.
+
 ## Escape from Lewis Manor
 
 A Halloween escape-room game for Chapter 6, Chemical Bonding I. You play a chemistry student locked in a haunted manor at night. Walk the hall with the arrow keys (or the on-screen buttons on a phone), and enter a room with the up arrow. Each room's puzzles break one of the seven wax seals on the front door.
@@ -177,13 +199,14 @@ Canvas links point at these exact addresses. Renaming or moving a file breaks it
 
 - **Study guides, the worksheet, Names & Formulas Lab, and Hoth Run** are each a single HTML file with the styles, script, and images inside it. They load nothing from other sites.
 - **VSEPR Geometry Explorer** is a single file, [`vsepr-geometry-explorer.html`](vsepr-geometry-explorer.html). Its table and example molecules are in the `DATA` list near the top of its script. It loads three.js from a public CDN and its fonts from Google Fonts.
+- **Molar Mass of an Unknown Acid: Prelab Review** is a single file, [`molar-mass-acid-prelab/index.html`](molar-mass-acid-prelab/index.html), with its drawings and animations made in code. It loads nothing from other sites.
 - **Escape from Lewis Manor** is also a single file, [`lewis-manor/index.html`](lewis-manor/index.html), with its art and sound made in code. It loads its three fonts from Google Fonts and falls back to built-in fonts without them.
 - **VSEPR Test Chambers** keeps the content an instructor is likely to change in [`vsepr-chamber-06/js/content.js`](vsepr-chamber-06/js/content.js): the chambers, molecules, questions, and narrator lines. Adding `?chamber=2` through `?chamber=6` to the address opens one chamber directly, and `?chamber=menu` opens the list. With nothing added, chamber 06 opens.
 - **The Atomic Spectrum of Hydrogen** is a finished build of a 3D project that is kept outside this repository. Its folder is replaced as a whole when the lab changes, so edits made to its files here would be lost.
 
 ### Running a copy on your own computer
 
-Download or clone the repository. The study guides, the worksheet, the Names & Formulas Lab, Hoth Run, Escape from Lewis Manor, and the VSEPR Geometry Explorer open straight from the file with a double-click.
+Download or clone the repository. The study guides, the worksheet, the Names & Formulas Lab, Hoth Run, Escape from Lewis Manor, the molar mass prelab review, and the VSEPR Geometry Explorer open straight from the file with a double-click.
 
 The VSEPR chambers and The Atomic Spectrum of Hydrogen have to be served by a web server, because browsers will not load their scripts and 3D files from a file on disk. From the repository folder, run:
 
@@ -206,6 +229,8 @@ CHM1045/
 ├── solutions-and-gases-study-guide.html
 ├── calorimetry-and-hess-law-study-guide.html
 ├── vsepr-geometry-explorer.html
+├── molar-mass-acid-prelab/
+│   └── index.html        the prelab review for the titration lab
 ├── lewis-manor/
 │   └── index.html        Escape from Lewis Manor
 ├── hydrogen-spectrum-lab/
